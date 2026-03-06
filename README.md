@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zynkr Skill Directory
 
-## Getting Started
+**Live:** zynkr.ai
+**Purpose:** Browsable marketplace of Zynkr's 90+ AI assistants (GPTs, Claude skills, Gemini agents) for course students to discover, understand, and set up the right tool for their task.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Structure
+
+```
+zynkr-skill-directory/
+├── front-end/    Next.js 14 (App Router) + Tailwind — catalog & detail pages
+├── back-end/     Backend API (stack TBD — planned for Phase 2)
+├── database/     Database schemas & migrations (stack TBD — planned for Phase 2)
+└── deploy/       Deployment docs and config
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Layer | Stack | Status |
+|---|---|---|
+| Frontend | Next.js 14, Tailwind CSS | ✅ Active |
+| Data | Static TypeScript file (`lib/skills-data.ts`) | ✅ Active |
+| Backend | TBD | 🔜 Phase 2 |
+| Database | TBD | 🔜 Phase 2 |
+| Hosting | Zeabur | 🔜 Deploy phase |
+| Domain | zynkr.ai (GoDaddy) | 🔜 Deploy phase |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route | Description |
+|---|---|
+| `/` | Catalog — hero, category filter, status toggle, search, skill grid |
+| `/skills/[id]` | Detail — IPO breakdown, workflow chain, setup guide, launch CTA |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Components
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Component | Description |
+|---|---|
+| `SkillCard` | Number, name, category, status, platform, author |
+| `CategoryFilter` | Scrollable chip tabs with per-category counts |
+| `SearchBar` | Debounced filter over skill name + description |
+| `IPOBreakdown` | 3-panel card: Input / Process / Output |
+| `WorkflowChain` | Horizontal chain linking synergy skills |
+| `SetupGuide` | Step-by-step guide with platform icon + launch button |
+| `StatusBadge` | Color-coded: Done / WIP / Pause / Not started / Out dated |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Data Model
+
+```ts
+type Skill = {
+  id: string;           // e.g. "1.01"
+  category: string;     // e.g. "內容行銷"
+  name: string;
+  description: string;  // raw IPO text
+  input?: string;
+  process?: string;
+  output?: string;
+  synergy: string[];    // e.g. ["1.01", "1.02", "1.03"]
+  platform: "gpt" | "claude" | "gemini" | "multi";
+  status: "Done" | "WIP" | "Not started" | "Pause" | "Out dated";
+  author: string;
+  link?: string;
+  updatedAt?: string;
+};
+```
+
+Data lives in `front-end/lib/skills-data.ts` — populated manually from the Google Sheet. Phase 2 will connect to Sheets API or a database.
+
+---
+
+## Design Decisions
+
+- **Default filter:** "Done only" — students only see working tools
+- **IPO parsing:** `description` field split on `Input:` / `Process:` / `Output:` into 3 structured panels
+- **Workflow chain:** `synergy` array rendered as linked chips with arrows
+- **Setup guide:** Platform-specific steps (GPT / Claude / Gemini) with launch CTA
+- **No auth for MVP:** Public read-only
+
+---
+
+## Development
+
+```bash
+cd front-end
+npm install
+npm run dev       # http://localhost:3000
+npm run build     # production build check
+```
+
+---
+
+## Deployment
+
+See `deploy/deploy-plan.md` for full action steps.
+
+**Summary:** Zeabur (set root directory to `front-end/`) → connect `zynkr.ai` via CNAME in GoDaddy DNS.
+
+---
+
+## Roadmap
+
+- [x] Project scaffold (Next.js + Tailwind)
+- [x] Skill data file (`front-end/lib/skills-data.ts`)
+- [x] All components (SkillCard, CategoryFilter, SearchBar, IPOBreakdown, WorkflowChain, SetupGuide, StatusBadge)
+- [x] Catalog page `/`
+- [ ] Skill detail page `/skills/[id]`
+- [ ] Layout & global nav
+- [ ] Deploy to Zeabur + connect zynkr.ai
+- [ ] Connect to Google Sheets API (Phase 2)
+- [ ] Backend + database (Phase 2)
