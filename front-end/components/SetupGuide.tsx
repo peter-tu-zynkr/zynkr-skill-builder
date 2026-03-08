@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SkillPlatform } from "@/lib/skills";
+import { platformLabel } from "@/lib/platforms";
 
 interface SetupGuideProps {
   platform: SkillPlatform;
   installCommand?: string;
-  name: string;
 }
 
 const INSTALL_STEPS = [
@@ -16,21 +16,22 @@ const INSTALL_STEPS = [
   "技能已安裝至 Claude Code，輸入 /技能名稱 即可使用",
 ];
 
-const platformLabel: Record<SkillPlatform, string> = {
-  gpt: "ChatGPT",
-  claude: "Claude",
-  gemini: "Gemini",
-  multi: "Multi-platform",
-};
-
-export default function SetupGuide({ platform, installCommand, name }: SetupGuideProps) {
+export default function SetupGuide({ platform, installCommand }: SetupGuideProps) {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   async function handleCopy() {
     if (!installCommand) return;
     await navigator.clipboard.writeText(installCommand);
+    if (timerRef.current) clearTimeout(timerRef.current);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    timerRef.current = setTimeout(() => setCopied(false), 2000);
   }
 
   if (!installCommand) {

@@ -8,6 +8,7 @@ import {
   getSubagentsByProject,
 } from "@/lib/taxonomy";
 import { skills } from "@/lib/skills-data";
+import { platformIcon, platformLabelShort } from "@/lib/platforms";
 import StatusBadge from "@/components/StatusBadge";
 import WorkflowChain from "@/components/WorkflowChain";
 
@@ -17,13 +18,6 @@ export function generateStaticParams() {
     project: p.slug,
   }));
 }
-
-const platformIcons: Record<string, string> = {
-  gpt: "🤖",
-  claude: "🟠",
-  gemini: "💎",
-  multi: "✨",
-};
 
 export default async function ProjectPage({
   params,
@@ -125,7 +119,7 @@ export default async function ProjectPage({
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-auto pt-2 border-t border-zinc-100">
                   <span className="text-xs text-zinc-400">
-                    {platformIcons[s.platform]} {s.platform.toUpperCase()}
+                    {platformIcon[s.platform]} {platformLabelShort[s.platform]}
                   </span>
                   <span className="text-xs text-zinc-400 group-hover:text-blue-500 transition-colors">
                     {s.author} →

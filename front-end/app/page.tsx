@@ -45,7 +45,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Category grid */}
+      {/* Category list */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
         <p className="text-sm text-zinc-500 mb-6">選擇一個領域開始探索</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -60,29 +60,23 @@ export default function HomePage() {
               <Link
                 key={cat.slug}
                 href={`/${cat.slug}`}
-                className="group flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm hover:shadow-md hover:border-zinc-300 transition-all duration-200"
+                className="group flex flex-col rounded-2xl border border-zinc-200 bg-white px-6 py-6 shadow-sm hover:shadow-md hover:border-zinc-300 transition-all duration-200"
               >
-                <div className="flex items-start justify-between">
-                  <span className="text-3xl">{cat.icon}</span>
-                  <span className="text-xs px-2 py-1 rounded-full bg-zinc-100 text-zinc-500 font-medium">
-                    {catProjects.length} 技能
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-2xl">{cat.icon}</span>
+                  <span className="text-xs font-mono font-bold text-zinc-300">
+                    {cat.prefix}
                   </span>
                 </div>
-                <div>
-                  <h2 className="font-bold text-zinc-900 text-lg group-hover:text-blue-600 transition-colors">
-                    {cat.name}
-                  </h2>
-                  <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
-                    {cat.description}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between mt-auto pt-3 border-t border-zinc-100">
-                  <span className="text-xs text-zinc-400">
-                    {catSkills.length} subagents
-                  </span>
-                  <span className="text-xs text-emerald-600 font-medium">
-                    {doneCount} 已完成
-                  </span>
+                <h2 className="font-bold text-zinc-900 text-base group-hover:text-blue-600 transition-colors mb-1">
+                  {cat.name}
+                </h2>
+                <p className="text-sm text-zinc-500 flex-1 line-clamp-2">
+                  {cat.description}
+                </p>
+                <div className="flex items-center gap-3 mt-4 text-xs">
+                  <span className="text-zinc-400">{catSkills.length} subagents</span>
+                  <span className="text-emerald-600 font-medium">{doneCount} 已完成</span>
                 </div>
               </Link>
             );

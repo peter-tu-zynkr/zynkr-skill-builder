@@ -18,7 +18,7 @@ When that happens, this folder should hold:
 Current recommendation for this project:
 
 - Do not keep the long-term source of truth in `front-end/lib/skills-data.ts`
-- Do not treat Google Sheets as the default long-term source unless non-technical editing becomes the primary requirement
+- Do not use Google Sheets as part of the active architecture plan for this project
 - Keep inventory changes reviewable in Git until there is a clear need for drafts, permissions, high-frequency editing, or operational sync jobs
 
 Use a database when one or more of these become true:

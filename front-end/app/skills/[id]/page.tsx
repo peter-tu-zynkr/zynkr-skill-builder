@@ -1,19 +1,22 @@
+import { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { skills } from "@/lib/skills-data";
 import { getCategoryBySlug, getProjectBySlug } from "@/lib/taxonomy";
-import { SkillPlatform } from "@/lib/skills";
+import { platformLabel, platformIcon } from "@/lib/platforms";
 import StatusBadge from "@/components/StatusBadge";
 import IPOBreakdown from "@/components/IPOBreakdown";
 import WorkflowChain from "@/components/WorkflowChain";
 import SetupGuide from "@/components/SetupGuide";
 
-const platformLabel: Record<SkillPlatform, string> = {
-  gpt: "ChatGPT",
-  claude: "Claude",
-  gemini: "Gemini",
-  multi: "Multi-platform",
-};
+function SidebarItem({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="px-5 py-4 space-y-1">
+      <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">{label}</p>
+      <div className="pt-0.5">{children}</div>
+    </div>
+  );
+}
 
 export function generateStaticParams() {
   return skills.map((s) => ({ id: s.id }));
@@ -82,7 +85,6 @@ export default async function SkillDetailPage({
                 <SetupGuide
                   platform={skill.platform}
                   installCommand={skill.installCommand}
-                  name={skill.name}
                 />
               </div>
             </section>
@@ -121,36 +123,30 @@ export default async function SkillDetailPage({
           {/* Sidebar */}
           <aside className="w-full lg:w-60 shrink-0">
             <div className="bg-white rounded-2xl border border-zinc-200 divide-y divide-zinc-100">
-              <div className="px-5 py-4 space-y-1">
-                <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">狀態</p>
-                <div className="pt-0.5">
-                  <StatusBadge status={skill.status} size="md" />
-                </div>
-              </div>
-              <div className="px-5 py-4 space-y-1">
-                <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">平台</p>
-                <p className="text-sm text-zinc-700 font-medium">{platformLabel[skill.platform]}</p>
-              </div>
-              <div className="px-5 py-4 space-y-1">
-                <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">類別</p>
-                <p className="text-sm text-zinc-700">{skill.category}</p>
-              </div>
+              <SidebarItem label="狀態">
+                <StatusBadge status={skill.status} size="md" />
+              </SidebarItem>
+              <SidebarItem label="平台">
+                <span className="text-sm text-zinc-700 font-medium">
+                  {platformIcon[skill.platform]} {platformLabel[skill.platform]}
+                </span>
+              </SidebarItem>
+              <SidebarItem label="類別">
+                <span className="text-sm text-zinc-700">{skill.category}</span>
+              </SidebarItem>
               {skill.author && (
-                <div className="px-5 py-4 space-y-1">
-                  <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">作者</p>
-                  <p className="text-sm text-zinc-700">{skill.author}</p>
-                </div>
+                <SidebarItem label="作者">
+                  <span className="text-sm text-zinc-700">{skill.author}</span>
+                </SidebarItem>
               )}
               {skill.updatedAt && (
-                <div className="px-5 py-4 space-y-1">
-                  <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">最後更新</p>
-                  <p className="text-sm text-zinc-700">{skill.updatedAt}</p>
-                </div>
+                <SidebarItem label="最後更新">
+                  <span className="text-sm text-zinc-700">{skill.updatedAt}</span>
+                </SidebarItem>
               )}
-              <div className="px-5 py-4 space-y-1">
-                <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Skill ID</p>
-                <p className="font-mono text-sm text-zinc-400">{skill.id}</p>
-              </div>
+              <SidebarItem label="Skill ID">
+                <span className="font-mono text-sm text-zinc-400">{skill.id}</span>
+              </SidebarItem>
             </div>
 
             <Link

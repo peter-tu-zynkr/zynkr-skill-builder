@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Zynkr AI 技能目錄",
   description: "Zynkr 精選 AI 助理工具庫 — 找到對的工具，用對的方式，做對的事。",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

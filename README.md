@@ -10,7 +10,7 @@
 ```
 zynkr-skill-directory/
 ├── front-end/    Next.js 16 (App Router) + Tailwind — public catalog UI
-├── back-end/     Fastify + TypeScript API scaffold with CSV / Google Sheets providers
+├── back-end/     Fastify + TypeScript API scaffold with a temporary CSV provider
 ├── database/     Placeholder for future schema, migration, and sync work
 └── deploy/       Deployment docs and config
 ```
@@ -22,7 +22,7 @@ zynkr-skill-directory/
 | Layer | Stack | Status |
 |---|---|---|
 | Frontend | Next.js 16, Tailwind CSS | ✅ Active |
-| Data | Static TypeScript file (`front-end/lib/skills-data.ts`) | ✅ Active |
+| Data | Static TypeScript file (`front-end/lib/skills-data.ts`) | ✅ Active, temporary |
 | Backend | Fastify, TypeScript, Zod | 🟡 Scaffolded |
 | Database | Not started | 🔜 Later |
 | Hosting | Zeabur | 🔜 Deploy phase |
@@ -78,7 +78,7 @@ Data currently lives in `front-end/lib/skills-data.ts`.
 
 Category and project structure live in `front-end/lib/taxonomy.ts`.
 
-The backend scaffold mirrors the same shape and is intended to replace direct frontend imports once the external source is finalized.
+The backend scaffold mirrors the same shape and should eventually read from repo-managed generated content instead of direct frontend imports.
 
 ---
 
@@ -133,7 +133,7 @@ See `deploy/deploy-plan.md` for full action steps.
 - [ ] Add real external links for all subagents
 - [ ] Add backend `.env.example`
 - [ ] Wire frontend to backend API
-- [ ] Validate Google Sheets integration
+- [ ] Implement repo-managed content ingestion
 - [ ] Consolidate shared layout / global nav
 - [ ] Deploy to Zeabur + connect zynkr.ai
-- [ ] Add database only if Sheets-backed API becomes insufficient
+- [ ] Add database only if Git-managed content becomes insufficient

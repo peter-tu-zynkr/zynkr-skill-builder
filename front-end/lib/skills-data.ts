@@ -38,7 +38,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Peter Tu",
     updatedAt: "8/13",
-    installCommand: `curl -sL https://zynkr.ai/s/1.01.md -o ~/.claude/skills/writing-ideation.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.01.md -o ~/.claude/skills/writing-ideation.md",
   },
   {
     id: "1.02",
@@ -55,7 +55,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Peter Tu",
     updatedAt: "8/13",
-    installCommand: `curl -sL https://zynkr.ai/s/1.02.md -o ~/.claude/skills/writing-style.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.02.md -o ~/.claude/skills/writing-style.md",
   },
   {
     id: "1.03",
@@ -72,7 +72,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Peter Tu",
     updatedAt: "8/13",
-    installCommand: `curl -sL https://zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-editor.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-editor.md",
   },
   {
     id: "1.04",
@@ -89,7 +89,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Peter Tu",
     updatedAt: "8/13",
-    installCommand: `curl -sL https://zynkr.ai/s/1.04.md -o ~/.claude/skills/writing-reader.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.04.md -o ~/.claude/skills/writing-reader.md",
   },
   {
     id: "1.05",
@@ -106,7 +106,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Peter Tu",
     updatedAt: "8/13",
-    installCommand: `curl -sL https://zynkr.ai/s/1.05.md -o ~/.claude/skills/writing-title.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.05.md -o ~/.claude/skills/writing-title.md",
   },
   {
     id: "1.06",
@@ -123,7 +123,7 @@ export const skills: Skill[] = [
     status: "Done",
     author: "Raina Li",
     updatedAt: "1/5",
-    installCommand: `curl -sL https://zynkr.ai/s/1.06.md -o ~/.claude/skills/writing-cta.md`,
+    installCommand: "curl -sL https://zynkr.ai/s/1.06.md -o ~/.claude/skills/writing-cta.md",
   },
   {
     id: "1.07",

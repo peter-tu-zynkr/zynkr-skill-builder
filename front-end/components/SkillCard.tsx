@@ -1,25 +1,9 @@
 import Link from "next/link";
 import { Skill } from "@/lib/skills";
+import { platformIcon, platformLabelShort } from "@/lib/platforms";
 import StatusBadge from "./StatusBadge";
 
-const platformIcons: Record<string, string> = {
-  gpt: "🤖",
-  claude: "🟠",
-  gemini: "💎",
-  multi: "✨",
-};
-
-const platformLabels: Record<string, string> = {
-  gpt: "GPT",
-  claude: "Claude",
-  gemini: "Gemini",
-  multi: "Multi",
-};
-
 export default function SkillCard({ skill }: { skill: Skill }) {
-  const icon = platformIcons[skill.platform] ?? "🤖";
-  const platformLabel = platformLabels[skill.platform] ?? skill.platform;
-
   return (
     <Link
       href={`/skills/${skill.id}`}
@@ -52,7 +36,7 @@ export default function SkillCard({ skill }: { skill: Skill }) {
       {/* Footer */}
       <div className="flex items-center justify-between mt-auto pt-2 border-t border-zinc-100">
         <span className="text-xs text-zinc-400">
-          {icon} {platformLabel}
+          {platformIcon[skill.platform]} {platformLabelShort[skill.platform]}
         </span>
         <span className="text-xs text-zinc-400 group-hover:text-blue-500 transition-colors">
           {skill.author} →

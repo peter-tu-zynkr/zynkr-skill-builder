@@ -13,6 +13,11 @@ Do not keep the long-term source of truth in:
 
 Both are acceptable temporary tools, but neither is the best primary model for a growing catalog that needs reviewability, schema discipline, and maintainable deploys.
 
+Project decision as of March 8, 2026:
+
+- Google Sheets is no longer in scope as an active data-source option
+- the transition path is `skills-data.ts` -> repo-managed content -> generated artifact
+
 ## Why
 
 `skills-data.ts` is weak as a content system because:
