@@ -1,0 +1,21 @@
+{
+  "$schema": "https://gofastmcp.com/public/schemas/fastmcp.json/v1.json",
+  "source": {
+    "path": "fastmcp_server.py",
+    "entrypoint": "mcp"
+  },
+  "environment": {
+    "python": ">=3.10",
+    "project": "."
+  },
+  "deployment": {
+    "transport": "http",
+    "host": "0.0.0.0",
+    "port": 8000,
+    "log_level": "INFO",
+    "env": {
+      "MCP_ENABLE_OAUTH21": "true",
+      "OAUTHLIB_INSECURE_TRANSPORT": "1"
+    }
+  }
+}

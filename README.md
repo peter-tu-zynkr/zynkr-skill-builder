@@ -9,9 +9,9 @@
 
 ```
 zynkr-skill-directory/
-├── front-end/    Next.js 14 (App Router) + Tailwind — catalog & detail pages
-├── back-end/     Backend API (stack TBD — planned for Phase 2)
-├── database/     Database schemas & migrations (stack TBD — planned for Phase 2)
+├── front-end/    Next.js 16 (App Router) + Tailwind — public catalog UI
+├── back-end/     Fastify + TypeScript API scaffold with CSV / Google Sheets providers
+├── database/     Placeholder for future schema, migration, and sync work
 └── deploy/       Deployment docs and config
 ```
 
@@ -21,10 +21,10 @@ zynkr-skill-directory/
 
 | Layer | Stack | Status |
 |---|---|---|
-| Frontend | Next.js 14, Tailwind CSS | ✅ Active |
-| Data | Static TypeScript file (`lib/skills-data.ts`) | ✅ Active |
-| Backend | TBD | 🔜 Phase 2 |
-| Database | TBD | 🔜 Phase 2 |
+| Frontend | Next.js 16, Tailwind CSS | ✅ Active |
+| Data | Static TypeScript file (`front-end/lib/skills-data.ts`) | ✅ Active |
+| Backend | Fastify, TypeScript, Zod | 🟡 Scaffolded |
+| Database | Not started | 🔜 Later |
 | Hosting | Zeabur | 🔜 Deploy phase |
 | Domain | zynkr.ai (GoDaddy) | 🔜 Deploy phase |
 
@@ -34,8 +34,10 @@ zynkr-skill-directory/
 
 | Route | Description |
 |---|---|
-| `/` | Catalog — hero, category filter, status toggle, search, skill grid |
-| `/skills/[id]` | Detail — IPO breakdown, workflow chain, setup guide, launch CTA |
+| `/` | Home page — category overview and brand hero |
+| `/[category]` | Category page listing projects within a domain |
+| `/[category]/[project]` | Project page listing subagents and workflow chain |
+| `/skills/[id]` | Subagent detail page with IPO breakdown, setup guide, and workflow context |
 
 ---
 
@@ -43,9 +45,7 @@ zynkr-skill-directory/
 
 | Component | Description |
 |---|---|
-| `SkillCard` | Number, name, category, status, platform, author |
-| `CategoryFilter` | Scrollable chip tabs with per-category counts |
-| `SearchBar` | Debounced filter over skill name + description |
+| `SkillCard` | Catalog card for skill/subagent lists |
 | `IPOBreakdown` | 3-panel card: Input / Process / Output |
 | `WorkflowChain` | Horizontal chain linking synergy skills |
 | `SetupGuide` | Step-by-step guide with platform icon + launch button |
@@ -58,7 +58,8 @@ zynkr-skill-directory/
 ```ts
 type Skill = {
   id: string;           // e.g. "1.01"
-  category: string;     // e.g. "內容行銷"
+  category: string;
+  project: string;      // project slug defined in taxonomy.ts
   name: string;
   description: string;  // raw IPO text
   input?: string;
@@ -73,17 +74,21 @@ type Skill = {
 };
 ```
 
-Data lives in `front-end/lib/skills-data.ts` — populated manually from the Google Sheet. Phase 2 will connect to Sheets API or a database.
+Data currently lives in `front-end/lib/skills-data.ts`.
+
+Category and project structure live in `front-end/lib/taxonomy.ts`.
+
+The backend scaffold mirrors the same shape and is intended to replace direct frontend imports once the external source is finalized.
 
 ---
 
 ## Design Decisions
 
-- **Default filter:** "Done only" — students only see working tools
-- **IPO parsing:** `description` field split on `Input:` / `Process:` / `Output:` into 3 structured panels
-- **Workflow chain:** `synergy` array rendered as linked chips with arrows
-- **Setup guide:** Platform-specific steps (GPT / Claude / Gemini) with launch CTA
-- **No auth for MVP:** Public read-only
+- **Taxonomy-first navigation:** browse by category → project → subagent
+- **IPO parsing:** `description` is split on `Input:` / `Process:` / `Output:` into structured sections
+- **Workflow chain:** `synergy` renders linked related subagents
+- **Setup guide:** Platform-specific usage instructions per subagent
+- **No auth for MVP:** public read-only catalog
 
 ---
 
@@ -94,6 +99,15 @@ cd front-end
 npm install
 npm run dev       # http://localhost:3000
 npm run build     # production build check
+```
+
+Backend scaffold:
+
+```bash
+cd back-end
+npm install
+npm run dev       # http://localhost:4000
+npm run check     # typecheck
 ```
 
 ---
@@ -110,10 +124,16 @@ See `deploy/deploy-plan.md` for full action steps.
 
 - [x] Project scaffold (Next.js + Tailwind)
 - [x] Skill data file (`front-end/lib/skills-data.ts`)
-- [x] All components (SkillCard, CategoryFilter, SearchBar, IPOBreakdown, WorkflowChain, SetupGuide, StatusBadge)
-- [x] Catalog page `/`
-- [ ] Skill detail page `/skills/[id]`
-- [ ] Layout & global nav
+- [x] Taxonomy file (`front-end/lib/taxonomy.ts`)
+- [x] Home page `/`
+- [x] Category page `/[category]`
+- [x] Project page `/[category]/[project]`
+- [x] Skill detail page `/skills/[id]`
+- [x] Backend scaffold with provider abstraction
+- [ ] Add real external links for all subagents
+- [ ] Add backend `.env.example`
+- [ ] Wire frontend to backend API
+- [ ] Validate Google Sheets integration
+- [ ] Consolidate shared layout / global nav
 - [ ] Deploy to Zeabur + connect zynkr.ai
-- [ ] Connect to Google Sheets API (Phase 2)
-- [ ] Backend + database (Phase 2)
+- [ ] Add database only if Sheets-backed API becomes insufficient

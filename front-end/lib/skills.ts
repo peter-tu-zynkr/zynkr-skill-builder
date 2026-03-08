@@ -4,6 +4,7 @@ export type SkillPlatform = "gpt" | "claude" | "gemini" | "multi";
 export type Skill = {
   id: string;
   category: string;
+  project: string;        // project slug — maps to taxonomy.ts
   name: string;
   description: string;
   input?: string;

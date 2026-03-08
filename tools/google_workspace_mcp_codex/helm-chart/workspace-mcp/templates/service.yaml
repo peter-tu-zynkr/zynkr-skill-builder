@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "workspace-mcp.fullname" . }}
+  labels:
+    {{- include "workspace-mcp.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "workspace-mcp.selectorLabels" . | nindent 4 }}

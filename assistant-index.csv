@@ -1,0 +1,282 @@
+,Folder,Product idea,Search assistant,Kanban,,,,,,,,,,,,,,,,,
+,no.,Category,GPT,Gemini,Claude skill,Description,Reference,PRD,ERD,Prompt doc,Knowledge,Workflow,n8n,Synergy,Recording,Usage,Rating,Author,Status,Feedback,Last update
+,0.01,營運,行政助理 ─ 搜尋助理索引,,,"Input: A user inquiry describing a task or need to be solved.
+
+Process: Interpret the intent, match it against a structured assistant index using functional descriptions, filter to usable entries, and decide whether to recommend or ask one clarification.
+
+Output: A concise recommendation of the most relevant assistant(s), or a clear request for clarification / inability to recommend.",,,,Link,AI 搜尋助理欄位說明,Link,Link,,Link,,,Peter Tu,Done,Link,1/21
+,1.01,品牌行銷,寫作助理 ─ 靈感發想,,,"Input: The user provides an abstract philosophical question and answers assistant's prompts.
+
+Process: Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.
+
+Output: A score, commentary, optional parable, and the next, more focused philosophical question.",,,,Link,,Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,8/13
+,1.02,品牌行銷,寫作助理 ─ 文章風格導航員,,,"Input: User gives article draft (topic + core ideas); templates and style guide are preloaded.
+
+Process: Multi-turn - propose 3 outlines, 3 key points per section, then write paragraphs stepwise with user review, following the style guide.
+
+Output: Clear outline, section bullet lists, and a 1000–1200-word article drafted in the user’s style.",,,,Link,"文章模板
+風格指南",Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,8/13
+,1.03,品牌行銷,寫作助理 ─ 編輯助手,,,"Input: User provides an article draft; a Style Guide exists in the knowledge base.
+
+Process: Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.
+
+Output: A numbered list of edit suggestions and a question asking which to adopt.",,,,Link,編輯校稿 SOP,Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,8/13
+,1.04,品牌行銷,寫作助理 ─ 讀者審稿,,,"Input: User provides an article for critique; limited Memory (SEO + style prefs) may be used.
+
+Process: Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.
+
+Output: Fixed-format: scoring table, opponent-style critique, SEO keyword list with rationale, and non-rewriting improvement suggestions.",,,,Link,,Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,8/13
+,1.05,品牌行銷,寫作助理 ─ 標題小幫手,,,"Input: User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.
+
+Process: Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.
+
+Output: SEO titles with reasons and MECE classification, or a complete SEO strategy with keywords, outline, and recommendations.",,,,Link,SEO 清單,Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,8/13
+,1.06,品牌行銷,寫作助理 ─ 客製化行動呼籲,,,"Input: An article draft provided by the author.
+
+Process: Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .
+
+Output: Three ready-to-use CTA options with titles, copy, category, sub-goal, placement advice, and validated links.",,,,Link,行動呼籲選擇和規範,Link,Link,1.01 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Raina Li,Done,Link,1/5
+,1.07,品牌行銷,寫作助理 ─ 內容標籤助理,,,根據文章內容選擇適合上哪些標籤,,,,Link,標籤 Taxonomy,Link,Link,,Link,,,,Not started,Link,
+,1.08,品牌行銷,寫作助理 ─ 文章裂變,,,"Input: A full or partial article text, optionally with a writing or critique goal.
+
+Process: Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.
+
+Output: Clear outlines, summaries, virality analysis, reflective dialogue, and a new actionable outline.",,,,Link,,Link,Link,1.08 → 1.02 → 1.03 → 1.04 → 1.05 → 1.06,Link,,,Peter Tu,Done,Link,10/23
+,1.09,品牌行銷,寫作助理 ─ 翻譯蒟蒻,,寫作助理 ─ 翻譯蒟蒻,"Input: User provides text in English or another language.
+
+Process: I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.
+
+Output: Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language.",,,,Link,,Link,Link,,Link,,,Peter Tu,Done,Link,5/2
+,1.10,品牌行銷,寫作助理 ─ AI 素養文章選題,,,"Input: Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).
+
+Process: Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.
+
+Output: Clear validation result, ranked role options, and 3 realistic workplace problems for AI learning use cases.",,,,Link,"選題助理規則
+客群分佈",Link,Link,1.10 → 1.11,Link,,,Peter Tu,Done,Link,10/24
+,1.11,品牌行銷,寫作助理 ─ AI 素養文章撰寫,,,"Input: A prepared context packet describing audience, pain point, constraints, and desired outcome.
+
+Process: Diagnose intent and cognition, reframe the problem, then craft a first-person, action-driven article using a pattern-break → reframe → copy-paste approach.
+
+Output: A ready-to-publish AI productivity article with immediate, reusable prompts.",,,,Link,"GUIDE 指南 文章架構模板
+內文風格",Link,Link,1.10 → 1.11,Link,,,Bicky Yang,Done,Link,12/30
+,1.12,品牌行銷,品牌行銷助理 ─ 設計品牌行銷故事線,,,幫忙順品牌行銷的故事線和檢查邏輯,,,,Link,,Link,Link,,Link,,,,Not started,Link,
+,1.13,品牌行銷,品牌行銷助理 ─ 分頁設定,,,根據基底內容分頁品牌行銷,,,,Link,,Link,Link,,Link,,,,Not started,Link,
+,1.14,品牌行銷,品牌行銷助理 ─ 品牌行銷視覺呈現選擇,,,根據內容和分頁規格選擇視覺呈現,,,,Link,,Link,Link,,Link,,,,Not started,Link,
+,2.01,人才發展,履歷客製化 ─ 分析職缺,,,"Input: Job description or application link (or minimal role/company details).
+
+Process: Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).
+
+Output: Clear role summary, prioritized skills, success KPIs, and ATS-ready keywords for CV tailoring and interview prep.",,,,Link,,Link,Link,2.01 → 2.02 → 2.03 → 2.04 → 2.05,Link,,,Peter Tu,Done,Link,6/5
+,2.02,人才發展,履歷客製化 ─ 找到價值主張,,,"Input: User’s CV, target job requirements, and past experience descriptions
+
+Process: Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives
+
+Output: Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",,,,Link,,Link,Link,2.01 → 2.02 → 2.03 → 2.04 → 2.05,Link,,,Peter Tu,Done,Link,9/28
+,2.03,人才發展,履歷客製化 ─ 評分並分析優劣,,,"Input: Candidate CV plus target role context and prior discussion insights
+
+Process: Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step
+
+Output: Clear fit scores, competitive benchmarking, and actionable recommendations to optimize the CV and career positioning",,,,Link,,Link,Link,2.01 → 2.02 → 2.03 → 2.04 → 2.05,Link,,,Peter Tu,Done,Link,9/28
+,2.04,人才發展,履歷客製化 ─ 打造成長曲線,,,"Input: User’s resume content and prior contextual analysis from earlier phases.
+
+Process: Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.
+
+Output: A structured diagnosis of progression quality, flagged risks, and concrete rewrite recommendations to strengthen the growth narrative.",,,,Link,,Link,Link,2.01 → 2.02 → 2.03 → 2.04 → 2.05,Link,,,Peter Tu,Done,Link,9/28
+,2.05,人才發展,履歷客製化 ─ 履歷撰寫,,,"Input: Existing resume content, prior optimization insights, and a fixed CV template
+
+Process: Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.
+
+Output: A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints.",,,,Link,Link,Link,Link,2.01 → 2.02 → 2.03 → 2.04 → 2.05,Link,,,Peter Tu,Done,Link,9/28
+,2.06,人才發展,面試猜題,,,"Input: Resume or key experiences, job description, interview stage, and company context (inferred if missing).
+
+Process: Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.
+
+Output: A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.
+",,,,Link,,Link,Link,2.06 → 2.07,Link,,,Jane Liao,Done,Link,
+,2.07,人才發展,模擬面試,,,"Input: Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).
+
+Process: Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.
+
+Output: Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer.",,,,Link,,Link,Link,2.06 → 2.07,Link,,,Jane Liao,Done,Link,
+,2.08,人才發展,職涯教練,,,,,,,Link,GROW model,Link,Link,,Link,,,,Not started,Link,
+,2.09,業務顧問,Career PrepPal｜職涯諮詢教練的資料分析助手,,,PrepPal 職涯助手 是專為職涯諮詢教練設計的智慧資料分析工具。,,,,Link,,Link,Link,,Link,,,Jane Liao,Pause,Link,8/21
+,2.10,業務顧問,CareerInsight Coach｜職涯洞察教練,,,幫助教練快速形成諮詢藍圖，提升對話聚焦度，並確保 60 分鐘的諮詢環節產出最大化。,,,,Link,,Link,Link,,Link,,,Jane Liao,Pause,Link,8/21
+,2.11,業務顧問,顧問助理 ─ 痛點解析,,,"Input: User shares business context, team structure, challenges, and goals through guided Q&A.
+
+Process: Conducts structured, step-by-step needs discovery by asking one question at a time, confirming understanding, and probing deeper.
+
+Output: Clear, organized summary of user background, challenges, and needs, ready for strategic follow-up.",,,,Link,,Link,Link,2.11 → 2.12,Link,,,Peter Tu,Done,Link,7/9
+,2.12,業務顧問,顧問助理 ─ 公司未來願景描繪,,,"Input: Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.
+
+Process: Guided, structured conversation—one question at a time—to uncover long-term goals, value propositions, and operational realities.
+
+Output: Concise strategic discovery summary to support downstream process mapping or pain point validation.",,,,Link,,Link,Link,2.11 → 2.12,Link,,,Peter Tu,Done,Link,7/18
+,2.13,業務顧問,營運助理：流程探勘 (Virtual shadowing),,,,,,,Link,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,2.14,業務顧問,營運助理 ─ 流程探勘,,,"Input: A client’s description of an inefficient or unclear business process
+
+Process: Guide structured questioning to map end-to-end steps, identify suppliers and customers, and infer standard inputs/outputs
+
+Output: A clear, reviewable process map presented as a structured table for improvement planning",,,,Link,,Link,Link,2.15 → 2.15 → 2.16,Link,,,Peter Tu,Done,Link,7/10
+,2.15,業務顧問,營運助理 ─ 數位轉型評估,,,"Input: SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).
+
+Process: Diagnose automation suitability, assess ROI, classify tasks, and recommend appropriate technologies with concise rationale.
+
+Output: A structured evaluation table, transformation recommendations, and a handoff prompt for solution design.",,,,Link,,Link,Link,2.15 → 2.15 → 2.16,Link,,,Peter Tu,Done,Link,
+,2.16,業務顧問,營運經理 ─ 流程重構,,,"Input: Diagnosed process steps with automation readiness scores
+
+Process: Redesign each step into structured, automation-ready workflows with task breakdowns, system layer mapping, and tool suggestions
+
+Output: Builder-ready tables with sub-tasks, flow type, MVP stack, and a summary for digital transformation execution",,,,Link,,Link,Link,2.15 → 2.15 → 2.16,Link,,,Peter Tu,Done,Link,7/20
+,3.01,策略領導,策略規劃,,,幫忙策略規劃和設計解決方法,,,,Link,,Link,Link,,Link,,,Peter Tu,WIP,Link,
+,3.02,營運,專案管理發想 (Old),,,發想專案章程 One pager,,,,Link,"KPI
+利害關係人",Link,Link,,Link,,,Peter Tu,Out dated,Link,6/3
+,3.03,營運,專案章程發想 (New),,,"Input: A proposed project, initiative, or problem the user wants to validate before execution.
+
+Process: Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.
+
+Output: A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",,,,Link,,Link,Link,,Link,,,Peter Tu,Done,Link,6/23
+,3.04,營運,專案規劃助理,,,根據發想的專案列出一系列的執行項目,,,,Link,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,3.05,營運,利害關係人提問模擬,,,,,,,Link,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,3.06,營運,專案助理 ─ 整理會議筆記,專案助理 ─ 整理會議筆記,,"Input: Raw meeting notes, transcripts, or unstructured updates.
+
+Process: Reorganize scattered details into logical categories, inferring context while maintaining professional clarity.
+
+Output: A structured ""Weekly Project Update"" featuring Summary, Progress, Blockers, and What’s Next.",,,,Link,,Link,Link,,Link,,,Peter Tu,Done,Link,11/28
+,3.07,營運,專案追蹤助理,,,"Input: Bi-weekly meeting document with weekly summaries and sectioned updates.
+
+Process: Identify latest and previous weeks, compare changes, detect additions/updates/deletions, surface risks and remaining actions, then structure notes per team.
+
+Output: Concise Chinese meeting notes by team, each with Progress, Callouts/Risks, and Action Items, bullets under 20 characters.",,,,Link,,Link,Link,,Link,,,Peter Tu,Pause,Link,11/20
+,3.08,營運,整合資訊,,,,,,,,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,3.09,營運,判斷重複,,,,,,,,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,3.10,營運,自動更新,,,,,,,,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,4.01,培訓,處理影片回顧,處理影片回顧,,"Input: User-provided video file or the transcript.
+
+Process: Transcribe the video, remove filler words, and map the content to the reference outline (strictly ignoring reference text detail).
+
+Output: A reader-friendly document structured into Summary, Theme, Q&A, Tools, and Call to Action sections.",,,,Link,講座回顧範本,Link,Link,,Link,,,Peter Tu,Done,Link,11/27
+,5.01,AI 助理開發,指令工程助理 ─ 引導產品需求,,,,,,,,,Link,Link,5.01 → 5.02,Link,,,Peter Tu,Not started,Link,
+,5.02,AI 助理開發,指令工程助理 ─ 重構指令,指令工程助理 ─ 重構指令,,"Input: User provides a prompt to optimize.
+
+Process: Apply GUIDE and IPO, clarify only when needed, restructure into system/developer/user layers, and define goals, reasoning steps, and output format.
+
+Output: A clear, testable prompt package with explicit roles, instructions, and structure, plus variants or blueprints when useful.",,,,Link,N/A,Link,Link,5.01 → 5.02,Link,,,Peter Tu,Done,Link,12/8
+,7.01,人才發展,招募助理 ─ 對齊職務需求,,,"Input: Hiring manager provides rough notes or ideas about the role.
+
+Process: Assistant asks structured clarifying questions and guides the user through a JD-creation workflow.
+
+Output: A complete JD draft in YAML with versioning and an optional alignment summary.",,,,Link,,Link,Link,7.01 → 7.02 → 7.03 → 7.04 → 7.05,Link,,,Jane Liao,Done,Link,10/28
+,7.02,人才發展,招募助理 ─ 履歷篩選,,,"Input: JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size.
+
+Process: Decode JD → analyze resumes → score candidates using hard-skill gate, domain fit, weighted metrics, and risk indicators.
+
+Output: Ranked candidate evaluation with scores, risks, cultural fit notes, and a final HR decision summary.",,,,Link,,Link,Link,7.01 → 7.02 → 7.03 → 7.04 → 7.05,Link,,,Jane Liao,Done,Link,11/5
+,7.03,人才發展,招募助理 ─ 設計考題與計分卡,,,"Input: JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).
+
+Process: Convert role requirements into a competency model → assign competencies to interview rounds → generate structured question bank (behavioral, situational, technical, culture) → produce tailored risk-based questions → build weighted scorecard with behavioral indicators and scoring anchors.
+
+Output: A complete bilingual interview kit including competency model, question sets, risk questions, scoring rubrics, and a finalized scorecard ready for interviewers to use.",,,,Link,,Link,Link,7.01 → 7.02 → 7.03 → 7.04 → 7.05,Link,,,Jane Liao,Done,Link,11/27
+,7.04,人才發展,招募助理 ─ 面試評分校準與決策,,,"Input: Interview transcripts, interviewer scorecards, Assistant A’s question set and scoring standards, and hiring manager/HR inputs.
+
+Process: Extract behavioral evidence → compile independent feedback → detect discrepancies across interviewers → prepare pre-calibration summaries → support calibration discussions → document final hire/no-hire decisions with rationale and risk considerations.
+
+Output: A structured final evaluation package including evidence summaries, discrepancy analysis, calibration notes, final decision record, and candidate communication guidelines.",,,,Link,,Link,Link,7.01 → 7.02 → 7.03 → 7.04 → 7.05,Link,,,Jane Liao,Done,Link,11/27
+,7.05,人才發展,招募助理 ─ 候選人溝通,,,"Input: Candidate information, hiring stage, interview details (if applicable), and any specific instructions regarding tone or language preference.
+
+Process: Auto-detect communication scenario → classify risk level → check required information → generate a compliant formal email using structured templates and context-aware tone → provide optional refinements.
+
+Output: A polished, risk-compliant, formal business email (Chinese, English, or bilingual), fully personalized and ready to send.",,,,Link,,Link,Link,7.01 → 7.02 → 7.03 → 7.04 → 7.05,Link,,,Jane Liao,WIP,Link,11/23
+,7.06,培訓,課程助教 ─ 寫作及與 AI 互動的技巧,,,"Input: Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.
+
+Process: Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.
+
+Output: Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",,,,Link,"課程第一章
+課程第二章
+課程第三章
+課程第四章",Link,Link,,Link,,,Peter Tu,Done,Link,11/2
+,7.07,培訓,課程助教 ─ 打造寫作系統的底層邏輯,,,"Input: Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.
+
+Process: Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.
+
+Output: Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",,,,Link,"課程第五章
+課程第六章
+課程第七章",Link,Link,,Link,,,Peter Tu,Done,Link,11/2
+,7.08,培訓,課程助教 ─ 打造寫作助理實作,,,"Input: Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.
+
+Process: Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.
+
+Output: Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",,,,Link,"課程第八章
+課程第九章
+課程第十章
+課程第十一章",Link,Link,,Link,,,Peter Tu,Done,Link,11/2
+,7.09,培訓,課程助教 ─ 協助學員打造客製化助理,,,"Input: Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.
+
+Process: Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.
+
+Output: Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",,,,Link,"課程第六章
+課程第七章
+課程第八章
+課程第九章
+文章架構逆向工程指令
+內文風格逆向工程指令",Link,Link,,Link,,,Peter Tu,Done,Link,11/2
+,7.10,培訓,課程助教 ─ 學員評估,,,,,,,,,Link,Link,,Link,,,Peter Tu,Not started,Link,
+,7.11,培訓,課程助教 ─ 終極升遷指南第二章,,,"Input: User’s career-related question or unclear bottleneck tied to the course content.
+
+Process: Clarify the situation, map it to the course’s eight principles, and reason strictly from the provided transcript.
+
+Output: A validated interpretation, relevant principle alignment, and a concrete next action grounded in the course.",,,,Link,第二章課程內容,Link,Link,,Link,,,Peter Tu,Done,Link,1/15
+,7.12,培訓,課程助教 ─ 策略規劃助理,,,"Input: User’s career background, constraints, goals, preferences, and reflections provided through guided questions.
+
+Process: Structured, stage-based coaching—ask clarifying questions, synthesize answers, propose options, validate choices, and iteratively refine strategy.
+
+Output: A clear 3-year vision, 3–5 strategic pillars, RAG assessments with upgrade hypotheses, and one prioritized one-page project charter.",,,,Link,,Link,Link,,Link,,,Peter Tu,Done,Link,
+,8.01,業務顧問,業務助理 ─ 名片整理,,,"Input:
+User background information (professional role, services or expertise) and one or more business cards (image or text).
+
+Process:
+Extract and normalize only the information explicitly visible on each business card, handling incomplete or noisy inputs without fabrication.
+Capture uncertainty and missing fields for later enrichment, while keeping all non-visible attributes empty.
+
+Output:
+Structured lead records aligned with the master sheet schema, containing clean contact details, remarks on uncertainty, and placeholders for downstream enrichment and scoring.",,,,Link,,,,,,,,Jane Liao,WIP,Link,
+,8.02,業務顧問,業務助理 ─ 線索評分助理,,,"Input:
+A single lead record from the master sheet (identity, contact details, enrichment data, and optional sales context).
+
+Process:
+Evaluate ICP fit, buying intent, role relevance, and recency using conservative scoring rules with anti-inflation guardrails.
+Apply score caps, penalties, and flags to determine realistic priority.
+
+Output:
+A scored lead record with a priority tier, action recommendation, key reasons, and confidence level for first-touch outreach.",,,,Link,,,,,,,,Jane Liao,WIP,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,
+,,,,,,,,,,,,,,,,,,,,Link,

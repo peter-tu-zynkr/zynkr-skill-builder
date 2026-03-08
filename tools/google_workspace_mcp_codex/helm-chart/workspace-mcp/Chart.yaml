@@ -1,0 +1,19 @@
+apiVersion: v2
+name: workspace-mcp
+description: A Helm chart for Google Workspace MCP Server - Comprehensive Google Workspace integration for AI assistants
+type: application
+version: 0.1.0
+appVersion: "1.2.0"
+keywords:
+  - mcp
+  - google
+  - workspace
+  - ai
+  - llm
+  - claude
+home: https://workspacemcp.com
+sources:
+  - https://github.com/taylorwilsdon/google_workspace_mcp
+maintainers:
+  - name: Taylor Wilsdon
+    email: taylor@taylorwilsdon.com

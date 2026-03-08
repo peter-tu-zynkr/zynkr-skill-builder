@@ -8,7 +8,7 @@
 
 ## Pre-requisites (do once)
 
-- [ ] GitHub account with a repo for this project
+- [x] GitHub repo exists for this project
 - [ ] Zeabur account (zeabur.com)
 - [ ] GoDaddy access to zynkr.ai DNS settings
 
@@ -16,10 +16,10 @@
 
 ## Phase 1 — Push to GitHub
 
-- [ ] Init a git repo at `zynkr-skill-directory/` root (if not already)
-- [ ] Create a new **private** GitHub repo (e.g. `zynkr-skill-directory`)
-- [ ] Push all code to `main` branch
-- [ ] Confirm `front-end/`, `be/`, `db/`, `deploy/` folders all appear on GitHub
+- [x] Git repo initialized at `zynkr-skill-directory/` root
+- [x] GitHub remote configured
+- [ ] Push current code to `main`
+- [ ] Confirm `front-end/`, `back-end/`, `database/`, and `deploy/` appear on GitHub
 
 ---
 
@@ -62,7 +62,7 @@
 
 - [ ] In Zeabur service settings → **Environment Variables**
   - Add `NODE_ENV=production`
-  - (Future) add API keys, DB connection strings when BE/DB is ready
+  - (Future) add backend env vars when the backend service is deployed
 - [ ] Confirm no `.env` files are committed to GitHub
 
 ---
@@ -84,4 +84,4 @@
 
 ## Future: Adding BE Service
 
-When BE is ready, add a second Zeabur service in the same project pointing to `be/` — Zeabur handles multi-service projects natively in one deployment environment.
+When the backend needs to be deployed, add a second Zeabur service in the same project pointing to `back-end/`.

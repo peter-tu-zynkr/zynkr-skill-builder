@@ -1,0 +1,23 @@
+{
+  "name": "zynkr-skill-directory-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "check": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "fastify": "^5.2.1",
+    "googleapis": "^154.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.24",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

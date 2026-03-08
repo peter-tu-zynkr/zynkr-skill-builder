@@ -19,6 +19,7 @@ node_modules/
 
 # production
 /build
+back-end/dist/
 
 # misc
 .DS_Store
@@ -32,9 +33,22 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+!**/.env.example
 
-# vercel
-.vercel
+# python caches / local tooling
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# local tokens / debug artifacts
+.mcpregistry_github_token
+.mcpregistry_registry_token
+*.jsonl
+*.log
 
 # typescript
 *.tsbuildinfo

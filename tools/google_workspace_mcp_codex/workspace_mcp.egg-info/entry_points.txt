@@ -1,0 +1,2 @@
+[console_scripts]
+workspace-mcp = main:main

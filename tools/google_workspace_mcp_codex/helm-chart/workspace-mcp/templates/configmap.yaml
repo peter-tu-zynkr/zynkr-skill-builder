@@ -1,0 +1,12 @@
+{{- if .Values.env }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "workspace-mcp.fullname" . }}-config
+  labels:
+    {{- include "workspace-mcp.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.env }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}

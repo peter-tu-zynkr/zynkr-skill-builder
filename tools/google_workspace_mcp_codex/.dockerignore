@@ -1,0 +1,42 @@
+# Git and version control
+.git
+.gitignore
+gitdiff.txt
+
+# Documentation and notes
+*.md
+AUTHENTICATION_REFACTOR_PROPOSAL.md
+leverage_fastmcp_responses.md
+
+# Test files and coverage
+tests/
+htmlcov/
+.coverage
+pytest_out.txt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Development files
+mcp_server_debug.log
+.credentials/
+
+# Cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
