@@ -9,8 +9,8 @@
 
 ```
 zynkr-skill-directory/
-├── front-end/    Next.js 16 (App Router) + Tailwind — public catalog UI
-├── back-end/     Fastify + TypeScript API scaffold with a temporary CSV provider
+├── frontend/     Next.js 16 (App Router) + Tailwind — public catalog UI
+├── backend/      Fastify + TypeScript API scaffold with a temporary CSV provider
 ├── database/     Placeholder for future schema, migration, and sync work
 └── deploy/       Deployment docs and config
 ```
@@ -22,7 +22,7 @@ zynkr-skill-directory/
 | Layer | Stack | Status |
 |---|---|---|
 | Frontend | Next.js 16, Tailwind CSS | ✅ Active |
-| Data | Static TypeScript file (`front-end/lib/skills-data.ts`) | ✅ Active, temporary |
+| Data | Static TypeScript file (`frontend/lib/skills-data.ts`) | ✅ Active, temporary |
 | Backend | Fastify, TypeScript, Zod | 🟡 Scaffolded |
 | Database | Not started | 🔜 Later |
 | Hosting | Zeabur | 🔜 Deploy phase |
@@ -74,9 +74,9 @@ type Skill = {
 };
 ```
 
-Data currently lives in `front-end/lib/skills-data.ts`.
+Data currently lives in `frontend/lib/skills-data.ts`.
 
-Category and project structure live in `front-end/lib/taxonomy.ts`.
+Category and project structure live in `frontend/lib/taxonomy.ts`.
 
 The backend scaffold mirrors the same shape and should eventually read from repo-managed generated content instead of direct frontend imports.
 
@@ -95,7 +95,7 @@ The backend scaffold mirrors the same shape and should eventually read from repo
 ## Development
 
 ```bash
-cd front-end
+cd frontend
 npm install
 npm run dev       # http://localhost:3000
 npm run build     # production build check
@@ -104,7 +104,7 @@ npm run build     # production build check
 Backend scaffold:
 
 ```bash
-cd back-end
+cd backend
 npm install
 npm run dev       # http://localhost:4000
 npm run check     # typecheck
@@ -116,15 +116,15 @@ npm run check     # typecheck
 
 See `deploy/deploy-plan.md` for full action steps.
 
-**Summary:** Zeabur (set root directory to `front-end/`) → connect `zynkr.ai` via CNAME in GoDaddy DNS.
+**Summary:** Zeabur (set root directory to `frontend/`) → connect `zynkr.ai` via CNAME in GoDaddy DNS.
 
 ---
 
 ## Roadmap
 
 - [x] Project scaffold (Next.js + Tailwind)
-- [x] Skill data file (`front-end/lib/skills-data.ts`)
-- [x] Taxonomy file (`front-end/lib/taxonomy.ts`)
+- [x] Skill data file (`frontend/lib/skills-data.ts`)
+- [x] Taxonomy file (`frontend/lib/taxonomy.ts`)
 - [x] Home page `/`
 - [x] Category page `/[category]`
 - [x] Project page `/[category]/[project]`

@@ -2,7 +2,7 @@
 
 **Domain:** zynkr.ai (GoDaddy)
 **Platform:** Zeabur
-**App root:** `front-end/` (Next.js)
+**App root:** `frontend/` (Next.js)
 
 ---
 
@@ -19,7 +19,7 @@
 - [x] Git repo initialized at `zynkr-skill-directory/` root
 - [x] GitHub remote configured
 - [ ] Push current code to `main`
-- [ ] Confirm `front-end/`, `back-end/`, `database/`, and `deploy/` appear on GitHub
+- [ ] Confirm `frontend/`, `backend/`, `database/`, and `deploy/` appear on GitHub
 
 ---
 
@@ -27,7 +27,7 @@
 
 - [ ] Log in to Zeabur → Create a new **Project**
 - [ ] Add a new **Service** → choose "GitHub" → select the repo
-- [ ] In service settings, set **Root Directory** to `front-end`
+- [ ] In service settings, set **Root Directory** to `frontend`
 - [ ] Zeabur auto-detects Next.js and runs `npm run build`
 - [ ] Confirm the build passes and the app loads on the temporary `.zeabur.app` URL
 - [ ] Note down the Zeabur-assigned hostname (e.g. `zynkr-xxxx.zeabur.app`)
@@ -84,4 +84,4 @@
 
 ## Future: Adding BE Service
 
-When the backend needs to be deployed, add a second Zeabur service in the same project pointing to `back-end/`.
+When the backend needs to be deployed, add a second Zeabur service in the same project pointing to `backend/`.

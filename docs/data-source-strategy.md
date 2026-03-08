@@ -8,7 +8,7 @@ Use repo-managed structured content as the canonical inventory source.
 
 Do not keep the long-term source of truth in:
 
-- `front-end/lib/skills-data.ts`
+- `frontend/lib/skills-data.ts`
 - Google Sheets
 
 Both are acceptable temporary tools, but neither is the best primary model for a growing catalog that needs reviewability, schema discipline, and maintainable deploys.
@@ -117,7 +117,7 @@ Validation should fail the build on bad content.
 Keep the frontend build simple.
 
 - create `content/skills/`
-- move a few records out of `front-end/lib/skills-data.ts`
+- move a few records out of `frontend/lib/skills-data.ts`
 - add a parser and validator
 - generate `generated/skills.json`
 - switch the frontend to import `generated/skills.json` instead of `skills-data.ts`
