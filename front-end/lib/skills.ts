@@ -15,6 +15,7 @@ export type Skill = {
   status: SkillStatus;
   author: string;
   link?: string;
+  installCommand?: string; // curl command to install this skill into ~/.claude/skills/
   updatedAt?: string;
 };
 

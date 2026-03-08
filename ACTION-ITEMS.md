@@ -10,13 +10,17 @@ This is the canonical project task list as of March 8, 2026.
 - [x] Taxonomy lives in `front-end/lib/taxonomy.ts`
 - [x] Backend scaffold exists in `back-end/` with `GET /health`, `GET /skills`, `GET /skills/:id`, and `GET /categories`
 - [x] CSV fallback source exists via `assistant-index.csv`
+- [ ] Canonical inventory storage strategy is not decided yet
 - [ ] Frontend is still using static imports instead of the backend API
 - [ ] Google Sheets mode is scaffolded but not configured
 - [ ] Deployment to Zeabur is not yet verified in docs
 
 ## Frontend
 
-- [ ] Add real `link` URLs for each subagent in `front-end/lib/skills-data.ts`
+- [x] Replace platform-link model with install command model in `SetupGuide` component
+- [x] Add `installCommand?: string` field to `Skill` type in `front-end/lib/skills.ts`
+- [x] Rename "如何使用" section to "如何安裝" on skill detail page
+- [ ] Fill in `installCommand` values for all skills in `front-end/lib/skills-data.ts` — blocked on backend URL pattern being confirmed (see Backend section below)
 - [ ] Decide whether to keep or remove unused catalog-era files such as `front-end/app/catalog-client.tsx`, `front-end/components/CategoryFilter.tsx`, and `front-end/components/SearchBar.tsx`
 - [ ] Add global navigation or shared header/footer instead of repeating top-nav markup in route pages
 - [ ] Decide whether the browser tab icon should use the final brand asset instead of the temporary recreated SVG in `front-end/app/icon.svg`
@@ -28,13 +32,49 @@ This is the canonical project task list as of March 8, 2026.
 - [ ] Add a `docLink` field to the frontend/backend `Skill` model for Google Drive prompt docs
 - [ ] Confirm that all `project` slugs in `front-end/lib/skills-data.ts` map cleanly to `front-end/lib/taxonomy.ts`
 
+## Content Source Strategy
+
+- [ ] Adopt repo-managed structured content as the canonical inventory source instead of `front-end/lib/skills-data.ts`
+- [ ] Choose the on-disk format for inventory records: `JSON`, `YAML`, or `MD/MDX` with frontmatter
+- [ ] Define a canonical content folder layout, suggested: `content/skills/{id}.md` plus shared taxonomy metadata
+- [ ] Add schema validation for content records during build time using `zod` or JSON Schema
+- [ ] Add a normalization step that compiles repo content into a generated JSON artifact for frontend/backend consumption
+- [ ] Decide whether taxonomy should remain code-owned in `front-end/lib/taxonomy.ts` or move into structured content alongside skills
+- [ ] Decide who edits inventory content and whether the first version should stay Git-only or require a CMS/admin layer
+- [ ] Add contributor documentation for how to add or update one skill entry through a PR
+- [ ] Decide the long-term dataset solution after repo-managed content: headless CMS, internal admin + DB, or keep Git as the source of truth
+
+### Phase 1 Next Steps
+
+- [ ] Create `content/skills/` and choose the first 3-5 skills to migrate out of `front-end/lib/skills-data.ts`
+- [ ] Choose the initial file format for skill records, recommended: Markdown with frontmatter
+- [ ] Define the canonical schema for one skill record, including `installCommand` and `docLink`
+- [ ] Add a content loader script that reads the new skill files from disk
+- [ ] Add validation to the loader so bad content fails locally and in CI
+- [ ] Generate `generated/skills.json` from the migrated records
+- [ ] Switch the frontend from `front-end/lib/skills-data.ts` to `generated/skills.json`
+- [ ] Keep `front-end/lib/skills-data.ts` only as a temporary fallback until all records are migrated
+- [ ] Add a short contributor guide for creating one new skill file and validating it
+
 ## Backend
 
 - [x] `back-end/.env.example` exists for local setup
 - [ ] Confirm whether the final folder name should stay `back-end/` or be renamed to `backend/`
-- [ ] Decide the initial production data source: local CSV fallback or live Google Sheets
+- [ ] Replace the temporary CSV / Google Sheets source decision with the repo-content ingestion plan, unless operational needs require Sheets first
 - [ ] Verify backend normalization against the real source sheet once headers are finalized
 - [ ] Wire the frontend to the backend API after the backend data contract is stable
+
+### Install Command Distribution (new — unblocks Frontend fill-in above)
+
+> Context: The frontend now shows a `curl` install command for each skill. The backend needs to host the raw `.md` skill files so the command resolves.
+
+- [ ] **Confirm the URL pattern** for install commands — suggested: `https://zynkr.ai/s/{id}.md` (e.g. `https://zynkr.ai/s/1.01.md`)
+- [ ] **Add `installCommand?: string` to `back-end/src/types.ts`** — mirror the same optional field added on the frontend
+- [ ] **Add `GET /skills/:id/raw` route in `back-end/src/routes.ts`** — returns the raw `.md` file content as `text/plain` for curl downloads; returns 404 if skill has no prompt file yet
+- [ ] **Set up static `.md` file hosting** — create a `back-end/skills/` folder where each file is named `{id}.md` (e.g. `1.01.md`); the raw route reads from this folder
+- [ ] **Write the `.md` prompt files** for each skill — one file per skill ID; content is the full system prompt that installs into `~/.claude/skills/`
+- [ ] **Confirm install destination path** — the `curl` command currently outputs to `~/.claude/skills/{slug}.md`; confirm this matches Claude Code's expected skills directory
+- [ ] **Test end-to-end** — run `curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/writing-ideation.md` and verify the skill is usable in Claude Code
 
 ## Google Sheets Integration
 
