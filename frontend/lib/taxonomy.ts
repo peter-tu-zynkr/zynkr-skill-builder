@@ -97,6 +97,12 @@ export const projects: Project[] = [
     description: "從靈感發想到出版的完整文章寫作工作流",
   },
   {
+    slug: "writing-agent",
+    name: "Writing Agent",
+    categorySlug: "brand-marketing",
+    description: "從靈感到出版的七階段 AI 文章寫作 Agent 系統",
+  },
+  {
     slug: "brand-marketing-assistant",
     name: "品牌行銷助理",
     categorySlug: "brand-marketing",
@@ -209,8 +215,23 @@ export function getProjectsByCategory(categorySlug: string): Project[] {
   return projects.filter((p) => p.categorySlug === categorySlug);
 }
 
-export function getSubagentsByProject(projectSlug: string, skills: Skill[]): Skill[] {
+export function getSkillsByProject(projectSlug: string, skills: Skill[]): Skill[] {
   return skills.filter((s) => s.project === projectSlug);
+}
+
+export function getSubagentsByProject(projectSlug: string, skills: Skill[]): Skill[] {
+  const projectSkills = getSkillsByProject(projectSlug, skills);
+  const subagents = projectSkills.filter((s) => s.kind === "subagent");
+
+  if (subagents.length > 0) {
+    return subagents;
+  }
+
+  return projectSkills.filter((s) => s.kind !== "orchestrator");
+}
+
+export function getOrchestratorByProject(projectSlug: string, skills: Skill[]): Skill | undefined {
+  return getSkillsByProject(projectSlug, skills).find((s) => s.kind === "orchestrator");
 }
 
 export function getCategoryForSkill(skill: Skill): Category | undefined {

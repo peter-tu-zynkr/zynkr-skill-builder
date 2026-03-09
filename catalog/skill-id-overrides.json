@@ -1,0 +1,34 @@
+{
+  "https://github.com/peter-tu-zynkr/writing-agent": {
+    ".claude/agents/socratic-ideation-partner.md": {
+      "forcedId": "1.01",
+      "legacyIpoId": "1.01"
+    },
+    ".claude/agents/article-style-selector.md": {
+      "forcedId": "1.02",
+      "legacyIpoId": "1.02"
+    },
+    ".claude/agents/article-editor.md": {
+      "forcedId": "1.03",
+      "legacyIpoId": "1.03"
+    },
+    ".claude/agents/reader-perspective.md": {
+      "forcedId": "1.04",
+      "legacyIpoId": "1.04"
+    },
+    ".claude/agents/article-title-suggester.md": {
+      "forcedId": "1.05",
+      "legacyIpoId": "1.05"
+    },
+    ".claude/agents/cta-writer.md": {
+      "forcedId": "1.06",
+      "legacyIpoId": "1.06"
+    },
+    ".claude/agents/article-drafter.md": {
+      "forcedId": "1.10"
+    },
+    "CLAUDE.md": {
+      "forcedId": "1.11"
+    }
+  }
+}

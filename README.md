@@ -1,139 +1,347 @@
 # Zynkr Skill Directory
 
-**Live:** zynkr.ai
-**Purpose:** Browsable marketplace of Zynkr's 90+ AI assistants (GPTs, Claude skills, Gemini agents) for course students to discover, understand, and set up the right tool for their task.
+Browsable directory for Zynkr AI assistants, workflows, and Claude skills.
+
+Primary goals:
+- help users discover the right assistant by category and project
+- explain what each skill does in a scan-friendly format
+- provide installation/setup instructions, especially for Claude skills
+- keep GitHub repos as the source of truth while serving a stable web/app contract
+
+Current public target:
+- `https://zynkr.ai`
 
 ---
 
-## Project Structure
+## Current Architecture
 
+This repo is in the middle of a migration away from `assistant-index.csv`.
+
+The intended architecture is:
+
+```text
+GitHub skill repo(s)
+assistant-index.csv (legacy reference)
+        ↓
+scripts/ingest.ts
+        ↓
+content/skills/*.md
+generated/skills.json
+frontend/lib/generated-skills.json
+        ↓
+frontend build-time import
+backend read API
 ```
+
+Important boundary:
+- GitHub repos are the authoring/source layer
+- `scripts/ingest.ts` is the normalization and schema-transform boundary
+- `content/` and `generated/` are the app-facing artifacts
+- frontend/backend should consume artifacts, not raw GitHub repos at runtime
+
+Current migration state:
+- frontend already reads generated data
+- backend now defaults to reading `generated/skills.json`
+- CSV still exists only as a transitional fallback and historical reference
+- ingest now centrally resolves IPO field precedence and records field provenance
+
+---
+
+## Repository Structure
+
+```text
 zynkr-skill-directory/
-├── frontend/     Next.js 16 (App Router) + Tailwind — public catalog UI
-├── backend/      Fastify + TypeScript API scaffold with a temporary CSV provider
-├── database/     Placeholder for future schema, migration, and sync work
-└── deploy/       Deployment docs and config
+├── frontend/     Next.js 16 App Router UI
+├── backend/      Fastify read API over normalized/generated skill data
+├── catalog/      Stable ID overrides and catalog-specific mapping config
+├── content/      Canonical normalized markdown skill records
+├── generated/    Generated JSON artifacts for app and API consumption
+├── scripts/      Ingest pipeline and data tooling
+├── database/     Placeholder for future schema and migration work
+├── deploy/       Deployment docs and config
+└── assistant-index.csv   Legacy inventory source during migration
 ```
 
----
-
-## Tech Stack
-
-| Layer | Stack | Status |
-|---|---|---|
-| Frontend | Next.js 16, Tailwind CSS | ✅ Active |
-| Data | Static TypeScript file (`frontend/lib/skills-data.ts`) | ✅ Active, temporary |
-| Backend | Fastify, TypeScript, Zod | 🟡 Scaffolded |
-| Database | Not started | 🔜 Later |
-| Hosting | Zeabur | 🔜 Deploy phase |
-| Domain | zynkr.ai (GoDaddy) | 🔜 Deploy phase |
+What each area is for:
+- `frontend/`: public catalog UI
+- `backend/`: stable read contract if/when runtime API is needed
+- `catalog/`: explicit transform controls such as stable ID remaps
+- `content/skills/`: normalized markdown files keyed by skill ID
+- `generated/skills.json`: machine-friendly artifact for backend/tools
+- `frontend/lib/generated-skills.json`: frontend-local generated artifact for build-time import
+- `scripts/ingest.ts`: converts external repo content into normalized records using one canonical transform
 
 ---
 
-## Pages
+## Source Of Truth
 
-| Route | Description |
-|---|---|
-| `/` | Home page — category overview and brand hero |
-| `/[category]` | Category page listing projects within a domain |
-| `/[category]/[project]` | Project page listing subagents and workflow chain |
-| `/skills/[id]` | Subagent detail page with IPO breakdown, setup guide, and workflow context |
+There are now three layers, with different purposes:
+
+1. Authoring layer
+- GitHub skill repos such as `peter-tu-zynkr/writing-agent`
+- this is where prompt/runtime content should be maintained
+
+2. Normalized content layer
+- `content/skills/*.md`
+- one file per ingested skill ID
+- stores stable metadata used by the directory
+
+3. Delivery layer
+- `generated/skills.json`
+- `frontend/lib/generated-skills.json`
+- optimized for frontend/backend consumption
+
+The old CSV is no longer the target source of truth. It is useful for:
+- migration reference
+- coverage tracking
+- comparing legacy descriptions against normalized fields
+- anchoring legacy IPO for IDs that are intentionally mapped back to existing catalog entries
 
 ---
 
-## Components
+## Frontend
 
-| Component | Description |
-|---|---|
-| `SkillCard` | Catalog card for skill/subagent lists |
-| `IPOBreakdown` | 3-panel card: Input / Process / Output |
-| `WorkflowChain` | Horizontal chain linking synergy skills |
-| `SetupGuide` | Step-by-step guide with platform icon + launch button |
-| `StatusBadge` | Color-coded: Done / WIP / Pause / Not started / Out dated |
+Stack:
+- Next.js 16
+- App Router
+- Tailwind CSS
+
+Current frontend behavior:
+- imports generated data through `frontend/lib/skills-data.ts`
+- renders category -> project -> skill navigation
+- uses static generation for current routes
+
+Current public routes:
+- `/`
+  category overview and landing page
+- `/[category]`
+  project listing within a category
+- `/[category]/[project]`
+  project page with orchestrator/subagent context
+- `/skills/[id]`
+  skill detail page with setup guide, IPO, and workflow chain
+
+Important note:
+- frontend does not need to parse GitHub repos or CSV directly
+- it should keep consuming normalized/generated artifacts unless there is a strong reason to move to runtime API fetches
+
+---
+
+## Backend
+
+Stack:
+- Fastify
+- TypeScript
+- Zod
+
+Current backend role:
+- expose a normalized read API
+- preserve a stable `Skill` contract regardless of source changes underneath
+- default to `generated-json`
+- keep `csv` as fallback during migration
+
+Current routes:
+- `GET /health`
+- `GET /skills`
+- `GET /skills/:id`
+- `GET /categories`
+
+Current provider direction:
+- preferred: `generated/skills.json`
+- fallback: `assistant-index.csv`
+
+This means the backend is no longer conceptually “the CSV server.” It is the API layer over normalized artifacts.
 
 ---
 
 ## Data Model
 
+The working skill contract currently includes:
+
 ```ts
 type Skill = {
-  id: string;           // e.g. "1.01"
+  id: string;
   category: string;
-  project: string;      // project slug defined in taxonomy.ts
+  project?: string;
   name: string;
-  description: string;  // raw IPO text
+  description?: string;
   input?: string;
   process?: string;
   output?: string;
-  synergy: string[];    // e.g. ["1.01", "1.02", "1.03"]
+  kind?: "skill" | "orchestrator" | "subagent";
+  stage?: string;
+  synergy: string[];
   platform: "gpt" | "claude" | "gemini" | "multi";
   status: "Done" | "WIP" | "Not started" | "Pause" | "Out dated";
   author: string;
   link?: string;
+  installCommand?: string;
   updatedAt?: string;
+  sourceRepo?: string;
+  sourceFile?: string;
+  ipoProvenance?: {
+    input?: "csv" | "frontmatter" | "pipeline" | "derived";
+    process?: "csv" | "frontmatter" | "pipeline" | "derived";
+    output?: "csv" | "frontmatter" | "pipeline" | "derived";
+  };
+  legacyIpoId?: string | null;
 };
 ```
 
-Data currently lives in `frontend/lib/skills-data.ts`.
+Notes on interpretation:
+- `description` is optional and should not be treated as the only canonical skill summary
+- `input/process/output` are UI-facing normalized fields
+- `input/process/output` are resolved in ingest, not re-parsed in frontend/backend
+- `kind` and `stage` support project workflows such as orchestrator + subagent pipelines
+- `sourceRepo` and `sourceFile` preserve lineage back to authoring repos
+- `ipoProvenance` records which source actually supplied each IPO field
+- `legacyIpoId` marks whether a generated skill intentionally inherits IPO from a legacy CSV row
 
-Category and project structure live in `frontend/lib/taxonomy.ts`.
+Open modeling issue:
+- the original long-form spec from CSV/prompt docs does not map cleanly to UI IPO
+- longer term, the source repos should carry explicit catalog metadata instead of forcing the app to infer it from prompt prose
 
-The backend scaffold mirrors the same shape and should eventually read from repo-managed generated content instead of direct frontend imports.
+---
+
+## Ingest Pipeline
+
+The ingest script lives at:
+- `scripts/ingest.ts`
+
+What it currently does:
+- clones a source repo
+- finds valid markdown/frontmatter files
+- supports orchestrator + subagent repo layouts
+- assigns or preserves stable IDs
+- supports forced ID remaps through `catalog/skill-id-overrides.json`
+- resolves `input/process/output` through explicit precedence instead of ad hoc reuse of descriptions
+- records `ipoProvenance` and `legacyIpoId` on normalized records
+- writes normalized markdown into `content/skills/`
+- regenerates:
+  - `generated/skills.json`
+  - `frontend/lib/generated-skills.json`
+
+Why this matters:
+- app code stays simple
+- source repos can evolve independently
+- normalization rules stay in one place instead of leaking into frontend/backend
+- legacy CSV parity is enforced at the transform boundary instead of visually in the UI
+
+Current transform policy:
+- frontend/backend consume normalized IPO fields only
+- `description` stays a description; it is not silently treated as `process`
+- legacy CSV IPO is only inherited for skills that intentionally map to a legacy catalog ID
+- new skills can have stable catalog IDs without inheriting unrelated legacy CSV IPO
+
+Validation tooling:
+- `scripts/check-ipo-drift.ts` compares generated IPO against `assistant-index.csv`
+- run `cd scripts && npm run check-ipo` after ingesting when you need to verify legacy parity
 
 ---
 
 ## Design Decisions
 
-- **Taxonomy-first navigation:** browse by category → project → subagent
-- **IPO parsing:** `description` is split on `Input:` / `Process:` / `Output:` into structured sections
-- **Workflow chain:** `synergy` renders linked related subagents
-- **Setup guide:** Platform-specific usage instructions per subagent
-- **No auth for MVP:** public read-only catalog
+- Taxonomy-first navigation: browse by category -> project -> skill/subagent
+- Artifact-first runtime: frontend/backend consume generated artifacts, not raw repos
+- Ingest as normalization boundary: source repos may vary; app contract should not
+- Git-managed content first: use Git repos before adding CMS/database complexity
+- Public read-only MVP: no auth or admin surface yet
+- Backend optional for current UI: frontend can ship from generated artifacts without waiting for backend integration
+
+Transitional design note:
+- legacy CSV descriptions can still be parsed into `Input / Process / Output`
+- that parsing now happens in the ingest layer only; it should not be duplicated in frontend/backend
 
 ---
 
-## Development
+## Local Development
+
+Frontend:
 
 ```bash
 cd frontend
 npm install
-npm run dev       # http://localhost:3000
-npm run build     # production build check
+npm run dev
+npm run build
 ```
 
-Backend scaffold:
+Backend:
 
 ```bash
 cd backend
 npm install
-npm run dev       # http://localhost:4000
-npm run check     # typecheck
+npm run dev
+npm run check
+```
+
+Ingest a repo:
+
+```bash
+npx tsx scripts/ingest.ts <github-repo-url>
+```
+
+Examples:
+- `npx tsx scripts/ingest.ts https://github.com/peter-tu-zynkr/writing-agent`
+
+Check IPO drift against the legacy CSV:
+
+```bash
+cd scripts
+npm run check-ipo
 ```
 
 ---
 
 ## Deployment
 
-See `deploy/deploy-plan.md` for full action steps.
+Current intended deployment:
+- frontend on Zeabur
+- custom domain `zynkr.ai`
+- backend can remain separate or deferred until needed
 
-**Summary:** Zeabur (set root directory to `frontend/`) → connect `zynkr.ai` via CNAME in GoDaddy DNS.
+Current practical status:
+- frontend is the primary deployment target
+- raw file serving for Claude install URLs still needs to be wired
+
+Deployment details:
+- see `deploy/deploy-plan.md`
+
+---
+
+## Documentation Strategy
+
+Where architecture should be documented:
+- root `README.md`
+  system-level architecture, source-of-truth model, migration state, repo flow
+- `frontend/README.md`
+  frontend-specific runtime/build/deployment notes
+- `backend/README.md`
+  API/provider/config notes
+
+Use this root README as the primary architecture overview.
 
 ---
 
 ## Roadmap
 
-- [x] Project scaffold (Next.js + Tailwind)
-- [x] Skill data file (`frontend/lib/skills-data.ts`)
-- [x] Taxonomy file (`frontend/lib/taxonomy.ts`)
-- [x] Home page `/`
-- [x] Category page `/[category]`
-- [x] Project page `/[category]/[project]`
-- [x] Skill detail page `/skills/[id]`
-- [x] Backend scaffold with provider abstraction
-- [ ] Add real external links for all subagents
-- [ ] Add backend `.env.example`
-- [ ] Wire frontend to backend API
-- [ ] Implement repo-managed content ingestion
-- [ ] Consolidate shared layout / global nav
-- [ ] Deploy to Zeabur + connect zynkr.ai
-- [ ] Add database only if Git-managed content becomes insufficient
+Done:
+- project scaffold
+- taxonomy-driven frontend routes
+- skill detail pages with setup and workflow context
+- ingest pipeline for repo-managed content
+- frontend switched to generated artifacts
+- backend default provider switched to generated artifacts
+- ingest-layer IPO transform with provenance and stable ID overrides
+- IPO drift check against legacy CSV
+- Milestone 1 cleanup
+- shared site shell/header-footer for route pages
+
+Next:
+- implement raw markdown serving for install URLs
+- decide whether frontend should remain artifact-first or move to backend fetches
+- remove remaining hardcoded taxonomy/project assumptions where generated data should drive rendering
+- keep migrating source content from legacy CSV assumptions into explicit repo-managed metadata
+- deploy production on Zeabur
+
+Later:
+- add database/admin layer only if Git-managed content becomes insufficient

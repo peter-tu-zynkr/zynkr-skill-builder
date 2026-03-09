@@ -1,105 +1,194 @@
 # Action Items
 
-This is the canonical project task list as of March 8, 2026.
+Canonical task tracker for the Zynkr skill directory.
 
-## Current State Snapshot
+This file is organized into:
+- `Current Focus`: the immediate execution queue
+- `Remaining Plan`: a MECE forward plan by workstream
+- `Progress Log`: dated history in reverse chronological order
 
-- [x] Frontend scaffold exists in `frontend/`
-- [x] Home page, category pages, project pages, and skill detail pages are implemented
-- [x] Static data lives in `frontend/lib/skills-data.ts`
-- [x] Taxonomy lives in `frontend/lib/taxonomy.ts`
-- [x] Backend scaffold exists in `backend/` with `GET /health`, `GET /skills`, `GET /skills/:id`, and `GET /categories`
-- [x] CSV fallback source exists via `assistant-index.csv`
-- [x] Google Sheets is no longer part of the active project plan
-- [x] Canonical inventory direction is Git-managed structured content plus generated artifacts
-- [ ] Frontend is still using static imports instead of the backend API
-- [ ] Deployment to Zeabur is not yet verified in docs
+---
 
-## Frontend
+## Current Focus
 
-- [x] Replace platform-link model with install command model in `SetupGuide` component
-- [x] Add `installCommand?: string` field to `Skill` type in `frontend/lib/skills.ts`
-- [x] Rename "如何使用" section to "如何安裝" on skill detail page
-- [x] Redesign skill detail page to two-column layout with install command as hero and metadata sidebar
-- [x] Create `frontend/lib/platforms.ts` as single source of truth for platform labels and icons
-- [x] Fill in `installCommand` for writing-assistant skills (1.01–1.06) — `platform` updated to `claude`
-- [ ] Fill in `installCommand` for all remaining skills — blocked on backend URL pattern being confirmed (see Backend section below)
-- [ ] Decide whether to keep or remove unused catalog-era files such as `frontend/app/catalog-client.tsx`, `frontend/components/CategoryFilter.tsx`, and `frontend/components/SearchBar.tsx`
-- [ ] Add global navigation or shared header/footer instead of repeating top-nav markup in route pages
-- [ ] Decide whether the browser tab icon should use the final brand asset instead of the temporary recreated SVG in `frontend/app/icon.svg`
+### Now
 
-## Taxonomy And Data Model
+- [x] Implement raw markdown serving for Claude install URLs at `frontend/app/s/[id]/route.ts`
+- [x] Verify the install flow end-to-end with `curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/writing-agent.md` (local confirmed; production pending deploy)
+- [x] Replace remaining hardcoded project rendering with generated-data-driven rendering
+- [ ] Decide the next content ingestion batch after `writing-agent` core
+- [ ] Deploy the frontend to Zeabur once raw file serving is in place
 
-- [ ] Document the current 4-level structure clearly: Category → Project → Subagent, plus how "Skill" should be interpreted in product copy
-- [ ] Decide whether "Skill" should become an explicit first-class entity in the data model or remain equivalent to a project/workflow
-- [ ] Add a `docLink` field to the frontend/backend `Skill` model for Google Drive prompt docs
-- [ ] Confirm that all `project` slugs in `frontend/lib/skills-data.ts` map cleanly to `frontend/lib/taxonomy.ts`
+### Current Facts
 
-## Content Source Strategy
+- [x] Frontend reads generated artifacts through `frontend/lib/generated-skills.json`
+- [x] Backend now defaults to reading `generated/skills.json`
+- [x] `writing-agent` core (`1.01`–`1.08`) has been ingested
+- [x] Shared UI shell/header-footer is in place
+- [x] Cleanup of dead catalog-era frontend files is complete
 
-- [x] Adopt repo-managed structured content as the canonical inventory source instead of `frontend/lib/skills-data.ts`
-- [x] Choose the on-disk format for inventory records: Markdown with frontmatter
-- [x] Define a canonical content folder layout: `content/skills/{id}.md` plus `generated/skills.json`
-- [x] Schema validation using Zod is implemented in `scripts/ingest.ts`
-- [x] Normalization + generation step implemented in `scripts/ingest.ts` — outputs `generated/skills.json` and `frontend/lib/generated-skills.json`
-- [ ] Decide whether taxonomy should remain code-owned in `frontend/lib/taxonomy.ts` or move into structured content alongside skills
-- [ ] Decide who edits inventory content and whether the first version should stay Git-only or require a CMS/admin layer
-- [ ] Add contributor documentation for how to add or update one skill entry through a PR
-- [ ] Decide the long-term dataset solution after repo-managed content: headless CMS, internal admin + DB, or keep Git as the source of truth
+---
 
-### Phase 1 Next Steps
+## Remaining Plan
 
-- [x] Create `content/skills/` folder (exists, currently empty with `.gitkeep`)
-- [x] Choose the initial file format: Markdown with frontmatter
-- [x] Define the canonical schema — implemented in `scripts/ingest.ts` (includes `installCommand`, `project`, `synergy`, etc.; `docLink` not yet added)
-- [x] Add a content loader/ingest script: `scripts/ingest.ts` clones a GitHub repo and writes validated skill files
-- [x] Validation in loader: Zod schema guards bad frontmatter and fails with clear messages
-- [ ] Ingest actual skills into `content/skills/` — folder is empty, no skills migrated yet
-- [ ] Generate `generated/skills.json` — blocked on ingesting at least one skill
-- [ ] Switch the frontend from `frontend/lib/skills-data.ts` to `generated/skills.json` / `frontend/lib/generated-skills.json`
-- [ ] Keep `frontend/lib/skills-data.ts` only as a temporary fallback until all records are migrated
-- [ ] Add `docLink` field to the ingest schema and generated output
-- [ ] Add a short contributor guide for creating one new skill file and validating it
+### Workstream A — Delivery Surface
 
-## Backend
+Goal:
+make the public site and install URLs work as a coherent user-facing product
 
-- [x] `backend/.env.example` exists for local setup
-- [x] Fastify server bootstrap exists in `backend/src/server.ts`
-- [x] Read routes exist for `GET /health`, `GET /skills`, `GET /skills/:id`, and `GET /categories`
-- [x] Provider abstraction exists in `backend/src/provider.ts`
-- [x] CSV provider exists in `backend/src/providers/csv-provider.ts`
-- [x] Filter logic exists in `backend/src/lib/filters.ts`
-- [x] Folder is confirmed as `backend/` (not `back-end/`)
-- [ ] Decide whether the backend is needed in the next milestone, or whether the frontend should stay build-time only while the repo-content system is introduced
-- [ ] If the backend stays in scope, replace the temporary CSV source with repo-content ingestion
-- [ ] If the backend stays in scope, extend the backend `Skill` contract to include frontend-needed fields such as `project`, `installCommand`, and `docLink`
-- [ ] If the backend stays in scope, point the backend at the generated content artifact instead of duplicating normalization logic in multiple places
-- [ ] If the backend stays in scope, wire the frontend to the backend API after the content contract is stable
+### A1. Raw file delivery
 
-### Install Command Distribution (new — unblocks Frontend fill-in above)
+- [x] Add `frontend/app/s/[id]/route.ts` to serve `content/skills/{id}.md` as `text/plain`
+- [x] Return 404 for unknown skill IDs
+- [x] Confirm route shape matches generated `installCommand`
+- [x] Test local route behavior against at least `1.01` — confirmed serving raw markdown and 404 on unknown IDs
 
-> Context: The frontend now shows a `curl` install command for each skill. The backend needs to host the raw `.md` skill files so the command resolves.
+### A2. Production deployment
 
-- [x] **Confirm the URL pattern** for install commands — confirmed as `curl -sL zynkr.ai/s/{id}.md -o ~/.claude/skills/{slug}.md`; built into `scripts/ingest.ts` automatically
-- [ ] **Add `installCommand?: string` to `backend/src/types.ts`** — mirror the same optional field added on the frontend if the backend remains in scope
-- [ ] **Add `GET /skills/:id/raw` route in `backend/src/routes.ts`** — returns the raw `.md` file content as `text/plain` for curl downloads; returns 404 if skill has no prompt file yet
-- [ ] **Set up static `.md` file hosting** — `content/skills/` will serve this purpose; route should read from there (or a symlink/copy)
-- [ ] **Write the `.md` prompt files** for each skill — one file per skill ID; content is the full system prompt that installs into `~/.claude/skills/`
-- [ ] **Confirm install destination path** — the `curl` command currently outputs to `~/.claude/skills/{slug}.md`; confirm this matches Claude Code's expected skills directory
-- [ ] **Test end-to-end** — run `curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/writing-ideation.md` and verify the skill is usable in Claude Code
+- [ ] Push the current repo state to `main`
+- [ ] Create/connect the Zeabur project
+- [ ] Set frontend service root to `frontend/`
+- [ ] Set required Zeabur environment variables
+- [ ] Point `zynkr.ai` DNS to Zeabur
+- [ ] Verify SSL and production routing
+- [ ] Re-test install URL behavior on production
 
-## Deploy To Zeabur
+---
 
-- [ ] Push repo changes to `main`
-- [ ] Create the Zeabur project and connect the GitHub repo
-- [ ] Set the frontend service root directory to `frontend`
-- [ ] Confirm the frontend build passes and the `.zeabur.app` URL loads
-- [ ] Add `NODE_ENV=production` in Zeabur environment variables
-- [ ] Add custom domain `zynkr.ai` and copy the Zeabur CNAME target
-- [ ] Update GoDaddy DNS to point to Zeabur
-- [ ] Verify SSL and production routing for `https://zynkr.ai`
+### Workstream B — Application Data Model And Rendering
 
-## Later
+Goal:
+make the app consume normalized/generated data consistently, without hardcoded project assumptions
 
-- [ ] Add a second Zeabur service pointing to `backend/` when backend deployment is actually needed
-- [ ] Add database schema and migration work under `database/` once Git-managed content plus generated artifacts are no longer enough
+### B1. Remove hardcoded taxonomy rendering
+
+- [x] Derive project listing pages from generated skills instead of `projects[]` in `taxonomy.ts`
+- [x] Derive `[category]/[project]` static params from generated skills
+- [ ] Remove helpers that depend on hardcoded project objects if they are no longer needed (deferred to B2)
+- [x] Keep only category-level presentation metadata in `taxonomy.ts` if still useful
+- [x] Verify all current routes still build and resolve
+
+### B2. Close the metadata gap between source repos and UI
+
+- [ ] Add explicit project display metadata such as `projectName` and `projectDescription`
+- [ ] Decide whether `useWhen` and/or `sourceDescription` should be first-class fields
+- [ ] Stop overloading long prompt prose as web-app `process` text
+- [ ] Update ingest output so UI-facing fields are normalized intentionally rather than inferred ad hoc
+
+### B3. Backend/API alignment
+
+- [ ] Decide whether the frontend should remain build-time artifact-first or move to backend fetches
+- [ ] If backend remains in scope, extend backend filters to support `project`, `kind`, and `stage`
+- [ ] Keep the backend contract aligned with generated artifact fields
+
+---
+
+### Workstream C — Content Supply
+
+Goal:
+finish migrating from legacy CSV assumptions to repo-managed content
+
+### C1. Clean source repos
+
+- [ ] Define the preferred source repo shape for skill projects
+- [ ] Decide whether source repos should carry explicit catalog metadata separate from prompt/runtime text
+- [ ] Apply that source-repo standard to `writing-agent` before scaling it elsewhere
+
+### C2. Ingest remaining projects
+
+- [ ] Choose the next repo/group to ingest after `writing-agent` core
+- [ ] Ingest one project group at a time via `scripts/ingest.ts`
+- [ ] Validate `content/skills/` output and generated artifacts after each ingest
+- [ ] Keep progress visible by project group, not by scattered individual patches
+
+### C3. Remaining ingestion tracker
+
+- [x] `1.01–1.08` — writing-agent core
+- [ ] `0.01` — search-index
+- [ ] `1.09–1.14` — writing-agent extensions
+- [ ] `2.01–2.05` — resume
+- [ ] `2.06–2.07` — interview
+- [ ] `2.08` — career-coach
+- [ ] `2.09–2.10` — career-consulting
+- [ ] `2.11–2.12` — consulting-assistant
+- [ ] `2.13–2.16` — operations-assistant
+- [ ] `3.01` — strategy-planning
+- [ ] `3.02–3.05` — project-management
+- [ ] `3.06–3.10` — project-assistant
+- [ ] `4.01` — video-review
+- [ ] `5.01–5.02` — prompt-engineering
+- [ ] `7.01–7.05` — recruitment
+- [ ] `7.06–7.12` — course-ta
+- [ ] `8.01–8.02` — sales-assistant
+
+---
+
+### Workstream D — Longer-Term Platform Decisions
+
+Goal:
+capture important but non-blocking architectural decisions without mixing them into the execution queue
+
+- [ ] Decide where taxonomy metadata should live long term: code-owned or content-owned
+- [ ] Decide how skill content should be edited: Git-only, structured content workflow, or CMS/admin
+- [ ] Add `docLink` if prompt/reference docs should be first-class in the directory
+- [ ] Decide whether backend deployment is needed beyond the current frontend-first MVP
+- [ ] Decide when a database becomes justified instead of Git-managed artifacts
+- [ ] Replace temporary visual assets such as the current browser tab icon when final brand assets exist
+
+---
+
+## Progress Log
+
+### March 9, 2026 (session 2)
+
+**Done:**
+- [x] `frontend/app/s/[id]/route.ts` created — serves `content/skills/{id}` as `text/plain`, returns 404 for unknown IDs
+- [x] `generateStaticParams` for `[category]/[project]` now derived from generated skills (not hardcoded `projects[]`)
+- [x] Category page now filters projects to only those with ingested skills
+- [x] Build verified clean — 22 pages, `/s/[id]` dynamic route confirmed present
+
+**Carryover:**
+- [ ] Local install flow smoke test (`curl -sL localhost:3000/s/1.01.md`)
+- [ ] Zeabur deployment still not done
+- [ ] Decide next content ingestion batch
+
+---
+
+### March 9, 2026
+
+**Done:**
+- [x] Ingest pipeline now supports orchestrator + subagent repo structures such as `CLAUDE.md`, `.claude/skills/.../SKILL.md`, and `.claude/agents/*.md`
+- [x] Ingest now preserves IDs by `sourceRepo` + `sourceFile`
+- [x] Writing Agent core batch ingested from `github.com/peter-tu-zynkr/writing-agent` — `1.01` orchestrator plus `1.02`–`1.08` subagents
+- [x] `content/skills/1.01.md` through `content/skills/1.08.md` now exist
+- [x] `generated/skills.json` and `frontend/lib/generated-skills.json` now contain 8 records for the Writing Agent project
+- [x] Shared site shell added for breadcrumb header + footer across home, category, project, and skill pages
+- [x] Dead catalog-era files removed: `frontend/app/catalog-client.tsx`, `frontend/components/CategoryFilter.tsx`, `frontend/components/SearchBar.tsx`
+- [x] Backend default provider switched from CSV to generated JSON artifacts
+- [x] Root architecture docs updated to reflect the artifact-first migration design
+
+**Carryover:**
+- [ ] Raw markdown serving route is still not implemented
+- [ ] Zeabur deployment is still not done
+- [ ] Hardcoded project rendering still exists in taxonomy-driven pages
+
+### March 8, 2026
+
+**Done:**
+- [x] Frontend scaffold in `frontend/` with home, category, project, and skill detail pages
+- [x] Static data in `frontend/lib/skills-data.ts` and taxonomy in `frontend/lib/taxonomy.ts`
+- [x] Backend scaffold in `backend/` with `GET /health`, `GET /skills`, `GET /skills/:id`, `GET /categories`
+- [x] `content/skills/` folder created
+- [x] `generated/` folder created
+- [x] Ingest schema defined in Zod (`scripts/ingest.ts`)
+- [x] Ingest pipeline implemented — clones a repo, validates frontmatter, writes `content/skills/{id}.md`, regenerates `generated/skills.json` and `frontend/lib/generated-skills.json`
+- [x] `installCommand` auto-generated by ingest as `curl -sL zynkr.ai/s/{id}.md -o ~/.claude/skills/{slug}.md`
+- [x] Backend `Skill` schema expanded with `project`, `kind`, `stage`, `installCommand`, `sourceRepo`, and `sourceFile`
+- [x] `description` field made optional in `Skill` type; `filterSkills` updated accordingly
+- [x] `skills-data.ts` switched to generated JSON input
+- [x] `writing-agent` project added to taxonomy under `brand-marketing`
+- [x] First generated route build verified for `/skills/1.01` and `/brand-marketing/writing-agent`
+
+**Carryover:**
+- [ ] Raw markdown serving was not yet implemented
+- [ ] Deployment was not yet done

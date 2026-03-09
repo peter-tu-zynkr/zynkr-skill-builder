@@ -1,22 +1,29 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SiteShell } from "@/components/SiteShell";
 import {
-  categories,
-  projects as allProjects,
   getCategoryBySlug,
+  getOrchestratorByProject,
   getProjectBySlug,
   getSubagentsByProject,
+  getSkillsByProject,
 } from "@/lib/taxonomy";
 import { skills } from "@/lib/skills-data";
 import { platformIcon, platformLabelShort } from "@/lib/platforms";
 import StatusBadge from "@/components/StatusBadge";
 import WorkflowChain from "@/components/WorkflowChain";
+import SetupGuide from "@/components/SetupGuide";
 
 export function generateStaticParams() {
-  return allProjects.map((p) => ({
-    category: p.categorySlug,
-    project: p.slug,
-  }));
+  const seen = new Set<string>();
+  return skills
+    .filter((s) => {
+      const key = `${s.category}/${s.project}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((s) => ({ category: s.category, project: s.project }));
 }
 
 export default async function ProjectPage({
@@ -30,29 +37,21 @@ export default async function ProjectPage({
   const project = getProjectBySlug(projectSlug);
   if (!cat || !project || project.categorySlug !== categorySlug) notFound();
 
+  const projectSkills = getSkillsByProject(projectSlug, skills);
+  const orchestrator = getOrchestratorByProject(projectSlug, skills);
   const subagents = getSubagentsByProject(projectSlug, skills);
   const doneCount = subagents.filter((s) => s.status === "Done").length;
 
-  // Workflow chain — use synergy from first subagent that has one
-  const chainSource = subagents.find((s) => s.synergy.length > 1);
+  const chainSource =
+    orchestrator?.synergy.length ? orchestrator : subagents.find((s) => s.synergy.length > 1);
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      {/* Top nav */}
-      <div className="bg-white border-b border-zinc-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-2 text-sm text-zinc-500 flex-wrap">
-          <Link href="/" className="hover:text-zinc-900 transition-colors">
-            ⚡ Zynkr
-          </Link>
-          <span>/</span>
-          <Link href={`/${categorySlug}`} className="hover:text-zinc-900 transition-colors">
-            {cat.name}
-          </Link>
-          <span>/</span>
-          <span className="text-zinc-900 font-medium">{project.name}</span>
-        </div>
-      </div>
-
+    <SiteShell
+      breadcrumbs={[
+        { label: cat.name, href: `/${categorySlug}` },
+        { label: project.name },
+      ]}
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
 
         {/* Project header */}
@@ -63,11 +62,32 @@ export default async function ProjectPage({
             </span>
             <span className="text-xs text-zinc-400">
               {subagents.length} subagents · {doneCount} 已完成
+              {orchestrator ? ` · ${projectSkills.length} total records` : ""}
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">{project.name}</h1>
           <p className="text-zinc-500">{project.description}</p>
         </div>
+
+        {orchestrator && (
+          <section className="space-y-3">
+            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              安裝 Orchestrator
+            </h2>
+            <div className="rounded-2xl border border-zinc-200 bg-white p-6">
+              <div className="mb-4 space-y-1">
+                <p className="text-sm font-semibold text-zinc-900">{orchestrator.name}</p>
+                {orchestrator.output && (
+                  <p className="text-sm text-zinc-500">{orchestrator.output}</p>
+                )}
+              </div>
+              <SetupGuide
+                platform={orchestrator.platform}
+                installCommand={orchestrator.installCommand}
+              />
+            </div>
+          </section>
+        )}
 
         {/* Workflow chain */}
         {chainSource && (
@@ -108,6 +128,12 @@ export default async function ProjectPage({
                   {s.name}
                 </h3>
 
+                {s.stage && (
+                  <p className="text-xs text-zinc-400">
+                    Stage {s.stage}
+                  </p>
+                )}
+
                 {/* Output snippet */}
                 {s.output && (
                   <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">
@@ -137,6 +163,6 @@ export default async function ProjectPage({
           ← 回到 {cat.name}
         </Link>
       </div>
-    </div>
+    </SiteShell>
   );
 }

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SiteShell } from "@/components/SiteShell";
 import { skills } from "@/lib/skills-data";
 import { getCategoryBySlug, getProjectBySlug } from "@/lib/taxonomy";
 import { platformLabel, platformIcon } from "@/lib/platforms";
@@ -35,30 +36,17 @@ export default async function SkillDetailPage({
   const cat = project ? getCategoryBySlug(project.categorySlug) : undefined;
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-zinc-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-2 text-sm text-zinc-500 flex-wrap">
-          <Link href="/" className="hover:text-zinc-900 transition-colors">
-            ⚡ Zynkr
-          </Link>
-          {cat && project && (
-            <>
-              <span>/</span>
-              <Link href={`/${cat.slug}`} className="hover:text-zinc-900 transition-colors">
-                {cat.name}
-              </Link>
-              <span>/</span>
-              <Link href={`/${cat.slug}/${project.slug}`} className="hover:text-zinc-900 transition-colors">
-                {project.name}
-              </Link>
-            </>
-          )}
-          <span>/</span>
-          <span className="text-zinc-900 font-medium truncate">{skill.name}</span>
-        </div>
-      </div>
-
+    <SiteShell
+      breadcrumbs={[
+        ...(cat && project
+          ? [
+              { label: cat.name, href: `/${cat.slug}` },
+              { label: project.name, href: `/${cat.slug}/${project.slug}` },
+            ]
+          : []),
+        { label: skill.name },
+      ]}
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Title block */}
@@ -159,6 +147,6 @@ export default async function SkillDetailPage({
 
         </div>
       </div>
-    </div>
+    </SiteShell>
   );
 }

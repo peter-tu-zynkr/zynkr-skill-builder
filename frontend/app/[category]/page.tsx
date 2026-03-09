@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SiteShell } from "@/components/SiteShell";
 import {
   categories,
   getCategoryBySlug,
@@ -21,21 +22,16 @@ export default async function CategoryPage({
   const cat = getCategoryBySlug(categorySlug);
   if (!cat) notFound();
 
-  const projects = getProjectsByCategory(categorySlug);
+  // Only show projects that have at least one ingested skill
+  const projectsWithSkills = new Set(
+    skills.filter((s) => s.category === categorySlug).map((s) => s.project)
+  );
+  const projects = getProjectsByCategory(categorySlug).filter((p) =>
+    projectsWithSkills.has(p.slug)
+  );
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      {/* Top nav */}
-      <div className="bg-white border-b border-zinc-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-2 text-sm text-zinc-500">
-          <Link href="/" className="hover:text-zinc-900 transition-colors">
-            ⚡ Zynkr
-          </Link>
-          <span>/</span>
-          <span className="text-zinc-900 font-medium">{cat.name}</span>
-        </div>
-      </div>
-
+    <SiteShell breadcrumbs={[{ label: cat.name }]}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         {/* Category header */}
         <div className="flex items-center gap-4">
@@ -97,6 +93,6 @@ export default async function CategoryPage({
           ← 回到所有領域
         </Link>
       </div>
-    </div>
+    </SiteShell>
   );
 }

@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ingest": "tsx ingest.ts"
+    "ingest": "tsx ingest.ts",
+    "check-ipo": "tsx check-ipo-drift.ts"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

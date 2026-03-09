@@ -1,15 +1,18 @@
 export type SkillStatus = "Done" | "WIP" | "Not started" | "Pause" | "Out dated";
 export type SkillPlatform = "gpt" | "claude" | "gemini" | "multi";
+export type SkillKind = "skill" | "orchestrator" | "subagent";
 
 export type Skill = {
   id: string;
   category: string;
   project: string;        // project slug — maps to taxonomy.ts
   name: string;
-  description: string;
+  description?: string;
   input?: string;
   process?: string;
   output?: string;
+  kind?: SkillKind;
+  stage?: string;
   synergy: string[];
   platform: SkillPlatform;
   status: SkillStatus;
@@ -17,6 +20,8 @@ export type Skill = {
   link?: string;
   installCommand?: string; // curl command to install this skill into ~/.claude/skills/
   updatedAt?: string;
+  sourceRepo?: string;
+  sourceFile?: string;
 };
 
 export function parseIPO(description: string): {
@@ -55,7 +60,7 @@ export function filterSkills(
       const q = query.toLowerCase();
       if (
         !s.name.toLowerCase().includes(q) &&
-        !s.description.toLowerCase().includes(q) &&
+        !s.description?.toLowerCase().includes(q) &&
         !s.id.toLowerCase().includes(q)
       )
         return false;

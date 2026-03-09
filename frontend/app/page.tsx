@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteShell } from "@/components/SiteShell";
 import { categories, getProjectsByCategory } from "@/lib/taxonomy";
 import { skills } from "@/lib/skills-data";
 
@@ -7,7 +8,7 @@ export default function HomePage() {
   const totalDone = skills.filter((s) => s.status === "Done").length;
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <SiteShell>
       {/* Hero */}
       <div className="bg-white border-b border-zinc-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
@@ -83,6 +84,6 @@ export default function HomePage() {
           })}
         </div>
       </div>
-    </div>
+    </SiteShell>
   );
 }
