@@ -1,0 +1,46 @@
+name: Ingest skills from monorepo
+
+on:
+  repository_dispatch:
+    types: [skills-updated]
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: "GitHub repo URL to ingest"
+        default: "https://github.com/peter-tu-zynkr/zynkr-skills"
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout skill directory
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Run ingest
+        run: |
+          REPO_URL="${{ github.event.inputs.repo_url || 'https://github.com/peter-tu-zynkr/zynkr-skills' }}"
+          npx tsx scripts/ingest.ts "$REPO_URL"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/ generated/ frontend/lib/generated-skills.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-ingest skills from zynkr-skills
+
+          Triggered by: ${{ github.event.client_payload.repo || 'manual' }}
+          SHA: ${{ github.event.client_payload.sha || 'N/A' }}"
+            git push
+          fi
