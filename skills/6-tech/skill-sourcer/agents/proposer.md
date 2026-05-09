@@ -39,6 +39,7 @@ Find the first empty row and write:
 | J (Keep) | `?` |
 | K (GitHub Issue) | Empty (filled later during sync) |
 | L (Notes) | `Auto-proposed by skill-sourcer` |
+| M (Upstream Repo) | `upstream_repo` from extractor (e.g., `vercel-labs/agent-browser`); leave empty if internal |
 
 ### 2. Confirm to the user
 

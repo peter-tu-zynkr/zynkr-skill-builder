@@ -30,8 +30,14 @@ input: (what the user provides)
 output: (what the skill produces)
 who_it_helps: (role or context — e.g., "sales reps", "content creators")
 source_url: (where this came from)
+upstream_repo: (if the source is a GitHub URL, extract as "owner/repo" — e.g., "vercel-labs/agent-browser"; omit for non-GitHub sources)
 raw_notes: (anything interesting that doesn't fit above)
 ```
+
+**`upstream_repo` extraction rules:**
+- Only populate for `github.com` URLs
+- Strip protocol, domain, and any path beyond the second segment: `github.com/vercel-labs/agent-browser/blob/main/...` → `vercel-labs/agent-browser`
+- Leave blank (do not set to `unknown`) for Threads posts, articles, pasted text, or any non-GitHub source
 
 ## Output format
 
