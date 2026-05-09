@@ -7,7 +7,7 @@ on:
     inputs:
       repo_url:
         description: "GitHub repo URL to ingest"
-        default: "https://github.com/peter-tu-zynkr/zynkr-skills"
+        default: "https://github.com/peter-tu-zynkr/zynkr-skills-staging"
 
 jobs:
   ingest:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Run ingest
         run: |
-          REPO_URL="${{ github.event.inputs.repo_url || 'https://github.com/peter-tu-zynkr/zynkr-skills' }}"
+          REPO_URL="${{ github.event.inputs.repo_url || 'https://github.com/peter-tu-zynkr/zynkr-skills-staging' }}"
           npx tsx scripts/ingest.ts "$REPO_URL"
 
       - name: Commit and push if changed
@@ -38,7 +38,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: auto-ingest skills from zynkr-skills
+            git commit -m "chore: auto-ingest skills from zynkr-skills-staging
 
           Triggered by: ${{ github.event.client_payload.repo || 'manual' }}
           SHA: ${{ github.event.client_payload.sha || 'N/A' }}"
