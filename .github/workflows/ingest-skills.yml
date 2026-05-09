@@ -27,7 +27,8 @@ jobs:
 
       - name: Configure git credentials
         run: |
-          git config --global url."https://${{ secrets.SKILL_DIRECTORY_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global credential.helper store
+          echo "https://x-access-token:${{ secrets.SKILL_DIRECTORY_PAT }}@github.com" > ~/.git-credentials
 
       - name: Run ingest
         run: |
