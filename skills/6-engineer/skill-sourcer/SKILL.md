@@ -1,7 +1,7 @@
 ---
 name: skill-sourcer
 description: "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review."
-category: tech
+category: engineer
 project: skill-sourcer
 platform: claude
 status: WIP
