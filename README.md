@@ -25,29 +25,59 @@ Primary goals:
 - provide installation/setup instructions, especially for Claude skills
 - keep GitHub repos as the source of truth while serving a stable web/app contract
 
-Current public target:
+Current public targets:
 - `https://zynkr.ai`
+- `https://zynkr.ai/ai-skills-marketplace`
+
+---
+
+## Pipeline Role
+
+This repo is the staging, review, and artifact-generation layer in the Zynkr skill pipeline:
+
+```text
+product-ideas -> zynkr-skill-directory -> zynkr-skills -> zynkr-website -> zynkr.ai
+```
+
+Role boundaries:
+- `product-ideas`: raw ideas, backlog, and candidate intake
+- `zynkr-skill-directory`: review gate, validation, normalization, duplicate checks, and generated marketplace artifacts
+- `zynkr-skills`: approved published skills and canonical source of truth
+- `zynkr-website`: static presentation layer that renders copied JSON artifacts
+
+Important rule:
+- do not treat `zynkr-skill-directory` as the final published source
+- approval happens here, but publish happens when approved changes land in `zynkr-skills`
 
 ---
 
 ## Current Architecture
 
 This repo is in the middle of a migration away from `assistant-index.csv`.
+It should be treated as the operational catalog layer, not the final published source.
 
 The intended architecture is:
 
 ```text
-GitHub skill repo(s)
+zynkr-skills (canonical published source)
+legacy/migration repos
 assistant-index.csv (legacy reference)
         ↓
 scripts/ingest.ts
         ↓
 content/skills/*.md
 generated/skills.json
+        ↓
+scripts/build-marketplace.ts
+        ↓
+generated/skills-index.json
+generated/skills-detail.json
 frontend/lib/generated-skills.json
+../zynkr-website-fe/data/*.json
         ↓
 frontend build-time import
 backend read API
+static website marketplace
 ```
 
 Important boundary:
@@ -85,8 +115,11 @@ What each area is for:
 - `catalog/`: explicit transform controls such as stable ID remaps
 - `content/skills/`: normalized markdown files keyed by skill ID
 - `generated/skills.json`: machine-friendly artifact for backend/tools
+- `generated/skills-index.json`: public marketplace browse/search contract
+- `generated/skills-detail.json`: public marketplace detail contract
 - `frontend/lib/generated-skills.json`: frontend-local generated artifact for build-time import
 - `scripts/ingest.ts`: converts external repo content into normalized records using one canonical transform
+- `scripts/build-marketplace.ts`: emits public marketplace artifacts and syncs them to `zynkr-website-fe/data/`
 
 ---
 
@@ -105,6 +138,8 @@ There are now three layers, with different purposes:
 
 3. Delivery layer
 - `generated/skills.json`
+- `generated/skills-index.json`
+- `generated/skills-detail.json`
 - `frontend/lib/generated-skills.json`
 - optimized for frontend/backend consumption
 
@@ -133,6 +168,11 @@ Current frontend behavior:
 - imports generated data through `frontend/lib/skills-data.ts`
 - renders category -> project -> skill navigation
 - uses static generation for current routes
+
+Static website marketplace behavior:
+- `zynkr-website-fe/ai-skills-marketplace.html` loads copied JSON from `zynkr-website-fe/data/`
+- no runtime GitHub crawling
+- filter/search behavior is client-side only
 
 Current public routes:
 - `/`
@@ -243,6 +283,9 @@ What it currently does:
 - regenerates:
   - `generated/skills.json`
   - `frontend/lib/generated-skills.json`
+  - `generated/skills-index.json`
+  - `generated/skills-detail.json`
+  - `../zynkr-website-fe/data/*.json`
 
 Why this matters:
 - app code stays simple
