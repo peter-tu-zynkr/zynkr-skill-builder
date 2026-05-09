@@ -784,34 +784,6 @@
     "sourceFile": "4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   {
-    "id": "6.01",
-    "name": "agent-browser",
-    "category": "tech",
-    "project": "agent-browser",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Peter Tu",
-    "description": "Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data, and automate any browser task.",
-    "input": "URL or website interaction instructions (navigate, fill form, click, screenshot, extract data)",
-    "process": "Launches headless browser session, executes commands via agent-browser CLI, manages authentication and session state",
-    "output": "Screenshots, extracted data, form submission confirmations, or automated workflow results",
-    "ipoProvenance": {
-      "input": "frontmatter",
-      "process": "frontmatter",
-      "output": "frontmatter"
-    },
-    "legacyIpoId": "6.01",
-    "kind": "skill",
-    "synergy": [
-      "6.01"
-    ],
-    "installCommand": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
-    "updatedAt": "2026-05-09",
-    "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "5-devops/agent-browser/SKILL.md"
-  },
-  {
     "id": "6.02",
     "name": "skill-sourcer",
     "category": "tech",
@@ -839,7 +811,12 @@
     "updatedAt": "2026-05-09",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "6-tech/skill-sourcer/SKILL.md"
+    "sourceFile": "6-tech/skill-sourcer/SKILL.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
   },
   {
     "id": "6.03",
@@ -863,7 +840,12 @@
     "updatedAt": "2026-05-09",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "6-tech/skill-sourcer/agents/classifier.md"
+    "sourceFile": "6-tech/skill-sourcer/agents/classifier.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
   },
   {
     "id": "6.04",
@@ -887,7 +869,12 @@
     "updatedAt": "2026-05-09",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "6-tech/skill-sourcer/agents/deduplicator.md"
+    "sourceFile": "6-tech/skill-sourcer/agents/deduplicator.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
   },
   {
     "id": "6.05",
@@ -911,7 +898,12 @@
     "updatedAt": "2026-05-09",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "6-tech/skill-sourcer/agents/extractor.md"
+    "sourceFile": "6-tech/skill-sourcer/agents/extractor.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
   },
   {
     "id": "6.06",
@@ -935,6 +927,44 @@
     "updatedAt": "2026-05-09",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "6-tech/skill-sourcer/agents/proposer.md"
+    "sourceFile": "6-tech/skill-sourcer/agents/proposer.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
+  },
+  {
+    "id": "6.07",
+    "name": "agent-browser",
+    "category": "tech",
+    "project": "vercel-labs-agent-browser",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
+    "input": "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture",
+    "output": "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web...",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "6.07",
+    "kind": "skill",
+    "synergy": [
+      "6.07"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/6.07.md -o ~/.claude/skills/agent-browser.md",
+    "updatedAt": "2026-05-09",
+    "firstSeen": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "6-tech/vercel-labs-agent-browser/SKILL.md",
+    "upstreamRepo": "vercel-labs/agent-browser",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    },
+    "githubStars": 32385
   }
 ]

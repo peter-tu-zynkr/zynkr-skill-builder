@@ -561,28 +561,6 @@
     "first_seen": "2026-05-09"
   },
   {
-    "id": "6.01",
-    "slug": "agent-browser",
-    "name": "agent-browser",
-    "summary": "Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data, and automate any browser task.",
-    "category": "tech",
-    "project": "agent-browser",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
-    "source_path": "skills/5-devops/agent-browser/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
-    "tags": [
-      "agent-browser",
-      "tech",
-      "claude",
-      "skill"
-    ],
-    "updated_at": "2026-05-09",
-    "first_seen": "2026-05-09"
-  },
-  {
     "id": "6.02",
     "slug": "skill-sourcer",
     "name": "skill-sourcer",
@@ -686,6 +664,30 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
+  },
+  {
+    "id": "6.07",
+    "slug": "vercel-labs-agent-browser",
+    "name": "agent-browser",
+    "summary": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
+    "category": "tech",
+    "project": "vercel-labs-agent-browser",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/vercel-labs-agent-browser/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.07.md -o ~/.claude/skills/agent-browser.md",
+    "tags": [
+      "vercel-labs-agent-browser",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09",
+    "upstream_repo": "vercel-labs/agent-browser",
+    "github_stars": 32385,
     "first_seen": "2026-05-09"
   }
 ]
