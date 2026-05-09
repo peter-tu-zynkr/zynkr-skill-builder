@@ -24,7 +24,8 @@ jobs:
         run: npm ci
 
       - name: Run ingest
-        run: npx tsx scripts/ingest.ts "$GITHUB_WORKSPACE/skills"
+        working-directory: scripts
+        run: npx tsx ingest.ts "$GITHUB_WORKSPACE/skills"
 
       - name: Run build-marketplace
         working-directory: scripts
