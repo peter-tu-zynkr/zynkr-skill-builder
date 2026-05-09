@@ -18,7 +18,8 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.02",
@@ -39,7 +40,8 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.03",
@@ -60,7 +62,8 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.04",
@@ -81,7 +84,8 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.05",
@@ -102,7 +106,8 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.06",
@@ -123,7 +128,8 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.07",
@@ -144,7 +150,8 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.08",
@@ -165,7 +172,8 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.09",
@@ -186,7 +194,8 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "1.10",
@@ -207,7 +216,8 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.01",
@@ -228,7 +238,8 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.02",
@@ -248,7 +259,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.03",
@@ -269,7 +281,8 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.04",
@@ -289,7 +302,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.05",
@@ -309,7 +323,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.06",
@@ -329,7 +344,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.07",
@@ -349,7 +365,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "2.08",
@@ -369,7 +386,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.01",
@@ -390,7 +408,8 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.02",
@@ -411,7 +430,8 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.03",
@@ -432,7 +452,8 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.04",
@@ -452,7 +473,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.05",
@@ -472,7 +494,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.06",
@@ -492,7 +515,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.07",
@@ -512,7 +536,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "4.08",
@@ -532,7 +557,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.01",
@@ -553,7 +579,8 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.02",
@@ -574,7 +601,8 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.03",
@@ -594,7 +622,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.04",
@@ -614,7 +643,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.05",
@@ -634,7 +664,8 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   },
   {
     "id": "6.06",
@@ -654,6 +685,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-09"
+    "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09"
   }
 ]

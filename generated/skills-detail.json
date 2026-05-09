@@ -19,6 +19,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Sync a newsletter article from Google Docs to the Notion Content DB. Use this skill whenever the user shares a Google Doc URL and wants to create a Notion page, sync to Notion, add to Content DB, or archive a newsletter. Trigger on phrases like \"幫我放上 Notion\", \"sync to Notion\", \"add this to Notion\", \"同步到 Notion\", or any message combining a Google Doc link with Notion/archive intent.",
     "input": "The user provides an abstract philosophical question and answers assistant's prompts.",
     "process": "Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.",
@@ -49,6 +50,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Sync a newsletter article from Google Docs to the Notion Content DB. Use this skill whenever the user shares a Google Doc URL and wants to create a Notion page, sync to Notion, add to Content DB, or archive a newsletter. Trigger on phrases like \"幫我放上 Notion\", \"sync to Notion\", \"add this to Notion\", \"同步到 Notion\", or any message combining a Google Doc link with Notion/archive intent.",
     "input": "The user provides an abstract philosophical question and answers assistant's prompts.",
     "process": "Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.",
@@ -79,6 +81,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insights from the past week to surface what Peter has been building and learning. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫 newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will pull the other context automatically.",
     "input": "User gives article draft (topic + core ideas); templates and style guide are preloaded.",
     "process": "Multi-turn - propose 3 outlines, 3 key points per section, then write paragraphs stepwise with user review, following the style guide.",
@@ -109,6 +112,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insights from the past week to surface what Peter has been building and learning. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫 newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will pull the other context automatically.",
     "input": "User gives article draft (topic + core ideas); templates and style guide are preloaded.",
     "process": "Multi-turn - propose 3 outlines, 3 key points per section, then write paragraphs stepwise with user review, following the style guide.",
@@ -139,6 +143,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
     "process": "Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.",
     "output": "A numbered list of edit suggestions and a question asking which to adopt.",
@@ -175,6 +180,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
     "process": "Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.",
     "output": "A numbered list of edit suggestions and a question asking which to adopt.",
@@ -211,6 +217,7 @@
       "0-optional"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
     "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
     "process": "Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.",
@@ -249,6 +256,7 @@
       "0-optional"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
     "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
     "process": "Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.",
@@ -287,6 +295,7 @@
       "1"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the article-style-selector agent. </commentary> </example>",
     "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
     "process": "Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.",
@@ -325,6 +334,7 @@
       "1"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the article-style-selector agent. </commentary> </example>",
     "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
     "process": "Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.",
@@ -363,6 +373,7 @@
       "2"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from article-style-selector and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the article-drafter agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the article-drafter agent. </commentary> </example>",
     "input": "An article draft provided by the author.",
     "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
@@ -401,6 +412,7 @@
       "2"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from article-style-selector and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the article-drafter agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the article-drafter agent. </commentary> </example>",
     "input": "An article draft provided by the author.",
     "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
@@ -439,6 +451,7 @@
       "3"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from article-drafter and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the article-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the article-editor agent. </commentary> </example>",
     "input": "Completed draft",
     "process": "Stage 3 in the Writing Agent pipeline, orchestrated by Writing Agent.",
@@ -477,6 +490,7 @@
       "3"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from article-drafter and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the article-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the article-editor agent. </commentary> </example>",
     "input": "Completed draft",
     "process": "Stage 3 in the Writing Agent pipeline, orchestrated by Writing Agent.",
@@ -515,6 +529,7 @@
       "35-optional"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
     "input": "A full or partial article text, optionally with a writing or critique goal.",
     "process": "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.",
@@ -553,6 +568,7 @@
       "35-optional"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
     "input": "A full or partial article text, optionally with a writing or critique goal.",
     "process": "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.",
@@ -591,6 +607,7 @@
       "4"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
     "input": "User provides text in English or another language.",
     "process": "I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.",
@@ -629,6 +646,7 @@
       "4"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
     "input": "User provides text in English or another language.",
     "process": "I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.",
@@ -667,6 +685,7 @@
       "5"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
     "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
     "process": "Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.",
@@ -705,6 +724,7 @@
       "5"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
     "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
     "process": "Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.",
@@ -743,6 +763,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
     "input": "Job description or application link (or minimal role/company details).",
     "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
@@ -774,6 +795,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
     "input": "Job description or application link (or minimal role/company details).",
     "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
@@ -804,6 +826,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
@@ -834,6 +857,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
@@ -865,6 +889,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Candidate CV plus target role context and prior discussion insights",
     "process": "Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step",
@@ -900,6 +925,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Candidate CV plus target role context and prior discussion insights",
     "process": "Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step",
@@ -934,6 +960,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
     "input": "User’s resume content and prior contextual analysis from earlier phases.",
     "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
@@ -968,6 +995,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
     "input": "User’s resume content and prior contextual analysis from earlier phases.",
     "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
@@ -1002,6 +1030,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "Existing resume content, prior optimization insights, and a fixed CV template",
     "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
     "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints.",
@@ -1035,6 +1064,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "Existing resume content, prior optimization insights, and a fixed CV template",
     "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
     "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints.",
@@ -1068,6 +1098,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
     "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
     "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
@@ -1101,6 +1132,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
     "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
     "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
@@ -1134,6 +1166,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
     "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
     "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
@@ -1168,6 +1201,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
     "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
     "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
@@ -1202,6 +1236,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "2.03",
@@ -1232,6 +1267,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "2.03",
@@ -1263,6 +1299,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese.",
     "input": "User-provided video file or the transcript.",
     "process": "Transcribe the video, remove filler words, and map the content to the reference outline (strictly ignoring reference text detail).",
@@ -1293,6 +1330,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese.",
     "input": "User-provided video file or the transcript.",
     "process": "Transcribe the video, remove filler words, and map the content to the reference outline (strictly ignoring reference text detail).",
@@ -1323,6 +1361,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
     "process": "4 parallel agents — event recap doc, Q&A knowledge base update, course outline enhancement, and content idea curation",
@@ -1358,6 +1397,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
     "process": "4 parallel agents — event recap doc, Q&A knowledge base update, course outline enhancement, and content idea curation",
@@ -1393,6 +1433,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Minimally clean subtitle .srt files into readable Traditional Chinese while preserving original wording, cue timing, and subtitle alignment.",
     "input": "One .srt subtitle file containing raw speech-to-text output",
     "process": "Inspect -> export rewrite worksheet -> rewrite cue text batch by batch -> rebuild -> validate -> upload final .srt to Google Drive",
@@ -1423,6 +1464,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Minimally clean subtitle .srt files into readable Traditional Chinese while preserving original wording, cue timing, and subtitle alignment.",
     "input": "One .srt subtitle file containing raw speech-to-text output",
     "process": "Inspect -> export rewrite worksheet -> rewrite cue text batch by batch -> rebuild -> validate -> upload final .srt to Google Drive",
@@ -1452,6 +1494,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1482,6 +1525,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1512,6 +1556,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1542,6 +1587,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1572,6 +1618,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1602,6 +1649,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1632,6 +1680,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1662,6 +1711,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1692,6 +1742,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1722,6 +1773,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
       "4.02",
@@ -1753,6 +1805,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data, and automate any browser task.",
     "input": "URL or website interaction instructions (navigate, fill form, click, screenshot, extract data)",
     "process": "Launches headless browser session, executes commands via agent-browser CLI, manages authentication and session state",
@@ -1783,6 +1836,7 @@
       "skill"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data, and automate any browser task.",
     "input": "URL or website interaction instructions (navigate, fill form, click, screenshot, extract data)",
     "process": "Launches headless browser session, executes commands via agent-browser CLI, manages authentication and session state",
@@ -1813,6 +1867,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
     "output": "Row added to Zynkr Skills Pipeline sheet (proposed, Keep=?), and optionally a GitHub issue in peter-tu-zynkr/zynkr-skills-idea if approved",
@@ -1846,6 +1901,7 @@
       "orchestrator"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
     "output": "Row added to Zynkr Skills Pipeline sheet (proposed, Keep=?), and optionally a GitHub issue in peter-tu-zynkr/zynkr-skills-idea if approved",
@@ -1878,6 +1934,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "kind": "subagent",
     "synergy": [
@@ -1908,6 +1965,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "kind": "subagent",
     "synergy": [
@@ -1938,6 +1996,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
     "kind": "subagent",
     "synergy": [
@@ -1968,6 +2027,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
     "kind": "subagent",
     "synergy": [
@@ -1998,6 +2058,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
     "kind": "subagent",
     "synergy": [
@@ -2028,6 +2089,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
     "kind": "subagent",
     "synergy": [
@@ -2058,6 +2120,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Add a verified-new skill to the Zynkr Skills Pipeline sheet. GitHub issue is deferred until human approves (Keep=Y).",
     "kind": "subagent",
     "synergy": [
@@ -2088,6 +2151,7 @@
       "subagent"
     ],
     "updated_at": "2026-05-09",
+    "first_seen": "2026-05-09",
     "description": "Add a verified-new skill to the Zynkr Skills Pipeline sheet. GitHub issue is deferred until human approves (Keep=Y).",
     "kind": "subagent",
     "synergy": [
