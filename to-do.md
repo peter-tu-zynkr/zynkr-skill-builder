@@ -52,7 +52,7 @@ Canonical task tracker for the Zynkr skill directory.
 
 ### Repo hygiene
 
-- [ ] Archive `zynkr-skills-staging` repo on GitHub (Settings → Archive repository)
+- [x] Archive `zynkr-skills-staging` repo on GitHub ✓ 2026-05-09
 - [ ] Add branch protection to `main` on `zynkr-skills-production` if PR review gate is wanted
 
 ### Longer-term decisions
