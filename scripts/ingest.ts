@@ -64,6 +64,7 @@ const SkillFrontmatter = z.object({
   process: z.string().optional(),
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
+  upstream_repo: z.string().optional(),
 });
 
 type SkillFrontmatter = z.infer<typeof SkillFrontmatter>;
@@ -97,6 +98,8 @@ type ExistingSkillRecord = {
   kind?: string;
   sourceRepo?: string;
   sourceFile?: string;
+  upstreamRepo?: string;
+  firstSeen?: string;
 };
 
 type IpoField = "input" | "process" | "output";
@@ -186,6 +189,29 @@ function toSlug(name: string): string {
 
 function buildInstallCommand(id: string, slug: string): string {
   return `curl -sL zynkr.ai/s/${id}.md -o ~/.claude/skills/${slug}.md`;
+}
+
+function readFirstSeen(outPath: string): string | undefined {
+  if (!fs.existsSync(outPath)) return undefined;
+  const { data } = matter(fs.readFileSync(outPath, "utf-8"));
+  return typeof data.firstSeen === "string" ? data.firstSeen : undefined;
+}
+
+async function fetchGitHubStats(ownerRepo: string): Promise<{ stars: number } | null> {
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github.v3+json",
+    "User-Agent": "zynkr-ingest",
+  };
+  const token = process.env.GITHUB_TOKEN;
+  if (token) headers.Authorization = `Bearer ${token}`;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${ownerRepo}`, { headers });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { stargazers_count: number };
+    return { stars: data.stargazers_count };
+  } catch {
+    return null;
+  }
 }
 
 function normalizeFieldValue(value: string | undefined, maxLength: number): string | undefined {
@@ -481,6 +507,8 @@ function loadExistingSkillRecords(): ExistingSkillRecord[] {
         kind: typeof data.kind === "string" ? data.kind : undefined,
         sourceRepo: typeof data.sourceRepo === "string" ? data.sourceRepo : undefined,
         sourceFile: typeof data.sourceFile === "string" ? data.sourceFile : undefined,
+        upstreamRepo: typeof data.upstreamRepo === "string" ? data.upstreamRepo : undefined,
+        firstSeen: typeof data.firstSeen === "string" ? data.firstSeen : undefined,
       };
     });
 }
@@ -731,8 +759,10 @@ function ingestProjectSkills(
     synergy,
     installCommand: buildInstallCommand(orchestratorId, orchestratorSlug),
     updatedAt: today,
+    firstSeen: readFirstSeen(orchestratorOutPath) ?? today,
     sourceRepo: repoUrl,
     sourceFile: skillFile.relPath,
+    upstreamRepo: manifest.upstream_repo,
   });
   ingested.push({
     id: orchestratorId,
@@ -780,8 +810,10 @@ function ingestProjectSkills(
       kind: "subagent",
       synergy,
       updatedAt: today,
+      firstSeen: readFirstSeen(agentOutPath) ?? today,
       sourceRepo: repoUrl,
       sourceFile,
+      upstreamRepo: manifest.upstream_repo,
     });
 
     ingested.push({
@@ -899,8 +931,10 @@ function ingestRepoAsPipeline(
     synergy,
     installCommand: buildInstallCommand(orchestratorId, orchestratorSlug),
     updatedAt: today,
+    firstSeen: readFirstSeen(orchestratorPathOut) ?? today,
     sourceRepo: repoUrl,
     sourceFile: orchestratorSourceFile,
+    upstreamRepo: manifest.upstream_repo,
   });
   ingested.push({
     id: orchestratorId,
@@ -964,8 +998,10 @@ function ingestRepoAsPipeline(
       stage: stage.stage,
       synergy,
       updatedAt: today,
+      firstSeen: readFirstSeen(stagePathOut) ?? today,
       sourceRepo: repoUrl,
       sourceFile,
+      upstreamRepo: manifest.upstream_repo,
     });
 
     ingested.push({
@@ -979,7 +1015,7 @@ function ingestRepoAsPipeline(
   return ingested;
 }
 
-function generateSkillsJson(
+async function generateSkillsJson(
   legacyCsvById: Map<string, LegacyCsvRecord>,
   skillIdOverrides: SkillIdOverrideMap
 ) {
@@ -1023,10 +1059,38 @@ function generateSkillsJson(
     };
   });
 
-  const json = JSON.stringify(skills, null, 2);
+  // Fetch GitHub stars for external upstream repos
+  const upstreamRepos = new Set(
+    skills
+      .map((s) => (typeof (s as Record<string, unknown>).upstreamRepo === "string"
+        ? (s as Record<string, unknown>).upstreamRepo as string
+        : undefined))
+      .filter((r): r is string => Boolean(r))
+  );
+  const githubStarsCache = new Map<string, number>();
+  if (upstreamRepos.size > 0) {
+    console.log(`\n  → Fetching GitHub stats for ${upstreamRepos.size} upstream repo(s)...`);
+    for (const repo of upstreamRepos) {
+      const stats = await fetchGitHubStats(repo);
+      if (stats !== null) {
+        githubStarsCache.set(repo, stats.stars);
+        console.log(`    ★  ${repo}: ${stats.stars.toLocaleString()} stars`);
+      }
+    }
+  }
+
+  const enrichedSkills = skills.map((skill) => {
+    const upstreamRepo = typeof (skill as Record<string, unknown>).upstreamRepo === "string"
+      ? (skill as Record<string, unknown>).upstreamRepo as string
+      : undefined;
+    const githubStars = upstreamRepo ? githubStarsCache.get(upstreamRepo) : undefined;
+    return githubStars !== undefined ? { ...skill, githubStars } : skill;
+  });
+
+  const json = JSON.stringify(enrichedSkills, null, 2);
   fs.writeFileSync(path.join(GENERATED_DIR, "skills.json"), json);
   fs.writeFileSync(FRONTEND_GENERATED, json);
-  console.log(`\n  → generated/skills.json updated (${skills.length} skills total)`);
+  console.log(`\n  → generated/skills.json updated (${enrichedSkills.length} skills total)`);
   console.log(`  → frontend/lib/generated-skills.json updated`);
   syncMarketplaceArtifacts();
 }
@@ -1231,8 +1295,10 @@ async function main() {
           synergy: fm.synergy,
           installCommand: buildInstallCommand(id, slug),
           updatedAt: today,
+          firstSeen: readFirstSeen(outPath) ?? today,
           sourceRepo: repoUrl,
           sourceFile,
+          upstreamRepo: fm.upstream_repo,
         };
 
         const outPath = path.join(CONTENT_DIR, `${id}.md`);
@@ -1250,7 +1316,7 @@ async function main() {
   }
 
   // Regenerate generated/skills.json
-  generateSkillsJson(legacyCsvById, skillIdOverrides);
+  await generateSkillsJson(legacyCsvById, skillIdOverrides);
 
   // Report
   console.log(`\nDone. Ingested: ${ingested.length}  Skipped: ${skipped.length}`);

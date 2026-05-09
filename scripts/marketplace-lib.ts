@@ -24,9 +24,12 @@ export type NormalizedSkillRecord = {
   synergy?: string[];
   installCommand?: string;
   updatedAt?: string;
+  firstSeen?: string;
   sourceRepo?: string;
   sourceFile?: string;
   slug?: string;
+  upstreamRepo?: string;
+  githubStars?: number;
 };
 
 export type MarketplaceIndexEntry = {
@@ -44,6 +47,9 @@ export type MarketplaceIndexEntry = {
   install_command?: string;
   tags: string[];
   updated_at: string;
+  upstream_repo?: string;
+  github_stars?: number;
+  first_seen?: string;
 };
 
 export type MarketplaceDetailEntry = MarketplaceIndexEntry & {
@@ -242,6 +248,9 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
         install_command: ensureString(skill.installCommand),
         tags: buildTags(skill),
         updated_at: ensureString(skill.updatedAt) ?? new Date().toISOString().split("T")[0],
+        upstream_repo: ensureString(skill.upstreamRepo),
+        github_stars: typeof skill.githubStars === "number" ? skill.githubStars : undefined,
+        first_seen: ensureString(skill.firstSeen),
       };
 
       assertRequired(indexEntry);
