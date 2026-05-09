@@ -1116,8 +1116,18 @@ async function main() {
   const ingested: { id: string; name: string; sourceFile: string }[] = [];
   const skipped: { file: string; reason: string }[] = [];
 
-  // Check for monorepo layout
-  const monorepoProjects = detectMonorepoProjects(tmpDir);
+  // Check for monorepo layout (supports flat layout AND category/project two-level layout)
+  let monorepoProjects = detectMonorepoProjects(tmpDir);
+  if (monorepoProjects.length === 0) {
+    // Try two-level scan: [category]/[project]/ — used by skills/ subfolder structure
+    for (const catEntry of fs.readdirSync(tmpDir, { withFileTypes: true })) {
+      if (!catEntry.isDirectory() || catEntry.name.startsWith(".")) continue;
+      const catPath = path.join(tmpDir, catEntry.name);
+      for (const proj of detectMonorepoProjects(catPath)) {
+        monorepoProjects.push(path.join(catEntry.name, proj));
+      }
+    }
+  }
 
   if (monorepoProjects.length > 0) {
     console.log(`Detected monorepo with ${monorepoProjects.length} project(s): ${monorepoProjects.join(", ")}\n`);
