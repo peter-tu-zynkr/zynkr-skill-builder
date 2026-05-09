@@ -24,7 +24,9 @@
     "process": "Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.",
     "output": "A score, commentary, optional parable, and the next, more focused philosophical question.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/newsletter-to-notion/SKILL.md"
   },
   "newsletter-to-notion": {
@@ -52,7 +54,9 @@
     "process": "Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.",
     "output": "A score, commentary, optional parable, and the next, more focused philosophical question.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/newsletter-to-notion/SKILL.md"
   },
   "1.02": {
@@ -80,7 +84,9 @@
     "process": "Multi-turn - propose 3 outlines, 3 key points per section, then write paragraphs stepwise with user review, following the style guide.",
     "output": "Clear outline, section bullet lists, and a 1000–1200-word article drafted in the user’s style.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/write-newsletter/SKILL.md"
   },
   "write-newsletter": {
@@ -108,7 +114,9 @@
     "process": "Multi-turn - propose 3 outlines, 3 key points per section, then write paragraphs stepwise with user review, following the style guide.",
     "output": "Clear outline, section bullet lists, and a 1000–1200-word article drafted in the user’s style.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/write-newsletter/SKILL.md"
   },
   "1.03": {
@@ -128,14 +136,23 @@
       "writing-agent",
       "brand-marketing",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
     "process": "Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.",
     "output": "A numbered list of edit suggestions and a question asking which to adopt.",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/tree/main/writing-agent"
   },
   "writing-agent": {
@@ -155,15 +172,556 @@
       "writing-agent",
       "brand-marketing",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
     "process": "Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.",
     "output": "A numbered list of edit suggestions and a question asking which to adopt.",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/tree/main/writing-agent"
+  },
+  "1.04": {
+    "id": "1.04",
+    "slug": "writing-agent-socratic-ideation-partner",
+    "name": "socratic-ideation-partner",
+    "summary": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "0-optional"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
+    "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
+    "process": "Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.",
+    "output": "Fixed-format: scoring table, opponent-style critique, SEO keyword list with rationale, and non-rewriting improvement suggestions.",
+    "kind": "subagent",
+    "stage": "0 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
+  },
+  "writing-agent-socratic-ideation-partner": {
+    "id": "1.04",
+    "slug": "writing-agent-socratic-ideation-partner",
+    "name": "socratic-ideation-partner",
+    "summary": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "0-optional"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
+    "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
+    "process": "Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.",
+    "output": "Fixed-format: scoring table, opponent-style critique, SEO keyword list with rationale, and non-rewriting improvement suggestions.",
+    "kind": "subagent",
+    "stage": "0 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
+  },
+  "1.05": {
+    "id": "1.05",
+    "slug": "writing-agent-article-style-selector",
+    "name": "article-style-selector",
+    "summary": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "1"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the article-style-selector agent. </commentary> </example>",
+    "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
+    "process": "Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.",
+    "output": "SEO titles with reasons and MECE classification, or a complete SEO strategy with keywords, outline, and recommendations.",
+    "kind": "subagent",
+    "stage": "1",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
+  },
+  "writing-agent-article-style-selector": {
+    "id": "1.05",
+    "slug": "writing-agent-article-style-selector",
+    "name": "article-style-selector",
+    "summary": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "1"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the article-style-selector agent. </commentary> </example>",
+    "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
+    "process": "Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.",
+    "output": "SEO titles with reasons and MECE classification, or a complete SEO strategy with keywords, outline, and recommendations.",
+    "kind": "subagent",
+    "stage": "1",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
+  },
+  "1.06": {
+    "id": "1.06",
+    "slug": "writing-agent-article-drafter",
+    "name": "article-drafter",
+    "summary": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "2"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from article-style-selector and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the article-drafter agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the article-drafter agent. </commentary> </example>",
+    "input": "An article draft provided by the author.",
+    "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
+    "output": "Three ready-to-use CTA options with titles, copy, category, sub-goal, placement advice, and validated links.",
+    "kind": "subagent",
+    "stage": "2",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
+  },
+  "writing-agent-article-drafter": {
+    "id": "1.06",
+    "slug": "writing-agent-article-drafter",
+    "name": "article-drafter",
+    "summary": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "2"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from article-style-selector and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the article-drafter agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the article-drafter agent. </commentary> </example>",
+    "input": "An article draft provided by the author.",
+    "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
+    "output": "Three ready-to-use CTA options with titles, copy, category, sub-goal, placement advice, and validated links.",
+    "kind": "subagent",
+    "stage": "2",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
+  },
+  "1.07": {
+    "id": "1.07",
+    "slug": "writing-agent-article-editor",
+    "name": "article-editor",
+    "summary": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "3"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from article-drafter and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the article-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the article-editor agent. </commentary> </example>",
+    "input": "Completed draft",
+    "process": "Stage 3 in the Writing Agent pipeline, orchestrated by Writing Agent.",
+    "output": "Polished article (fetches forbidden words, applies style guide edits)",
+    "kind": "subagent",
+    "stage": "3",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
+  },
+  "writing-agent-article-editor": {
+    "id": "1.07",
+    "slug": "writing-agent-article-editor",
+    "name": "article-editor",
+    "summary": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "3"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from article-drafter and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the article-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the article-editor agent. </commentary> </example>",
+    "input": "Completed draft",
+    "process": "Stage 3 in the Writing Agent pipeline, orchestrated by Writing Agent.",
+    "output": "Polished article (fetches forbidden words, applies style guide edits)",
+    "kind": "subagent",
+    "stage": "3",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
+  },
+  "1.08": {
+    "id": "1.08",
+    "slug": "writing-agent-reader-perspective",
+    "name": "reader-perspective",
+    "summary": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "35-optional"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
+    "input": "A full or partial article text, optionally with a writing or critique goal.",
+    "process": "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.",
+    "output": "Clear outlines, summaries, virality analysis, reflective dialogue, and a new actionable outline.",
+    "kind": "subagent",
+    "stage": "3.5 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
+  },
+  "writing-agent-reader-perspective": {
+    "id": "1.08",
+    "slug": "writing-agent-reader-perspective",
+    "name": "reader-perspective",
+    "summary": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "35-optional"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
+    "input": "A full or partial article text, optionally with a writing or critique goal.",
+    "process": "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.",
+    "output": "Clear outlines, summaries, virality analysis, reflective dialogue, and a new actionable outline.",
+    "kind": "subagent",
+    "stage": "3.5 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
+  },
+  "1.09": {
+    "id": "1.09",
+    "slug": "writing-agent-article-title-suggester",
+    "name": "article-title-suggester",
+    "summary": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "4"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
+    "input": "User provides text in English or another language.",
+    "process": "I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.",
+    "output": "Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language.",
+    "kind": "subagent",
+    "stage": "4",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
+  },
+  "writing-agent-article-title-suggester": {
+    "id": "1.09",
+    "slug": "writing-agent-article-title-suggester",
+    "name": "article-title-suggester",
+    "summary": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "4"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
+    "input": "User provides text in English or another language.",
+    "process": "I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.",
+    "output": "Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language.",
+    "kind": "subagent",
+    "stage": "4",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
+  },
+  "1.10": {
+    "id": "1.10",
+    "slug": "writing-agent-cta-writer",
+    "name": "cta-writer",
+    "summary": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "5"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
+    "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
+    "process": "Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.",
+    "output": "Clear validation result, ranked role options, and 3 realistic workplace problems for AI learning use cases.",
+    "kind": "subagent",
+    "stage": "5",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
+  },
+  "writing-agent-cta-writer": {
+    "id": "1.10",
+    "slug": "writing-agent-cta-writer",
+    "name": "cta-writer",
+    "summary": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "subagent",
+      "5"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
+    "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
+    "process": "Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.",
+    "output": "Clear validation result, ranked role options, and 3 realistic workplace problems for AI learning use cases.",
+    "kind": "subagent",
+    "stage": "5",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   "2.01": {
     "id": "2.01",
@@ -182,15 +740,18 @@
       "biz-card",
       "business-consulting",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
     "input": "Job description or application link (or minimal role/company details).",
     "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
     "output": "Clear role summary, prioritized skills, success KPIs, and ATS-ready keywords for CV tailoring and interview prep.",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/SKILL.md"
   },
   "biz-card": {
@@ -210,20 +771,23 @@
       "biz-card",
       "business-consulting",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
     "input": "Job description or application link (or minimal role/company details).",
     "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
     "output": "Clear role summary, prioritized skills, success KPIs, and ATS-ready keywords for CV tailoring and interview prep.",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/SKILL.md"
   },
   "2.02": {
     "id": "2.02",
-    "slug": "followup-email-writer",
+    "slug": "biz-card-followup-email-writer",
     "name": "followup-email-writer",
     "summary": "Writes a personalized follow-up email for a business contact using their card info and company research.",
     "category": "business-consulting",
@@ -233,25 +797,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
-    "install_command": "curl -sL zynkr.ai/s/2.02.md -o ~/.claude/skills/followup-email-writer.md",
     "tags": [
       "biz-card",
       "business-consulting",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
     "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/agents/followup-email-writer.md"
   },
-  "followup-email-writer": {
+  "biz-card-followup-email-writer": {
     "id": "2.02",
-    "slug": "followup-email-writer",
+    "slug": "biz-card-followup-email-writer",
     "name": "followup-email-writer",
     "summary": "Writes a personalized follow-up email for a business contact using their card info and company research.",
     "category": "business-consulting",
@@ -261,20 +827,22 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
-    "install_command": "curl -sL zynkr.ai/s/2.02.md -o ~/.claude/skills/followup-email-writer.md",
     "tags": [
       "biz-card",
       "business-consulting",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
     "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/agents/followup-email-writer.md"
   },
   "2.03": {
@@ -294,15 +862,22 @@
       "cv-customizer",
       "business-consulting",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Candidate CV plus target role context and prior discussion insights",
     "process": "Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step",
     "output": "Clear fit scores, competitive benchmarking, and actionable recommendations to optimize the CV and career positioning",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/SKILL.md"
   },
   "cv-customizer": {
@@ -322,16 +897,351 @@
       "cv-customizer",
       "business-consulting",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Candidate CV plus target role context and prior discussion insights",
     "process": "Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step",
     "output": "Clear fit scores, competitive benchmarking, and actionable recommendations to optimize the CV and career positioning",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/SKILL.md"
+  },
+  "2.04": {
+    "id": "2.04",
+    "slug": "cv-customizer-cv-phase1-job-decoder",
+    "name": "cv-phase1-job-decoder",
+    "summary": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
+    "input": "User’s resume content and prior contextual analysis from earlier phases.",
+    "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
+    "output": "A structured diagnosis of progression quality, flagged risks, and concrete rewrite recommendations to strengthen the growth narrative.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
+  },
+  "cv-customizer-cv-phase1-job-decoder": {
+    "id": "2.04",
+    "slug": "cv-customizer-cv-phase1-job-decoder",
+    "name": "cv-phase1-job-decoder",
+    "summary": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
+    "input": "User’s resume content and prior contextual analysis from earlier phases.",
+    "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
+    "output": "A structured diagnosis of progression quality, flagged risks, and concrete rewrite recommendations to strengthen the growth narrative.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
+  },
+  "2.05": {
+    "id": "2.05",
+    "slug": "cv-customizer-cv-phase2-story-extractor",
+    "name": "cv-phase2-story-extractor",
+    "summary": "Existing resume content, prior optimization insights, and a fixed CV template Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "input": "Existing resume content, prior optimization insights, and a fixed CV template",
+    "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
+    "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
+  },
+  "cv-customizer-cv-phase2-story-extractor": {
+    "id": "2.05",
+    "slug": "cv-customizer-cv-phase2-story-extractor",
+    "name": "cv-phase2-story-extractor",
+    "summary": "Existing resume content, prior optimization insights, and a fixed CV template Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "input": "Existing resume content, prior optimization insights, and a fixed CV template",
+    "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
+    "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
+  },
+  "2.06": {
+    "id": "2.06",
+    "slug": "cv-customizer-cv-phase3-fit-scorer",
+    "name": "cv-phase3-fit-scorer",
+    "summary": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
+    "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
+  },
+  "cv-customizer-cv-phase3-fit-scorer": {
+    "id": "2.06",
+    "slug": "cv-customizer-cv-phase3-fit-scorer",
+    "name": "cv-phase3-fit-scorer",
+    "summary": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
+    "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
+  },
+  "2.07": {
+    "id": "2.07",
+    "slug": "cv-customizer-cv-phase4-progression",
+    "name": "cv-phase4-progression",
+    "summary": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase4-progression.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
+    "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
+    "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
+    "output": "Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase4-progression.md"
+  },
+  "cv-customizer-cv-phase4-progression": {
+    "id": "2.07",
+    "slug": "cv-customizer-cv-phase4-progression",
+    "name": "cv-phase4-progression",
+    "summary": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase4-progression.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
+    "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
+    "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
+    "output": "Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer.",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase4-progression.md"
+  },
+  "2.08": {
+    "id": "2.08",
+    "slug": "cv-customizer-cv-phase5-rewriter",
+    "name": "cv-phase5-rewriter",
+    "summary": "cv-phase5-rewriter for cv-customizer",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase5-rewriter.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
+  },
+  "cv-customizer-cv-phase5-rewriter": {
+    "id": "2.08",
+    "slug": "cv-customizer-cv-phase5-rewriter",
+    "name": "cv-phase5-rewriter",
+    "summary": "cv-phase5-rewriter for cv-customizer",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/agents/cv-phase5-rewriter.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   "4.01": {
     "id": "4.01",
@@ -358,7 +1268,9 @@
     "process": "Transcribe the video, remove filler words, and map the content to the reference outline (strictly ignoring reference text detail).",
     "output": "A reader-friendly document structured into Summary, Theme, Q&A, Tools, and Call to Action sections.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/polish-lecture-transcript/SKILL.md"
   },
   "polish-lecture-transcript": {
@@ -386,7 +1298,9 @@
     "process": "Transcribe the video, remove filler words, and map the content to the reference outline (strictly ignoring reference text detail).",
     "output": "A reader-friendly document structured into Summary, Theme, Q&A, Tools, and Call to Action sections.",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/polish-lecture-transcript/SKILL.md"
   },
   "4.02": {
@@ -406,15 +1320,22 @@
       "process-livestream",
       "training",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
     "process": "4 parallel agents — event recap doc, Q&A knowledge base update, course outline enhancement, and content idea curation",
     "output": "Google Doc recap, Q&A diff entries, lecture note proposals, and content idea seeds",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/SKILL.md"
   },
   "process-livestream": {
@@ -434,15 +1355,22 @@
       "process-livestream",
       "training",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
     "process": "4 parallel agents — event recap doc, Q&A knowledge base update, course outline enhancement, and content idea curation",
     "output": "Google Doc recap, Q&A diff entries, lecture note proposals, and content idea seeds",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/SKILL.md"
   },
   "4.03": {
@@ -470,7 +1398,9 @@
     "process": "Inspect -> export rewrite worksheet -> rewrite cue text batch by batch -> rebuild -> validate -> upload final .srt to Google Drive",
     "output": "A minimally edited .srt with preserved cue timing, wording fidelity, subtitle-friendly Traditional Chinese, and a copy saved to the designated Google Drive folder",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.03"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/srt-optimizer/SKILL.md"
   },
   "srt-optimizer": {
@@ -498,8 +1428,310 @@
     "process": "Inspect -> export rewrite worksheet -> rewrite cue text batch by batch -> rebuild -> validate -> upload final .srt to Google Drive",
     "output": "A minimally edited .srt with preserved cue timing, wording fidelity, subtitle-friendly Traditional Chinese, and a copy saved to the designated Google Drive folder",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.03"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/srt-optimizer/SKILL.md"
+  },
+  "4.04": {
+    "id": "4.04",
+    "slug": "process-livestream-admin",
+    "name": "admin",
+    "summary": "admin for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/admin.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/admin.md"
+  },
+  "process-livestream-admin": {
+    "id": "4.04",
+    "slug": "process-livestream-admin",
+    "name": "admin",
+    "summary": "admin for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/admin.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/admin.md"
+  },
+  "4.05": {
+    "id": "4.05",
+    "slug": "process-livestream-content-idea-curator",
+    "name": "content-idea-curator",
+    "summary": "content-idea-curator for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/content-idea-curator.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/content-idea-curator.md"
+  },
+  "process-livestream-content-idea-curator": {
+    "id": "4.05",
+    "slug": "process-livestream-content-idea-curator",
+    "name": "content-idea-curator",
+    "summary": "content-idea-curator for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/content-idea-curator.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/content-idea-curator.md"
+  },
+  "4.06": {
+    "id": "4.06",
+    "slug": "process-livestream-course-outline-enhancer",
+    "name": "course-outline-enhancer",
+    "summary": "course-outline-enhancer for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/course-outline-enhancer.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/course-outline-enhancer.md"
+  },
+  "process-livestream-course-outline-enhancer": {
+    "id": "4.06",
+    "slug": "process-livestream-course-outline-enhancer",
+    "name": "course-outline-enhancer",
+    "summary": "course-outline-enhancer for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/course-outline-enhancer.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/course-outline-enhancer.md"
+  },
+  "4.07": {
+    "id": "4.07",
+    "slug": "process-livestream-event-recap",
+    "name": "event-recap",
+    "summary": "event-recap for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/event-recap.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/event-recap.md"
+  },
+  "process-livestream-event-recap": {
+    "id": "4.07",
+    "slug": "process-livestream-event-recap",
+    "name": "event-recap",
+    "summary": "event-recap for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/event-recap.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/event-recap.md"
+  },
+  "4.08": {
+    "id": "4.08",
+    "slug": "process-livestream-qa-knowledge-base",
+    "name": "qa-knowledge-base",
+    "summary": "qa-knowledge-base for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/qa-knowledge-base.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/qa-knowledge-base.md"
+  },
+  "process-livestream-qa-knowledge-base": {
+    "id": "4.08",
+    "slug": "process-livestream-qa-knowledge-base",
+    "name": "qa-knowledge-base",
+    "summary": "qa-knowledge-base for process-livestream",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/agents/qa-knowledge-base.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-09",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   "6.01": {
     "id": "6.01",
@@ -526,7 +1758,9 @@
     "process": "Launches headless browser session, executes commands via agent-browser CLI, manages authentication and session state",
     "output": "Screenshots, extracted data, form submission confirmations, or automated workflow results",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "6.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/5-devops/agent-browser/SKILL.md"
   },
   "agent-browser": {
@@ -554,7 +1788,9 @@
     "process": "Launches headless browser session, executes commands via agent-browser CLI, manages authentication and session state",
     "output": "Screenshots, extracted data, form submission confirmations, or automated workflow results",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "6.01"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/5-devops/agent-browser/SKILL.md"
   },
   "6.02": {
@@ -574,14 +1810,20 @@
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
     "output": "Row added to Zynkr Skills Pipeline sheet (proposed, Keep=?), and optionally a GitHub issue in peter-tu-zynkr/zynkr-skills-idea if approved",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/SKILL.md"
   },
   "skill-sourcer": {
@@ -601,19 +1843,25 @@
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-09",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
     "output": "Row added to Zynkr Skills Pipeline sheet (proposed, Keep=?), and optionally a GitHub issue in peter-tu-zynkr/zynkr-skills-idea if approved",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/SKILL.md"
   },
   "6.03": {
     "id": "6.03",
-    "slug": "classifier",
+    "slug": "skill-sourcer-classifier",
     "name": "skill-classifier",
     "summary": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "category": "tech",
@@ -623,22 +1871,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/classifier.md",
-    "install_command": "curl -sL zynkr.ai/s/6.03.md -o ~/.claude/skills/skill-classifier.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/classifier.md"
   },
-  "classifier": {
+  "skill-sourcer-classifier": {
     "id": "6.03",
-    "slug": "classifier",
+    "slug": "skill-sourcer-classifier",
     "name": "skill-classifier",
     "summary": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "category": "tech",
@@ -648,22 +1901,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/classifier.md",
-    "install_command": "curl -sL zynkr.ai/s/6.03.md -o ~/.claude/skills/skill-classifier.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/classifier.md"
   },
   "6.04": {
     "id": "6.04",
-    "slug": "deduplicator",
+    "slug": "skill-sourcer-deduplicator",
     "name": "skill-deduplicator",
     "summary": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
     "category": "tech",
@@ -673,22 +1931,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/deduplicator.md",
-    "install_command": "curl -sL zynkr.ai/s/6.04.md -o ~/.claude/skills/skill-deduplicator.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/deduplicator.md"
   },
-  "deduplicator": {
+  "skill-sourcer-deduplicator": {
     "id": "6.04",
-    "slug": "deduplicator",
+    "slug": "skill-sourcer-deduplicator",
     "name": "skill-deduplicator",
     "summary": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
     "category": "tech",
@@ -698,22 +1961,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/deduplicator.md",
-    "install_command": "curl -sL zynkr.ai/s/6.04.md -o ~/.claude/skills/skill-deduplicator.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/deduplicator.md"
   },
   "6.05": {
     "id": "6.05",
-    "slug": "extractor",
+    "slug": "skill-sourcer-extractor",
     "name": "skill-extractor",
     "summary": "Parse raw input (text, URL, file) and extract structured skill intent",
     "category": "tech",
@@ -723,22 +1991,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/extractor.md",
-    "install_command": "curl -sL zynkr.ai/s/6.05.md -o ~/.claude/skills/skill-extractor.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/extractor.md"
   },
-  "extractor": {
+  "skill-sourcer-extractor": {
     "id": "6.05",
-    "slug": "extractor",
+    "slug": "skill-sourcer-extractor",
     "name": "skill-extractor",
     "summary": "Parse raw input (text, URL, file) and extract structured skill intent",
     "category": "tech",
@@ -748,22 +2021,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/extractor.md",
-    "install_command": "curl -sL zynkr.ai/s/6.05.md -o ~/.claude/skills/skill-extractor.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/extractor.md"
   },
   "6.06": {
     "id": "6.06",
-    "slug": "proposer",
+    "slug": "skill-sourcer-proposer",
     "name": "skill-proposer",
     "summary": "Add a verified-new skill to the Zynkr Skills Pipeline sheet.",
     "category": "tech",
@@ -773,22 +2051,27 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/proposer.md",
-    "install_command": "curl -sL zynkr.ai/s/6.06.md -o ~/.claude/skills/skill-proposer.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Add a verified-new skill to the Zynkr Skills Pipeline sheet. GitHub issue is deferred until human approves (Keep=Y).",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/proposer.md"
   },
-  "proposer": {
+  "skill-sourcer-proposer": {
     "id": "6.06",
-    "slug": "proposer",
+    "slug": "skill-sourcer-proposer",
     "name": "skill-proposer",
     "summary": "Add a verified-new skill to the Zynkr Skills Pipeline sheet.",
     "category": "tech",
@@ -798,17 +2081,22 @@
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "source_path": "6-tech/skill-sourcer/agents/proposer.md",
-    "install_command": "curl -sL zynkr.ai/s/6.06.md -o ~/.claude/skills/skill-proposer.md",
     "tags": [
       "skill-sourcer",
       "tech",
       "claude",
-      "skill"
+      "subagent"
     ],
     "updated_at": "2026-05-09",
     "description": "Add a verified-new skill to the Zynkr Skills Pipeline sheet. GitHub issue is deferred until human approves (Keep=Y).",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/proposer.md"
   }
 }

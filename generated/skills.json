@@ -18,7 +18,9 @@
     },
     "legacyIpoId": "1.01",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.01"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -43,7 +45,9 @@
     },
     "legacyIpoId": "1.02",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "1.02"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/1.02.md -o ~/.claude/skills/write-newsletter.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -66,12 +70,259 @@
       "output": "csv"
     },
     "legacyIpoId": "1.03",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "1-brand-marketing/writing-agent/CLAUDE.md"
+  },
+  {
+    "id": "1.04",
+    "name": "socratic-ideation-partner",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
+    "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
+    "process": "Evaluate structure, persuasiveness, SEO, and readability; analyze flaws from a third-person, oppositional stance; give scores with reasons; list SEO keywords using allowed Memory; provide directional improvements without rewriting.",
+    "output": "Fixed-format: scoring table, opponent-style critique, SEO keyword list with rationale, and non-rewriting improvement suggestions.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.04",
+    "kind": "subagent",
+    "stage": "0 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
+  },
+  {
+    "id": "1.05",
+    "name": "article-style-selector",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\".\n\n<example>\nContext: The user has a topic and some initial thoughts and wants to structure their article.\nuser: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\"\nassistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\"\n<commentary>\nSince the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to plan their article before writing.\nuser: \"Help me pick a structure for my article about remote work productivity.\"\nassistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\"\n<commentary>\nSince the user needs structure selection help, launch the article-style-selector agent.\n</commentary>\n</example>",
+    "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
+    "process": "Generate either 10 SEO titles or a full SEO strategy. Use Taiwan search habits, five MECE topic categories, keyword groups, outlines, and optimization advice. Never invent memory or rewrite user content.",
+    "output": "SEO titles with reasons and MECE classification, or a complete SEO strategy with keywords, outline, and recommendations.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.05",
+    "kind": "subagent",
+    "stage": "1",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
+  },
+  {
+    "id": "1.06",
+    "name": "article-drafter",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\".\n\n<example>\nContext: The user has received a handoff summary from article-style-selector and is ready to write.\nuser: \"架構和要點都確認了，幫我開始撰寫文章。\"\nassistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\"\n<commentary>\nSince the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to start drafting after planning is complete.\nuser: \"I have my structure and key points ready, let's start drafting.\"\nassistant: \"I'll use the article-drafter agent to draft your article section by section.\"\n<commentary>\nSince the user is ready to draft, launch the article-drafter agent.\n</commentary>\n</example>",
+    "input": "An article draft provided by the author.",
+    "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
+    "output": "Three ready-to-use CTA options with titles, copy, category, sub-goal, placement advice, and validated links.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.06",
+    "kind": "subagent",
+    "stage": "2",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
+  },
+  {
+    "id": "1.07",
+    "name": "article-editor",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\".\n\n<example>\nContext: The user has a completed draft from article-drafter and wants editorial review.\nuser: \"初稿完成了，幫我校稿。\"\nassistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\"\n<commentary>\nSince the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to check their article for edits.\nuser: \"文章寫好了，幫我編輯一下。\"\nassistant: \"I'll use the article-editor agent to review your article and suggest edits.\"\n<commentary>\nSince the user wants editorial review of a completed draft, launch the article-editor agent.\n</commentary>\n</example>",
+    "input": "Completed draft",
+    "process": "Stage 3 in the Writing Agent pipeline, orchestrated by Writing Agent.",
+    "output": "Polished article (fetches forbidden words, applies style guide edits)",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "1.07",
+    "kind": "subagent",
+    "stage": "3",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
+  },
+  {
+    "id": "1.08",
+    "name": "reader-perspective",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\".\n<example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example>\n<example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
+    "input": "A full or partial article text, optionally with a writing or critique goal.",
+    "process": "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights.",
+    "output": "Clear outlines, summaries, virality analysis, reflective dialogue, and a new actionable outline.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.08",
+    "kind": "subagent",
+    "stage": "3.5 (optional)",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
+  },
+  {
+    "id": "1.09",
+    "name": "article-title-suggester",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\".\n<example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example>\n<example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
+    "input": "User provides text in English or another language.",
+    "process": "I translate it into natural, conversational Traditional Chinese using Taiwanese expressions and tone.",
+    "output": "Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.09",
+    "kind": "subagent",
+    "stage": "4",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
+  },
+  {
+    "id": "1.10",
+    "name": "cta-writer",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\".\n<example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example>\n<example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
+    "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
+    "process": "Validate context → select target role → generate role-specific workplace problems using a strict 3-stage IPO pipeline.",
+    "output": "Clear validation result, ranked role options, and 3 realistic workplace problems for AI learning use cases.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "1.10",
+    "kind": "subagent",
+    "stage": "5",
+    "synergy": [
+      "1.03",
+      "1.04",
+      "1.05",
+      "1.06",
+      "1.07",
+      "1.08",
+      "1.09",
+      "1.10"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   {
     "id": "2.01",
@@ -91,8 +342,11 @@
       "output": "csv"
     },
     "legacyIpoId": "2.01",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -107,21 +361,23 @@
     "status": "Done",
     "author": "Peter Tu",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
-    "input": "User’s CV, target job requirements, and past experience descriptions",
-    "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
-    "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",
     "ipoProvenance": {
       "input": "csv",
       "process": "csv",
       "output": "csv"
     },
     "legacyIpoId": "2.02",
-    "kind": "skill",
-    "synergy": [],
-    "installCommand": "curl -sL zynkr.ai/s/2.02.md -o ~/.claude/skills/followup-email-writer.md",
+    "kind": "subagent",
+    "synergy": [
+      "2.01",
+      "2.02"
+    ],
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "sourceFile": "2-sales-consultant/biz-card/agents/followup-email-writer.md"
+    "sourceFile": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
+    "input": "User’s CV, target job requirements, and past experience descriptions",
+    "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
+    "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment"
   },
   {
     "id": "2.03",
@@ -141,12 +397,164 @@
       "output": "csv"
     },
     "legacyIpoId": "2.03",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "7-people/cv-customizer/SKILL.md"
+  },
+  {
+    "id": "2.04",
+    "name": "cv-phase1-job-decoder",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.04",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "input": "User’s resume content and prior contextual analysis from earlier phases.",
+    "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
+    "output": "A structured diagnosis of progression quality, flagged risks, and concrete rewrite recommendations to strengthen the growth narrative."
+  },
+  {
+    "id": "2.05",
+    "name": "cv-phase2-story-extractor",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.05",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "input": "Existing resume content, prior optimization insights, and a fixed CV template",
+    "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
+    "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints."
+  },
+  {
+    "id": "2.06",
+    "name": "cv-phase3-fit-scorer",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.06",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
+    "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A."
+  },
+  {
+    "id": "2.07",
+    "name": "cv-phase4-progression",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.07",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "7-people/cv-customizer/agents/cv-phase4-progression.md",
+    "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
+    "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
+    "output": "Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer."
+  },
+  {
+    "id": "2.08",
+    "name": "cv-phase5-rewriter",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "2.08",
+    "kind": "subagent",
+    "synergy": [
+      "2.03",
+      "2.04",
+      "2.05",
+      "2.06",
+      "2.07",
+      "2.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "7-people/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   {
     "id": "4.01",
@@ -167,7 +575,9 @@
     },
     "legacyIpoId": "4.01",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.01"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -191,8 +601,15 @@
       "output": "frontmatter"
     },
     "legacyIpoId": "4.02",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -217,11 +634,128 @@
     },
     "legacyIpoId": "4.03",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "4.03"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "4-training/srt-optimizer/SKILL.md"
+  },
+  {
+    "id": "4.04",
+    "name": "admin",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "4.04",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "4-training/process-livestream/agents/admin.md"
+  },
+  {
+    "id": "4.05",
+    "name": "content-idea-curator",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "4.05",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "4-training/process-livestream/agents/content-idea-curator.md"
+  },
+  {
+    "id": "4.06",
+    "name": "course-outline-enhancer",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "4.06",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "4-training/process-livestream/agents/course-outline-enhancer.md"
+  },
+  {
+    "id": "4.07",
+    "name": "event-recap",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "4.07",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "4-training/process-livestream/agents/event-recap.md"
+  },
+  {
+    "id": "4.08",
+    "name": "qa-knowledge-base",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "ipoProvenance": {},
+    "legacyIpoId": "4.08",
+    "kind": "subagent",
+    "synergy": [
+      "4.02",
+      "4.04",
+      "4.05",
+      "4.06",
+      "4.07",
+      "4.08"
+    ],
+    "updatedAt": "2026-05-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceFile": "4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   {
     "id": "6.01",
@@ -242,7 +776,9 @@
     },
     "legacyIpoId": "6.01",
     "kind": "skill",
-    "synergy": [],
+    "synergy": [
+      "6.01"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -264,8 +800,14 @@
       "output": "frontmatter"
     },
     "legacyIpoId": "6.02",
-    "kind": "skill",
-    "synergy": [],
+    "kind": "orchestrator",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "installCommand": "curl -sL zynkr.ai/s/6.02.md -o ~/.claude/skills/skill-sourcer.md",
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
@@ -282,9 +824,14 @@
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "ipoProvenance": {},
     "legacyIpoId": "6.03",
-    "kind": "skill",
-    "synergy": [],
-    "installCommand": "curl -sL zynkr.ai/s/6.03.md -o ~/.claude/skills/skill-classifier.md",
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "6-tech/skill-sourcer/agents/classifier.md"
@@ -300,9 +847,14 @@
     "description": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
     "ipoProvenance": {},
     "legacyIpoId": "6.04",
-    "kind": "skill",
-    "synergy": [],
-    "installCommand": "curl -sL zynkr.ai/s/6.04.md -o ~/.claude/skills/skill-deduplicator.md",
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "6-tech/skill-sourcer/agents/deduplicator.md"
@@ -318,9 +870,14 @@
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
     "ipoProvenance": {},
     "legacyIpoId": "6.05",
-    "kind": "skill",
-    "synergy": [],
-    "installCommand": "curl -sL zynkr.ai/s/6.05.md -o ~/.claude/skills/skill-extractor.md",
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "6-tech/skill-sourcer/agents/extractor.md"
@@ -336,9 +893,14 @@
     "description": "Add a verified-new skill to the Zynkr Skills Pipeline sheet. GitHub issue is deferred until human approves (Keep=Y).",
     "ipoProvenance": {},
     "legacyIpoId": "6.06",
-    "kind": "skill",
-    "synergy": [],
-    "installCommand": "curl -sL zynkr.ai/s/6.06.md -o ~/.claude/skills/skill-proposer.md",
+    "kind": "subagent",
+    "synergy": [
+      "6.02",
+      "6.03",
+      "6.04",
+      "6.05",
+      "6.06"
+    ],
     "updatedAt": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
     "sourceFile": "6-tech/skill-sourcer/agents/proposer.md"
