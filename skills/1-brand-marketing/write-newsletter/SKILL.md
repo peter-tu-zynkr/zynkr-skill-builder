@@ -1,6 +1,6 @@
 ---
 name: write-newsletter
-description: Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insights from the past week to surface what Peter has been building and learning. Use this skill whenever Peter says "幫我寫電子報", "來寫電子報", "寫newsletter", "電子報大綱", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will pull the other context automatically.
+description: "Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insights from the past week to surface what Peter has been building and learning. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫 newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will pull the other context automatically."
 category: brand-marketing
 project: write-newsletter
 platform: claude
