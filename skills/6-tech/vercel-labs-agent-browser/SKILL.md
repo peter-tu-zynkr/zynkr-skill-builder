@@ -1,0 +1,64 @@
+---
+name: agent-browser
+description: "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js"
+category: tech
+project: vercel-labs-agent-browser
+platform: claude
+status: Done
+author: Peter Tu
+input: "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture"
+output: "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web Vitals metrics"
+synergy: []
+upstream_repo: vercel-labs/agent-browser
+---
+
+# Agent Browser
+
+A fast, native Rust CLI that gives AI agents full browser control via Chrome DevTools Protocol (CDP). Agents navigate pages, read accessibility-tree snapshots with compact element refs, click, fill, screenshot, manage tabs, handle auth, and run multi-step web workflows — all without Playwright or Node.js.
+
+## Install
+
+```bash
+curl -fsSL https://agent-browser.sh | bash
+```
+
+Or via npm:
+
+```bash
+npx agent-browser@latest
+```
+
+## Load the skill prompt at runtime
+
+```bash
+agent-browser skills get core
+```
+
+This fetches the up-to-date workflow prompt directly from the source — avoids stale context.
+
+## Key commands
+
+```bash
+# Open a page and get an accessibility snapshot
+agent-browser navigate https://example.com
+
+# Click an element by ref ID (from a prior snapshot)
+agent-browser click @e3
+
+# Fill a form field
+agent-browser fill @e7 "hello@example.com"
+
+# Take a screenshot
+agent-browser screenshot
+
+# Natural language control via AI Gateway
+agent-browser chat "go to zynkr.ai and find the pricing section"
+```
+
+## Cloud providers
+
+Supports local Chrome/Chromium, Browserbase, Browserless, Browser Use, Kernel, and AWS Bedrock AgentCore. Configure via environment variables or `~/.agent-browser/config.toml`.
+
+## Observability
+
+Live dashboard at `http://localhost:4848` — viewport, activity feed, and AI chat panel.
