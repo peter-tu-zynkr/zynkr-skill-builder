@@ -25,6 +25,10 @@ jobs:
         working-directory: scripts
         run: npm ci
 
+      - name: Configure git credentials
+        run: |
+          git config --global url."https://${{ secrets.SKILL_DIRECTORY_PAT }}@github.com/".insteadOf "https://github.com/"
+
       - name: Run ingest
         run: |
           REPO_URL="${{ github.event.inputs.repo_url || 'https://github.com/peter-tu-zynkr/zynkr-skills-staging' }}"
