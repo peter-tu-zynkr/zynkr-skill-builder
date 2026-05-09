@@ -9,8 +9,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/newsletter-to-notion/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/newsletter-to-notion/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
     "tags": [
       "newsletter-to-notion",
@@ -27,7 +27,7 @@
     "synergy": [
       "1.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/newsletter-to-notion/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/newsletter-to-notion/SKILL.md"
   },
   "newsletter-to-notion": {
     "id": "1.01",
@@ -39,8 +39,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/newsletter-to-notion/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/newsletter-to-notion/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
     "tags": [
       "newsletter-to-notion",
@@ -57,7 +57,7 @@
     "synergy": [
       "1.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/newsletter-to-notion/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/newsletter-to-notion/SKILL.md"
   },
   "1.02": {
     "id": "1.02",
@@ -69,8 +69,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/write-newsletter/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/write-newsletter/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/1.02.md -o ~/.claude/skills/write-newsletter.md",
     "tags": [
       "write-newsletter",
@@ -87,7 +87,7 @@
     "synergy": [
       "1.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/write-newsletter/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/write-newsletter/SKILL.md"
   },
   "write-newsletter": {
     "id": "1.02",
@@ -99,8 +99,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/write-newsletter/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/write-newsletter/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/1.02.md -o ~/.claude/skills/write-newsletter.md",
     "tags": [
       "write-newsletter",
@@ -117,7 +117,7 @@
     "synergy": [
       "1.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/write-newsletter/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/write-newsletter/SKILL.md"
   },
   "1.03": {
     "id": "1.03",
@@ -129,8 +129,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/CLAUDE.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/CLAUDE.md",
     "install_command": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
     "tags": [
       "writing-agent",
@@ -153,7 +153,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/tree/main/writing-agent"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/tree/main/skills/1-brand-marketing/writing-agent"
   },
   "writing-agent": {
     "id": "1.03",
@@ -165,8 +165,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/CLAUDE.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/CLAUDE.md",
     "install_command": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
     "tags": [
       "writing-agent",
@@ -189,7 +189,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/tree/main/writing-agent"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/tree/main/skills/1-brand-marketing/writing-agent"
   },
   "1.04": {
     "id": "1.04",
@@ -201,8 +201,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -227,7 +227,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
   },
   "writing-agent-socratic-ideation-partner": {
     "id": "1.04",
@@ -239,8 +239,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -265,7 +265,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
   },
   "1.05": {
     "id": "1.05",
@@ -277,8 +277,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -303,7 +303,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
   },
   "writing-agent-article-style-selector": {
     "id": "1.05",
@@ -315,8 +315,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -341,7 +341,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
   },
   "1.06": {
     "id": "1.06",
@@ -353,8 +353,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -379,7 +379,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
   },
   "writing-agent-article-drafter": {
     "id": "1.06",
@@ -391,8 +391,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -417,7 +417,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
   },
   "1.07": {
     "id": "1.07",
@@ -429,8 +429,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -455,7 +455,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
   },
   "writing-agent-article-editor": {
     "id": "1.07",
@@ -467,8 +467,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -493,7 +493,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
   },
   "1.08": {
     "id": "1.08",
@@ -505,8 +505,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -531,7 +531,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
   },
   "writing-agent-reader-perspective": {
     "id": "1.08",
@@ -543,8 +543,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -569,7 +569,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
   },
   "1.09": {
     "id": "1.09",
@@ -581,8 +581,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -607,7 +607,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
   },
   "writing-agent-article-title-suggester": {
     "id": "1.09",
@@ -619,8 +619,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -645,7 +645,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
   },
   "1.10": {
     "id": "1.10",
@@ -657,8 +657,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -683,7 +683,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   "writing-agent-cta-writer": {
     "id": "1.10",
@@ -695,8 +695,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
     "tags": [
       "writing-agent",
       "brand-marketing",
@@ -721,7 +721,7 @@
       "1.09",
       "1.10"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   "2.01": {
     "id": "2.01",
@@ -733,8 +733,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "2-sales-consultant/biz-card/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/2-sales-consultant/biz-card/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
     "tags": [
       "biz-card",
@@ -752,7 +752,7 @@
       "2.01",
       "2.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/2-sales-consultant/biz-card/SKILL.md"
   },
   "biz-card": {
     "id": "2.01",
@@ -764,8 +764,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "2-sales-consultant/biz-card/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/2-sales-consultant/biz-card/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
     "tags": [
       "biz-card",
@@ -783,7 +783,7 @@
       "2.01",
       "2.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/2-sales-consultant/biz-card/SKILL.md"
   },
   "2.02": {
     "id": "2.02",
@@ -795,8 +795,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/2-sales-consultant/biz-card/agents/followup-email-writer.md",
     "tags": [
       "biz-card",
       "business-consulting",
@@ -813,7 +813,7 @@
       "2.01",
       "2.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/agents/followup-email-writer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/2-sales-consultant/biz-card/agents/followup-email-writer.md"
   },
   "biz-card-followup-email-writer": {
     "id": "2.02",
@@ -825,8 +825,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/2-sales-consultant/biz-card/agents/followup-email-writer.md",
     "tags": [
       "biz-card",
       "business-consulting",
@@ -843,7 +843,7 @@
       "2.01",
       "2.02"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/2-sales-consultant/biz-card/agents/followup-email-writer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/2-sales-consultant/biz-card/agents/followup-email-writer.md"
   },
   "2.03": {
     "id": "2.03",
@@ -855,8 +855,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
     "tags": [
       "cv-customizer",
@@ -878,7 +878,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/SKILL.md"
   },
   "cv-customizer": {
     "id": "2.03",
@@ -890,8 +890,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
     "tags": [
       "cv-customizer",
@@ -913,7 +913,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/SKILL.md"
   },
   "2.04": {
     "id": "2.04",
@@ -925,8 +925,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -947,7 +947,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
   },
   "cv-customizer-cv-phase1-job-decoder": {
     "id": "2.04",
@@ -959,8 +959,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -981,7 +981,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase1-job-decoder.md"
   },
   "2.05": {
     "id": "2.05",
@@ -993,8 +993,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1014,7 +1014,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
   },
   "cv-customizer-cv-phase2-story-extractor": {
     "id": "2.05",
@@ -1026,8 +1026,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1047,7 +1047,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase2-story-extractor.md"
   },
   "2.06": {
     "id": "2.06",
@@ -1059,8 +1059,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1080,7 +1080,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
   },
   "cv-customizer-cv-phase3-fit-scorer": {
     "id": "2.06",
@@ -1092,8 +1092,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1113,7 +1113,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase3-fit-scorer.md"
   },
   "2.07": {
     "id": "2.07",
@@ -1125,8 +1125,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase4-progression.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase4-progression.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1147,7 +1147,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase4-progression.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase4-progression.md"
   },
   "cv-customizer-cv-phase4-progression": {
     "id": "2.07",
@@ -1159,8 +1159,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase4-progression.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase4-progression.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1181,7 +1181,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase4-progression.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase4-progression.md"
   },
   "2.08": {
     "id": "2.08",
@@ -1193,8 +1193,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase5-rewriter.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase5-rewriter.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1211,7 +1211,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   "cv-customizer-cv-phase5-rewriter": {
     "id": "2.08",
@@ -1223,8 +1223,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "7-people/cv-customizer/agents/cv-phase5-rewriter.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/7-people/cv-customizer/agents/cv-phase5-rewriter.md",
     "tags": [
       "cv-customizer",
       "business-consulting",
@@ -1241,7 +1241,7 @@
       "2.07",
       "2.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/7-people/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   "4.01": {
     "id": "4.01",
@@ -1253,8 +1253,8 @@
     "platform": "multi",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/polish-lecture-transcript/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/polish-lecture-transcript/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
     "tags": [
       "polish-lecture-transcript",
@@ -1271,7 +1271,7 @@
     "synergy": [
       "4.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/polish-lecture-transcript/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/polish-lecture-transcript/SKILL.md"
   },
   "polish-lecture-transcript": {
     "id": "4.01",
@@ -1283,8 +1283,8 @@
     "platform": "multi",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/polish-lecture-transcript/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/polish-lecture-transcript/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
     "tags": [
       "polish-lecture-transcript",
@@ -1301,7 +1301,7 @@
     "synergy": [
       "4.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/polish-lecture-transcript/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/polish-lecture-transcript/SKILL.md"
   },
   "4.02": {
     "id": "4.02",
@@ -1313,8 +1313,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
     "tags": [
       "process-livestream",
@@ -1336,7 +1336,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/SKILL.md"
   },
   "process-livestream": {
     "id": "4.02",
@@ -1348,8 +1348,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
     "tags": [
       "process-livestream",
@@ -1371,7 +1371,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/SKILL.md"
   },
   "4.03": {
     "id": "4.03",
@@ -1383,8 +1383,8 @@
     "platform": "multi",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/srt-optimizer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/srt-optimizer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
     "tags": [
       "srt-optimizer",
@@ -1401,7 +1401,7 @@
     "synergy": [
       "4.03"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/srt-optimizer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/srt-optimizer/SKILL.md"
   },
   "srt-optimizer": {
     "id": "4.03",
@@ -1413,8 +1413,8 @@
     "platform": "multi",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/srt-optimizer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/srt-optimizer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
     "tags": [
       "srt-optimizer",
@@ -1431,7 +1431,7 @@
     "synergy": [
       "4.03"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/srt-optimizer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/srt-optimizer/SKILL.md"
   },
   "4.04": {
     "id": "4.04",
@@ -1443,8 +1443,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/admin.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/admin.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1461,7 +1461,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/admin.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/admin.md"
   },
   "process-livestream-admin": {
     "id": "4.04",
@@ -1473,8 +1473,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/admin.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/admin.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1491,7 +1491,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/admin.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/admin.md"
   },
   "4.05": {
     "id": "4.05",
@@ -1503,8 +1503,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/content-idea-curator.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/content-idea-curator.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1521,7 +1521,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/content-idea-curator.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/content-idea-curator.md"
   },
   "process-livestream-content-idea-curator": {
     "id": "4.05",
@@ -1533,8 +1533,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/content-idea-curator.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/content-idea-curator.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1551,7 +1551,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/content-idea-curator.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/content-idea-curator.md"
   },
   "4.06": {
     "id": "4.06",
@@ -1563,8 +1563,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/course-outline-enhancer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/course-outline-enhancer.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1581,7 +1581,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/course-outline-enhancer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/course-outline-enhancer.md"
   },
   "process-livestream-course-outline-enhancer": {
     "id": "4.06",
@@ -1593,8 +1593,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/course-outline-enhancer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/course-outline-enhancer.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1611,7 +1611,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/course-outline-enhancer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/course-outline-enhancer.md"
   },
   "4.07": {
     "id": "4.07",
@@ -1623,8 +1623,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/event-recap.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/event-recap.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1641,7 +1641,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/event-recap.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/event-recap.md"
   },
   "process-livestream-event-recap": {
     "id": "4.07",
@@ -1653,8 +1653,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/event-recap.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/event-recap.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1671,7 +1671,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/event-recap.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/event-recap.md"
   },
   "4.08": {
     "id": "4.08",
@@ -1683,8 +1683,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/qa-knowledge-base.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/qa-knowledge-base.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1701,7 +1701,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/qa-knowledge-base.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   "process-livestream-qa-knowledge-base": {
     "id": "4.08",
@@ -1713,8 +1713,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "4-training/process-livestream/agents/qa-knowledge-base.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/4-training/process-livestream/agents/qa-knowledge-base.md",
     "tags": [
       "process-livestream",
       "training",
@@ -1731,7 +1731,7 @@
       "4.07",
       "4.08"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/4-training/process-livestream/agents/qa-knowledge-base.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   "6.01": {
     "id": "6.01",
@@ -1743,8 +1743,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "5-devops/agent-browser/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/5-devops/agent-browser/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
     "tags": [
       "agent-browser",
@@ -1761,7 +1761,7 @@
     "synergy": [
       "6.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/5-devops/agent-browser/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/5-devops/agent-browser/SKILL.md"
   },
   "agent-browser": {
     "id": "6.01",
@@ -1773,8 +1773,8 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "5-devops/agent-browser/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/5-devops/agent-browser/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
     "tags": [
       "agent-browser",
@@ -1791,7 +1791,7 @@
     "synergy": [
       "6.01"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/5-devops/agent-browser/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/5-devops/agent-browser/SKILL.md"
   },
   "6.02": {
     "id": "6.02",
@@ -1803,8 +1803,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/6.02.md -o ~/.claude/skills/skill-sourcer.md",
     "tags": [
       "skill-sourcer",
@@ -1824,7 +1824,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/SKILL.md"
   },
   "skill-sourcer": {
     "id": "6.02",
@@ -1836,8 +1836,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/SKILL.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/6.02.md -o ~/.claude/skills/skill-sourcer.md",
     "tags": [
       "skill-sourcer",
@@ -1857,7 +1857,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/SKILL.md"
   },
   "6.03": {
     "id": "6.03",
@@ -1869,8 +1869,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/classifier.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/classifier.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -1887,7 +1887,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/classifier.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/classifier.md"
   },
   "skill-sourcer-classifier": {
     "id": "6.03",
@@ -1899,8 +1899,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/classifier.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/classifier.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -1917,7 +1917,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/classifier.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/classifier.md"
   },
   "6.04": {
     "id": "6.04",
@@ -1929,8 +1929,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/deduplicator.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/deduplicator.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -1947,7 +1947,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/deduplicator.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/deduplicator.md"
   },
   "skill-sourcer-deduplicator": {
     "id": "6.04",
@@ -1959,8 +1959,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/deduplicator.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/deduplicator.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -1977,7 +1977,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/deduplicator.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/deduplicator.md"
   },
   "6.05": {
     "id": "6.05",
@@ -1989,8 +1989,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/extractor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/extractor.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -2007,7 +2007,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/extractor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/extractor.md"
   },
   "skill-sourcer-extractor": {
     "id": "6.05",
@@ -2019,8 +2019,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/extractor.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/extractor.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -2037,7 +2037,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/extractor.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/extractor.md"
   },
   "6.06": {
     "id": "6.06",
@@ -2049,8 +2049,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/proposer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/proposer.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -2067,7 +2067,7 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/proposer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/proposer.md"
   },
   "skill-sourcer-proposer": {
     "id": "6.06",
@@ -2079,8 +2079,8 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
-    "source_path": "6-tech/skill-sourcer/agents/proposer.md",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production",
+    "source_path": "skills/6-tech/skill-sourcer/agents/proposer.md",
     "tags": [
       "skill-sourcer",
       "tech",
@@ -2097,6 +2097,6 @@
       "6.05",
       "6.06"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging/blob/main/6-tech/skill-sourcer/agents/proposer.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skills-production/blob/main/skills/6-tech/skill-sourcer/agents/proposer.md"
   }
 }
