@@ -1,0 +1,317 @@
+[
+  {
+    "id": "1.01",
+    "slug": "newsletter-to-notion",
+    "name": "newsletter-to-notion",
+    "summary": "Sync a newsletter article from Google Docs to the Notion Content DB.",
+    "category": "brand-marketing",
+    "project": "newsletter-to-notion",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/newsletter-to-notion/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
+    "tags": [
+      "newsletter-to-notion",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "1.02",
+    "slug": "write-newsletter",
+    "name": "write-newsletter",
+    "summary": "Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insight",
+    "category": "brand-marketing",
+    "project": "write-newsletter",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/write-newsletter/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.02.md -o ~/.claude/skills/write-newsletter.md",
+    "tags": [
+      "write-newsletter",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "1.03",
+    "slug": "writing-agent",
+    "name": "Writing Agent",
+    "summary": "User provides an article draft; a Style Guide exists in the knowledge base.",
+    "category": "brand-marketing",
+    "project": "writing-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "1-brand-marketing/writing-agent/CLAUDE.md",
+    "install_command": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
+    "tags": [
+      "writing-agent",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "2.01",
+    "slug": "biz-card",
+    "name": "biz-card",
+    "summary": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
+    "category": "business-consulting",
+    "project": "biz-card",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "2-sales-consultant/biz-card/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
+    "tags": [
+      "biz-card",
+      "business-consulting",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "2.02",
+    "slug": "followup-email-writer",
+    "name": "followup-email-writer",
+    "summary": "Writes a personalized follow-up email for a business contact using their card info and company research.",
+    "category": "business-consulting",
+    "project": "biz-card",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
+    "install_command": "curl -sL zynkr.ai/s/2.02.md -o ~/.claude/skills/followup-email-writer.md",
+    "tags": [
+      "biz-card",
+      "business-consulting",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "2.03",
+    "slug": "cv-customizer",
+    "name": "cv-customizer",
+    "summary": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
+    "category": "business-consulting",
+    "project": "cv-customizer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "7-people/cv-customizer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
+    "tags": [
+      "cv-customizer",
+      "business-consulting",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "4.01",
+    "slug": "polish-lecture-transcript",
+    "name": "polish-lecture-transcript",
+    "summary": "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese.",
+    "category": "training",
+    "project": "polish-lecture-transcript",
+    "platform": "multi",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/polish-lecture-transcript/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
+    "tags": [
+      "polish-lecture-transcript",
+      "training",
+      "multi",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "4.02",
+    "slug": "process-livestream",
+    "name": "process-livestream",
+    "summary": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
+    "category": "training",
+    "project": "process-livestream",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/process-livestream/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
+    "tags": [
+      "process-livestream",
+      "training",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "4.03",
+    "slug": "srt-optimizer",
+    "name": "srt-optimizer",
+    "summary": "Minimally clean subtitle .srt files into readable Traditional Chinese while preserving original wording, cue timing, and subtitle alignment.",
+    "category": "training",
+    "project": "srt-optimizer",
+    "platform": "multi",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "4-training/srt-optimizer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
+    "tags": [
+      "srt-optimizer",
+      "training",
+      "multi",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.01",
+    "slug": "agent-browser",
+    "name": "agent-browser",
+    "summary": "Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data, and automate any browser task.",
+    "category": "tech",
+    "project": "agent-browser",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "5-devops/agent-browser/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.01.md -o ~/.claude/skills/agent-browser.md",
+    "tags": [
+      "agent-browser",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.02",
+    "slug": "skill-sourcer",
+    "name": "skill-sourcer",
+    "summary": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the pipeline index, and propose new skills for review.",
+    "category": "tech",
+    "project": "skill-sourcer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "6-tech/skill-sourcer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.02.md -o ~/.claude/skills/skill-sourcer.md",
+    "tags": [
+      "skill-sourcer",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.03",
+    "slug": "classifier",
+    "name": "skill-classifier",
+    "summary": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
+    "category": "tech",
+    "project": "skill-sourcer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "6-tech/skill-sourcer/agents/classifier.md",
+    "install_command": "curl -sL zynkr.ai/s/6.03.md -o ~/.claude/skills/skill-classifier.md",
+    "tags": [
+      "skill-sourcer",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.04",
+    "slug": "deduplicator",
+    "name": "skill-deduplicator",
+    "summary": "Check an incoming skill against the Zynkr Skills Pipeline index for duplication or semantic overlap",
+    "category": "tech",
+    "project": "skill-sourcer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "6-tech/skill-sourcer/agents/deduplicator.md",
+    "install_command": "curl -sL zynkr.ai/s/6.04.md -o ~/.claude/skills/skill-deduplicator.md",
+    "tags": [
+      "skill-sourcer",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.05",
+    "slug": "extractor",
+    "name": "skill-extractor",
+    "summary": "Parse raw input (text, URL, file) and extract structured skill intent",
+    "category": "tech",
+    "project": "skill-sourcer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "6-tech/skill-sourcer/agents/extractor.md",
+    "install_command": "curl -sL zynkr.ai/s/6.05.md -o ~/.claude/skills/skill-extractor.md",
+    "tags": [
+      "skill-sourcer",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  },
+  {
+    "id": "6.06",
+    "slug": "proposer",
+    "name": "skill-proposer",
+    "summary": "Add a verified-new skill to the Zynkr Skills Pipeline sheet.",
+    "category": "tech",
+    "project": "skill-sourcer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "source_path": "6-tech/skill-sourcer/agents/proposer.md",
+    "install_command": "curl -sL zynkr.ai/s/6.06.md -o ~/.claude/skills/skill-proposer.md",
+    "tags": [
+      "skill-sourcer",
+      "tech",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-09"
+  }
+]
