@@ -7,23 +7,20 @@ import {
   buildMarketplaceArtifacts,
   loadNormalizedSkills,
   writeMarketplaceArtifacts,
-} from "./marketplace-lib.js";
+} from "./marketplace-lib.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const GENERATED_SKILLS_PATH = path.join(ROOT, "generated", "skills.json");
 const GENERATED_DIR = path.join(ROOT, "generated");
 const WEBSITE_DATA_DIR = path.resolve(ROOT, "..", "zynkr-website-fe", "data");
-const PUBLISHED_REPO_URL = "https://github.com/peter-tu-zynkr/zynkr-skills";
-
 export function syncMarketplaceArtifacts(): void {
   if (!fs.existsSync(GENERATED_SKILLS_PATH)) {
     throw new Error(`Missing normalized skills artifact: ${GENERATED_SKILLS_PATH}`);
   }
 
   const normalizedSkills = loadNormalizedSkills(GENERATED_SKILLS_PATH);
-  const publishedSkills = normalizedSkills.filter((skill) => skill.sourceRepo === PUBLISHED_REPO_URL);
-  const artifacts = buildMarketplaceArtifacts(publishedSkills);
+  const artifacts = buildMarketplaceArtifacts(normalizedSkills);
 
   writeMarketplaceArtifacts(GENERATED_DIR, artifacts);
 
