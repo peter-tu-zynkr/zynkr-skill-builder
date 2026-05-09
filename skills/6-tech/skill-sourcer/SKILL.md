@@ -10,6 +10,10 @@ input: "GitHub link, URL, file path, or pasted raw text describing a potential s
 output: "Row added to Zynkr Skills Pipeline sheet (proposed, Keep=?), and optionally a GitHub issue in peter-tu-zynkr/zynkr-skills-idea if approved"
 synergy: []
 disable-model-invocation: true
+security_audits:
+  gen_agent_trust_hub: pending
+  socket: pending
+  snyk: pending
 ---
 
 # Skill Sourcer

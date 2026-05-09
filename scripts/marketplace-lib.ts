@@ -4,6 +4,12 @@ import path from "path";
 export type SkillStatus = "Done" | "WIP" | "Not started" | "Pause" | "Out dated";
 export type SkillPlatform = "gpt" | "claude" | "gemini" | "multi";
 export type SkillKind = "skill" | "orchestrator" | "subagent";
+export type AuditStatus = "pass" | "fail" | "pending";
+export type SecurityAudits = {
+  gen_agent_trust_hub?: AuditStatus;
+  socket?: AuditStatus;
+  snyk?: AuditStatus;
+};
 
 export type NormalizedSkillRecord = {
   id: string;
@@ -30,6 +36,7 @@ export type NormalizedSkillRecord = {
   slug?: string;
   upstreamRepo?: string;
   githubStars?: number;
+  securityAudits?: SecurityAudits;
 };
 
 export type MarketplaceIndexEntry = {
@@ -53,6 +60,7 @@ export type MarketplaceIndexEntry = {
 };
 
 export type MarketplaceDetailEntry = MarketplaceIndexEntry & {
+  security_audits?: SecurityAudits;
   description?: string;
   input?: string;
   process?: string;
@@ -265,6 +273,7 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
         stage: ensureString(skill.stage),
         synergy: Array.isArray(skill.synergy) ? skill.synergy : [],
         github_url: buildGithubUrl(skill, repoUrl, sourcePath),
+        security_audits: skill.securityAudits,
       };
 
       return detailEntry;
@@ -272,7 +281,7 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
     .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
   return {
-    index: detailEntries.map(({ description, input, process, output, kind, stage, synergy, github_url, ...entry }) => entry),
+    index: detailEntries.map(({ description, input, process, output, kind, stage, synergy, github_url, security_audits, ...entry }) => entry),
     detail: Object.fromEntries(
       detailEntries.flatMap((entry) => [
         [entry.id, entry],

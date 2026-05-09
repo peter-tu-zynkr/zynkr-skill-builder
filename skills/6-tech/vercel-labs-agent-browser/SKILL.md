@@ -10,6 +10,10 @@ input: "CLI instructions — URLs to open, actions to perform, element selectors
 output: "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web Vitals metrics"
 synergy: []
 upstream_repo: vercel-labs/agent-browser
+security_audits:
+  gen_agent_trust_hub: pending
+  socket: pending
+  snyk: pending
 ---
 
 # Agent Browser

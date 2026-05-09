@@ -65,6 +65,11 @@ const SkillFrontmatter = z.object({
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
   upstream_repo: z.string().optional(),
+  security_audits: z.object({
+    gen_agent_trust_hub: z.enum(["pass", "fail", "pending"]).optional(),
+    socket: z.enum(["pass", "fail", "pending"]).optional(),
+    snyk: z.enum(["pass", "fail", "pending"]).optional(),
+  }).optional(),
 });
 
 type SkillFrontmatter = z.infer<typeof SkillFrontmatter>;
@@ -763,6 +768,7 @@ function ingestProjectSkills(
     sourceRepo: repoUrl,
     sourceFile: skillFile.relPath,
     upstreamRepo: manifest.upstream_repo,
+    securityAudits: manifest.security_audits,
   });
   ingested.push({
     id: orchestratorId,
@@ -814,6 +820,7 @@ function ingestProjectSkills(
       sourceRepo: repoUrl,
       sourceFile,
       upstreamRepo: manifest.upstream_repo,
+      securityAudits: manifest.security_audits,
     });
 
     ingested.push({
@@ -935,6 +942,7 @@ function ingestRepoAsPipeline(
     sourceRepo: repoUrl,
     sourceFile: orchestratorSourceFile,
     upstreamRepo: manifest.upstream_repo,
+    securityAudits: manifest.security_audits,
   });
   ingested.push({
     id: orchestratorId,
@@ -1002,6 +1010,7 @@ function ingestRepoAsPipeline(
       sourceRepo: repoUrl,
       sourceFile,
       upstreamRepo: manifest.upstream_repo,
+      securityAudits: manifest.security_audits,
     });
 
     ingested.push({
@@ -1299,6 +1308,7 @@ async function main() {
           sourceRepo: repoUrl,
           sourceFile,
           upstreamRepo: fm.upstream_repo,
+          securityAudits: fm.security_audits,
         };
 
         const outPath = path.join(CONTENT_DIR, `${id}.md`);
