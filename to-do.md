@@ -12,7 +12,7 @@ For shipped work and the progress log, see `plan.md`.
 
 **Current facts:**
 - `zynkr-website-fe` is the canonical frontend (HTML/CSS/JS on Vercel)
-- 32 records committed in `content/skills/` spanning categories 1, 2, 4, 6
+- 33 records committed in `content/skills/` spanning categories 1, 2, 4, 6
 - Stack confirmed: Vercel (FE + BE deployment), Supabase (skills database — read mirror live since 2026-05-12, Phase 1 of Skills API Roadmap shipped — see `plan.md`)
 
 ---

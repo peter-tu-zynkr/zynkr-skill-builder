@@ -19,10 +19,10 @@ export function syncMarketplaceArtifacts(): void {
     throw new Error(`Missing normalized skills artifact: ${GENERATED_SKILLS_PATH}`);
   }
 
-  const PRODUCTION_URL = "https://github.com/peter-tu-zynkr/zynkr-skills-production";
+  const CANONICAL_REPO_URL = "https://github.com/peter-tu-zynkr/zynkr-skill-builder";
   const normalizedSkills = loadNormalizedSkills(GENERATED_SKILLS_PATH).map(skill => ({
     ...skill,
-    sourceRepo: PRODUCTION_URL,
+    sourceRepo: CANONICAL_REPO_URL,
     sourceFile: skill.sourceFile ? `skills/${skill.sourceFile}` : skill.sourceFile,
   }));
   const artifacts = buildMarketplaceArtifacts(normalizedSkills);

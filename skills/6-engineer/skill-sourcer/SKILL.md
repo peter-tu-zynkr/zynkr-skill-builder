@@ -20,7 +20,7 @@ security_audits:
 
 Ingest a skill candidate from any source, classify it, check for duplicates in the pipeline index, and propose it for review.
 
-<!-- SKILL BASE PATH: /Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skills-staging/6-tech/skill-sourcer/agents -->
+<!-- SKILL BASE PATH: /Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skill-builder/skills/6-engineer/skill-sourcer/agents -->
 
 ---
 
