@@ -1201,9 +1201,11 @@ async function main() {
   const skillIdOverrides = loadSkillIdOverrides();
 
   const isLocalPath = !arg.startsWith("http");
-  // Keep the staging URL as canonical namespace so existing skill IDs don't change
+  // Canonical source repo. Was zynkr-skills-staging (archived 2026-05-09);
+  // moved to zynkr-skill-builder. Existing skill IDs are preserved because
+  // ingest dedupes on (sourceRepo, sourceFile) and records were rewritten in place.
   const repoUrl = isLocalPath
-    ? (process.argv[3] ?? "https://github.com/peter-tu-zynkr/zynkr-skills-staging")
+    ? (process.argv[3] ?? "https://github.com/peter-tu-zynkr/zynkr-skill-builder")
     : arg;
 
   let tmpDir: string;
