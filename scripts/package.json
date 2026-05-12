@@ -6,14 +6,15 @@
   "scripts": {
     "ingest": "tsx ingest.ts",
     "build-marketplace": "tsx build-marketplace.ts",
-    "check-ipo": "tsx check-ipo-drift.ts"
+    "check-ipo": "tsx check-ipo-drift.ts",
+    "validate": "tsx validate-skill.ts"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^20.17.24",
+    "@types/node": "^22.0.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }

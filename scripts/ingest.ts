@@ -624,7 +624,10 @@ function cleanupRepoRecords(
 
     const normalizedKey = buildSourceKey(repoUrl, record.sourceFile);
     const isManagedPipelineRecord =
-      record.kind === "subagent" || record.kind === "orchestrator" || record.sourceFile === "CLAUDE.md";
+      record.kind === "subagent" ||
+      record.kind === "orchestrator" ||
+      record.sourceFile === "CLAUDE.md" ||
+      record.sourceFile.endsWith("/CLAUDE.md");
 
     if (!isManagedPipelineRecord) {
       continue;
@@ -635,6 +638,25 @@ function cleanupRepoRecords(
 
     if (shouldDelete && fs.existsSync(record.filePath)) {
       fs.rmSync(record.filePath, { force: true });
+    }
+  }
+}
+
+/**
+ * Repo-wide orphan sweep. Catches records whose `sourceFile` no longer exists
+ * in the scan tree — typically the aftermath of a taxonomy rename or a deleted
+ * skill folder. `cleanupRepoRecords` is scoped per `(repoUrl, project)` so it
+ * cannot see records whose project name changed; this complements it.
+ */
+function cleanupOrphanedRepoRecords(repoUrl: string, repoRoot: string) {
+  const existing = loadExistingSkillRecords();
+  for (const record of existing) {
+    if (record.sourceRepo !== repoUrl || !record.sourceFile) continue;
+    const sourcePath = path.join(repoRoot, record.sourceFile);
+    if (fs.existsSync(sourcePath)) continue;
+    if (fs.existsSync(record.filePath)) {
+      fs.rmSync(record.filePath, { force: true });
+      console.log(`  🧹  pruned orphan ${path.basename(record.filePath)}  —  sourceFile missing: ${record.sourceFile}`);
     }
   }
 }
@@ -703,7 +725,13 @@ function ingestProjectSkills(
 
   const skillFile = readRepoMarkdownFile(monorepoRoot, skillMdPath);
   const parsed = SkillFrontmatter.safeParse(skillFile.data);
-  if (!parsed.success) return [];
+  if (!parsed.success) {
+    const issues = parsed.error.issues
+      .map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`)
+      .join("; ");
+    console.warn(`  ⚠  ${skillFile.relPath}  —  frontmatter invalid: ${issues}`);
+    return [];
+  }
 
   const manifest = parsed.data;
   const prefix = TAXONOMY[manifest.category];
@@ -1324,6 +1352,10 @@ async function main() {
       }
     }
   }
+
+  // Repo-wide orphan sweep — catches records whose sourceFile vanished
+  // (e.g. taxonomy rename, deleted skill folder) before regenerating JSON.
+  cleanupOrphanedRepoRecords(repoUrl, tmpDir);
 
   // Cleanup temp dir (only if we cloned; don't delete local workspace)
   if (shouldCleanupTmpDir) {

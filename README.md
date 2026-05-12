@@ -1,5 +1,7 @@
 # Zynkr Skill Directory
 
+[![Ingest skills](https://github.com/peter-tu-zynkr/zynkr-skill-builder/actions/workflows/ingest-skills.yml/badge.svg)](https://github.com/peter-tu-zynkr/zynkr-skill-builder/actions/workflows/ingest-skills.yml)
+
 Browsable directory for Zynkr AI assistants, workflows, and Claude skills.
 
 ## Pipeline Role

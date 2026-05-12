@@ -10,10 +10,10 @@ any input (GitHub link / URL / text)
 Zynkr Skills Pipeline (Google Sheet)
       ↓  row added (Status=proposed, Keep=?)
       ↓  human sets Keep=Y
-zynkr-skills-idea (GitHub issue auto-created)
+zynkr-skill-idea (GitHub issue auto-created)
       ↓
       ↓  create skills/[category]/[slug]/SKILL.md
-zynkr-skills-production
+zynkr-skill-builder
       ↓  push to main → ingest-skills.yml fires
       ↓  ingest.ts + build-marketplace.ts → generated/*.json committed
       ↓
@@ -26,8 +26,8 @@ zynkr.ai/ai-skills-marketplace (fetches raw GitHub URLs on page load)
 
 | Repo | Visibility | Role |
 |---|---|---|
-| [`zynkr-skills-idea`](https://github.com/peter-tu-zynkr/zynkr-skills-idea) | Private | Ideas backlog (GitHub issues) |
-| [`zynkr-skills-production`](https://github.com/peter-tu-zynkr/zynkr-skills-production) | **Public** | Skill source + CI/CD + generated artifacts |
+| [`zynkr-skill-idea`](https://github.com/peter-tu-zynkr/zynkr-skill-idea) | Private | Ideas backlog (GitHub issues) |
+| [`zynkr-skill-builder`](https://github.com/peter-tu-zynkr/zynkr-skill-builder) | **Public** | Skill source + CI/CD + generated artifacts |
 | [`zynkr-website`](https://github.com/peter-tu-zynkr/zynkr-website) | — | Frontend — reads from production raw URLs at runtime |
 | ~~`zynkr-skills-staging`~~ | Archived | Merged into production — no longer used |
 
@@ -49,14 +49,14 @@ Runs 4 subagents in sequence:
 
 On approval (`Keep=Y`):
 - Row updated to `Status=approved`
-- GitHub issue opened in `zynkr-skills-idea` with label `skill-proposal`
+- GitHub issue opened in `zynkr-skill-idea` with label `skill-proposal`
 - Issue URL written back to column K
 
 ---
 
 ## Gate 2 — Build & Ship
 
-**Repo:** [`zynkr-skills-production`](https://github.com/peter-tu-zynkr/zynkr-skills-production)
+**Repo:** [`zynkr-skill-builder`](https://github.com/peter-tu-zynkr/zynkr-skill-builder)
 
 ### Folder structure
 
@@ -151,14 +151,19 @@ No PAT needed — `GITHUB_TOKEN` with `contents: write` covers everything. The s
 
 **File:** [`ai-skills-marketplace.html`](https://github.com/peter-tu-zynkr/zynkr-website/blob/main/ai-skills-marketplace.html)
 
-Fetches live on every page load — no Vercel redeploy needed:
+Fetches live on every page load — no Vercel redeploy needed. Phase 1 (shipped 2026-05-12) hits Vercel + Supabase first, with the raw-GitHub URLs as a fallback for the ~2-week stabilisation window:
 
 ```javascript
-const SKILLS_INDEX_URL = 'https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skills-production/main/generated/skills-index.json';
-const SKILLS_DETAIL_URL = 'https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skills-production/main/generated/skills-detail.json';
+// Primary: Vercel Functions backed by the Supabase read mirror
+const SKILLS_INDEX_URL = '/api/skills';
+const SKILLS_DETAIL_URL = '/api/skills/details';
+
+// Fallback (to be removed after ~2 weeks of clean /api/skills* logs)
+const FALLBACK_INDEX_URL = 'https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skill-builder/main/generated/skills-index.json';
+const FALLBACK_DETAIL_URL = 'https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skill-builder/main/generated/skills-detail.json';
 ```
 
-GitHub CDN caches raw URLs for ~5 minutes.
+After each ingest run, `ingest-skills.yml` POSTs `generated/skills-detail.json` to `/api/skills/sync` (HMAC-SHA-256 signed) so the Supabase `skills` table mirrors the latest push. The raw-GitHub fallback still serves stale-but-correct data if the API or DB is down. GitHub CDN caches raw URLs for ~5 minutes.
 
 ---
 

@@ -48,7 +48,7 @@ Canonical task tracker for the Zynkr skill directory.
 ### zynkr-website-fe
 
 - [x] Deduplicate fetch URL ✓ 2026-05-12 (superseded by Phase 1 — both files now hit `/api/skills*` with a single raw-GitHub fallback path)
-- [ ] Add fetch error feedback — `ai-skills-marketplace.html` still silently swallows errors after the API+fallback both fail; show a "Failed to load skills — please refresh" banner
+- [x] Add fetch error feedback ✓ 2026-05-12 (`ai-skills-marketplace.html` now reveals a bilingual "Failed to load skills — please refresh" banner and fires a `skills_load_failed` GA event when both `/api/skills*` and the raw-GitHub fallback fail)
 - [ ] Remove raw-GitHub `FALLBACK_URLS` from `app.js` + `ai-skills-marketplace.html` after ~2 weeks of clean `/api/skills*` logs (earliest: 2026-05-26)
 - [ ] Optional: capture the 3 non-canonical fields on record `6.12` (`upstream_repo`, `github_stars`, `github_forks`) in the `skills` table — currently dropped on sync; FE doesn't consume them so low priority
 
@@ -71,13 +71,14 @@ Surfaced while shipping `inbound-sales-project-init`. The first push hit a silen
 
 **P0 — stop silent failures**
 
-- [ ] **Log Zod errors instead of returning `[]` in `ingestProjectSkills`.** `scripts/ingest.ts:701-706` currently swallows frontmatter validation failures; the operator only sees "(no ingestible skills found)". Push the error into the existing `skipped` list so the per-file reason prints at the end of the run. ~5 lines, highest leverage item on this list.
-- [ ] **Add a local validator authors can run before pushing.** Wrap the existing `SkillFrontmatter` Zod schema in `scripts/validate-skill.ts <path>` so `npm run validate skills/2-business-consulting/...` exits non-zero on bad frontmatter. Eliminates the round-trip-through-CI debugging loop.
+- [x] **Log Zod errors instead of returning `[]` in `ingestProjectSkills`.** ✓ 2026-05-12 — `scripts/ingest.ts:704-712` now warns inline with the `sourceFile` and a flattened `path: message` issue list before returning, so silent skips become visible.
+- [x] **Add a local validator authors can run before pushing.** ✓ 2026-05-12 — `scripts/validate-skill.ts` + `npm run validate`. Accepts a `SKILL.md`, a skill folder, or the whole `skills/` tree; exits non-zero on bad frontmatter. Schema mirrors `ingest.ts`; current tree (10 SKILL.md files) is clean.
 
 **P1 — self-heal taxonomy renames**
 
-- [ ] **Patch `cleanupRepoRecords` to prune orphans by missing `sourceFile`.** Today's `6.07.md` was a leftover from the `6-tech → 6-engineer` rename; the cleanup keys off `(repoUrl, project)` but doesn't notice when a record's `sourceFile` no longer exists in the scan tree. Adding that check (~20 lines) makes future renames self-healing instead of producing duplicate-slug crashes downstream.
-- [ ] **Audit `scripts/ingest.ts` for other unconditional writes to optional paths.** The `frontend/lib/generated-skills.json` write crashed CI for 3 days after the frontend dir was deleted. Patched in `07fc0ea1` with an `existsSync` guard — sweep the file for similar landmines.
+- [x] **Patch `cleanupRepoRecords` to prune orphans by missing `sourceFile`.** ✓ 2026-05-12 — Added repo-wide `cleanupOrphanedRepoRecords(repoUrl, repoRoot)` invoked from `main()` after all projects ingest. It walks every `content/skills/*.md` whose `sourceRepo` matches the run, and prunes any record whose `sourceFile` no longer exists on disk (logged with a `🧹` line). Complements the per-`(repoUrl, project)` cleanup so cross-project renames are self-healing. Also relaxed the per-project `isManagedPipelineRecord` check from `sourceFile === "CLAUDE.md"` to also accept `.../CLAUDE.md` (monorepo paths) so older orchestrator records with matching `(repoUrl, project)` no longer outlive their re-ingest.
+- [ ] **Follow-up: orphan records from the pre-monorepo writing-agent ingest.** Smoke test surfaced untracked local files `content/skills/1.11.md`–`1.19.md` with `sourceRepo: …/writing-agent` and `sourceRepo: …/zynkr-skills` (both repos no longer the canonical source). They duplicate `1.03`–`1.10`'s `writing-agent` slug locally and break `build-marketplace.ts` if run on this checkout. They are *not* in git (so CI is unaffected), but should be either (a) re-rooted to `…/zynkr-skill-builder` if treated as canonical, or (b) deleted. Decide which set is canonical before running ingest locally.
+- [x] **Audit `scripts/ingest.ts` for other unconditional writes to optional paths.** ✓ 2026-05-12 — Swept all `fs.{writeFileSync,mkdirSync,rmSync,…}` calls in `ingest.ts`, `build-marketplace.ts`, and `marketplace-lib.ts`. Findings: `FRONTEND_GENERATED` already guarded (`07fc0ea1`); `WEBSITE_DATA_DIR` write guarded by `existsSync(path.dirname(...))`; `CONTENT_DIR`/`GENERATED_DIR` created with `recursive: true` at startup; all `rmSync` calls use `force: true`. No new landmines.
 
 **P1 — make authoring conventions discoverable**
 
@@ -86,9 +87,9 @@ Surfaced while shipping `inbound-sales-project-init`. The first push hit a silen
 
 **P2 — doc hygiene & CI visibility**
 
-- [ ] **Refresh `architecture.md` to use current repo names.** Still references `zynkr-skills-production` and `zynkr-skills-idea`; the rename commit (`e6ac06cb`) updated most surfaces but missed this one. Also remove the description of the `frontend/lib/generated-skills.json` write step in the CI section — that write was deleted.
-- [ ] **Add a CI status badge to `README.md`.** Today's `Ingest skills` workflow had been red for 3 days; nothing made that visible until I tried to push and got a notification. A badge at the top of the README turns the silence into a glance-test.
-- [ ] **Bump GitHub Actions Node version.** `.github/workflows/ingest-skills.yml` uses `node-version: 20`; GitHub will force Node 24 starting June 2026. Move to `22` (current LTS) ahead of the deprecation.
+- [x] **Refresh `architecture.md` to use current repo names.** ✓ 2026-05-12 — Replaced `zynkr-skills-production` → `zynkr-skill-builder` and `zynkr-skills-idea` → `zynkr-skill-idea` throughout. Also rewrote the FE section to document the Phase 1 `/api/skills*` primary + raw-GitHub fallback flow and the post-ingest HMAC sync to `/api/skills/sync`.
+- [x] **Add a CI status badge to `README.md`.** ✓ 2026-05-12 — Added the `Ingest skills` workflow badge directly under the H1 in `README.md`.
+- [x] **Bump GitHub Actions Node version.** ✓ 2026-05-12 — `.github/workflows/ingest-skills.yml` now uses `node-version: 22`; `scripts/package.json` `@types/node` bumped to `^22.0.0` to match.
 
 **P2 — skill authoring path convention**
 
