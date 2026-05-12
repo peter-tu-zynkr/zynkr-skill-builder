@@ -1098,9 +1098,14 @@ async function generateSkillsJson(
 
   const json = JSON.stringify(enrichedSkills, null, 2);
   fs.writeFileSync(path.join(GENERATED_DIR, "skills.json"), json);
-  fs.writeFileSync(FRONTEND_GENERATED, json);
   console.log(`\n  → generated/skills.json updated (${enrichedSkills.length} skills total)`);
-  console.log(`  → frontend/lib/generated-skills.json updated`);
+
+  // The legacy frontend was removed in 9895fdd4; only write the mirror copy
+  // if the destination directory still exists (e.g. local dev with a checkout).
+  if (fs.existsSync(path.dirname(FRONTEND_GENERATED))) {
+    fs.writeFileSync(FRONTEND_GENERATED, json);
+    console.log(`  → frontend/lib/generated-skills.json updated`);
+  }
   syncMarketplaceArtifacts();
 }
 

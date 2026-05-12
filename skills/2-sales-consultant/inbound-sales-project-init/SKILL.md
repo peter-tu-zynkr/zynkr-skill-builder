@@ -1,7 +1,7 @@
 ---
 name: inbound-sales-project-init
 description: "Intake an inbound sales / consulting email, gather all of its context, create a project folder in Drive with a structured context doc + attachments, and create a matching Notion ticket in the Consultant service DB with status 'Consult intake'. Trigger whenever the user forwards or references an inbound lead email and says things like '幫我建專案', 'create a ticket for this', 'intake this email', 'kick off this lead', 'log this inbound', or shares an inbound proposal / introduction / 講座提案 / 合作邀請 and wants it stacked up into a trackable project — even if they only say 'I got this email' with intent to process it."
-category: sales-consultant
+category: business-consulting
 project: inbound-sales-project-init
 platform: claude
 status: Done
