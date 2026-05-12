@@ -63,6 +63,35 @@ Canonical task tracker for the Zynkr skill directory.
   - **SKILL.md spec** — formalize required fields and structure so new skills are consistent
 - [ ] Apply updated spec to existing skills when ingesting the next batch
 
+### Ingest pipeline robustness (2026-05-12 retrospective)
+
+Surfaced while shipping `inbound-sales-project-init`. The first push hit a silent skip plus a 3-day-old latent CI failure. Items below are the durable fixes that would have prevented the session entirely.
+
+**P0 — stop silent failures**
+
+- [ ] **Log Zod errors instead of returning `[]` in `ingestProjectSkills`.** `scripts/ingest.ts:701-706` currently swallows frontmatter validation failures; the operator only sees "(no ingestible skills found)". Push the error into the existing `skipped` list so the per-file reason prints at the end of the run. ~5 lines, highest leverage item on this list.
+- [ ] **Add a local validator authors can run before pushing.** Wrap the existing `SkillFrontmatter` Zod schema in `scripts/validate-skill.ts <path>` so `npm run validate skills/2-business-consulting/...` exits non-zero on bad frontmatter. Eliminates the round-trip-through-CI debugging loop.
+
+**P1 — self-heal taxonomy renames**
+
+- [ ] **Patch `cleanupRepoRecords` to prune orphans by missing `sourceFile`.** Today's `6.07.md` was a leftover from the `6-tech → 6-engineer` rename; the cleanup keys off `(repoUrl, project)` but doesn't notice when a record's `sourceFile` no longer exists in the scan tree. Adding that check (~20 lines) makes future renames self-healing instead of producing duplicate-slug crashes downstream.
+- [ ] **Audit `scripts/ingest.ts` for other unconditional writes to optional paths.** The `frontend/lib/generated-skills.json` write crashed CI for 3 days after the frontend dir was deleted. Patched in `07fc0ea1` with an `existsSync` guard — sweep the file for similar landmines.
+
+**P1 — make authoring conventions discoverable**
+
+- [ ] **Add `scripts/new-skill.sh <category-key> <project-slug>`.** Scaffolds `skills/<N>-<folder>/<slug>/SKILL.md` with the correct `category:` value pre-filled (validated against the TAXONOMY map) plus optional `config.md` / `references/` stubs. Today's failure was that the folder name (`2-sales-consultant`) and the taxonomy key (`business-consulting`) diverge — a scaffolder makes the right value the path of least resistance. The architecture doc already says *"never `sales` → use `business-consulting`"* but nobody reads docs when patterning off an existing skill.
+- [ ] **Bridge the folder-name vs taxonomy-key gap.** Two options: (a) rename folders to match keys (`2-business-consulting/`, `7-talent-development/`) — clean but churny; or (b) drop a small `.taxonomy` marker file or `CATEGORY.md` in each `[N]-[folder]/` directory naming the canonical YAML key. Option (b) is cheap and catches the eye at authoring time. Pick one and commit to it.
+
+**P2 — doc hygiene & CI visibility**
+
+- [ ] **Refresh `architecture.md` to use current repo names.** Still references `zynkr-skills-production` and `zynkr-skills-idea`; the rename commit (`e6ac06cb`) updated most surfaces but missed this one. Also remove the description of the `frontend/lib/generated-skills.json` write step in the CI section — that write was deleted.
+- [ ] **Add a CI status badge to `README.md`.** Today's `Ingest skills` workflow had been red for 3 days; nothing made that visible until I tried to push and got a notification. A badge at the top of the README turns the silence into a glance-test.
+- [ ] **Bump GitHub Actions Node version.** `.github/workflows/ingest-skills.yml` uses `node-version: 20`; GitHub will force Node 24 starting June 2026. Move to `22` (current LTS) ahead of the deprecation.
+
+**P2 — skill authoring path convention**
+
+- [ ] **Define a portable path convention for SKILL.md cross-file references.** Both `biz-card/SKILL.md` and `inbound-sales-project-init/SKILL.md` hardcode the user's local absolute path (`/Users/petertu/Desktop/Claude/zynkr/6.0 tech/...`) when pointing at sibling config and reference files. Once installed via the marketplace those reads fail. Options: (a) relative refs like `./config.md` that the harness resolves against the SKILL.md's own location, or (b) a `{{SKILL_DIR}}` token the harness substitutes. Whichever is picked, document it in the SKILL.md spec being written in *Skill writing guideline upgrades* above, and retrofit existing skills in the same batch.
+
 ### Longer-term decisions
 
 - [ ] Decide where taxonomy metadata should live long term: code-owned (`ingest.ts`) or content-owned (`taxonomy.md`)
@@ -87,6 +116,13 @@ Stack when the time comes: Vercel Functions + Supabase (matches existing `zynkr-
 ---
 
 ## Progress Log
+
+### May 12, 2026 — First inbound-flow skill + ingest pipeline hardening
+
+- Shipped `inbound-sales-project-init` skill under `2-sales-consultant/` (commits `39320e1e`, `07fc0ea1`, `1b5abb01`, auto-ingest `95c2c495`); now lives at `content/skills/2.09.md`
+- Fixed pre-existing CI failure: `scripts/ingest.ts` unconditionally wrote `frontend/lib/generated-skills.json` after the frontend dir was removed in `9895fdd4`. Now guarded with `existsSync` on the parent dir
+- Removed stale `content/skills/6.07.md` — orphan record from the `6-tech → 6-engineer` taxonomy rename that was colliding with the freshly-allocated `6.13` on the `vercel-labs-agent-browser` slug
+- Surfaced retrospective items into the new *Ingest pipeline robustness* section above
 
 ### May 9, 2026 — Cleanup & architecture alignment
 
