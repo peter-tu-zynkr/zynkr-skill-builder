@@ -24,7 +24,7 @@
     "installCommand": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/newsletter-to-notion/SKILL.md"
   },
   {
@@ -52,7 +52,7 @@
     "installCommand": "curl -sL zynkr.ai/s/1.02.md -o ~/.claude/skills/write-newsletter.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/write-newsletter/SKILL.md"
   },
   {
@@ -86,7 +86,7 @@
     "installCommand": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/CLAUDE.md"
   },
   {
@@ -121,7 +121,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
   },
   {
@@ -156,7 +156,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
   },
   {
@@ -191,7 +191,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
   },
   {
@@ -226,7 +226,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
   },
   {
@@ -261,7 +261,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
   },
   {
@@ -296,7 +296,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
   },
   {
@@ -331,7 +331,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   {
@@ -360,7 +360,7 @@
     "installCommand": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/biz-card/SKILL.md"
   },
   {
@@ -385,7 +385,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
@@ -421,7 +421,7 @@
     "installCommand": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/SKILL.md"
   },
   {
@@ -450,7 +450,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/agents/cv-phase1-job-decoder.md",
     "input": "User’s resume content and prior contextual analysis from earlier phases.",
     "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
@@ -481,7 +481,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/agents/cv-phase2-story-extractor.md",
     "input": "Existing resume content, prior optimization insights, and a fixed CV template",
     "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
@@ -512,7 +512,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/agents/cv-phase3-fit-scorer.md",
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
     "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
@@ -544,7 +544,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/agents/cv-phase4-progression.md",
     "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
     "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
@@ -571,7 +571,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   {
@@ -599,7 +599,7 @@
     "installCommand": "curl -sL zynkr.ai/s/2.09.md -o ~/.claude/skills/inbound-sales-project-init.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/inbound-sales-project-init/SKILL.md"
   },
   {
@@ -627,7 +627,7 @@
     "installCommand": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/polish-lecture-transcript/SKILL.md"
   },
   {
@@ -660,7 +660,7 @@
     "installCommand": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/SKILL.md"
   },
   {
@@ -688,7 +688,7 @@
     "installCommand": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/srt-optimizer/SKILL.md"
   },
   {
@@ -712,7 +712,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/admin.md"
   },
   {
@@ -736,7 +736,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/content-idea-curator.md"
   },
   {
@@ -760,7 +760,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/course-outline-enhancer.md"
   },
   {
@@ -784,7 +784,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/event-recap.md"
   },
   {
@@ -808,7 +808,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-09",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   {
@@ -838,7 +838,7 @@
     "installCommand": "curl -sL zynkr.ai/s/6.07.md -o ~/.claude/skills/skill-sourcer.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/SKILL.md",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
@@ -867,7 +867,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/classifier.md",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
@@ -896,7 +896,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/deduplicator.md",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
@@ -925,7 +925,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/extractor.md",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
@@ -954,7 +954,7 @@
     ],
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/proposer.md",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
@@ -985,7 +985,7 @@
     "installCommand": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/agent-browser.md",
     "updatedAt": "2026-05-12",
     "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skills-staging",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/vercel-labs-agent-browser/SKILL.md",
     "upstreamRepo": "vercel-labs/agent-browser",
     "securityAudits": {
@@ -993,7 +993,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 32759,
-    "githubForks": 2020
+    "githubStars": 32799,
+    "githubForks": 2023
   }
 ]
