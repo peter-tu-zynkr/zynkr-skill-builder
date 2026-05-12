@@ -7,12 +7,12 @@ For shipped work and the progress log, see `plan.md`.
 
 ## Current Focus
 
-- [ ] Re-ingest pass to fix stale `sourceRepo`: **every committed `content/skills/*.md` still points at `peter-tu-zynkr/zynkr-skills-staging`** (archived). Canonical source is now `zynkr-skill-builder`. Decide whether to re-ingest from the monorepo or rewrite the field in place.
-- [ ] Resolve the 9 untracked `writing-agent` orphans (1.11–1.13, 1.15–1.19; ID 1.14 is unallocated) before they break local `build-marketplace.ts` runs.
+- [ ] Define the preferred source repo shape for skill projects (explicit catalog metadata vs. inferred from prompt prose), then apply to `writing-agent` before scaling elsewhere
+- [ ] Decide next ingestion batch — current `skills/` monorepo only has 11 SKILL.md files; the other ~22 records reference upstream repos that haven't been migrated in
 
 **Current facts:**
 - `zynkr-website-fe` is the canonical frontend (HTML/CSS/JS on Vercel)
-- 33 records committed in `content/skills/` spanning categories 1, 2, 4, 6
+- 33 records committed in `content/skills/` spanning categories 1, 2, 4, 6 — all now point at canonical `zynkr-skill-builder` (re-rooted 2026-05-12)
 - Stack confirmed: Vercel (FE + BE deployment), Supabase (skills database — read mirror live since 2026-05-12, Phase 1 of Skills API Roadmap shipped — see `plan.md`)
 
 ---
@@ -21,20 +21,15 @@ For shipped work and the progress log, see `plan.md`.
 
 ### Content supply
 
-- [ ] Define the preferred source repo shape for skill projects (explicit catalog metadata vs. inferred from prompt prose)
-- [ ] Apply that source-repo standard to `writing-agent` before scaling elsewhere
-- [ ] Rewrite stale `sourceRepo` values on all 32 committed records (currently all `…/zynkr-skills-staging`) to the canonical `…/zynkr-skill-builder`. Cheapest path: re-ingest from the monorepo and let the pipeline overwrite. Confirm `marketplace-lib.ts` + Supabase mirror handle the field churn before pushing.
-- [ ] Decide next ingestion batch — current `skills/` monorepo only has 11 SKILL.md files; the other ~21 records reference upstream repos that haven't been migrated in.
 - [ ] Reconcile `cv-customizer` category drift — either move the SKILL.md folder to `2-sales-consultant/` or re-allocate the records to `7.*` IDs (the latter is breaking change for Supabase mirror)
 
-**Ingested inventory (as of 2026-05-12):**
+**Ingested inventory (as of 2026-05-12, post sourceRepo re-root):**
 
 | Category | Project | IDs | Status |
 |---|---|---|---|
 | 1-brand-marketing | newsletter-to-notion | 1.01 | ✅ committed |
 | 1-brand-marketing | write-newsletter | 1.02 | ✅ committed |
 | 1-brand-marketing | writing-agent | 1.03–1.10 | ✅ committed |
-| 1-brand-marketing | writing-agent (orphan ingests) | 1.11–1.13, 1.15–1.19 | ⚠️ untracked, mixed `sourceRepo` |
 | 2-sales-consultant | biz-card | 2.01–2.02 | ✅ committed |
 | 2-sales-consultant | cv-customizer | 2.03–2.08 | ✅ committed *(SKILL.md lives under `skills/7-people/cv-customizer/` — category mismatch)* |
 | 2-sales-consultant | inbound-sales-project-init | 2.09 | ✅ committed |
@@ -68,10 +63,6 @@ Empty categories (no records yet): `0-strategy`, `3-operations`, `5-product`, `7
 ### Ingest pipeline robustness (2026-05-12 retrospective)
 
 Surfaced while shipping `inbound-sales-project-init`. The first push hit a silent skip plus a 3-day-old latent CI failure. Items below are the durable fixes that would have prevented the session entirely. Completed P0/P1/P2 items live in `plan.md`.
-
-**P1 — self-heal taxonomy renames**
-
-- [ ] **Resolve orphan records from the pre-monorepo writing-agent ingest.** Untracked local files `content/skills/1.11.md`–`1.19.md` (gap at 1.14) carry `sourceRepo: …/writing-agent` or `…/zynkr-skills` (both archived). They duplicate the canonical `writing-agent` slug locally and break `build-marketplace.ts` if run on this checkout. They are *not* in git (so CI is unaffected), but should be either (a) re-rooted to `…/zynkr-skill-builder` if treated as canonical, or (b) deleted. Decide before next local ingest run.
 
 **P1 — make authoring conventions discoverable**
 

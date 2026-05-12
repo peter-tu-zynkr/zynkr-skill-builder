@@ -32,6 +32,15 @@ For open items, see `to-do.md`.
 - [x] **Add a CI status badge to `README.md`.** ✓ 2026-05-12 — Added the `Ingest skills` workflow badge directly under the H1 in `README.md`.
 - [x] **Bump GitHub Actions Node version.** ✓ 2026-05-12 — `.github/workflows/ingest-skills.yml` now uses `node-version: 22`; `scripts/package.json` `@types/node` bumped to `^22.0.0` to match.
 
+### Content cleanup — sourceRepo re-root + orphan purge
+
+- [x] **Re-root stale `sourceRepo` on all 33 committed records.** ✓ 2026-05-12 (`5810eeab`) — All `content/skills/*.md` previously pointed at archived `zynkr-skills-staging`. Rewrote in-place via sed rather than re-ingest because the pipeline's dedupe key is `(sourceRepo, sourceFile)` — re-ingest would have allocated fresh IDs and orphaned the old records. Live `/api/skills` now returns 33 records all on `zynkr-skill-builder`; Supabase mirror synced via workflow_dispatch.
+- [x] **Fix `build-marketplace.ts` hardcoded stale repo.** ✓ 2026-05-12 (`5810eeab`) — `PRODUCTION_URL` constant hardcoded a third-generation stale name `zynkr-skills-production`. Renamed to `CANONICAL_REPO_URL` and pointed at `zynkr-skill-builder` so subsequent rebuilds don't regress.
+- [x] **Fix `ingest.ts` default URL.** ✓ 2026-05-12 (`da591e79`) — Local-path runs without an explicit canonical-URL arg defaulted to `zynkr-skills-staging`, so future workflow runs would have silently overwritten the sourceRepo fix. New default: `zynkr-skill-builder`.
+- [x] **Delete 8 untracked writing-agent orphans** (1.11–1.13, 1.15–1.19). ✓ 2026-05-12 (`5810eeab`) — Pre-monorepo ingests from now-archived `peter-tu-zynkr/writing-agent` and `zynkr-skills`. All duplicated canonical 1.01–1.10 by slug. They were never in git so the marketplace was unaffected, but they broke local `build-marketplace.ts` runs.
+- [x] **Unbreak CI: regenerate `package-lock.json`.** ✓ 2026-05-12 (`da591e79`) — The 2026-05-12 `@types/node` `^20` → `^22` bump landed in `package.json` but the lockfile was still pinned to `20.19.37`, so `npm ci` failed on every push. Workflow had been silently failing for 2 commits (24+ hours).
+- [x] **Fix stale `SKILL BASE PATH` comment in `skill-sourcer`.** ✓ 2026-05-12 (`5810eeab`) — Both `skills/6-engineer/skill-sourcer/SKILL.md` and the ingested `content/skills/6.07.md` had the comment pointing at the old `…/zynkr-skills-staging/6-tech/skill-sourcer/agents` local path. Updated to current location. Adjacent to the still-open P2 "portable path convention" task in `to-do.md`.
+
 ---
 
 ## Skills API Roadmap — Shipped Phases
@@ -57,6 +66,15 @@ Plan file (original): `~/.claude/plans/i-was-thinking-of-composed-rain.md`.
 ---
 
 ## Progress Log
+
+### May 12, 2026 — sourceRepo re-root + orphan purge + CI unbreak
+
+- All 33 committed records had stale `sourceRepo: …/zynkr-skills-staging`. Investigated `ingest.ts` and confirmed dedupe is `(sourceRepo, sourceFile)`-keyed (line 525), so a naive re-ingest from `zynkr-skill-builder` would have allocated fresh IDs and orphaned all 33 existing records. Chose in-place `sed` rewrite instead — preserves IDs, single atomic commit
+- Found and fixed *two more* stale repo references during the audit: `build-marketplace.ts:22` hardcoded `PRODUCTION_URL = "…/zynkr-skills-production"` (a third-generation stale name), and `ingest.ts:1206` defaulted local-path runs to `…/zynkr-skills-staging`. Both updated to `zynkr-skill-builder` so future runs don't regress
+- Deleted 8 untracked orphans (1.11–1.13, 1.15–1.19) from pre-monorepo writing-agent ingests. They sourced from `peter-tu-zynkr/writing-agent` (standalone, archived) and `…/zynkr-skills` (archived). All duplicated canonical 1.01–1.10 by slug
+- Surfaced a latent CI failure: `npm ci` had been failing for 2 commits because `package-lock.json` still pinned `@types/node@20.19.37` after the 2026-05-12 bump to `^22.0.0`. Regenerated via `npm install --package-lock-only`. Without this fix the workflow couldn't have synced the sourceRepo correction to Supabase
+- Workflow run `25748778666` (workflow_dispatch on `main`) green end-to-end: ingest → build-marketplace → commit → /api/skills/sync. Verified `curl https://www.zynkr.ai/api/skills` returns 33 records all on `zynkr-skill-builder`
+- Commits: `5810eeab` (content + build-marketplace fix + orphan delete + to-do count), `da591e79` (lockfile + ingest default URL), `25748724a4` (workflow auto-ingest after dispatch)
 
 ### May 12, 2026 — Stack upgrade Phase 1: Supabase read mirror shipped
 
