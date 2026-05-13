@@ -1,0 +1,123 @@
+name: Pickup approved issue
+
+# Fired by /skill-triager via repository_dispatch (event_type: skill-build-request).
+# Also manually invocable via "Run workflow" with the same inputs.
+
+on:
+  repository_dispatch:
+    types: [skill-build-request]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number in the idea repo'
+        required: true
+      issue_repo:
+        description: 'Issue repo (owner/name)'
+        required: false
+        default: 'peter-tu-zynkr/zynkr-skill-idea'
+      slug:
+        description: 'Skill slug (kebab-case)'
+        required: true
+      category:
+        description: 'Category — digit 0-9 or slug (engineer, strategy, ...)'
+        required: true
+      spec_url:
+        description: 'Optional spec URL (informational)'
+        required: false
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Resolve payload
+        id: payload
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "issue_number=${{ github.event.client_payload.issue_number }}" >> "$GITHUB_OUTPUT"
+            echo "issue_repo=${{ github.event.client_payload.issue_repo }}" >> "$GITHUB_OUTPUT"
+            echo "slug=${{ github.event.client_payload.slug }}" >> "$GITHUB_OUTPUT"
+            echo "category=${{ github.event.client_payload.category }}" >> "$GITHUB_OUTPUT"
+            echo "spec_url=${{ github.event.client_payload.spec_url }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "issue_number=${{ inputs.issue_number }}" >> "$GITHUB_OUTPUT"
+            echo "issue_repo=${{ inputs.issue_repo }}" >> "$GITHUB_OUTPUT"
+            echo "slug=${{ inputs.slug }}" >> "$GITHUB_OUTPUT"
+            echo "category=${{ inputs.category }}" >> "$GITHUB_OUTPUT"
+            echo "spec_url=${{ inputs.spec_url }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Scaffold SKILL.md
+        id: scaffold
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+          SLUG: ${{ steps.payload.outputs.slug }}
+          CATEGORY: ${{ steps.payload.outputs.category }}
+          SPEC_URL: ${{ steps.payload.outputs.spec_url }}
+        working-directory: scripts
+        run: |
+          set -euo pipefail
+          OUT=$(npx tsx ingest-from-issue.ts | tail -n1)
+          echo "skill_path=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Validate scaffolded frontmatter
+        working-directory: scripts
+        run: npx tsx validate-skill.ts "../${{ steps.scaffold.outputs.skill_path }}"
+
+      - name: Create branch, commit, push
+        id: push
+        env:
+          SLUG: ${{ steps.payload.outputs.slug }}
+          SKILL_PATH: ${{ steps.scaffold.outputs.skill_path }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="skill/${SLUG}"
+          git checkout -b "$BRANCH"
+          git add "$SKILL_PATH"
+          git commit -m "scaffold: ${SLUG} from ${ISSUE_REPO}#${ISSUE_NUMBER}"
+          git push -u origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.push.outputs.branch }}
+          SLUG: ${{ steps.payload.outputs.slug }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+          SKILL_PATH: ${{ steps.scaffold.outputs.skill_path }}
+        run: |
+          set -euo pipefail
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "scaffold(${SLUG}): from ${ISSUE_REPO}#${ISSUE_NUMBER}" \
+            --body "Auto-scaffolded by \`pickup-approved-issue\` from [${ISSUE_REPO}#${ISSUE_NUMBER}](https://github.com/${ISSUE_REPO}/issues/${ISSUE_NUMBER}).
+
+**Skill:** \`${SKILL_PATH}\`
+**Source issue:** ${ISSUE_REPO}#${ISSUE_NUMBER}
+
+Frontmatter has been validated against the schema. Body contains the spec md and \`<!-- TODO -->\` markers — fill in steps, flip \`status: Not started\` to \`WIP\`/\`Done\` when ready, then merge to trigger \`ingest-skills\`."
