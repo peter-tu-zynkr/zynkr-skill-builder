@@ -53,3 +53,11 @@ __pycache__/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal docs — keep the public surface to README / architecture / taxonomy /
+# the skills tree / the ingest scripts. Roadmap, process, and backlog stay local
+# (mirrored in the private zynkr-skill-idea repo when useful).
+plan.md
+to-do.md
+process.md
+_private/
