@@ -18,7 +18,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -40,7 +40,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -62,7 +62,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -84,7 +84,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -106,7 +106,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -128,7 +128,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -150,7 +150,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -172,7 +172,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -194,7 +194,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -216,7 +216,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -238,7 +238,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -259,7 +259,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -281,7 +281,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -302,7 +302,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -323,7 +323,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -344,7 +344,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -365,7 +365,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -386,7 +386,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -408,7 +408,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -430,7 +430,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -452,7 +452,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -474,7 +474,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -495,7 +495,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -516,7 +516,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -537,7 +537,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -558,7 +558,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -579,7 +579,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-09"
   },
   {
@@ -601,7 +601,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -622,7 +622,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -643,7 +643,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -664,7 +664,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -685,7 +685,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "first_seen": "2026-05-12"
   },
   {
@@ -707,10 +707,10 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-12",
+    "updated_at": "2026-05-14",
     "upstream_repo": "vercel-labs/agent-browser",
-    "github_stars": 32799,
-    "github_forks": 2023,
+    "github_stars": 32996,
+    "github_forks": 2039,
     "first_seen": "2026-05-12"
   }
 ]
