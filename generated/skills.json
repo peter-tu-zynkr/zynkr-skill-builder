@@ -987,7 +987,9 @@
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/vercel-labs-agent-browser/SKILL.md",
-    "upstreamRepo": "vercel-labs/agent-browser",
+    "upstreamRepo": "https://github.com/vercel-labs/agent-browser",
+    "originalSourceUrl": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
+    "originalAuthor": "Vercel Labs",
     "securityAudits": {
       "gen_agent_trust_hub": "pending",
       "socket": "pending",

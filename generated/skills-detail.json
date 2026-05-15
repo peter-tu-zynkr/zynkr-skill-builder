@@ -1126,7 +1126,9 @@
       "skill"
     ],
     "updated_at": "2026-05-14",
-    "upstream_repo": "vercel-labs/agent-browser",
+    "upstream_repo": "https://github.com/vercel-labs/agent-browser",
+    "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
+    "original_author": "Vercel Labs",
     "github_stars": 32996,
     "github_forks": 2039,
     "first_seen": "2026-05-12",

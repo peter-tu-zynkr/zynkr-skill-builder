@@ -46,6 +46,7 @@ const TAXONOMY: Record<string, number> = {
   "engineer": 6,
   "talent-development": 7,
   "finance-admin": 8,
+  "legal": 9,
 };
 
 // ── Schema ───────────────────────────────────────────────────────────────────
@@ -65,11 +66,30 @@ const SkillFrontmatter = z.object({
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
   upstream_repo: z.string().optional(),
+  original_source_url: z.string().url().optional(),
+  original_author: z.string().min(1).optional(),
   security_audits: z.object({
     gen_agent_trust_hub: z.enum(["pass", "fail", "pending"]).optional(),
     socket: z.enum(["pass", "fail", "pending"]).optional(),
     snyk: z.enum(["pass", "fail", "pending"]).optional(),
   }).optional(),
+}).superRefine((fm, ctx) => {
+  // Attribution trio: if any of upstream_repo / original_source_url / original_author
+  // is set, all three must be set. Spec §6 — honest-by-default attribution.
+  const hasAny = !!(fm.upstream_repo || fm.original_source_url || fm.original_author);
+  const hasAll = !!(fm.upstream_repo && fm.original_source_url && fm.original_author);
+  if (hasAny && !hasAll) {
+    const missing = [
+      !fm.upstream_repo && "upstream_repo",
+      !fm.original_source_url && "original_source_url",
+      !fm.original_author && "original_author",
+    ].filter(Boolean);
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Attribution must be complete — missing: ${missing.join(", ")}. See SKILL_SPEC.md §6.`,
+      path: ["upstream_repo"],
+    });
+  }
 });
 
 type SkillFrontmatter = z.infer<typeof SkillFrontmatter>;
@@ -104,6 +124,8 @@ type ExistingSkillRecord = {
   sourceRepo?: string;
   sourceFile?: string;
   upstreamRepo?: string;
+  originalSourceUrl?: string;
+  originalAuthor?: string;
   firstSeen?: string;
 };
 
@@ -217,6 +239,27 @@ async function fetchGitHubStats(ownerRepo: string): Promise<{ stars: number; for
   } catch {
     return null;
   }
+}
+
+// Attribution fields (upstream_repo / original_source_url) are authored as full
+// URLs per SKILL_SPEC.md §6, but legacy data and some SKILL.md files used the
+// `owner/repo` shorthand. Normalise both forms to a full URL so downstream
+// consumers (Supabase column, FE render) get a single shape.
+function normalizeAttributionUrl(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^[\w.-]+\/[\w.-]+$/.test(trimmed)) return `https://github.com/${trimmed}`;
+  return trimmed;
+}
+
+// Inverse of normalizeAttributionUrl for the GitHub stats API, which expects
+// the `owner/repo` shorthand. Returns undefined for non-github URLs.
+function extractGithubOwnerRepo(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  const match = url.match(/^https?:\/\/github\.com\/([\w.-]+\/[\w.-]+?)(?:\/.*)?$/i);
+  return match ? match[1] : undefined;
 }
 
 function normalizeFieldValue(value: string | undefined, maxLength: number): string | undefined {
@@ -513,6 +556,8 @@ function loadExistingSkillRecords(): ExistingSkillRecord[] {
         sourceRepo: typeof data.sourceRepo === "string" ? data.sourceRepo : undefined,
         sourceFile: typeof data.sourceFile === "string" ? data.sourceFile : undefined,
         upstreamRepo: typeof data.upstreamRepo === "string" ? data.upstreamRepo : undefined,
+        originalSourceUrl: typeof data.originalSourceUrl === "string" ? data.originalSourceUrl : undefined,
+        originalAuthor: typeof data.originalAuthor === "string" ? data.originalAuthor : undefined,
         firstSeen: typeof data.firstSeen === "string" ? data.firstSeen : undefined,
       };
     });
@@ -795,7 +840,9 @@ function ingestProjectSkills(
     firstSeen: readFirstSeen(orchestratorOutPath) ?? today,
     sourceRepo: repoUrl,
     sourceFile: skillFile.relPath,
-    upstreamRepo: manifest.upstream_repo,
+    upstreamRepo: normalizeAttributionUrl(manifest.upstream_repo),
+    originalSourceUrl: normalizeAttributionUrl(manifest.original_source_url),
+    originalAuthor: manifest.original_author,
     securityAudits: manifest.security_audits,
   });
   ingested.push({
@@ -847,7 +894,9 @@ function ingestProjectSkills(
       firstSeen: readFirstSeen(agentOutPath) ?? today,
       sourceRepo: repoUrl,
       sourceFile,
-      upstreamRepo: manifest.upstream_repo,
+      upstreamRepo: normalizeAttributionUrl(manifest.upstream_repo),
+      originalSourceUrl: normalizeAttributionUrl(manifest.original_source_url),
+      originalAuthor: manifest.original_author,
       securityAudits: manifest.security_audits,
     });
 
@@ -969,7 +1018,9 @@ function ingestRepoAsPipeline(
     firstSeen: readFirstSeen(orchestratorPathOut) ?? today,
     sourceRepo: repoUrl,
     sourceFile: orchestratorSourceFile,
-    upstreamRepo: manifest.upstream_repo,
+    upstreamRepo: normalizeAttributionUrl(manifest.upstream_repo),
+    originalSourceUrl: normalizeAttributionUrl(manifest.original_source_url),
+    originalAuthor: manifest.original_author,
     securityAudits: manifest.security_audits,
   });
   ingested.push({
@@ -1037,7 +1088,9 @@ function ingestRepoAsPipeline(
       firstSeen: readFirstSeen(stagePathOut) ?? today,
       sourceRepo: repoUrl,
       sourceFile,
-      upstreamRepo: manifest.upstream_repo,
+      upstreamRepo: normalizeAttributionUrl(manifest.upstream_repo),
+      originalSourceUrl: normalizeAttributionUrl(manifest.original_source_url),
+      originalAuthor: manifest.original_author,
       securityAudits: manifest.security_audits,
     });
 
@@ -1096,8 +1149,10 @@ async function generateSkillsJson(
     };
   });
 
-  // Fetch GitHub stars for external upstream repos
-  const upstreamRepos = new Set(
+  // Fetch GitHub stars for external upstream repos. upstreamRepo is now a full
+  // URL (normalised at ingest), so extract owner/repo for the GitHub API call
+  // and key the cache by the full URL.
+  const upstreamRepoUrls = new Set(
     skills
       .map((s) => (typeof (s as Record<string, unknown>).upstreamRepo === "string"
         ? (s as Record<string, unknown>).upstreamRepo as string
@@ -1105,13 +1160,15 @@ async function generateSkillsJson(
       .filter((r): r is string => Boolean(r))
   );
   const githubStatsCache = new Map<string, { stars: number; forks: number }>();
-  if (upstreamRepos.size > 0) {
-    console.log(`\n  → Fetching GitHub stats for ${upstreamRepos.size} upstream repo(s)...`);
-    for (const repo of upstreamRepos) {
-      const stats = await fetchGitHubStats(repo);
+  if (upstreamRepoUrls.size > 0) {
+    console.log(`\n  → Fetching GitHub stats for ${upstreamRepoUrls.size} upstream repo(s)...`);
+    for (const repoUrl of upstreamRepoUrls) {
+      const ownerRepo = extractGithubOwnerRepo(repoUrl);
+      if (!ownerRepo) continue;
+      const stats = await fetchGitHubStats(ownerRepo);
       if (stats !== null) {
-        githubStatsCache.set(repo, stats);
-        console.log(`    ★  ${repo}: ${stats.stars.toLocaleString()} stars, ${stats.forks.toLocaleString()} forks`);
+        githubStatsCache.set(repoUrl, stats);
+        console.log(`    ★  ${ownerRepo}: ${stats.stars.toLocaleString()} stars, ${stats.forks.toLocaleString()} forks`);
       }
     }
   }
@@ -1321,6 +1378,7 @@ async function main() {
           legacyCsvById
         );
 
+        const outPath = path.join(CONTENT_DIR, `${id}.md`);
         const normalized = {
           id,
           name: fm.name,
@@ -1342,11 +1400,12 @@ async function main() {
           firstSeen: readFirstSeen(outPath) ?? today,
           sourceRepo: repoUrl,
           sourceFile,
-          upstreamRepo: fm.upstream_repo,
+          upstreamRepo: normalizeAttributionUrl(fm.upstream_repo),
+          originalSourceUrl: normalizeAttributionUrl(fm.original_source_url),
+          originalAuthor: fm.original_author,
           securityAudits: fm.security_audits,
         };
 
-        const outPath = path.join(CONTENT_DIR, `${id}.md`);
         writeNormalizedSkillFile(outPath, content, normalized);
 
         ingested.push({ id, name: fm.name, sourceFile: relPath });

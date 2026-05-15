@@ -9,7 +9,9 @@ author: Vercel Labs
 input: "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture"
 output: "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web Vitals metrics"
 synergy: []
-upstream_repo: vercel-labs/agent-browser
+upstream_repo: https://github.com/vercel-labs/agent-browser
+original_source_url: https://github.com/vercel-labs/agent-browser/blob/main/README.md
+original_author: Vercel Labs
 security_audits:
   gen_agent_trust_hub: pending
   socket: pending

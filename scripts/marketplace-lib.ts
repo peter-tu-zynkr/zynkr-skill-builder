@@ -35,6 +35,8 @@ export type NormalizedSkillRecord = {
   sourceFile?: string;
   slug?: string;
   upstreamRepo?: string;
+  originalSourceUrl?: string;
+  originalAuthor?: string;
   githubStars?: number;
   githubForks?: number;
   securityAudits?: SecurityAudits;
@@ -56,6 +58,8 @@ export type MarketplaceIndexEntry = {
   tags: string[];
   updated_at: string;
   upstream_repo?: string;
+  original_source_url?: string;
+  original_author?: string;
   github_stars?: number;
   github_forks?: number;
   first_seen?: string;
@@ -259,6 +263,8 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
         tags: buildTags(skill),
         updated_at: ensureString(skill.updatedAt) ?? new Date().toISOString().split("T")[0],
         upstream_repo: ensureString(skill.upstreamRepo),
+        original_source_url: ensureString(skill.originalSourceUrl),
+        original_author: ensureString(skill.originalAuthor),
         github_stars: typeof skill.githubStars === "number" ? skill.githubStars : undefined,
         github_forks: typeof skill.githubForks === "number" ? skill.githubForks : undefined,
         first_seen: ensureString(skill.firstSeen),

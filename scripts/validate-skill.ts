@@ -25,6 +25,7 @@ const TAXONOMY: Record<string, number> = {
   "engineer": 6,
   "talent-development": 7,
   "finance-admin": 8,
+  "legal": 9,
 };
 
 const SkillFrontmatter = z.object({
@@ -42,11 +43,30 @@ const SkillFrontmatter = z.object({
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
   upstream_repo: z.string().optional(),
+  original_source_url: z.string().url().optional(),
+  original_author: z.string().min(1).optional(),
   security_audits: z.object({
     gen_agent_trust_hub: z.enum(["pass", "fail", "pending"]).optional(),
     socket: z.enum(["pass", "fail", "pending"]).optional(),
     snyk: z.enum(["pass", "fail", "pending"]).optional(),
   }).optional(),
+}).superRefine((fm, ctx) => {
+  // Attribution trio: if any of upstream_repo / original_source_url / original_author
+  // is set, all three must be set. Spec §6 — honest-by-default attribution.
+  const hasAny = !!(fm.upstream_repo || fm.original_source_url || fm.original_author);
+  const hasAll = !!(fm.upstream_repo && fm.original_source_url && fm.original_author);
+  if (hasAny && !hasAll) {
+    const missing = [
+      !fm.upstream_repo && "upstream_repo",
+      !fm.original_source_url && "original_source_url",
+      !fm.original_author && "original_author",
+    ].filter(Boolean);
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Attribution must be complete — missing: ${missing.join(", ")}. See SKILL_SPEC.md §6.`,
+      path: ["upstream_repo"],
+    });
+  }
 });
 
 function collectSkillFiles(target: string): string[] {
