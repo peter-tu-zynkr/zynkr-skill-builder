@@ -14,9 +14,11 @@ synergy: []
 
 # CV Customizer
 
-Orchestrate a 5-phase CV optimization workflow: analyze the target job, extract candidate stories, score fit, analyze career progression, and rewrite the CV — then output as a Google Doc.
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill cv-customizer
+```
 
-<!-- SKILL BASE PATH: /Users/petertu/Desktop/Claude/zynkr/6.0 tech/skills/cv-customizer/agents -->
+Orchestrate a 5-phase CV optimization workflow: analyze the target job, extract candidate stories, score fit, analyze career progression, and rewrite the CV — then output as a Google Doc. Use this skill when applying for a specific role and you have both a job description and a CV ready to tailor.
 
 ---
 
@@ -71,7 +73,7 @@ Phase 2: Story Extraction (SCQA)
 ```
 
 Read the instructions from:
-`/Users/petertu/Desktop/Claude/zynkr/6.0 tech/skills/cv-customizer/agents/cv-phase2-story-extractor.md`
+`./agents/cv-phase2-story-extractor.md`
 
 Execute the Phase 2 flow **in the main conversation**:
 1. Compare `CV_TEXT` against `PHASE1_OUTPUT` skill priorities
@@ -92,7 +94,7 @@ Phase 3: Candidate Fit Scoring
 ```
 
 Read the instructions from:
-`/Users/petertu/Desktop/Claude/zynkr/6.0 tech/skills/cv-customizer/agents/cv-phase3-fit-scorer.md`
+`./agents/cv-phase3-fit-scorer.md`
 
 Execute the Phase 3 flow **in the main conversation**:
 1. Score the CV across 4 dimensions (Relevance, Value, Narrative, ATS) — each 1-5
@@ -149,7 +151,7 @@ Phase 5: CV Rewrite & Quality Check
 ```
 
 Read the instructions from:
-`/Users/petertu/Desktop/Claude/zynkr/6.0 tech/skills/cv-customizer/agents/cv-phase5-rewriter.md`
+`./agents/cv-phase5-rewriter.md`
 
 Execute the Phase 5 flow **in the main conversation**, using all prior phase outputs:
 1. Rewrite Executive Summary -> Accept / Modify / Skip
