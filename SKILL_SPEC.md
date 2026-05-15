@@ -167,13 +167,8 @@ SKILL.md files are installed into arbitrary user environments. Hardcoded paths l
 
 - Reference sibling files relatively: `./config.md`, `./references/filler_words_zh.md`, `./agents/skill-extractor.md`
 - If you need to point at "the skill's own folder," use the placeholder `{{SKILL_DIR}}` — the harness substitutes it at load time.
-- Do not embed `<!-- SKILL BASE PATH: ... -->` comments. They are legacy and being removed.
+- Do not embed `<!-- SKILL BASE PATH: ... -->` comments. They are legacy and have been removed from all shipped skills.
 - External data the user must provide goes through frontmatter or runtime args, not hardcoded paths.
-
-**Existing offenders to retrofit in Phase C:**
-- `skills/2-sales-consultant/biz-card/SKILL.md`
-- `skills/2-sales-consultant/inbound-sales-project-init/SKILL.md`
-- `skills/6-engineer/skill-sourcer/SKILL.md` (line 23 base-path comment)
 
 ---
 
