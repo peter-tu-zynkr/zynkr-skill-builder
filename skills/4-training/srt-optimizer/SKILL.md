@@ -14,7 +14,11 @@ synergy: []
 
 # SRT Optimizer
 
-Optimize a raw `.srt` subtitle file into cleaner Traditional Chinese subtitles without breaking subtitle timing alignment or drifting from the original wording.
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill srt-optimizer
+```
+
+Optimize a raw `.srt` subtitle file into cleaner Traditional Chinese subtitles without breaking subtitle timing alignment or drifting from the original wording. Use this skill when you have a raw STT subtitle file (e.g., auto-generated from a Chinese lecture or interview) and want minimal-edit cleanup — filler removal and obvious STT fixes only — that preserves every cue's index, timestamp, and meaning.
 
 ## Core Goal
 
@@ -25,7 +29,7 @@ Optimize a raw `.srt` subtitle file into cleaner Traditional Chinese subtitles w
 
 ## Rules
 
-Read `references/subtitle_rules_zh.md` before rewriting any cue text.
+Read `./references/subtitle_rules_zh.md` before rewriting any cue text.
 
 These rules are strict:
 - Output Traditional Chinese.

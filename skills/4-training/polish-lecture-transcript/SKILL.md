@@ -14,7 +14,11 @@ synergy: []
 
 # Polish Lecture Transcript
 
-Process long transcript text into lecturer-friendly readout content.
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill polish-lecture-transcript
+```
+
+Process long transcript text into lecturer-friendly readout content. Use this skill when you've recorded a 30–90 minute Chinese lecture and want a clean Traditional Chinese readout script — filler words removed, STT artifacts fixed, run-on speech broken into short readable sentences, all without losing terminology or speaker intent.
 
 ## Workflow
 
@@ -37,7 +41,7 @@ For each batch, keep meaning and remove speech noise.
 
 ### Must do
 
-- Remove filler/disfluency words (see `references/filler_words_zh.md`).
+- Remove filler/disfluency words (see `./references/filler_words_zh.md`).
 - Fix obvious STT errors and repeated fragments.
 - Convert run-on speech into short, readable sentences.
 - Preserve terminology, examples, and speaker intent.
