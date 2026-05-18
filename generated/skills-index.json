@@ -18,7 +18,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -40,7 +40,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -62,7 +62,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -84,7 +84,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -106,7 +106,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -128,7 +128,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -150,7 +150,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -172,7 +172,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -194,7 +194,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -216,7 +216,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -238,7 +238,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -259,7 +259,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -281,7 +281,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -302,7 +302,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -323,7 +323,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -344,7 +344,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -365,7 +365,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -386,7 +386,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -408,8 +408,30 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
+  },
+  {
+    "id": "3.01",
+    "slug": "meeting-prep",
+    "name": "meeting-prep",
+    "summary": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/meeting-prep/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.01.md -o ~/.claude/skills/meeting-prep.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-18",
+    "first_seen": "2026-05-18"
   },
   {
     "id": "4.01",
@@ -430,7 +452,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -452,7 +474,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -474,7 +496,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -495,7 +517,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -516,7 +538,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -537,7 +559,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -558,7 +580,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -579,7 +601,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-09"
   },
   {
@@ -601,7 +623,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
   },
   {
@@ -622,7 +644,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
   },
   {
@@ -643,7 +665,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
   },
   {
@@ -664,7 +686,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
   },
   {
@@ -685,7 +707,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "first_seen": "2026-05-12"
   },
   {
@@ -707,12 +729,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-15",
+    "updated_at": "2026-05-18",
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 33078,
-    "github_forks": 2047,
+    "github_stars": 33327,
+    "github_forks": 2072,
     "first_seen": "2026-05-12"
   }
 ]
