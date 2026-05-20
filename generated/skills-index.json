@@ -1,5 +1,32 @@
 [
   {
+    "id": "0.01",
+    "slug": "product-planning",
+    "name": "product-planning",
+    "summary": "0 — Product Planning Framework Guide",
+    "category": "strategy",
+    "project": "product-planning",
+    "platform": "claude",
+    "status": "Done",
+    "author": "MrPM-Stanley",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/product-planning/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.01.md -o ~/.claude/skills/product-planning.md",
+    "tags": [
+      "product-planning",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-20",
+    "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
+    "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
+    "original_author": "MrPM-Stanley",
+    "github_stars": 37,
+    "github_forks": 9,
+    "first_seen": "2026-05-20"
+  },
+  {
     "id": "1.01",
     "slug": "newsletter-to-notion",
     "name": "newsletter-to-notion",
@@ -733,7 +760,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 33631,
+    "github_stars": 33632,
     "github_forks": 2098,
     "first_seen": "2026-05-12"
   },
@@ -760,7 +787,7 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 158888,
+    "github_stars": 158896,
     "github_forks": 25758,
     "first_seen": "2026-05-20"
   }
