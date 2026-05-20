@@ -1,6 +1,6 @@
 ---
 name: product-planning
-category: strategy
+category: product
 project: product-planning
 platform: claude
 status: Done
