@@ -1,0 +1,97 @@
+---
+name: hermes-agent
+description: "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard."
+category: engineer
+project: hermes-agent
+platform: multi
+status: Done
+author: Nous Research
+input: "Conversation with the agent via CLI or any messaging platform; configuration via `hermes config`; optional user-authored skills in `~/.hermes/skills/`"
+process: "Hermes loops on user input → tool calls → response, while a background learning loop curates memory, drafts new skills after complex tasks, and runs scheduled jobs"
+output: "Agent responses, executed tool calls (file edits, shell commands, web fetches), persistent memory updates, autonomously-curated skills, scheduled job results delivered to any platform"
+synergy: [agent-browser, skill-sourcer]
+upstream_repo: https://github.com/NousResearch/hermes-agent
+original_source_url: https://github.com/NousResearch/hermes-agent/blob/main/README.md
+original_author: Nous Research
+security_audits:
+  gen_agent_trust_hub: pending
+  socket: pending
+  snyk: pending
+---
+
+# hermes-agent
+
+A self-improving AI agent runtime built by Nous Research. Hermes is the only mainstream agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge, searches its own past conversations, and builds a deepening model of who you are across sessions. It runs on a `$5` VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle, and it isn't tied to your laptop — you can talk to it from Telegram while it works on a cloud VM.
+
+## Install
+
+```bash
+# Linux, macOS, WSL2, Termux
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+
+# Then reload the shell and launch
+source ~/.bashrc
+hermes
+```
+
+For native Windows (early beta), use the PowerShell installer documented in the upstream README.
+
+## What it does
+
+- **Persistent learning loop** — agent-curated memory with periodic nudges, autonomous skill creation after complex tasks, skills that self-improve during use, FTS5 session search with LLM summarisation for cross-session recall, Honcho dialectic user modelling.
+- **Any LLM, no lock-in** — Nous Portal, OpenRouter (200+ models), NovitaAI, NVIDIA NIM, z.ai/GLM, Kimi/Moonshot, MiniMax, Hugging Face, OpenAI, custom endpoints. Switch with `hermes model`.
+- **Lives across every messaging platform** — Telegram, Discord, Slack, WhatsApp, Signal, Email, plus a full TUI on the CLI. Voice memo transcription and cross-platform conversation continuity from a single gateway process.
+- **Seven terminal backends** — local, Docker, SSH, Singularity, Modal, Daytona, Vercel Sandbox. Modal and Daytona offer serverless persistence — the environment hibernates when idle and wakes on demand.
+- **Scheduled automations** — built-in cron scheduler with delivery to any platform. Daily reports, nightly backups, weekly audits, all in natural language, running unattended.
+- **Delegates and parallelises** — spawn isolated subagents for parallel workstreams. Python scripts can call tools via RPC, collapsing multi-step pipelines into zero-context-cost turns.
+- **`agentskills.io`-compatible** — skill format aligned with the open standard, so portable SKILL.md files can move between Hermes and other compliant runtimes.
+
+## When to use it
+
+Use Hermes when you want:
+
+- An agent that **isn't tied to a single device** — talk to it from your phone while it works on a server
+- A **persistent memory** that outlives any one conversation
+- **Provider freedom** without rewriting your workflows
+- **Cron-driven autonomy** — agents that run on a schedule and deliver to any inbox
+- An **open-source platform** with a real community and a self-improvement loop
+
+Pair with Claude Code (or any other interactive agent) when you want fast in-editor iteration plus a persistent background agent on a server.
+
+## Workflow
+
+### Step 1 — Install and configure
+
+Run the install one-liner, then `hermes setup` to walk through the full configuration wizard. Pick an LLM provider via `hermes model`. Set up the messaging gateway via `hermes gateway setup` if you want to talk to Hermes from Telegram, Discord, Slack, WhatsApp, Signal, or Email.
+
+### Step 2 — Choose tools and skills
+
+`hermes tools` enables/disables the 40+ built-in tools. Drop your own SKILL.md files into `~/.hermes/skills/` — Hermes will index them and trigger by description, the same way Claude Code does. Skills authored against the `agentskills.io` standard are portable.
+
+### Step 3 — Talk to it
+
+Run `hermes` for the interactive TUI, or send the bot a message on any configured platform. Hermes remembers across sessions; use `/insights` to see what it learned this week, `/skills` to browse what it can do, `/compress` to manage context when conversations grow.
+
+### Step 4 — Schedule automations
+
+`hermes cron add` registers a recurring task in natural language, with delivery to any platform: a nightly report to Telegram, a weekly audit to email, a daily backup to Discord. Hermes runs them unattended and reports results in your preferred channel.
+
+### Step 5 — Migrate from OpenClaw (optional)
+
+If you're coming from OpenClaw, run `hermes claw migrate` to import settings, memories, skills, command allowlist, messaging configs, and API keys. Use `--dry-run` first to preview.
+
+## Why this skill exists in Zynkr
+
+Hermes is the largest open-source agent runtime that explicitly aligns with Zynkr's bet: skills + memory + cross-platform delivery. Tracking Hermes in our marketplace gives Zynkr users a clear pointer to the canonical alternative for users who want an *always-on*, server-resident agent rather than an interactive in-editor one. Our SKILL.md catalogue may eventually be portable to Hermes via `agentskills.io`, in which case this card becomes a migration breadcrumb as well as a discovery surface.
+
+## Attribution
+
+This card describes the upstream **Hermes Agent** project by **Nous Research**. All implementation, documentation, and design credit goes to Nous Research and the Hermes contributors.
+
+- **Upstream repo:** [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
+- **Docs:** [hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)
+- **Skills Hub:** [agentskills.io](https://agentskills.io)
+- **License:** MIT
+- **Community:** [Discord](https://discord.gg/NousResearch)
+
+This SKILL.md is a Zynkr-curated marketplace entry — install commands and workflow descriptions are excerpted from the upstream README under MIT.
