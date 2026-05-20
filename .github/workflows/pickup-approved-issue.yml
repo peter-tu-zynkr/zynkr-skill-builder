@@ -83,7 +83,11 @@ jobs:
       - name: Scaffold SKILL.md
         id: scaffold
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # SKILL_IDEA_PAT is required because the idea repo (peter-tu-zynkr/zynkr-skill-idea)
+          # is private and the default GITHUB_TOKEN is scoped to this repo only.
+          # Falls back to GITHUB_TOKEN if the secret is missing so workflow_dispatch on the same
+          # repo still works for local testing.
+          GH_TOKEN: ${{ secrets.SKILL_IDEA_PAT || secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
           ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
           SLUG: ${{ steps.payload.outputs.slug }}

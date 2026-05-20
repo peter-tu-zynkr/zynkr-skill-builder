@@ -36,6 +36,7 @@ const FOLDER_BY_NUMBER: Record<string, string> = {
   "2": "2-sales-consultant",
   "3": "3-operations",
   "4": "4-training",
+  "5": "5-product",
   "6": "6-engineer",
   "7": "7-people",
   "8": "8-finance-admin",
@@ -71,6 +72,7 @@ const SCHEMA_CATEGORY_BY_NUMBER: Record<string, string> = {
   "6": "engineer",
   "7": "talent-development",
   "8": "finance-admin",
+  "9": "legal",
 };
 
 type Args = {
@@ -116,8 +118,17 @@ function parseArgs(): Args {
 }
 
 function resolveCategory(input: string): { number: string; folder: string; slug: string } {
-  const digit = /^\d$/.test(input) ? input : NUMBER_BY_SLUG[input.toLowerCase()];
-  if (!digit) throw new Error(`Unknown category: "${input}". Expected digit 0-9 or known slug.`);
+  // Accept "0", "strategy", or combined "0-strategy" form (the form used in labels and Build Target Path).
+  const trimmed = input.trim().toLowerCase();
+  let digit: string | undefined;
+  if (/^\d$/.test(trimmed)) {
+    digit = trimmed;
+  } else if (/^\d-/.test(trimmed)) {
+    digit = trimmed.charAt(0);
+  } else {
+    digit = NUMBER_BY_SLUG[trimmed];
+  }
+  if (!digit) throw new Error(`Unknown category: "${input}". Expected digit 0-9, known slug, or "N-slug" combined form.`);
   const folder = FOLDER_BY_NUMBER[digit];
   if (!folder) throw new Error(`No on-disk folder for category number ${digit}.`);
   const schemaSlug = SCHEMA_CATEGORY_BY_NUMBER[digit];
