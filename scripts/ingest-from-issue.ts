@@ -79,6 +79,9 @@ type Args = {
   slug: string;
   category: string; // either a digit "0".."9" or a slug
   specUrl?: string;
+  mode: "rescaffold" | "lift-and-shift";
+  upstreamUrl?: string; // required when mode === "lift-and-shift"
+  upstreamAuthor?: string; // optional override; falls back to org from upstreamUrl
 };
 
 function parseArgs(): Args {
@@ -87,13 +90,22 @@ function parseArgs(): Args {
     const i = argv.indexOf(flag);
     return i >= 0 ? argv[i + 1] : undefined;
   };
+  const rawMode = (get("--mode") ?? process.env.MODE ?? "rescaffold").trim();
+  const mode: Args["mode"] = rawMode === "lift-and-shift" ? "lift-and-shift" : "rescaffold";
   const args: Args = {
     issueNumber: get("--issue") ?? process.env.ISSUE_NUMBER ?? "",
     issueRepo: get("--repo") ?? process.env.ISSUE_REPO ?? "peter-tu-zynkr/zynkr-skill-idea",
     slug: get("--slug") ?? process.env.SLUG ?? "",
     category: get("--category") ?? process.env.CATEGORY ?? "",
     specUrl: get("--spec-url") ?? process.env.SPEC_URL,
+    mode,
+    upstreamUrl: get("--upstream-url") ?? process.env.UPSTREAM_URL,
+    upstreamAuthor: get("--upstream-author") ?? process.env.UPSTREAM_AUTHOR,
   };
+  if (mode === "lift-and-shift" && !args.upstreamUrl) {
+    console.error("Missing --upstream-url / UPSTREAM_URL — required when mode=lift-and-shift");
+    process.exit(2);
+  }
   const missing = (["issueNumber", "slug", "category"] as const).filter((k) => !args[k]);
   if (missing.length) {
     console.error(`Missing required args: ${missing.join(", ")}`);
@@ -148,6 +160,29 @@ function fetchSpec(repo: string, slug: string): string | null {
   }
 }
 
+function parseGithubOwnerRepo(url: string): { owner: string; repo: string } | null {
+  // https://github.com/owner/repo  (trailing slash, .git, or path are tolerated)
+  const m = url.match(/^https?:\/\/(?:www\.)?github\.com\/([^\/]+)\/([^\/]+?)(?:\.git)?(?:[\/?#].*)?$/i);
+  if (!m) return null;
+  return { owner: m[1], repo: m[2] };
+}
+
+function fetchUpstreamReadme(upstreamUrl: string): { content: string; sourceUrl: string } | null {
+  const parsed = parseGithubOwnerRepo(upstreamUrl);
+  if (!parsed) return null;
+  try {
+    const meta = execSync(
+      `gh api repos/${parsed.owner}/${parsed.repo}/readme`,
+      { encoding: "utf-8" }
+    );
+    const obj = JSON.parse(meta);
+    const content = Buffer.from(obj.content ?? "", "base64").toString("utf-8");
+    return { content, sourceUrl: obj.html_url ?? `${upstreamUrl}/blob/main/README.md` };
+  } catch {
+    return null;
+  }
+}
+
 function extractField(body: string, label: string): string | undefined {
   // Issue template uses "### Label\n\nvalue\n\n" blocks. Tolerant match.
   const re = new RegExp(`^###\\s*${label}\\s*\\n+([\\s\\S]*?)(?=\\n###\\s|\\n*$)`, "im");
@@ -164,7 +199,31 @@ function buildSkillMd(args: {
   output: string;
   specBody: string;
   issueUrl: string;
+  mode: Args["mode"];
+  upstreamUrl?: string;
+  upstreamAuthor?: string;
+  upstreamReadme?: { content: string; sourceUrl: string } | null;
 }): string {
+  if (args.mode === "lift-and-shift") {
+    return buildLiftAndShift(args);
+  }
+  return buildRescaffold(args);
+}
+
+function buildRescaffold(args: {
+  slug: string;
+  schemaCategorySlug: string;
+  description: string;
+  input: string;
+  process: string;
+  output: string;
+  specBody: string;
+  issueUrl: string;
+}): string {
+  // Note: upstream_repo intentionally omitted here. If the human discovers
+  // during build that this skill is actually externally-sourced, they should
+  // add the full attribution trio (upstream_repo / original_source_url /
+  // original_author) — the validator enforces all-or-nothing.
   const fm = [
     "---",
     `name: ${args.slug}`,
@@ -178,7 +237,6 @@ function buildSkillMd(args: {
     `process: ${JSON.stringify(args.process || "TODO")}`,
     `output: ${JSON.stringify(args.output || "TODO")}`,
     "synergy: []",
-    `upstream_repo: ${args.issueUrl}`,
     "---",
     "",
   ].join("\n");
@@ -186,13 +244,79 @@ function buildSkillMd(args: {
   const body = [
     `# ${args.slug}`,
     "",
-    `> Scaffolded from [issue](${args.issueUrl}) via \`/skill-triager\`. Status: \`Not started\`.`,
+    `> Scaffolded from [issue](${args.issueUrl}) via \`/skill-triager\` (mode: rescaffold). Status: \`Not started\`.`,
     "",
     "<!-- TODO: implement steps. Spec from skill-sourcer below for reference. -->",
     "",
     "## Spec (from skill-sourcer)",
     "",
     args.specBody.trim() || "_No spec md found at `skills/approved/<slug>.md` in the idea repo._",
+    "",
+  ].join("\n");
+
+  return fm + body;
+}
+
+function buildLiftAndShift(args: {
+  slug: string;
+  schemaCategorySlug: string;
+  description: string;
+  input: string;
+  process: string;
+  output: string;
+  specBody: string;
+  issueUrl: string;
+  upstreamUrl?: string;
+  upstreamAuthor?: string;
+  upstreamReadme?: { content: string; sourceUrl: string } | null;
+}): string {
+  const upstreamUrl = args.upstreamUrl!;
+  const parsed = parseGithubOwnerRepo(upstreamUrl);
+  const author = args.upstreamAuthor || parsed?.owner || "unknown";
+  const sourceUrl = args.upstreamReadme?.sourceUrl || `${upstreamUrl}/blob/main/README.md`;
+  const description = args.description || `Mirror of ${parsed?.owner}/${parsed?.repo}`;
+
+  // Lift-and-shift sets the attribution trio by construction. Validator passes.
+  const fm = [
+    "---",
+    `name: ${args.slug}`,
+    `category: ${args.schemaCategorySlug}`,
+    `project: ${args.slug}`,
+    "platform: claude",
+    "status: Done",
+    `author: ${JSON.stringify(author)}`,
+    `description: ${JSON.stringify(description)}`,
+    `input: ${JSON.stringify(args.input || "See upstream README")}`,
+    `process: ${JSON.stringify(args.process || "See upstream README")}`,
+    `output: ${JSON.stringify(args.output || "See upstream README")}`,
+    "synergy: []",
+    `upstream_repo: ${upstreamUrl}`,
+    `original_source_url: ${sourceUrl}`,
+    `original_author: ${JSON.stringify(author)}`,
+    "---",
+    "",
+  ].join("\n");
+
+  const readmeBody = args.upstreamReadme?.content?.trim();
+  const body = [
+    `# ${args.slug}`,
+    "",
+    `> Lift-and-shift mirror of [${parsed?.owner ?? "upstream"}/${parsed?.repo ?? args.slug}](${upstreamUrl}) — original content by **${author}**. Sourced via [issue](${args.issueUrl}).`,
+    "",
+    "## About this skill",
+    "",
+    description,
+    "",
+    "## Upstream README",
+    "",
+    readmeBody || `_Upstream README could not be fetched. Visit ${upstreamUrl} directly._`,
+    "",
+    "## Attribution",
+    "",
+    `This card is a **lift-and-shift mirror** of the upstream project. All implementation, documentation, and design credit goes to **${author}** and the upstream contributors.`,
+    "",
+    `- **Upstream repo:** [${upstreamUrl}](${upstreamUrl})`,
+    `- **Original source:** [${sourceUrl}](${sourceUrl})`,
     "",
   ].join("\n");
 
@@ -222,6 +346,11 @@ function main() {
   const proc = extractField(issue.body, "Process") ?? "";
   const output = extractField(issue.body, "Output") ?? "";
 
+  const upstreamReadme =
+    args.mode === "lift-and-shift" && args.upstreamUrl
+      ? fetchUpstreamReadme(args.upstreamUrl)
+      : null;
+
   const md = buildSkillMd({
     slug: args.slug,
     schemaCategorySlug: cat.slug,
@@ -231,6 +360,10 @@ function main() {
     output,
     specBody: spec,
     issueUrl: issue.url,
+    mode: args.mode,
+    upstreamUrl: args.upstreamUrl,
+    upstreamAuthor: args.upstreamAuthor,
+    upstreamReadme,
   });
 
   fs.mkdirSync(targetDir, { recursive: true });

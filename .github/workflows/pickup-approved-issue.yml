@@ -24,6 +24,16 @@ on:
       spec_url:
         description: 'Optional spec URL (informational)'
         required: false
+      mode:
+        description: 'Build mode: "rescaffold" (default — custom Zynkr skill body) or "lift-and-shift" (mirror upstream README, status=Done)'
+        required: false
+        default: 'rescaffold'
+      upstream_url:
+        description: 'Required when mode=lift-and-shift. GitHub URL of the upstream repo to mirror.'
+        required: false
+      upstream_author:
+        description: 'Optional author override for lift-and-shift; defaults to GitHub org from upstream_url.'
+        required: false
 
 jobs:
   scaffold:
@@ -42,12 +52,18 @@ jobs:
             echo "slug=${{ github.event.client_payload.slug }}" >> "$GITHUB_OUTPUT"
             echo "category=${{ github.event.client_payload.category }}" >> "$GITHUB_OUTPUT"
             echo "spec_url=${{ github.event.client_payload.spec_url }}" >> "$GITHUB_OUTPUT"
+            echo "mode=${{ github.event.client_payload.mode || 'rescaffold' }}" >> "$GITHUB_OUTPUT"
+            echo "upstream_url=${{ github.event.client_payload.upstream_url }}" >> "$GITHUB_OUTPUT"
+            echo "upstream_author=${{ github.event.client_payload.upstream_author }}" >> "$GITHUB_OUTPUT"
           else
             echo "issue_number=${{ inputs.issue_number }}" >> "$GITHUB_OUTPUT"
             echo "issue_repo=${{ inputs.issue_repo }}" >> "$GITHUB_OUTPUT"
             echo "slug=${{ inputs.slug }}" >> "$GITHUB_OUTPUT"
             echo "category=${{ inputs.category }}" >> "$GITHUB_OUTPUT"
             echo "spec_url=${{ inputs.spec_url }}" >> "$GITHUB_OUTPUT"
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "upstream_url=${{ inputs.upstream_url }}" >> "$GITHUB_OUTPUT"
+            echo "upstream_author=${{ inputs.upstream_author }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Checkout
@@ -73,6 +89,9 @@ jobs:
           SLUG: ${{ steps.payload.outputs.slug }}
           CATEGORY: ${{ steps.payload.outputs.category }}
           SPEC_URL: ${{ steps.payload.outputs.spec_url }}
+          MODE: ${{ steps.payload.outputs.mode }}
+          UPSTREAM_URL: ${{ steps.payload.outputs.upstream_url }}
+          UPSTREAM_AUTHOR: ${{ steps.payload.outputs.upstream_author }}
         working-directory: scripts
         run: |
           set -euo pipefail
