@@ -1,38 +1,5 @@
 [
   {
-    "id": "0.01",
-    "name": "product-planning",
-    "category": "strategy",
-    "project": "product-planning",
-    "platform": "claude",
-    "status": "Done",
-    "author": "MrPM-Stanley",
-    "description": "0 — Product Planning Framework Guide",
-    "input": "A user inquiry describing a task or need to be solved.",
-    "process": "Interpret the intent, match it against a structured assistant index using functional descriptions, filter to usable entries, and decide whether to recommend or ask one clarification.",
-    "output": "A concise recommendation of the most relevant assistant(s), or a clear request for clarification / inability to recommend.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "0.01",
-    "kind": "skill",
-    "synergy": [
-      "0.01"
-    ],
-    "installCommand": "curl -sL zynkr.ai/s/0.01.md -o ~/.claude/skills/product-planning.md",
-    "updatedAt": "2026-05-20",
-    "firstSeen": "2026-05-20",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "0-strategy/product-planning/SKILL.md",
-    "upstreamRepo": "https://github.com/MrPM-Stanley/product-planning-skill",
-    "originalSourceUrl": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
-    "originalAuthor": "MrPM-Stanley",
-    "githubStars": 37,
-    "githubForks": 9
-  },
-  {
     "id": "1.01",
     "name": "newsletter-to-notion",
     "category": "brand-marketing",
@@ -873,6 +840,39 @@
     "sourceFile": "4-training/process-livestream/agents/qa-knowledge-base.md"
   },
   {
+    "id": "5.01",
+    "name": "product-planning",
+    "category": "product",
+    "project": "product-planning",
+    "platform": "claude",
+    "status": "Done",
+    "author": "MrPM-Stanley",
+    "description": "0 — Product Planning Framework Guide",
+    "input": "See upstream README",
+    "process": "See upstream README",
+    "output": "See upstream README",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "5.01",
+    "kind": "skill",
+    "synergy": [
+      "5.01"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/5.01.md -o ~/.claude/skills/product-planning.md",
+    "updatedAt": "2026-05-20",
+    "firstSeen": "2026-05-20",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "5-product/product-planning/SKILL.md",
+    "upstreamRepo": "https://github.com/MrPM-Stanley/product-planning-skill",
+    "originalSourceUrl": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
+    "originalAuthor": "MrPM-Stanley",
+    "githubStars": 37,
+    "githubForks": 9
+  },
+  {
     "id": "6.07",
     "name": "skill-sourcer",
     "category": "engineer",
@@ -1056,7 +1056,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 33632,
+    "githubStars": 33633,
     "githubForks": 2098
   },
   {
@@ -1094,7 +1094,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 158896,
-    "githubForks": 25758
+    "githubStars": 158901,
+    "githubForks": 25761
   }
 ]
