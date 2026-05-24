@@ -54,10 +54,15 @@ jobs:
           fi
 
       - name: Notify Vercel sync
-        if: steps.commit.outputs.changed == 'true'
+        # Fire whenever generated/skills-detail.json exists. Sync is idempotent
+        # (the webhook does upsert), so re-posting the same payload is safe.
+        # Gating only on `changed==true` from the commit step misses cases where
+        # the human committer already regenerated content/ + generated/ locally
+        # — CI then sees no commit-time diff and would skip sync, leaving the
+        # Supabase mirror stale.
         env:
           SYNC_SECRET: ${{ secrets.SKILLS_SYNC_HMAC_SECRET }}
-          SOURCE_SHA: ${{ steps.commit.outputs.sha }}
+          SOURCE_SHA: ${{ steps.commit.outputs.sha || github.sha }}
         run: |
           if [ -z "$SYNC_SECRET" ]; then
             echo "SKILLS_SYNC_HMAC_SECRET not set — skipping webhook"
