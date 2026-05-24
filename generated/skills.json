@@ -107,6 +107,7 @@
       "output": "csv"
     },
     "legacyIpoId": "1.04",
+    "sheetId": "1.01",
     "kind": "subagent",
     "stage": "0 (optional)",
     "synergy": [
@@ -142,6 +143,7 @@
       "output": "csv"
     },
     "legacyIpoId": "1.05",
+    "sheetId": "1.02",
     "kind": "subagent",
     "stage": "1",
     "synergy": [
@@ -212,6 +214,7 @@
       "output": "frontmatter"
     },
     "legacyIpoId": "1.07",
+    "sheetId": "1.03",
     "kind": "subagent",
     "stage": "3",
     "synergy": [
@@ -247,6 +250,7 @@
       "output": "csv"
     },
     "legacyIpoId": "1.08",
+    "sheetId": "1.04",
     "kind": "subagent",
     "stage": "3.5 (optional)",
     "synergy": [
@@ -282,6 +286,7 @@
       "output": "csv"
     },
     "legacyIpoId": "1.09",
+    "sheetId": "1.05",
     "kind": "subagent",
     "stage": "4",
     "synergy": [
@@ -317,6 +322,7 @@
       "output": "csv"
     },
     "legacyIpoId": "1.10",
+    "sheetId": "1.06",
     "kind": "subagent",
     "stage": "5",
     "synergy": [
@@ -428,6 +434,7 @@
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
     "ipoProvenance": {},
     "legacyIpoId": "2.22",
+    "sheetId": "2.01",
     "kind": "subagent",
     "synergy": [
       "2.21",
@@ -501,6 +508,7 @@
     "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
     "ipoProvenance": {},
     "legacyIpoId": "2.25",
+    "sheetId": "2.04",
     "kind": "subagent",
     "synergy": [
       "2.21",
@@ -566,6 +574,35 @@
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/inbound-sales-project-init/SKILL.md"
+  },
+  {
+    "id": "2.28",
+    "name": "interview-question-predictor",
+    "category": "sales-consultant",
+    "project": "interview-question-predictor",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "description": "面試猜題",
+    "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
+    "process": "Analyze the interview context from an interviewer's perspective and identify likely questions and evaluation signals.",
+    "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.28",
+    "sheetId": "2.06",
+    "kind": "skill",
+    "synergy": [
+      "2.28"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.28.md -o ~/.claude/skills/interview-question-predictor.md",
+    "updatedAt": "2026-05-24",
+    "firstSeen": "2026-05-24",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/interview-question-predictor/SKILL.md"
   },
   {
     "id": "3.01",
@@ -1021,7 +1058,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 34169,
+    "githubStars": 34173,
     "githubForks": 2139
   },
   {
@@ -1059,8 +1096,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 165553,
-    "githubForks": 27271
+    "githubStars": 165581,
+    "githubForks": 27279
   },
   {
     "id": "6.14",

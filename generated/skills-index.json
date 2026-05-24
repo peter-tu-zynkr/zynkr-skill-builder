@@ -412,6 +412,28 @@
     "first_seen": "2026-05-24"
   },
   {
+    "id": "2.28",
+    "slug": "interview-question-predictor",
+    "name": "interview-question-predictor",
+    "summary": "面試猜題",
+    "category": "sales-consultant",
+    "project": "interview-question-predictor",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/interview-question-predictor/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.28.md -o ~/.claude/skills/interview-question-predictor.md",
+    "tags": [
+      "interview-question-predictor",
+      "sales-consultant",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-24",
+    "first_seen": "2026-05-24"
+  },
+  {
     "id": "3.01",
     "slug": "meeting-prep",
     "name": "meeting-prep",
@@ -760,7 +782,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34169,
+    "github_stars": 34173,
     "github_forks": 2139,
     "first_seen": "2026-05-12"
   },
@@ -787,8 +809,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 165553,
-    "github_forks": 27271,
+    "github_stars": 165581,
+    "github_forks": 27279,
     "first_seen": "2026-05-20"
   },
   {
