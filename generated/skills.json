@@ -335,7 +335,7 @@
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
   {
-    "id": "2.01",
+    "id": "2.10",
     "name": "biz-card",
     "category": "business-consulting",
     "project": "biz-card",
@@ -343,28 +343,28 @@
     "status": "Done",
     "author": "Peter Tu",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
-    "input": "Job description or application link (or minimal role/company details).",
-    "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
-    "output": "Clear role summary, prioritized skills, success KPIs, and ATS-ready keywords for CV tailoring and interview prep.",
+    "input": "Business card image(s) — single or batch",
+    "process": "OCR via Claude Vision → schema normalization → user review → Google Sheet append → company research → follow-up email draft → Gmail save",
+    "output": "CRM row in Google Sheet + personalized follow-up email saved to Gmail Drafts",
     "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
     },
-    "legacyIpoId": "2.01",
+    "legacyIpoId": "2.10",
     "kind": "orchestrator",
     "synergy": [
-      "2.01",
-      "2.02"
+      "2.10",
+      "2.11"
     ],
-    "installCommand": "curl -sL zynkr.ai/s/2.01.md -o ~/.claude/skills/biz-card.md",
+    "installCommand": "curl -sL zynkr.ai/s/2.10.md -o ~/.claude/skills/biz-card.md",
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/biz-card/SKILL.md"
+    "sourceFile": "2-business-consulting/biz-card/SKILL.md"
   },
   {
-    "id": "2.02",
+    "id": "2.11",
     "name": "followup-email-writer",
     "category": "business-consulting",
     "project": "biz-card",
@@ -377,22 +377,22 @@
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "2.02",
+    "legacyIpoId": "2.11",
     "kind": "subagent",
     "synergy": [
-      "2.01",
-      "2.02"
+      "2.10",
+      "2.11"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/biz-card/agents/followup-email-writer.md",
-    "input": "User’s CV, target job requirements, and past experience descriptions",
-    "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
-    "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment"
+    "sourceFile": "2-business-consulting/biz-card/agents/followup-email-writer.md",
+    "input": "User shares business context, team structure, challenges, and goals through guided Q&A.",
+    "process": "Conducts structured, step-by-step needs discovery by asking one question at a time, confirming understanding, and probing deeper.",
+    "output": "Clear, organized summary of user background, challenges, and needs, ready for strategic follow-up."
   },
   {
-    "id": "2.03",
+    "id": "2.12",
     "name": "cv-customizer",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -400,32 +400,32 @@
     "status": "Done",
     "author": "Peter Tu",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
-    "input": "Candidate CV plus target role context and prior discussion insights",
-    "process": "Score fit across relevance, value, narrative, and ATS; benchmark against top peers; identify gaps; coach improvements step-by-step",
-    "output": "Clear fit scores, competitive benchmarking, and actionable recommendations to optimize the CV and career positioning",
+    "input": "Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.",
+    "process": "Guided, structured conversation—one question at a time—to uncover long-term goals, value propositions, and operational realities.",
+    "output": "Concise strategic discovery summary to support downstream process mapping or pain point validation.",
     "ipoProvenance": {
       "input": "csv",
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "2.03",
+    "legacyIpoId": "2.12",
     "kind": "orchestrator",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
-    "installCommand": "curl -sL zynkr.ai/s/2.03.md -o ~/.claude/skills/cv-customizer.md",
+    "installCommand": "curl -sL zynkr.ai/s/2.12.md -o ~/.claude/skills/cv-customizer.md",
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/SKILL.md"
+    "sourceFile": "2-business-consulting/cv-customizer/SKILL.md"
   },
   {
-    "id": "2.04",
+    "id": "2.13",
     "name": "cv-phase1-job-decoder",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -433,31 +433,24 @@
     "status": "Done",
     "author": "Peter Tu",
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "2.04",
+    "ipoProvenance": {},
+    "legacyIpoId": "2.13",
     "kind": "subagent",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase1-job-decoder.md",
-    "input": "User’s resume content and prior contextual analysis from earlier phases.",
-    "process": "Automatically analyze skill placement, depth, progression, and leadership signals across roles to assess career growth credibility.",
-    "output": "A structured diagnosis of progression quality, flagged risks, and concrete rewrite recommendations to strengthen the growth narrative."
+    "sourceFile": "2-business-consulting/cv-customizer/agents/cv-phase1-job-decoder.md"
   },
   {
-    "id": "2.05",
+    "id": "2.14",
     "name": "cv-phase2-story-extractor",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -469,26 +462,26 @@
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "2.05",
+    "legacyIpoId": "2.14",
     "kind": "subagent",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase2-story-extractor.md",
-    "input": "Existing resume content, prior optimization insights, and a fixed CV template",
-    "process": "Rewrite and structure content to match the template using active, impact-driven language optimized for ATS and recruiters.",
-    "output": "A polished, job-ready resume with clear sections, quantified achievements, and acceptance checkpoints."
+    "sourceFile": "2-business-consulting/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "input": "A client’s description of an inefficient or unclear business process",
+    "process": "Guide structured questioning to map end-to-end steps, identify suppliers and customers, and infer standard inputs/outputs",
+    "output": "A clear, reviewable process map presented as a structured table for improvement planning"
   },
   {
-    "id": "2.06",
+    "id": "2.15",
     "name": "cv-phase3-fit-scorer",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -500,26 +493,26 @@
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "2.06",
+    "legacyIpoId": "2.15",
     "kind": "subagent",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase3-fit-scorer.md",
-    "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
-    "process": "Analyze the interview context from an interviewer’s perspective and identify likely questions and evaluation signals.",
-    "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A."
+    "sourceFile": "2-business-consulting/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "input": "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).",
+    "process": "Diagnose automation suitability, assess ROI, classify tasks, and recommend appropriate technologies with concise rationale.",
+    "output": "A structured evaluation table, transformation recommendations, and a handoff prompt for solution design."
   },
   {
-    "id": "2.07",
+    "id": "2.16",
     "name": "cv-phase4-progression",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -532,26 +525,26 @@
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "2.07",
+    "legacyIpoId": "2.16",
     "kind": "subagent",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase4-progression.md",
-    "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
-    "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
-    "output": "Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer."
+    "sourceFile": "2-business-consulting/cv-customizer/agents/cv-phase4-progression.md",
+    "input": "Diagnosed process steps with automation readiness scores",
+    "process": "Redesign each step into structured, automation-ready workflows with task breakdowns, system layer mapping, and tool suggestions",
+    "output": "Builder-ready tables with sub-tasks, flow type, MVP stack, and a summary for digital transformation execution"
   },
   {
-    "id": "2.08",
+    "id": "2.17",
     "name": "cv-phase5-rewriter",
     "category": "business-consulting",
     "project": "cv-customizer",
@@ -559,23 +552,23 @@
     "status": "Done",
     "author": "Peter Tu",
     "ipoProvenance": {},
-    "legacyIpoId": "2.08",
+    "legacyIpoId": "2.17",
     "kind": "subagent",
     "synergy": [
-      "2.03",
-      "2.04",
-      "2.05",
-      "2.06",
-      "2.07",
-      "2.08"
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17"
     ],
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-09",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase5-rewriter.md"
+    "sourceFile": "2-business-consulting/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   {
-    "id": "2.09",
+    "id": "2.18",
     "name": "inbound-sales-project-init",
     "category": "business-consulting",
     "project": "inbound-sales-project-init",
@@ -591,16 +584,16 @@
       "process": "frontmatter",
       "output": "frontmatter"
     },
-    "legacyIpoId": "2.09",
+    "legacyIpoId": "2.18",
     "kind": "skill",
     "synergy": [
-      "2.09"
+      "2.18"
     ],
-    "installCommand": "curl -sL zynkr.ai/s/2.09.md -o ~/.claude/skills/inbound-sales-project-init.md",
+    "installCommand": "curl -sL zynkr.ai/s/2.18.md -o ~/.claude/skills/inbound-sales-project-init.md",
     "updatedAt": "2026-05-24",
-    "firstSeen": "2026-05-12",
+    "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/inbound-sales-project-init/SKILL.md"
+    "sourceFile": "2-business-consulting/inbound-sales-project-init/SKILL.md"
   },
   {
     "id": "3.01",
@@ -1094,8 +1087,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 165531,
-    "githubForks": 27269
+    "githubStars": 165537,
+    "githubForks": 27270
   },
   {
     "id": "6.14",
