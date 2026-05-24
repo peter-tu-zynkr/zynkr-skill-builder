@@ -1,5 +1,6 @@
 ---
 name: reader-perspective
+sheetId: "1.04"
 description: "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\".
 
 <example>

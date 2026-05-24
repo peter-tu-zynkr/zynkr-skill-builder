@@ -60,6 +60,26 @@ Important boundaries:
 - `content/` and `generated/` are the app-facing artifacts; Supabase is a read mirror, not a source of truth
 - frontend consumes `/api/skills*` (Supabase-backed) with a raw-GitHub fallback retained until ~2026-05-26 then removed
 
+### Sync from Sheet
+
+The `[@] AI assistant index` Google Sheet (`1QvrtRB0_1tHM67IEq01T-UpKtsv4nXtIkWB3k5xynd4` / tab `Assistant Index 📖`) is the canonical inventory of all assistants across ChatGPT, Gemini, n8n, and Claude. `scripts/sync-from-sheet.ts` scaffolds new SKILL.md / agent files from sheet rows that don't yet have a repo equivalent.
+
+```text
+Google Sheet (Assistant Index)
+        ↓ (manual: read via google-workspace MCP, save to tmp/)
+tmp/sheet-snapshot.json   +   tmp/docs/<docId>.md
+        ↓
+scripts/sync-from-sheet.ts  +  catalog/sheet-map.json
+        ↓
+skills/[N]-[category]/[slug]/SKILL.md   ← then normal ingest flow
+```
+
+Behavior:
+- Only rows with `Status: Done` are considered; rows with `Migrate: Drop` are skipped permanently
+- Sheet `no.` (e.g. `2.06`) is stored as advisory `sheetId:` in frontmatter — repo content IDs stay FIFO so URLs never churn
+- `catalog/sheet-map.json` is the human-curated bridge: each sheet ID → `{kind: standalone|agent|drop|skip|review, project, parent_project, slug, category}`
+- `--dry-run` previews, `--check-drift` compares sheet vs repo, `--rows 2.06,2.07` scopes to specific IDs, `--refresh` overwrites existing files
+
 Migration state (as of 2026-05-12):
 - `zynkr-website-fe` is the canonical frontend (HTML/CSS/JS on Vercel)
 - Supabase read mirror is live; 32 records committed in `content/skills/`

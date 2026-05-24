@@ -1,5 +1,6 @@
 ---
 name: cv-phase4-progression
+sheetId: "2.04"
 description: "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required."
 model: sonnet
 ---

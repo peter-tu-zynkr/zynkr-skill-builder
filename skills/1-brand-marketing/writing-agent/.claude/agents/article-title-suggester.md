@@ -1,5 +1,6 @@
 ---
 name: article-title-suggester
+sheetId: "1.05"
 description: "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\".
 
 <example>

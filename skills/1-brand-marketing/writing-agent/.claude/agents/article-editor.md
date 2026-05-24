@@ -1,5 +1,6 @@
 ---
 name: article-editor
+sheetId: "1.03"
 description: "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\".\n\n<example>\nContext: The user has a completed draft from article-drafter and wants editorial review.\nuser: \"初稿完成了，幫我校稿。\"\nassistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\"\n<commentary>\nSince the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to check their article for edits.\nuser: \"文章寫好了，幫我編輯一下。\"\nassistant: \"I'll use the article-editor agent to review your article and suggest edits.\"\n<commentary>\nSince the user wants editorial review of a completed draft, launch the article-editor agent.\n</commentary>\n</example>"
 model: sonnet
 ---

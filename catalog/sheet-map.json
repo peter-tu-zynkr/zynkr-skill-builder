@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "source": "Google Sheet '[@] AI assistant index' / tab 'Assistant Index 📖'",
+    "spreadsheet_id": "1QvrtRB0_1tHM67IEq01T-UpKtsv4nXtIkWB3k5xynd4",
+    "generated_at": "2026-05-24",
+    "kinds": {
+      "standalone": "Create new skills/{N-cat}/{project}/SKILL.md (or backfill sheetId if already exists)",
+      "agent": "Create new skills/{N-cat}/{parent_project}/agents/{slug}.md (or backfill if exists)",
+      "drop": "Sheet says do not migrate (Migrate=Drop). Skip permanently.",
+      "skip": "Not actionable today (Not started / WIP / Pause / Out dated). Re-evaluate when sheet status flips to Done."
+    },
+    "id_policy": "Sheet 'no.' is advisory only. Stored as sheetId in generated frontmatter. Repo content IDs stay FIFO-assigned by ingest.ts to avoid URL churn.",
+    "unmapped_default": "warn"
+  },
+  "rows": {
+    "0.01": {
+      "kind": "skip",
+      "category": "operations",
+      "sheet_name": "行政助理 ─ 搜尋助理索引",
+      "author": "Peter Tu",
+      "notes": "Sheet prefix '0' (strategy) conflicts with 'For upload' category '營運' (operations). Decide category before scaffolding."
+    },
+    "1.01": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "socratic-ideation-partner", "sheet_name": "寫作助理 ─ 靈感發想", "exists": true },
+    "1.02": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "article-style-selector", "sheet_name": "寫作助理 ─ 文章風格導航員", "exists": true },
+    "1.03": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "article-editor", "sheet_name": "寫作助理 ─ 編輯助手", "exists": true },
+    "1.04": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "reader-perspective", "sheet_name": "寫作助理 ─ 讀者審稿", "exists": true },
+    "1.05": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "article-title-suggester", "sheet_name": "寫作助理 ─ 標題小幫手", "exists": true },
+    "1.06": { "kind": "agent", "category": "brand-marketing", "parent_project": "writing-agent", "slug": "cta-writer", "sheet_name": "寫作助理 ─ 客製化行動呼籲", "exists": true },
+    "1.07": { "kind": "skip", "category": "brand-marketing", "sheet_name": "寫作助理 ─ 內容標籤助理", "notes": "Status=Not started, no prompt doc." },
+    "1.08": { "kind": "standalone", "category": "brand-marketing", "project": "article-fission", "slug": "article-fission", "sheet_name": "寫作助理 ─ 文章裂變", "author": "Peter Tu" },
+    "1.09": { "kind": "standalone", "category": "brand-marketing", "project": "zh-tw-translator", "slug": "zh-tw-translator", "sheet_name": "寫作助理 ─ 翻譯蒟蒻", "author": "Peter Tu", "notes": "Sheet's 'Claude skill' col is populated — confirm whether already exists before scaffolding." },
+    "1.10": { "kind": "standalone", "category": "brand-marketing", "project": "ai-literacy-topic-selector", "slug": "ai-literacy-topic-selector", "sheet_name": "寫作助理 ─ AI 素養文章選題", "author": "Peter Tu" },
+    "1.11": { "kind": "standalone", "category": "brand-marketing", "project": "ai-literacy-article-writer", "slug": "ai-literacy-article-writer", "sheet_name": "寫作助理 ─ AI 素養文章撰寫", "author": "Bicky Yang" },
+    "1.12": { "kind": "skip", "category": "brand-marketing", "sheet_name": "簡報助理 ─ 設計簡報故事線", "notes": "Status=Not started." },
+    "1.13": { "kind": "skip", "category": "brand-marketing", "sheet_name": "簡報助理 ─ 分頁設定", "notes": "Status=Not started." },
+    "1.14": { "kind": "skip", "category": "brand-marketing", "sheet_name": "簡報助理 ─ 簡報視覺呈現選擇", "notes": "Status=Not started." },
+
+    "2.01": { "kind": "agent", "category": "sales-consultant", "parent_project": "cv-customizer", "slug": "cv-phase1-job-decoder", "sheet_name": "履歷客製化 ─ 分析職缺", "exists": true },
+    "2.02": { "kind": "agent", "category": "sales-consultant", "parent_project": "cv-customizer", "slug": "cv-phase2-story-extractor", "sheet_name": "履歷客製化 ─ 找到價值主張", "exists": true },
+    "2.03": { "kind": "agent", "category": "sales-consultant", "parent_project": "cv-customizer", "slug": "cv-phase3-fit-scorer", "sheet_name": "履歷客製化 ─ 評分並分析優劣", "exists": true },
+    "2.04": { "kind": "agent", "category": "sales-consultant", "parent_project": "cv-customizer", "slug": "cv-phase4-progression", "sheet_name": "履歷客製化 ─ 打造成長曲線", "exists": true },
+    "2.05": { "kind": "agent", "category": "sales-consultant", "parent_project": "cv-customizer", "slug": "cv-phase5-rewriter", "sheet_name": "履歷客製化 ─ 履歷撰寫", "exists": true },
+    "2.06": { "kind": "standalone", "category": "sales-consultant", "project": "interview-question-predictor", "slug": "interview-question-predictor", "sheet_name": "面試猜題", "author": "Jane Liao" },
+    "2.07": { "kind": "standalone", "category": "sales-consultant", "project": "mock-interview", "slug": "mock-interview", "sheet_name": "模擬面試", "author": "Jane Liao", "notes": "Could become agent of interview-question-predictor — confirm parent layout before generating." },
+    "2.08": { "kind": "skip", "category": "sales-consultant", "sheet_name": "職涯教練", "notes": "Status=Not started." },
+    "2.09": { "kind": "skip", "category": "sales-consultant", "sheet_name": "Career PrepPal", "notes": "Status=Pause." },
+    "2.10": { "kind": "skip", "category": "sales-consultant", "sheet_name": "CareerInsight Coach", "notes": "Status=Pause." },
+    "2.11": { "kind": "standalone", "category": "sales-consultant", "project": "consulting-pain-point-discovery", "slug": "consulting-pain-point-discovery", "sheet_name": "顧問助理 ─ 痛點解析", "author": "Peter Tu" },
+    "2.12": { "kind": "standalone", "category": "sales-consultant", "project": "company-vision-discovery", "slug": "company-vision-discovery", "sheet_name": "顧問助理 ─ 公司未來願景描繪", "author": "Peter Tu", "notes": "Synergy chain with 2.11 — consider making both agents of a 'consulting-discovery' orchestrator." },
+    "2.13": { "kind": "skip", "category": "operations", "sheet_name": "營運助理：流程探勘 (Virtual shadowing)", "notes": "Status=Not started. Note category drift: sheet prefix 2 (sales-consultant) but content is operations." },
+    "2.14": { "kind": "standalone", "category": "operations", "project": "process-discovery", "slug": "process-discovery", "sheet_name": "營運助理 ─ 流程探勘", "author": "Peter Tu", "notes": "Category drift: sheet prefix 2 but content is operations. Target operations folder." },
+    "2.15": { "kind": "standalone", "category": "operations", "project": "digital-transformation-assessor", "slug": "digital-transformation-assessor", "sheet_name": "營運助理 ─ 數位轉型評估", "author": "Peter Tu", "notes": "Synergy with 2.14, 2.16. Consider operations-transformation orchestrator." },
+    "2.16": { "kind": "standalone", "category": "operations", "project": "process-redesigner", "slug": "process-redesigner", "sheet_name": "營運經理 ─ 流程重構", "author": "Peter Tu" },
+
+    "3.01": { "kind": "skip", "category": "strategy", "sheet_name": "策略規劃", "notes": "Status=WIP. Note category drift: sheet prefix 3 vs strategy." },
+    "3.02": { "kind": "skip", "category": "operations", "sheet_name": "專案管理發想 (Old)", "notes": "Status=Out dated. Superseded by 3.03." },
+    "3.03": { "kind": "standalone", "category": "operations", "project": "project-charter-facilitator", "slug": "project-charter-facilitator", "sheet_name": "專案章程發想 (New)", "author": "Peter Tu" },
+    "3.04": { "kind": "skip", "category": "operations", "sheet_name": "專案規劃助理", "notes": "Status=Not started." },
+    "3.05": { "kind": "skip", "category": "operations", "sheet_name": "利害關係人提問模擬", "notes": "Status=Not started." },
+    "3.06": { "kind": "agent", "category": "operations", "parent_project": "meeting-prep", "slug": "meeting-notes-organizer", "sheet_name": "專案助理 ─ 整理會議筆記", "author": "Peter Tu", "notes": "Attach as agent of existing meeting-prep skill (confirm with user — could be standalone)." },
+    "3.07": { "kind": "skip", "category": "operations", "sheet_name": "專案追蹤助理", "notes": "Status=Pause." },
+    "3.08": { "kind": "skip", "category": "engineer", "sheet_name": "知識庫管理 ─ 整合資訊", "notes": "Status=Not started. Category drift." },
+    "3.09": { "kind": "skip", "category": "engineer", "sheet_name": "知識庫管理 ─ 判斷重複", "notes": "Status=Not started. Category drift." },
+    "3.10": { "kind": "skip", "category": "engineer", "sheet_name": "知識庫管理 ─ 自動更新", "notes": "Status=Not started. Category drift." },
+
+    "4.01": { "kind": "review", "category": "training", "sheet_name": "處理影片回顧", "author": "Peter Tu", "notes": "Description (transcribe + Summary/Theme/Q&A/Tools/CTA) overlaps with existing 'polish-lecture-transcript' OR 'process-livestream' in repo. User must confirm which (or both) the sheet row represents before sync runs." },
+
+    "5.01": { "kind": "skip", "category": "product", "sheet_name": "指令工程助理 ─ 引導產品需求", "notes": "Status=Not started." },
+    "5.02": { "kind": "standalone", "category": "product", "project": "prompt-engineer", "slug": "prompt-engineer", "sheet_name": "指令工程助理 ─ 重構指令", "author": "Peter Tu" },
+
+    "7.01": { "kind": "standalone", "category": "people-talent", "project": "jd-architect", "slug": "jd-architect", "sheet_name": "招募助理 ─ 對齊職務需求", "author": "Jane Liao", "notes": "Synergy chain 7.01→7.05; consider 'recruiting-pipeline' orchestrator with these as agents." },
+    "7.02": { "kind": "standalone", "category": "people-talent", "project": "resume-screener", "slug": "resume-screener", "sheet_name": "招募助理 ─ 履歷篩選", "author": "Jane Liao" },
+    "7.03": { "kind": "standalone", "category": "people-talent", "project": "interview-question-designer", "slug": "interview-question-designer", "sheet_name": "招募助理 ─ 設計考題與計分卡", "author": "Jane Liao" },
+    "7.04": { "kind": "standalone", "category": "people-talent", "project": "interview-calibrator", "slug": "interview-calibrator", "sheet_name": "招募助理 ─ 面試評分校準與決策", "author": "Jane Liao" },
+    "7.05": { "kind": "skip", "category": "people-talent", "sheet_name": "招募助理 ─ 候選人溝通", "notes": "Status=WIP." },
+    "7.06": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 寫作及與 AI 互動的技巧", "notes": "Migrate=Drop. Course-specific assistant." },
+    "7.07": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 打造寫作系統的底層邏輯", "notes": "Migrate=Drop." },
+    "7.08": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 打造寫作助理實作", "notes": "Migrate=Drop." },
+    "7.09": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 協助學員打造客製化助理", "notes": "Migrate=Drop." },
+    "7.10": { "kind": "skip", "category": "training", "sheet_name": "課程助教 ─ 學員評估", "notes": "Status=Not started." },
+    "7.11": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 終極升遷指南第二章", "notes": "Migrate=Drop." },
+    "7.12": { "kind": "drop", "category": "training", "sheet_name": "課程助教 ─ 策略規劃助理", "notes": "Migrate=Drop." },
+
+    "8.01": { "kind": "skip", "category": "sales-consultant", "sheet_name": "業務助理 ─ 名片整理", "notes": "Status=WIP in sheet, but biz-card already exists in repo as Done. Sheet status is stale — drift. Backfill sheetId when sheet is updated." },
+    "8.02": { "kind": "skip", "category": "sales-consultant", "sheet_name": "業務助理 ─ 線索評分助理", "notes": "Status=WIP." }
+  },
+  "repo_only": {
+    "_note": "Skills that exist in zynkr-skill-builder but have no row in the sheet. Author should add rows so sheet stays canonical.",
+    "newsletter-to-notion": { "category": "brand-marketing", "current_content_id": "1.01" },
+    "write-newsletter": { "category": "brand-marketing", "current_content_id": "1.02" },
+    "writing-agent (orchestrator/CLAUDE.md)": { "category": "brand-marketing", "current_content_id": "1.03" },
+    "article-drafter": { "category": "brand-marketing", "current_content_id": "1.06", "notes": "writing-agent sub-agent. Sheet 1.06 is cta-writer, not article-drafter. Distinct agent." },
+    "inbound-sales-project-init": { "category": "sales-consultant", "current_content_id": "2.18" },
+    "meeting-prep": { "category": "operations", "current_content_id": "3.01" },
+    "process-livestream + 5 agents": { "category": "training", "current_content_ids": "4.02 + 4.04-4.08" },
+    "srt-optimizer": { "category": "training", "current_content_id": "4.03" },
+    "product-planning": { "category": "product", "current_content_id": "5.01" },
+    "skill-sourcer + 4 agents": { "category": "engineer", "current_content_ids": "6.07 + 6.08-6.11" },
+    "vercel-labs-agent-browser": { "category": "engineer", "current_content_id": "6.12" },
+    "hermes-agent": { "category": "engineer", "current_content_id": "6.13" },
+    "skill-triager": { "category": "engineer", "current_content_id": "6.14" }
+  }
+}
