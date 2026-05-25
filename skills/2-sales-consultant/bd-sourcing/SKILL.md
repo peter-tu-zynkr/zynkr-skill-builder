@@ -1,0 +1,315 @@
+---
+name: bd-sourcing
+description: "9-step BD sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag."
+category: sales-consultant
+project: bd-sourcing
+platform: claude
+status: Done
+author: Peter Tu
+input: "Google Sheet of survey participants — each row has company name, AI challenges, topic interests, and attend-motivation signals"
+process: "Header auto-detection → generic-name filter → output column provisioning → formula writes (Hot Lead / 平均分數) → parallel WebSearch enrichment → strategy synthesis weaving challenges + interests → sort-safe write-back → Well-Known judgment → run summary"
+output: "Same sheet + 5–7 new columns: 官網, 公司背景, 陌生開發策略, Hot Lead?, 知名企業? (and optionally 有普通?, 平均分數); plus a 'needs follow-up' list for unknowns"
+synergy: []
+---
+
+# BD Sourcing
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill bd-sourcing
+```
+
+Turn a post-event satisfaction survey into a tier-1 BD outbound funnel in one pass. Use this skill after any workshop, public class, or speaking event where you've collected attendee responses with company name + AI pain points + topic interests, and you want each row enriched with company context and a tailored cold-outbound (陌生開發) angle. Trigger on phrases like "處理活動問卷", "幫我做 BD 名單", "把問卷變成陌生開發清單", "process survey for BD", or "/bd-sourcing".
+
+---
+
+## Step 0 — Load Config
+
+Read the config file at:
+`./bd-sourcing-config.md`
+
+Store:
+- `SHEET_ID` — Google Sheet ID
+- `SHEET_TAB` — sheet tab name (default: first tab)
+- `HEADER_HINTS` — fuzzy-match keyword lists per role
+- `HOT_LEAD_SIGNALS` — regex phrases that fire the Hot Lead flag
+- `GENERIC_PATTERNS` — company-name skip list
+- `ADD_SATISFACTION_COLUMNS` — boolean; whether to also write 有普通? + 平均分數
+- `SATISFACTION_SCORE_COLUMNS` — Likert (1–5) columns; auto-detect if blank
+
+**If `SHEET_ID` is `TBD`:**
+```
+⚠️  Google Sheet ID not configured yet.
+Please paste the Google Sheet URL or ID before continuing.
+```
+Wait for user input. Update `SHEET_ID` in memory for this session.
+
+---
+
+## Step 1 — Header Auto-Detection
+
+Display:
+```
+---------------------------------------------
+🎯 BD Sourcing
+---------------------------------------------
+Phase: Header Detection
+---------------------------------------------
+```
+
+Read row 1 with `mcp__google-workspace__read_sheet_values`:
+- `user_google_email`: `<your-google-workspace-account>`
+- `spreadsheet_id`: `SHEET_ID`
+- `range`: `[SHEET_TAB]!A1:Z1`
+
+Fuzzy-match each header cell to one of these roles using `HEADER_HINTS`:
+- `company_col` — required
+- `challenges_col` — required (the J-column equivalent)
+- `topics_col` — required (the K-column equivalent)
+- `attend_motivation_col` — required for Hot Lead detection
+- `participant_name_col` — optional
+
+Store as `COL_MAP`. Display:
+```
+Detected columns:
+  公司名稱        → Column B
+  參加原因        → Column C
+  AI 挑戰         → Column J
+  感興趣議題      → Column K
+  學員姓名        → (not detected)
+
+Type [OK] to proceed, or [SET role=X] to override (e.g. SET company=B).
+```
+
+Accept overrides until user types `OK`. If a required role can't be matched and the user can't supply it, halt with a clear error.
+
+---
+
+## Step 2 — Generic-Name Filter
+
+Read the full company column with `mcp__google-workspace__read_sheet_values`:
+- `range`: `[SHEET_TAB]![company_col]2:[company_col]`
+
+For each row, classify:
+- **`generic`** if the cell value (trimmed, lowercased) matches any `GENERIC_PATTERNS` entry, is blank, or is purely numeric.
+- **`searchable`** otherwise.
+
+Build `ROWS[]` — one object per row with `{sheet_row, company_name, classification}`.
+
+Display:
+```
+Survey rows: [N] total
+  Searchable: [N1]
+  Generic (will skip enrichment): [N2]
+```
+
+---
+
+## Step 3 — Output Column Provisioning
+
+Identify the next available empty column block at the right edge of the data. Write headers using `mcp__google-workspace__modify_sheet_values`:
+- `range`: `[SHEET_TAB]![first_new_col]1:[last_new_col]1`
+- `value_input_option`: `USER_ENTERED`
+
+Always-on headers:
+- `官網`
+- `公司背景`
+- `陌生開發策略`
+- `Hot Lead?`
+- `知名企業?`
+
+Conditional headers (only if `ADD_SATISFACTION_COLUMNS` is `true` AND not already present):
+- `有普通?`
+- `平均分數`
+
+Store column letters as `OUT.website_col`, `OUT.background_col`, `OUT.strategy_col`, `OUT.hot_lead_col`, `OUT.well_known_col`, `OUT.has_average_col`, `OUT.avg_score_col`.
+
+---
+
+## Step 4 — Formula Writes
+
+### 4a — Hot Lead formula
+
+Write to row 2 of `OUT.hot_lead_col` using `mcp__google-workspace__modify_sheet_values` (`value_input_option: USER_ENTERED`):
+
+```
+=ARRAYFORMULA(IF(LEN(A2:A)=0,"",IF(REGEXMATCH([attend_motivation_col]2:[attend_motivation_col]&"","[HOT_LEAD_SIGNALS_PIPE_JOINED]"),"Y","N")))
+```
+
+Substitute `[attend_motivation_col]` with the detected column letter, and `[HOT_LEAD_SIGNALS_PIPE_JOINED]` with the config's `HOT_LEAD_SIGNALS` joined by `|`. Example produced today:
+```
+=ARRAYFORMULA(IF(LEN(A2:A)=0,"",IF(REGEXMATCH(C2:C&"","評估是否適合在公司內部安排類似課程|評估未來參加公開班課程的可能性"),"Y","N")))
+```
+
+### 4b — Satisfaction formulas (if `ADD_SATISFACTION_COLUMNS`)
+
+Resolve `SATISFACTION_SCORE_COLUMNS`. If blank, auto-detect: scan row 2 of all columns for Likert tokens (`非常滿意`, `滿意`, `普通`, `不滿意`, `非常不滿意`); the contiguous block is the Likert range. Store as `LIKERT_RANGE` (e.g. `D2:H`).
+
+Write to row 2 of `OUT.has_average_col`:
+```
+=ARRAYFORMULA(IF(LEN(A2:A)=0,"",IF(MMULT(([LIKERT_RANGE]="普通")*1,SEQUENCE(COLUMNS([LIKERT_RANGE]),1,1,0))>0,"Y","N")))
+```
+
+Write to row 2 of `OUT.avg_score_col`:
+```
+=ARRAYFORMULA(IF(LEN(A2:A)=0,"",IFERROR(ROUND(MMULT(([LIKERT_RANGE]="非常滿意")*5+([LIKERT_RANGE]="滿意")*4+([LIKERT_RANGE]="普通")*3+([LIKERT_RANGE]="不滿意")*2+([LIKERT_RANGE]="非常不滿意")*1,SEQUENCE(COLUMNS([LIKERT_RANGE]),1,1,0))/MMULT((([LIKERT_RANGE]="非常滿意")+([LIKERT_RANGE]="滿意")+([LIKERT_RANGE]="普通")+([LIKERT_RANGE]="不滿意")+([LIKERT_RANGE]="非常不滿意"))*1,SEQUENCE(COLUMNS([LIKERT_RANGE]),1,1,0)),2),"")))
+```
+
+Both formulas propagate automatically — no fill-down needed.
+
+---
+
+## Step 5 — Company Enrichment
+
+Display:
+```
+---------------------------------------------
+Phase: Company Enrichment ([N1] searchable rows)
+---------------------------------------------
+```
+
+Initialize `ENRICHMENT_CACHE = {}` and `UNKNOWNS = []`.
+
+Read full challenges + topics columns so the strategy synthesis (Step 6) has the participant context:
+```
+mcp__google-workspace__read_sheet_values
+  range: [SHEET_TAB]![company_col]2:[topics_col]
+```
+
+For each unique company name in the `searchable` set, in **parallel batches of 8**:
+
+1. Run a single WebSearch: `"[company name]" 台灣 公司 官網`
+2. Parse top results:
+   - **Accept** the company's own domain (typical patterns: `*.com.tw`, `*.com`, `*.org.tw`, `*.gov.tw`, `*.edu.tw`, `*.ai`).
+   - **Reject** directory domains: `twincn.com`, `iyp.com.tw`, `alphaloan.co`, `findcompany.com.tw`, `1111.com.tw`, `104.com.tw`, `518.com.tw`, `taiwantrade.com`, `dnb.com`, `companys.com.tw`, `twfile.com`, `business.com.tw`, `aibee.com.tw`, `costring.com`, `1111人力銀行`, any other generic lookup site.
+3. Compose 1-line `company_background`: industry + scale (上市/上櫃/SME/外商/NPO/政府) + location + founding year if obvious + parent group if applicable.
+4. **Move on within one search attempt if nothing useful** — push `{company_name, reason}` to `UNKNOWNS[]` and leave `website` as `""`.
+5. Store `ENRICHMENT_CACHE[company_name] = {website, background}`.
+
+This caches duplicates (e.g. 程曦資訊 appearing in 4 rows hits WebSearch only once).
+
+For well-known brands the assistant recognizes confidently, the WebSearch step can be skipped and the URL written directly — but only for unambiguous cases (stock-listed Taiwan firms, major government bodies, household-name international brands).
+
+---
+
+## Step 6 — Strategy Synthesis
+
+For each `searchable` row, generate `陌生開發策略` (~120–180 chars) by composing:
+
+1. **Industry anchor** — pull from `company_background` (e.g. "半導體製造", "金融業", "電商").
+2. **Challenge → angle mapping** (from challenges column):
+   - `公司預算或資源不足` → 分階段付費 / 公開班共學群 / Demo 試水
+   - `缺乏明確的導入策略或規劃方向` → AI 導入路線圖 / leadership briefing
+   - `AI 工具種類繁多，難以判斷適合選用的工具` → tool selection consulting / 推薦清單
+   - `資料安全與隱私疑慮` → 本地部署 Llama / 私有雲 LLM / 閉環 Demo
+   - `員工/同事對 AI 學習或使用的接受度較低` → Change Mgmt 工作坊 / 漸進式內訓
+   - `目前尚未遇到明顯障礙` → 進階課程 / Agent 工作流
+3. **Topic → concrete proposal** (from topics column):
+   - `AI 自動化` → 工作流程 RAG / 文件自動產製
+   - `客製化 AI / LINE Bot` → LINE Bot 接客 / 內部知識庫
+   - `AI Agent` → 跨工具整合 Agent / 任務自動執行
+   - `Vibe Coding` → 內部工具快速打造
+   - `Prompt 指令設計` → Prompt 模板庫
+   - `Persona 設定` → 客戶/員工 Persona 應用
+   - `AI 內容生成` / `AI 視覺` → 文案生成 / 廣告素材
+4. **Hot Lead emphasis** — if the row's Hot Lead flag would fire (check `attend_motivation_col` against `HOT_LEAD_SIGNALS`), append "建議主動聯繫" + 內訓提案 / 公開班報名邀請.
+
+Reference template library at `./references/strategy-templates.md` for industry-specific phrasings.
+
+Store strategy in `ENRICHMENT_CACHE[company_name].strategies[sheet_row]` — keyed per row because same company in different rows may have different J/K answers.
+
+---
+
+## Step 7 — Write-Back with Sort Safety
+
+**Critical:** Re-read column B (the company column) immediately before writing, because the sheet may have been sorted while enrichment was running.
+
+```
+mcp__google-workspace__read_sheet_values
+  range: [SHEET_TAB]![company_col]2:[company_col]
+```
+
+For each current row in the re-read company column:
+- Look up `ENRICHMENT_CACHE[current_company_name]`
+- Append to the output 2D array: `[website, background, strategy_for_this_row, "", ""]` (Hot Lead and Well-Known are left empty here — Hot Lead is formula-driven, Well-Known is written in Step 8)
+- For `generic` rows, append `["", "", "", "", ""]`
+
+Write the 2D array in **chunks of ≤55 rows** to avoid oversized payloads:
+```
+mcp__google-workspace__modify_sheet_values
+  range: [SHEET_TAB]![OUT.website_col]2:[OUT.well_known_col]56
+  value_input_option: USER_ENTERED
+  values: [chunk 1]
+```
+Repeat for subsequent chunks.
+
+---
+
+## Step 8 — Well-Known Flag
+
+Pass the full `ENRICHMENT_CACHE` (`{company_name → background}` map) through a single judgment pass. Mark `Y` for:
+- Listed companies (上市/上櫃)
+- Recognizable international brands
+- Government bodies (縣市政府, 部會)
+- Major schools/universities (≥1,000 enrollment or well-known prep schools)
+- Big NPOs (national-scale charities, foundations)
+
+Default to `N` for SMEs, niche-domain firms, and unknowns.
+
+Re-read company column once more (in case of more sorting), build the Well-Known column array in current row order, write:
+```
+mcp__google-workspace__modify_sheet_values
+  range: [SHEET_TAB]![OUT.well_known_col]2:[OUT.well_known_col][last_row]
+  value_input_option: USER_ENTERED
+  values: [[Y/N], [Y/N], ...]
+```
+
+---
+
+## Step 9 — Run Summary
+
+Display:
+```
+=============================================
+🎯 BD Sourcing — Complete
+=============================================
+
+Total rows:       [N]
+Searchable:       [N1]
+Generic (skipped):[N2]
+
+Hot Leads:        [count] (filter R = Y)
+Well-Known:       [count] (filter S = Y)
+Tier-1 (both):    [count] (filter R = Y AND S = Y) ← your priority list
+
+Unknowns (need manual follow-up):
+  - guceu (×2 rows) — likely typo or internal code
+  - eport — too generic
+  - [other unknowns...]
+
+Google Sheet: https://docs.google.com/spreadsheets/d/[SHEET_ID]
+=============================================
+```
+
+---
+
+## Progress Indicator
+
+Show this line at the top of each phase:
+
+```
+🎯 Config → Headers → Filter → Provision → Formulas → Enrich → Strategy → Write → Brand → Done
+```
+
+Use `▶` for current phase, `✓` for completed, `○` for upcoming.
+
+---
+
+## Error Handling
+
+- **Header detection fails** for a required role → prompt the user to specify the column letter manually (e.g. `SET challenges=J`).
+- **WebSearch returns only directory domains** → leave website blank, add to `UNKNOWNS[]` with reason `"no official site found"`; do NOT keep retrying.
+- **WebSearch returns ambiguous name** (e.g. multiple unrelated companies) → leave website blank, note ambiguity in `UNKNOWNS[]`, write `(可能為 X 或 Y)` in background.
+- **Google Sheets payload too large** → automatically halve the chunk size and retry.
+- **Sheet sorted during run** → write-back step's re-read (Step 7 + Step 8) handles this transparently; no user action needed.
+- **Re-run on already-enriched sheet** → detect existing headers (官網/公司背景/陌生開發策略) and ask user whether to skip, refresh-all, or refresh-only-blanks.
+- Never silently skip a step — always surface errors clearly.
