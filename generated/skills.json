@@ -1437,6 +1437,34 @@
     "sourceFile": "5-product/skill-finder/SKILL.md"
   },
   {
+    "id": "5.04",
+    "name": "lucid-specialist",
+    "category": "product",
+    "project": "lucid-specialist",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Read, draft, edit, and lint Lucid charts using Peter's FE/BE/DB three-layer architecture convention. Triggers whenever the user shares a `lucid.app` URL with no further direction, asks to diagram/chart/visualize a process or workflow, asks to 'read' or 'summarize' an existing Lucid diagram, asks to add/modify nodes on a Lucid chart, or asks whether a chart follows the Zynkr convention. Should fire eagerly on phrases like '幫我畫流程圖', 'draw this workflow', 'diagram this', 'visualize this process', 'turn this into a Lucid chart', '/lucid-specialist', or any pasted Lucid URL. Bridges the human-facing Shape × Color principles (`5.0 product/architecture_principles_guidebook.md`, `5.0 product/color-shape-principles.md`) to the Lucid MCP tools (`mcp__lucid__fetch`, `mcp__lucid__lucid_create_diagram_from_specification`, `mcp__lucid__lucid_add_block`, `mcp__lucid__lucid_add_line`, `mcp__lucid__lucid_edit_item`). Use even when the user does not name 'Lucid' explicitly — if they want a process flow drawn or interpreted, this skill applies.",
+    "input": "A Lucid document URL/id, OR a natural-language process description, OR a chart-edit request.",
+    "process": "Decide intent (read/draft/edit/validate). Apply FE/BE/DB three-layer model, swimlane scaffold, and Shape × Color encoding. Use Lucid MCP tools to fetch, create, or modify charts.",
+    "output": "Either a structured semantic narrative of an existing chart, OR a new/edited Lucid diagram (returns the edit URL), OR a lint report against the convention.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "5.04",
+    "kind": "skill",
+    "synergy": [
+      "5.04"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/5.04.md -o ~/.claude/skills/lucid-specialist.md",
+    "updatedAt": "2026-05-25",
+    "firstSeen": "2026-05-25",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "5-product/lucid-specialist/SKILL.md"
+  },
+  {
     "id": "6.07",
     "name": "skill-sourcer",
     "category": "engineer",
@@ -1620,8 +1648,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 34276,
-    "githubForks": 2150
+    "githubStars": 34279,
+    "githubForks": 2151
   },
   {
     "id": "6.13",
@@ -1658,8 +1686,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 167015,
-    "githubForks": 27596
+    "githubStars": 167067,
+    "githubForks": 27612
   },
   {
     "id": "6.14",
@@ -1748,8 +1776,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 20020,
-    "githubForks": 1609
+    "githubStars": 20030,
+    "githubForks": 1610
   },
   {
     "id": "6.17",
