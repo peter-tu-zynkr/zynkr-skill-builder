@@ -1242,8 +1242,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 167067,
-    "github_forks": 27612,
+    "github_stars": 167075,
+    "github_forks": 27614,
     "first_seen": "2026-05-20"
   },
   {
@@ -1313,7 +1313,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 20030,
+    "github_stars": 20031,
     "github_forks": 1610,
     "first_seen": "2026-05-25"
   },

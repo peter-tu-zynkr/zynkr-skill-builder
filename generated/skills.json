@@ -1686,8 +1686,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 167067,
-    "githubForks": 27612
+    "githubStars": 167075,
+    "githubForks": 27614
   },
   {
     "id": "6.14",
@@ -1776,7 +1776,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 20030,
+    "githubStars": 20031,
     "githubForks": 1610
   },
   {
