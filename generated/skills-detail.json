@@ -371,6 +371,37 @@
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
   },
+  "1.11": {
+    "id": "1.11",
+    "slug": "article-fission",
+    "name": "article-fission",
+    "summary": "寫作助理 ─ 文章裂變",
+    "category": "brand-marketing",
+    "project": "article-fission",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/article-fission/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.11.md -o ~/.claude/skills/article-fission.md",
+    "tags": [
+      "article-fission",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "寫作助理 ─ 文章裂變",
+    "input": "A prepared context packet describing audience, pain point, constraints, and desired outcome.",
+    "process": "Diagnose intent and cognition, reframe the problem, then craft a first-person, action-driven article using a pattern-break → reframe → copy-paste approach.",
+    "output": "A ready-to-publish AI productivity article with immediate, reusable prompts.",
+    "kind": "skill",
+    "synergy": [
+      "1.11"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/article-fission/SKILL.md"
+  },
   "2.19": {
     "id": "2.19",
     "slug": "biz-card",
@@ -672,7 +703,7 @@
       "interview-question-predictor",
       "sales-consultant",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-24",
@@ -680,11 +711,140 @@
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
     "process": "Analyze the interview context from an interviewer's perspective and identify likely questions and evaluation signals.",
     "output": "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A.",
-    "kind": "skill",
+    "kind": "orchestrator",
     "synergy": [
-      "2.28"
+      "2.28",
+      "2.32"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/interview-question-predictor/SKILL.md"
+  },
+  "2.29": {
+    "id": "2.29",
+    "slug": "consulting-discovery",
+    "name": "consulting-discovery",
+    "summary": "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work.",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.29.md -o ~/.claude/skills/consulting-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work.",
+    "input": "A consulting client (founder, department head, or senior manager) ready to discuss business challenges and company strategy",
+    "process": "Stage 1 pain-point discovery with 5D problem exploration, then Stage 2 vision/strategy/product/organization exploration; one question at a time",
+    "output": "Structured Needs Definition Summary and Strategic Discovery Summary, ready for downstream process mapping or pain-point validation",
+    "kind": "orchestrator",
+    "synergy": [
+      "2.29",
+      "2.30",
+      "2.31"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/consulting-discovery/SKILL.md"
+  },
+  "2.30": {
+    "id": "2.30",
+    "slug": "consulting-discovery-company-vision-discovery",
+    "name": "company-vision-discovery",
+    "summary": "顧問助理 ─ 公司未來願景描繪 — agent of consulting-discovery",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/agents/company-vision-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "顧問助理 ─ 公司未來願景描繪 — agent of consulting-discovery",
+    "input": "Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.",
+    "process": "Guided, structured conversation—one question at a time—to uncover long-term goals, value propositions, and operational realities.",
+    "output": "Concise strategic discovery summary to support downstream process mapping or pain point validation.",
+    "kind": "subagent",
+    "synergy": [
+      "2.29",
+      "2.30",
+      "2.31"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/consulting-discovery/agents/company-vision-discovery.md"
+  },
+  "2.31": {
+    "id": "2.31",
+    "slug": "consulting-discovery-pain-point-discovery",
+    "name": "pain-point-discovery",
+    "summary": "顧問助理 ─ 痛點解析 — agent of consulting-discovery",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/agents/pain-point-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "顧問助理 ─ 痛點解析 — agent of consulting-discovery",
+    "input": "User shares business context, team structure, challenges, and goals through guided Q&A.",
+    "process": "Conducts structured, step-by-step needs discovery by asking one question at a time, confirming understanding, and probing deeper.",
+    "output": "Clear, organized summary of user background, challenges, and needs, ready for strategic follow-up.",
+    "kind": "subagent",
+    "synergy": [
+      "2.29",
+      "2.30",
+      "2.31"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/consulting-discovery/agents/pain-point-discovery.md"
+  },
+  "2.32": {
+    "id": "2.32",
+    "slug": "interview-question-predictor-mock-interview",
+    "name": "mock-interview",
+    "summary": "模擬面試 — agent of interview-question-predictor",
+    "category": "sales-consultant",
+    "project": "interview-question-predictor",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/interview-question-predictor/agents/mock-interview.md",
+    "tags": [
+      "interview-question-predictor",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "模擬面試 — agent of interview-question-predictor",
+    "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
+    "process": "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback.",
+    "output": "Clear, stage-ready interview answers with anticipated follow-ups and three tailored questions to ask the interviewer.",
+    "kind": "subagent",
+    "synergy": [
+      "2.28",
+      "2.32"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/interview-question-predictor/agents/mock-interview.md"
   },
   "3.01": {
     "id": "3.01",
@@ -703,7 +863,7 @@
       "meeting-prep",
       "operations",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-18",
@@ -711,9 +871,10 @@
     "input": "無（排程自動觸發，讀取 Google Calendar 與 Gmail）",
     "process": "9am cron：掃描 7 天日曆 → 發 action 提醒到 Google Chat｜3pm cron：掃 Gmail 找與會者背景 → 發 briefing 到 Google Chat",
     "output": "Google Chat 自我訊息：早上為 action checklist，下午為結構化 briefing",
-    "kind": "skill",
+    "kind": "orchestrator",
     "synergy": [
-      "3.01"
+      "3.01",
+      "3.03"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/meeting-prep/SKILL.md"
   },
@@ -747,6 +908,201 @@
       "3.02"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/support-reply-drafter/SKILL.md"
+  },
+  "3.03": {
+    "id": "3.03",
+    "slug": "meeting-prep-meeting-notes-organizer",
+    "name": "meeting-notes-organizer",
+    "summary": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
+    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
+    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
+    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
+    "kind": "subagent",
+    "synergy": [
+      "3.01",
+      "3.03"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md"
+  },
+  "3.04": {
+    "id": "3.04",
+    "slug": "operations-transformation",
+    "name": "operations-transformation",
+    "summary": "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints.",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.04.md -o ~/.claude/skills/operations-transformation.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints.",
+    "input": "A client-described inefficient or unclear business process, ideally with prior discovery context from consulting-discovery",
+    "process": "Stage 1 SIPOC mapping → Stage 2 automation suitability diagnosis (four-quadrant + ROI) → Stage 3 sub-task / system-layer / MVP-stack redesign",
+    "output": "SIPOC table, diagnostic table with tech recommendations and ROI, and a builder-ready redesign blueprint with MVP stack",
+    "kind": "orchestrator",
+    "synergy": [
+      "3.04",
+      "3.05",
+      "3.06",
+      "3.07"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/operations-transformation/SKILL.md"
+  },
+  "3.05": {
+    "id": "3.05",
+    "slug": "operations-transformation-digital-transformation-assessor",
+    "name": "digital-transformation-assessor",
+    "summary": "營運助理 ─ 數位轉型評估 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/digital-transformation-assessor.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "營運助理 ─ 數位轉型評估 — agent of operations-transformation",
+    "input": "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).",
+    "process": "Diagnose automation suitability, assess ROI, classify tasks, and recommend appropriate technologies with concise rationale.",
+    "output": "A structured evaluation table, transformation recommendations, and a handoff prompt for solution design.",
+    "kind": "subagent",
+    "synergy": [
+      "3.04",
+      "3.05",
+      "3.06",
+      "3.07"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/operations-transformation/agents/digital-transformation-assessor.md"
+  },
+  "3.06": {
+    "id": "3.06",
+    "slug": "operations-transformation-process-discovery",
+    "name": "process-discovery",
+    "summary": "營運助理 ─ 流程探勘 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/process-discovery.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "營運助理 ─ 流程探勘 — agent of operations-transformation",
+    "input": "Raw meeting notes, transcripts, or unstructured updates.",
+    "process": "Reorganize scattered details into logical categories, inferring context while maintaining professional clarity.",
+    "output": "A structured \"Weekly Project Update\" featuring Summary, Progress, Blockers, and What’s Next.",
+    "kind": "subagent",
+    "synergy": [
+      "3.04",
+      "3.05",
+      "3.06",
+      "3.07"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/operations-transformation/agents/process-discovery.md"
+  },
+  "3.07": {
+    "id": "3.07",
+    "slug": "operations-transformation-process-redesigner",
+    "name": "process-redesigner",
+    "summary": "營運經理 ─ 流程重構 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/process-redesigner.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "營運經理 ─ 流程重構 — agent of operations-transformation",
+    "input": "Bi-weekly meeting document with weekly summaries and sectioned updates.",
+    "process": "Identify latest and previous weeks, compare changes, detect additions/updates/deletions, surface risks and remaining actions, then structure notes per team.",
+    "output": "Concise Chinese meeting notes by team, each with Progress, Callouts/Risks, and Action Items, bullets under 20 characters.",
+    "kind": "subagent",
+    "synergy": [
+      "3.04",
+      "3.05",
+      "3.06",
+      "3.07"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/operations-transformation/agents/process-redesigner.md"
+  },
+  "3.08": {
+    "id": "3.08",
+    "slug": "project-charter-facilitator",
+    "name": "project-charter-facilitator",
+    "summary": "專案章程發想 (New)",
+    "category": "operations",
+    "project": "project-charter-facilitator",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-charter-facilitator/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.08.md -o ~/.claude/skills/project-charter-facilitator.md",
+    "tags": [
+      "project-charter-facilitator",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "專案章程發想 (New)",
+    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
+    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
+    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
+    "kind": "skill",
+    "synergy": [
+      "3.08"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/project-charter-facilitator/SKILL.md"
   },
   "4.01": {
     "id": "4.01",
@@ -1037,6 +1393,37 @@
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/5-product/product-planning/SKILL.md"
   },
+  "5.02": {
+    "id": "5.02",
+    "slug": "prompt-engineer",
+    "name": "prompt-engineer",
+    "summary": "指令工程助理 ─ 重構指令",
+    "category": "product",
+    "project": "prompt-engineer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/5-product/prompt-engineer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/5.02.md -o ~/.claude/skills/prompt-engineer.md",
+    "tags": [
+      "prompt-engineer",
+      "product",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "指令工程助理 ─ 重構指令",
+    "input": "User provides a prompt to optimize.",
+    "process": "Apply GUIDE and IPO, clarify only when needed, restructure into system/developer/user layers, and define goals, reasoning steps, and output format.",
+    "output": "A clear, testable prompt package with explicit roles, instructions, and structure, plus variants or blueprints when useful.",
+    "kind": "skill",
+    "synergy": [
+      "5.02"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/5-product/prompt-engineer/SKILL.md"
+  },
   "6.07": {
     "id": "6.07",
     "slug": "skill-sourcer",
@@ -1243,7 +1630,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34264,
+    "github_stars": 34265,
     "github_forks": 2146,
     "first_seen": "2026-05-12",
     "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
@@ -1283,7 +1670,7 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 166700,
+    "github_stars": 166711,
     "github_forks": 27518,
     "first_seen": "2026-05-20",
     "description": "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard.",
@@ -1365,5 +1752,176 @@
       "socket": "pending",
       "snyk": "pending"
     }
+  },
+  "7.01": {
+    "id": "7.01",
+    "slug": "recruiting-pipeline",
+    "name": "recruiting-pipeline",
+    "summary": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (中英) outputs throughout.",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/7.01.md -o ~/.claude/skills/recruiting-pipeline.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (中英) outputs throughout.",
+    "input": "Hiring manager provides rough notes or ideas about the role.",
+    "process": "Assistant asks structured clarifying questions and guides the user through a JD-creation workflow.",
+    "output": "A complete JD draft in YAML with versioning and an optional alignment summary.",
+    "kind": "orchestrator",
+    "synergy": [
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/recruiting-pipeline/SKILL.md"
+  },
+  "7.02": {
+    "id": "7.02",
+    "slug": "recruiting-pipeline-interview-calibrator",
+    "name": "interview-calibrator",
+    "summary": "招募助理 ─ 面試評分校準與決策 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-calibrator.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "招募助理 ─ 面試評分校準與決策 — agent of recruiting-pipeline",
+    "input": "JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size.",
+    "process": "Decode JD → analyze resumes → score candidates using hard-skill gate, domain fit, weighted metrics, and risk indicators.",
+    "output": "Ranked candidate evaluation with scores, risks, cultural fit notes, and a final HR decision summary.",
+    "kind": "subagent",
+    "synergy": [
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/recruiting-pipeline/agents/interview-calibrator.md"
+  },
+  "7.03": {
+    "id": "7.03",
+    "slug": "recruiting-pipeline-interview-question-designer",
+    "name": "interview-question-designer",
+    "summary": "招募助理 ─ 設計考題與計分卡 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-question-designer.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "招募助理 ─ 設計考題與計分卡 — agent of recruiting-pipeline",
+    "input": "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).",
+    "process": "Convert role requirements into a competency model → assign competencies to interview rounds → generate structured question bank (behavioral, situational, technical, culture) → produce tailored risk-based questions → build weighted scorecard with behavioral...",
+    "output": "A complete bilingual interview kit including competency model, question sets, risk questions, scoring rubrics, and a finalized scorecard ready for interviewers to use.",
+    "kind": "subagent",
+    "synergy": [
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/recruiting-pipeline/agents/interview-question-designer.md"
+  },
+  "7.04": {
+    "id": "7.04",
+    "slug": "recruiting-pipeline-jd-architect",
+    "name": "jd-architect",
+    "summary": "招募助理 ─ 對齊職務需求 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/jd-architect.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "招募助理 ─ 對齊職務需求 — agent of recruiting-pipeline",
+    "input": "Interview transcripts, interviewer scorecards, Assistant A’s question set and scoring standards, and hiring manager/HR inputs.",
+    "process": "Extract behavioral evidence → compile independent feedback → detect discrepancies across interviewers → prepare pre-calibration summaries → support calibration discussions → document final hire/no-hire decisions with rationale and risk considerations.",
+    "output": "A structured final evaluation package including evidence summaries, discrepancy analysis, calibration notes, final decision record, and candidate communication guidelines.",
+    "kind": "subagent",
+    "synergy": [
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/recruiting-pipeline/agents/jd-architect.md"
+  },
+  "7.05": {
+    "id": "7.05",
+    "slug": "recruiting-pipeline-resume-screener",
+    "name": "resume-screener",
+    "summary": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/resume-screener.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25",
+    "description": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
+    "input": "Candidate information, hiring stage, interview details (if applicable), and any specific instructions regarding tone or language preference.",
+    "process": "Auto-detect communication scenario → classify risk level → check required information → generate a compliant formal email using structured templates and context-aware tone → provide optional refinements.",
+    "output": "A polished, risk-compliant, formal business email (Chinese, English, or bilingual), fully personalized and ready to send.",
+    "kind": "subagent",
+    "synergy": [
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/recruiting-pipeline/agents/resume-screener.md"
   }
 }

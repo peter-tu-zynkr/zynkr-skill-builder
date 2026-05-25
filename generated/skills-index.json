@@ -220,6 +220,28 @@
     "first_seen": "2026-05-09"
   },
   {
+    "id": "1.11",
+    "slug": "article-fission",
+    "name": "article-fission",
+    "summary": "寫作助理 ─ 文章裂變",
+    "category": "brand-marketing",
+    "project": "article-fission",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/article-fission/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.11.md -o ~/.claude/skills/article-fission.md",
+    "tags": [
+      "article-fission",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
     "id": "2.19",
     "slug": "biz-card",
     "name": "biz-card",
@@ -428,10 +450,95 @@
       "interview-question-predictor",
       "sales-consultant",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-24"
+  },
+  {
+    "id": "2.29",
+    "slug": "consulting-discovery",
+    "name": "consulting-discovery",
+    "summary": "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work.",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.29.md -o ~/.claude/skills/consulting-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "2.30",
+    "slug": "consulting-discovery-company-vision-discovery",
+    "name": "company-vision-discovery",
+    "summary": "顧問助理 ─ 公司未來願景描繪 — agent of consulting-discovery",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/agents/company-vision-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "2.31",
+    "slug": "consulting-discovery-pain-point-discovery",
+    "name": "pain-point-discovery",
+    "summary": "顧問助理 ─ 痛點解析 — agent of consulting-discovery",
+    "category": "sales-consultant",
+    "project": "consulting-discovery",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consulting-discovery/agents/pain-point-discovery.md",
+    "tags": [
+      "consulting-discovery",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "2.32",
+    "slug": "interview-question-predictor-mock-interview",
+    "name": "mock-interview",
+    "summary": "模擬面試 — agent of interview-question-predictor",
+    "category": "sales-consultant",
+    "project": "interview-question-predictor",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/interview-question-predictor/agents/mock-interview.md",
+    "tags": [
+      "interview-question-predictor",
+      "sales-consultant",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
   },
   {
     "id": "3.01",
@@ -450,7 +557,7 @@
       "meeting-prep",
       "operations",
       "claude",
-      "skill"
+      "orchestrator"
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-18"
@@ -470,6 +577,134 @@
     "install_command": "curl -sL zynkr.ai/s/3.02.md -o ~/.claude/skills/support-reply-drafter.md",
     "tags": [
       "support-reply-drafter",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.03",
+    "slug": "meeting-prep-meeting-notes-organizer",
+    "name": "meeting-notes-organizer",
+    "summary": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.04",
+    "slug": "operations-transformation",
+    "name": "operations-transformation",
+    "summary": "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints.",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.04.md -o ~/.claude/skills/operations-transformation.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.05",
+    "slug": "operations-transformation-digital-transformation-assessor",
+    "name": "digital-transformation-assessor",
+    "summary": "營運助理 ─ 數位轉型評估 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/digital-transformation-assessor.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.06",
+    "slug": "operations-transformation-process-discovery",
+    "name": "process-discovery",
+    "summary": "營運助理 ─ 流程探勘 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/process-discovery.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.07",
+    "slug": "operations-transformation-process-redesigner",
+    "name": "process-redesigner",
+    "summary": "營運經理 ─ 流程重構 — agent of operations-transformation",
+    "category": "operations",
+    "project": "operations-transformation",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/operations-transformation/agents/process-redesigner.md",
+    "tags": [
+      "operations-transformation",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "3.08",
+    "slug": "project-charter-facilitator",
+    "name": "project-charter-facilitator",
+    "summary": "專案章程發想 (New)",
+    "category": "operations",
+    "project": "project-charter-facilitator",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-charter-facilitator/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.08.md -o ~/.claude/skills/project-charter-facilitator.md",
+    "tags": [
+      "project-charter-facilitator",
       "operations",
       "claude",
       "skill"
@@ -676,6 +911,28 @@
     "first_seen": "2026-05-20"
   },
   {
+    "id": "5.02",
+    "slug": "prompt-engineer",
+    "name": "prompt-engineer",
+    "summary": "指令工程助理 ─ 重構指令",
+    "category": "product",
+    "project": "prompt-engineer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/5-product/prompt-engineer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/5.02.md -o ~/.claude/skills/prompt-engineer.md",
+    "tags": [
+      "prompt-engineer",
+      "product",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
     "id": "6.07",
     "slug": "skill-sourcer",
     "name": "skill-sourcer",
@@ -804,7 +1061,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34264,
+    "github_stars": 34265,
     "github_forks": 2146,
     "first_seen": "2026-05-12"
   },
@@ -831,7 +1088,7 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 166700,
+    "github_stars": 166711,
     "github_forks": 27518,
     "first_seen": "2026-05-20"
   },
@@ -875,6 +1132,112 @@
       "engineer",
       "claude",
       "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "7.01",
+    "slug": "recruiting-pipeline",
+    "name": "recruiting-pipeline",
+    "summary": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (中英) outputs throughout.",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/7.01.md -o ~/.claude/skills/recruiting-pipeline.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "7.02",
+    "slug": "recruiting-pipeline-interview-calibrator",
+    "name": "interview-calibrator",
+    "summary": "招募助理 ─ 面試評分校準與決策 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-calibrator.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "7.03",
+    "slug": "recruiting-pipeline-interview-question-designer",
+    "name": "interview-question-designer",
+    "summary": "招募助理 ─ 設計考題與計分卡 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-question-designer.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "7.04",
+    "slug": "recruiting-pipeline-jd-architect",
+    "name": "jd-architect",
+    "summary": "招募助理 ─ 對齊職務需求 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/jd-architect.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "7.05",
+    "slug": "recruiting-pipeline-resume-screener",
+    "name": "resume-screener",
+    "summary": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
+    "category": "people-talent",
+    "project": "recruiting-pipeline",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/resume-screener.md",
+    "tags": [
+      "recruiting-pipeline",
+      "people-talent",
+      "claude",
+      "subagent"
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-25"
