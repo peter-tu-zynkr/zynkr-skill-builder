@@ -1171,7 +1171,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34274,
+    "github_stars": 34276,
     "github_forks": 2149,
     "first_seen": "2026-05-12"
   },
@@ -1198,8 +1198,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 166968,
-    "github_forks": 27580,
+    "github_stars": 166994,
+    "github_forks": 27589,
     "first_seen": "2026-05-20"
   },
   {
@@ -1244,6 +1244,33 @@
       "skill"
     ],
     "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
+  },
+  {
+    "id": "6.16",
+    "slug": "find-skills",
+    "name": "find-skills",
+    "summary": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities.",
+    "category": "engineer",
+    "project": "find-skills",
+    "platform": "claude",
+    "status": "Done",
+    "author": "vercel-labs",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/6-engineer/find-skills/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.16.md -o ~/.claude/skills/find-skills.md",
+    "tags": [
+      "find-skills",
+      "engineer",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "upstream_repo": "https://github.com/vercel-labs/skills",
+    "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
+    "original_author": "vercel-labs",
+    "github_stars": 20020,
+    "github_forks": 1609,
     "first_seen": "2026-05-25"
   },
   {
