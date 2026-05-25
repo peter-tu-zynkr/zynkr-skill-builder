@@ -61,11 +61,20 @@ Resolve the `slug` from the spec URL on the sheet row, or fall back to the issue
 
 If the sheet row is missing or its `Build Repo` is still `peter-tu-zynkr/zynkr-skills` (the archived repo), flag it and offer to fix on the spot — set `Build Repo` to `peter-tu-zynkr/zynkr-skill-builder` before continuing.
 
+### Detect the intake source
+
+Surface the `Intake Source` field prominently — it changes the recommended decision in Step 3:
+
+- **`skill-sourcer`** (raw idea) → Step 3 defaults to **Option A `assign-build`** (the build hasn't happened yet).
+- **`skill-publish`** (built artifact) → Step 3 defaults to **Option D `confirm-ship`** (the SKILL.md is likely already in-tree; the triager just needs to verify and close the loop). If `Built Skill URL` is empty on the Project item, flag this to the user: the publisher hasn't committed the artifact yet, and `confirm-ship` needs a committed file to verify against.
+
+Cross-check the issue body — `/skill-publish` issues carry a `**Built via**: skill-publish` line and a `**Built Skill URL**:` line. If those are present and `Intake Source` says `skill-sourcer`, the Project field is stale; trust the issue body and treat as a publish.
+
 ---
 
 ## Step 3 — Decide
 
-Present three options. Wait for the user.
+Present the four options below. Wait for the user. The recommended default is set by the `Intake Source` check in Step 2.
 
 ### Option A — `assign-build`
 
@@ -130,6 +139,50 @@ Not happening.
    ```
    Ask the user for a one-line reason.
 
+### Option D — `confirm-ship`
+
+The artifact is **already built and committed** (typical for `/skill-publish` intakes). No scaffold is needed — just verify it landed correctly and close the loop in the Project.
+
+**Precondition:** `Built Skill URL` is set on the Project item, or the issue body has a `**Built Skill URL**:` line. If neither is present, tell the user "the SKILL.md hasn't been committed yet — commit to `zynkr-skill-builder`, then come back" and exit this option.
+
+1. **Confirm the in-tree path** — derive `<path>` from `Built Skill URL` (e.g. `skills/6-engineer/skill-publish/SKILL.md`) or fall back to `skills/<N-cat>/<slug>/SKILL.md`.
+2. **Verify the file is live in `main`:**
+   ```bash
+   gh api repos/peter-tu-zynkr/zynkr-skill-builder/contents/<path> --jq '.path' \
+     || echo "MISSING"
+   ```
+   If `MISSING`: stop, report to user, leave labels untouched for retry.
+3. **Verify ingest has run** — check the generated index:
+   ```bash
+   curl -s https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skill-builder/main/generated/skills-index.json \
+     | python3 -c "import sys,json; print(any(s.get('slug')=='<slug>' or s.get('name')=='<slug>' for s in json.load(sys.stdin)))"
+   ```
+   If `False`: the most recent push hasn't been ingested yet. Either wait for `ingest-skills.yml` to finish (check `gh run list --workflow ingest-skills.yml --limit 1`) or proceed and let the next ingest catch it.
+4. **Verify the live API serves it:**
+   ```bash
+   curl -sL https://www.zynkr.ai/api/skills \
+     | python3 -c "import sys,json; print(any(s.get('slug')=='<slug>' or s.get('name')=='<slug>' for s in json.load(sys.stdin)))"
+   ```
+   If `False`: the Supabase mirror hasn't synced yet — usually <30 s after ingest. Worth re-checking before flipping status.
+5. **Project writes:**
+   - `Pipeline Status` → `shipped`
+   - `Build Status` → `shipped`
+   - `Built Skill URL` → confirmed GitHub URL (backfill if missing)
+6. **Label swap on issue:**
+   ```bash
+   gh issue edit <num> --repo peter-tu-zynkr/zynkr-skill-idea \
+     --remove-label triage-ready --add-label shipped
+   ```
+7. **Close the issue:**
+   ```bash
+   gh issue close <num> --repo peter-tu-zynkr/zynkr-skill-idea \
+     --comment "Triage decision: confirm-ship. Live at https://www.zynkr.ai/ai-skills-marketplace (slug: <slug>). Verified via gh contents + skills-index + /api/skills."
+   ```
+
+**Why this is different from `assign-build`:** no `repository_dispatch` is fired — the in-tree SKILL.md is already picked up by `ingest-skills.yml` on push, so the marketplace card already exists by the time triage runs. Triage's job here is **bookkeeping + verification**, not orchestration.
+
+**Fall-back to `assign-build`:** if for any reason a `/skill-publish` item arrives without a committed artifact (e.g., publisher only created the issue, didn't commit), `assign-build` with `mode=rescaffold` will work — `pickup-approved-issue.yml` is idempotent and won't overwrite an existing file. But this should be rare; the publisher's intended path is commit-then-confirm.
+
 ---
 
 ## Step 4 — Loop or stop
@@ -146,17 +199,27 @@ When the session ends, summarise:
 
 - Triaged: N
 - Dispatched to build: M (with workflow run URLs)
+- Confirmed-shipped: S (with marketplace URLs)
 - Deferred: D
 - Rejected: R
 - Any sheet rows repaired during triage
 
-**Completion checklist (per dispatched issue):**
+**Completion checklist (per dispatched issue — Option A):**
 - [ ] Sheet `Pipeline Status` = `queued`
 - [ ] Sheet `Build Status` = `context-prep`
 - [ ] Sheet `Build Target` set
 - [ ] Issue label `triage-ready` removed, `building` added
 - [ ] `repository_dispatch` fired to `zynkr-skill-builder`
 - [ ] `pickup-approved-issue` workflow run observed
+
+**Completion checklist (per confirmed-shipped issue — Option D):**
+- [ ] `gh api contents` confirmed the SKILL.md is in `main`
+- [ ] `generated/skills-index.json` contains the slug
+- [ ] `/api/skills` returns the slug
+- [ ] Sheet `Pipeline Status` = `shipped`, `Build Status` = `shipped`
+- [ ] `Built Skill URL` backfilled if it was empty
+- [ ] Issue label `triage-ready` removed, `shipped` added
+- [ ] Issue closed with verification comment
 
 ---
 
