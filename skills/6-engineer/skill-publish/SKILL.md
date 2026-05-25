@@ -138,7 +138,7 @@ The skill already exists as an artifact. Tell the proposer:
 
 1. Create a GitHub Issue in `peter-tu-zynkr/zynkr-skill-idea` titled `[Skill Proposal] {{category_number}} — {{title}}` with structured body, label `skill-proposal`. Include in the body:
    - A `**Source**:` line (upstream URL or `Peter-authored`)
-   - A `**Built Skill URL**:` line (or `pending commit`)
+   - A `**Built Skill URL**:` line (or `pending publish workflow` — filled in after Step 5b)
    - A `**Built via**: skill-publish` line
 2. Add the issue to GitHub Project `<your-skills-pipeline-project>` with the custom fields above.
 3. Display the issue URL and ask: **"Set Keep=yes to approve now, or leave as ? for later review."**
@@ -148,6 +148,58 @@ If the user approves immediately:
 4. Update the Project item: `Keep=yes`, `Pipeline Status=approved`.
 5. Add the `triage-ready` label to the issue (signal for `/skill-triager` to pick it up).
 6. Optionally create a markdown idea record at `peter-tu-zynkr/zynkr-skill-idea/skills/approved/{{slug}}.md`. If created, set `Artifact=synced`.
+
+---
+
+## Step 5b — Fire publish-skill dispatch (lands the SKILL.md in the repo)
+
+After approval, the SKILL.md still needs to physically land in `peter-tu-zynkr/zynkr-skill-builder` at `skills/<N-cat>/<slug>/SKILL.md`. Don't do this by hand — fire the `publish-skill` workflow.
+
+**If the artifact already lives at a GitHub URL** (e.g. another repo, a gist, or a raw URL), use `skill_md_url`:
+
+```bash
+gh api repos/peter-tu-zynkr/zynkr-skill-builder/dispatches \
+  -X POST \
+  -f event_type=skill-publish-request \
+  -F "client_payload[issue_number]=<num>" \
+  -F "client_payload[issue_repo]=peter-tu-zynkr/zynkr-skill-idea" \
+  -F "client_payload[slug]=<slug>" \
+  -F "client_payload[category]=<category-number-or-slug>" \
+  -F "client_payload[skill_md_url]=<raw or blob URL to the SKILL.md>"
+```
+
+**If the artifact only lives locally** (e.g. just produced by `/skill-creator`), inline the content as base64:
+
+```bash
+gh api repos/peter-tu-zynkr/zynkr-skill-builder/dispatches \
+  -X POST \
+  -f event_type=skill-publish-request \
+  -F "client_payload[issue_number]=<num>" \
+  -F "client_payload[issue_repo]=peter-tu-zynkr/zynkr-skill-idea" \
+  -F "client_payload[slug]=<slug>" \
+  -F "client_payload[category]=<category-number-or-slug>" \
+  -F "client_payload[skill_md_b64]=$(base64 -w0 < /path/to/SKILL.md)"
+```
+
+Exactly one of `skill_md_url` or `skill_md_b64` must be set — the workflow rejects payloads that supply both or neither.
+
+**Verify the workflow landed:**
+
+```bash
+gh run list --repo peter-tu-zynkr/zynkr-skill-builder \
+  --workflow publish-skill.yml --limit 3
+```
+
+Surface the run URL and (once the workflow finishes) the resulting PR URL to the user. The workflow:
+
+1. Writes `skills/<N-cat>/<slug>/SKILL.md` (idempotent — refuses to overwrite an existing file)
+2. Validates frontmatter against the schema
+3. Creates branch `skill/<slug>` and opens a PR titled `publish(<slug>): from peter-tu-zynkr/zynkr-skill-idea#<num>`
+4. Comments back on the source issue with the PR URL
+
+After the PR merges, `ingest-skills.yml` runs and publishes the skill to the marketplace within ~30 s.
+
+**Backfill the issue body:** once the PR is open, edit the issue's `**Built Skill URL**:` line to point at the merged URL `https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/<path>`. Update the Project's `Built Skill URL` field to match.
 
 ---
 
@@ -213,10 +265,11 @@ Summarise:
 - [ ] Dedup check completed against the pipeline Project
 - [ ] If proceeding: issue created with `skill-proposal` label and `**Built via**: skill-publish` in the body
 - [ ] Project item set: `Intake Source=skill-publish`, `Build Repo=zynkr-skill-builder`, `Build Target Path` set, `Build Status` set, `Artifact=skill-md-only` (or `synced`)
-- [ ] `Built Skill URL` set if committed; flagged as pending if not
 - [ ] If approved: `Keep=yes`, `Pipeline Status=approved`, `triage-ready` label added
-- [ ] If approved and committed: taxonomy tree rebuilt
-- [ ] If approved: `SOURCED.md` row appended
+- [ ] `publish-skill` dispatch fired (Step 5b)
+- [ ] `publish-skill.yml` workflow run observed and PR URL surfaced
+- [ ] `Built Skill URL` backfilled in the issue body and the Project field after PR opens
+- [ ] If approved: `SOURCED.md` row appended (after PR merges, optional)
 
 Ask: **"Want to publish another skill?"**
 

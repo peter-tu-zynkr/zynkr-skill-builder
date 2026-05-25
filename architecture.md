@@ -13,14 +13,20 @@ any input (GitHub link / URL / text)             |    a built skill (SKILL.md on
 Zynkr Skills Pipeline (GitHub Project on zynkr-skill-idea)
       ↓  item added — Pipeline Status=proposed, Keep=?, Intake Source=(skill-sourcer | skill-publish)
       ↓  human sets Keep=yes → triage-ready label added
+/skill-publish — fires repository_dispatch on intake (event: skill-publish-request)
+      ↓
+      publish-skill.yml lands skills/[N-cat]/[slug]/SKILL.md and opens a PR
+      ↓
+      human reviews + merges → ingest-skills.yml runs → live on marketplace
+      ↓
 /skill-triager (Claude Code) — picks decision from Intake Source
-      ├─ Intake Source=skill-sourcer → assign-build → repository_dispatch
+      ├─ Intake Source=skill-sourcer → assign-build → repository_dispatch (skill-build-request)
       │       ↓
-      │       pickup-approved-issue.yml scaffolds skills/[N-cat]/[slug]/SKILL.md
-      │       human writes the body → push
+      │       pickup-approved-issue.yml scaffolds skills/[N-cat]/[slug]/SKILL.md (stub)
+      │       human writes the body → push → ingest-skills.yml → live
       │
       └─ Intake Source=skill-publish → confirm-ship (3 read-only checks)
-              ↓  artifact already committed; ingest-skills.yml already published it
+              ↓  artifact already merged by publish-skill.yml; ingest-skills.yml already published it
               ↓  triager verifies gh api contents + skills-index.json + /api/skills
               ↓  Pipeline Status=shipped, Build Status=shipped, issue closed
                                           ↓
@@ -141,7 +147,26 @@ upstream_repo: vercel-labs/agent-browser   # optional: owner/repo of the origina
 
 ---
 
-## CI/CD — `ingest-skills.yml`
+## CI/CD — three workflows, distinct purposes
+
+```
+.github/workflows/
+├── ingest-skills.yml          ← shared: push-to-main → marketplace publish
+├── pickup-approved-issue.yml  ← sourcer path: scaffold a new SKILL.md from a triaged idea
+└── publish-skill.yml          ← publish path: land an author-supplied SKILL.md
+```
+
+| Workflow | Trigger | Dispatch event | Purpose |
+|---|---|---|---|
+| `ingest-skills.yml` | push to `main` where `skills/**` changed (also `workflow_dispatch`) | — | Run ingest + build-marketplace, commit `generated/*.json`, POST signed webhook to Supabase. **The only path to the marketplace.** |
+| `pickup-approved-issue.yml` | `repository_dispatch` from `/skill-triager` (Option A `assign-build`) (also `workflow_dispatch`) | `skill-build-request` | Fetch the source issue, scaffold a stub SKILL.md (`rescaffold` mode) or mirror an upstream README (`lift-and-shift` mode). Opens a PR titled `scaffold(<slug>): from ...`. |
+| `publish-skill.yml` | `repository_dispatch` from `/skill-publish` (also `workflow_dispatch`) | `skill-publish-request` | Land an **author-supplied** SKILL.md (via `skill_md_url` OR `skill_md_b64`). Validate frontmatter. Opens a PR titled `publish(<slug>): from ...`. |
+
+The scaffold and publish workflows are siblings — both end with `ingest-skills.yml` running on the merged PR, which is the single shared path to the marketplace. They differ only in **who authored the body**: `pickup-approved-issue` produces a stub for a human to fill, `publish-skill` accepts a complete SKILL.md.
+
+---
+
+## CI/CD detail — `ingest-skills.yml`
 
 **Trigger:** push to `main` where `skills/**` changed, or `workflow_dispatch`
 

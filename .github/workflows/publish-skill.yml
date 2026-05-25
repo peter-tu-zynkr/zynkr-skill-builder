@@ -1,0 +1,162 @@
+name: Publish authored skill
+
+# Sibling of pickup-approved-issue.yml.
+#
+# Fired by /skill-publish via repository_dispatch (event_type: skill-publish-request)
+# whenever a user-authored SKILL.md is ready to land in this repo. The dispatch
+# carries the SKILL.md content (inline base64) or a URL to fetch it from. The
+# workflow lands the file at skills/<N-category>/<slug>/SKILL.md, validates,
+# pushes a branch, and opens a PR linked back to the source issue.
+#
+# Also manually invocable via "Run workflow" with the same inputs — useful for
+# local testing or rerunning after a payload error.
+
+on:
+  repository_dispatch:
+    types: [skill-publish-request]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number in the idea repo'
+        required: true
+      issue_repo:
+        description: 'Issue repo (owner/name)'
+        required: false
+        default: 'peter-tu-zynkr/zynkr-skill-idea'
+      slug:
+        description: 'Skill slug (kebab-case)'
+        required: true
+      category:
+        description: 'Category — digit 0-9 or slug (engineer, strategy, ...)'
+        required: true
+      skill_md_url:
+        description: 'URL of the authored SKILL.md (raw or blob). Provide this OR skill_md_b64, not both.'
+        required: false
+      skill_md_b64:
+        description: 'Inline base64-encoded SKILL.md content. Provide this OR skill_md_url, not both.'
+        required: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Resolve payload
+        id: payload
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "issue_number=${{ github.event.client_payload.issue_number }}" >> "$GITHUB_OUTPUT"
+            echo "issue_repo=${{ github.event.client_payload.issue_repo }}" >> "$GITHUB_OUTPUT"
+            echo "slug=${{ github.event.client_payload.slug }}" >> "$GITHUB_OUTPUT"
+            echo "category=${{ github.event.client_payload.category }}" >> "$GITHUB_OUTPUT"
+            echo "skill_md_url=${{ github.event.client_payload.skill_md_url }}" >> "$GITHUB_OUTPUT"
+            # skill_md_b64 may be long — write to a file to avoid env-var size limits and shell quoting headaches.
+            printf '%s' "${{ github.event.client_payload.skill_md_b64 }}" > /tmp/skill_md.b64
+          else
+            echo "issue_number=${{ inputs.issue_number }}" >> "$GITHUB_OUTPUT"
+            echo "issue_repo=${{ inputs.issue_repo }}" >> "$GITHUB_OUTPUT"
+            echo "slug=${{ inputs.slug }}" >> "$GITHUB_OUTPUT"
+            echo "category=${{ inputs.category }}" >> "$GITHUB_OUTPUT"
+            echo "skill_md_url=${{ inputs.skill_md_url }}" >> "$GITHUB_OUTPUT"
+            printf '%s' "${{ inputs.skill_md_b64 }}" > /tmp/skill_md.b64
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Land the authored SKILL.md
+        id: publish
+        env:
+          # SKILL_IDEA_PAT lets the script read from the private idea repo if it ever needs to.
+          # Default GITHUB_TOKEN is fine for the workflow's own writes.
+          GH_TOKEN: ${{ secrets.SKILL_IDEA_PAT || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+          SLUG: ${{ steps.payload.outputs.slug }}
+          CATEGORY: ${{ steps.payload.outputs.category }}
+          SKILL_MD_URL: ${{ steps.payload.outputs.skill_md_url }}
+        working-directory: scripts
+        run: |
+          set -euo pipefail
+          # Read b64 from the file the previous step wrote (empty file is treated as "not provided").
+          if [ -s /tmp/skill_md.b64 ]; then
+            export SKILL_MD_B64="$(cat /tmp/skill_md.b64)"
+          fi
+          OUT=$(npx tsx publish-skill.ts | tail -n1)
+          echo "skill_path=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Validate authored frontmatter
+        working-directory: scripts
+        run: npx tsx validate-skill.ts "../${{ steps.publish.outputs.skill_path }}"
+
+      - name: Create branch, commit, push
+        id: push
+        env:
+          SLUG: ${{ steps.payload.outputs.slug }}
+          SKILL_PATH: ${{ steps.publish.outputs.skill_path }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="skill/${SLUG}"
+          git checkout -b "$BRANCH"
+          git add "$SKILL_PATH"
+          git commit -m "publish: ${SLUG} from ${ISSUE_REPO}#${ISSUE_NUMBER}"
+          git push -u origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.push.outputs.branch }}
+          SLUG: ${{ steps.payload.outputs.slug }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+          SKILL_PATH: ${{ steps.publish.outputs.skill_path }}
+        run: |
+          set -euo pipefail
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "publish(${SLUG}): from ${ISSUE_REPO}#${ISSUE_NUMBER}" \
+            --body "Auto-published by \`publish-skill\` from [${ISSUE_REPO}#${ISSUE_NUMBER}](https://github.com/${ISSUE_REPO}/issues/${ISSUE_NUMBER}).
+
+          **Skill:** \`${SKILL_PATH}\`
+          **Source issue:** ${ISSUE_REPO}#${ISSUE_NUMBER}
+          **Intake:** \`/skill-publish\` (user-authored SKILL.md)
+
+          Frontmatter has been validated against the schema. Body is the author's final content — no \`<!-- TODO -->\` markers expected. Merge to trigger \`ingest-skills\` and surface the skill on the marketplace. After merge, \`/skill-triager\` will use \`confirm-ship\` to close the source issue.")
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment back on the source issue
+        env:
+          GH_TOKEN: ${{ secrets.SKILL_IDEA_PAT || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          ISSUE_REPO: ${{ steps.payload.outputs.issue_repo }}
+          PR_URL: ${{ steps.pr.outputs.pr_url }}
+          SKILL_PATH: ${{ steps.publish.outputs.skill_path }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --repo "$ISSUE_REPO" --body "Published via \`publish-skill\` workflow.
+
+          - **Skill path:** \`${SKILL_PATH}\`
+          - **PR:** ${PR_URL}
+
+          On merge, \`ingest-skills\` will push the artifact to the marketplace. Run \`/skill-triager\` and pick the \`confirm-ship\` branch to mark this issue \`shipped\`."
