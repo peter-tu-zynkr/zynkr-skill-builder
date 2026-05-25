@@ -182,20 +182,126 @@ function parseGithubOwnerRepo(url: string): { owner: string; repo: string } | nu
   return { owner: m[1], repo: m[2] };
 }
 
-function fetchUpstreamReadme(upstreamUrl: string): { content: string; sourceUrl: string } | null {
-  const parsed = parseGithubOwnerRepo(upstreamUrl);
-  if (!parsed) return null;
-  try {
-    const meta = execSync(
-      `gh api repos/${parsed.owner}/${parsed.repo}/readme`,
-      { encoding: "utf-8" }
-    );
-    const obj = JSON.parse(meta);
-    const content = Buffer.from(obj.content ?? "", "base64").toString("utf-8");
-    return { content, sourceUrl: obj.html_url ?? `${upstreamUrl}/blob/main/README.md` };
-  } catch {
-    return null;
+type ParsedGithubUrl = {
+  owner: string;
+  repo: string;
+  // "blob" or "tree" if the URL drills into a path within the repo; null otherwise.
+  pathType: "blob" | "tree" | null;
+  // Branch / tag / commit ref following /blob/ or /tree/. null when pathType is null.
+  ref: string | null;
+  // Path inside the repo (no leading slash). Empty string when pathType is null.
+  path: string;
+};
+
+function parseGithubUrl(url: string): ParsedGithubUrl | null {
+  // Tolerate trailing slash / .git / query / fragment.
+  // Accepts:
+  //   https://github.com/owner/repo
+  //   https://github.com/owner/repo/tree/<ref>/<path>
+  //   https://github.com/owner/repo/blob/<ref>/<path/to/file>
+  const cleaned = url.replace(/[?#].*$/, "").replace(/\/$/, "");
+  const repoOnly = cleaned.match(/^https?:\/\/(?:www\.)?github\.com\/([^\/]+)\/([^\/]+?)(?:\.git)?$/i);
+  if (repoOnly) {
+    return { owner: repoOnly[1], repo: repoOnly[2], pathType: null, ref: null, path: "" };
   }
+  const withPath = cleaned.match(
+    /^https?:\/\/(?:www\.)?github\.com\/([^\/]+)\/([^\/]+?)(?:\.git)?\/(tree|blob)\/([^\/]+)(?:\/(.*))?$/i
+  );
+  if (withPath) {
+    return {
+      owner: withPath[1],
+      repo: withPath[2],
+      pathType: withPath[3].toLowerCase() as "blob" | "tree",
+      ref: withPath[4],
+      path: withPath[5] ?? "",
+    };
+  }
+  return null;
+}
+
+function fetchUpstreamReadme(upstreamUrl: string): { content: string; sourceUrl: string } | null {
+  // Honors three URL shapes:
+  //   1. Repo root             https://github.com/owner/repo
+  //      → calls the GitHub /readme endpoint (autodetects README.md, .rst, etc.)
+  //   2. Subdirectory          https://github.com/owner/repo/tree/<ref>/skills/<slug>
+  //      → looks for SKILL.md inside the directory first, then README.md, then any *.md.
+  //        This matches the canonical layout of multi-skill upstreams (vercel-labs/skills,
+  //        anthropics/skills) so lift-and-shift no longer falls back to the CLI README.
+  //   3. Specific file         https://github.com/owner/repo/blob/<ref>/path/to/SKILL.md
+  //      → fetches that file directly.
+  // If the deeper fetch fails for any reason, falls back to the repo-root README so we
+  // never produce zero content — better to attribute imperfectly than to ship empty.
+  const parsed = parseGithubUrl(upstreamUrl) ?? (() => {
+    const legacy = parseGithubOwnerRepo(upstreamUrl);
+    return legacy ? { ...legacy, pathType: null as null, ref: null, path: "" } : null;
+  })();
+  if (!parsed) return null;
+
+  const { owner, repo, pathType, ref, path: subpath } = parsed;
+
+  // Helper: fetch a specific file via the contents API. Returns null on any failure.
+  const fetchFile = (filePath: string, refForUrl: string): { content: string; sourceUrl: string } | null => {
+    try {
+      const refQuery = refForUrl ? `?ref=${encodeURIComponent(refForUrl)}` : "";
+      const meta = execSync(
+        `gh api "repos/${owner}/${repo}/contents/${filePath}${refQuery}"`,
+        { encoding: "utf-8" }
+      );
+      const obj = JSON.parse(meta);
+      const content = Buffer.from(obj.content ?? "", "base64").toString("utf-8");
+      return { content, sourceUrl: obj.html_url ?? `https://github.com/${owner}/${repo}/blob/${refForUrl || "main"}/${filePath}` };
+    } catch {
+      return null;
+    }
+  };
+
+  // Helper: list directory contents, pick the best candidate file. Returns null on any failure.
+  const fetchFromDir = (dirPath: string, refForUrl: string): { content: string; sourceUrl: string } | null => {
+    try {
+      const refQuery = refForUrl ? `?ref=${encodeURIComponent(refForUrl)}` : "";
+      const listing = execSync(
+        `gh api "repos/${owner}/${repo}/contents/${dirPath}${refQuery}"`,
+        { encoding: "utf-8" }
+      );
+      const entries = JSON.parse(listing) as Array<{ name: string; path: string; type: string }>;
+      if (!Array.isArray(entries)) return null;
+      // Preference order: SKILL.md > README.md > first *.md found.
+      const byName = (target: string) =>
+        entries.find((e) => e.type === "file" && e.name.toLowerCase() === target.toLowerCase());
+      const chosen =
+        byName("SKILL.md") ??
+        byName("README.md") ??
+        entries.find((e) => e.type === "file" && e.name.toLowerCase().endsWith(".md"));
+      if (!chosen) return null;
+      return fetchFile(chosen.path, refForUrl);
+    } catch {
+      return null;
+    }
+  };
+
+  // Repo-root README — the canonical autodetect path. Used both as the primary path
+  // when there's no subpath, and as a safety net when subpath fetches fail.
+  const fetchRepoReadme = (): { content: string; sourceUrl: string } | null => {
+    try {
+      const meta = execSync(
+        `gh api repos/${owner}/${repo}/readme`,
+        { encoding: "utf-8" }
+      );
+      const obj = JSON.parse(meta);
+      const content = Buffer.from(obj.content ?? "", "base64").toString("utf-8");
+      return { content, sourceUrl: obj.html_url ?? `https://github.com/${owner}/${repo}/blob/main/README.md` };
+    } catch {
+      return null;
+    }
+  };
+
+  if (pathType === "blob" && subpath) {
+    return fetchFile(subpath, ref ?? "main") ?? fetchRepoReadme();
+  }
+  if (pathType === "tree" && subpath) {
+    return fetchFromDir(subpath, ref ?? "main") ?? fetchRepoReadme();
+  }
+  return fetchRepoReadme();
 }
 
 function extractField(body: string, label: string): string | undefined {
