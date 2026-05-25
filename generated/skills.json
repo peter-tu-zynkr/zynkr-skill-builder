@@ -1086,7 +1086,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 34261,
+    "githubStars": 34264,
     "githubForks": 2146
   },
   {
@@ -1124,8 +1124,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 166608,
-    "githubForks": 27510
+    "githubStars": 166700,
+    "githubForks": 27518
   },
   {
     "id": "6.14",
@@ -1152,5 +1152,36 @@
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-triager/SKILL.md"
+  },
+  {
+    "id": "6.15",
+    "name": "skill-publish",
+    "category": "engineer",
+    "project": "skill-publish",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "Publish an already-built or freshly-downloaded skill into the Zynkr skills pipeline. Skip the /skill-sourcer extraction step and jump straight to category check + duplicate check + GitHub Project intake. Trigger on phrases like 'publish this skill', 'register this skill', 'I built a skill add it to the pipeline', 'push this skill to the pipeline', 'check category and dedup before upload', 'add this built skill', or '/skill-publish'. Use whenever the user already has a SKILL.md on disk (or a built skill folder) and wants it categorised, deduped against the pipeline, and proposed for triage — even if they don't explicitly say 'publish'.",
+    "input": "A path to a built skill folder containing SKILL.md, a path to a SKILL.md file, or pasted SKILL.md content. If not provided, ask the user.",
+    "output": "Issue created in peter-tu-zynkr/zynkr-skill-idea (label skill-proposal) and added to the skills pipeline GitHub Project with Pipeline Status=proposed (or approved if signed...",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "6.15",
+    "kind": "skill",
+    "synergy": [
+      "6.15"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/6.15.md -o ~/.claude/skills/skill-publish.md",
+    "updatedAt": "2026-05-25",
+    "firstSeen": "2026-05-25",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "6-engineer/skill-publish/SKILL.md",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    }
   }
 ]

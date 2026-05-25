@@ -804,7 +804,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34261,
+    "github_stars": 34264,
     "github_forks": 2146,
     "first_seen": "2026-05-12"
   },
@@ -831,8 +831,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 166608,
-    "github_forks": 27510,
+    "github_stars": 166700,
+    "github_forks": 27518,
     "first_seen": "2026-05-20"
   },
   {
@@ -856,5 +856,27 @@
     ],
     "updated_at": "2026-05-25",
     "first_seen": "2026-05-24"
+  },
+  {
+    "id": "6.15",
+    "slug": "skill-publish",
+    "name": "skill-publish",
+    "summary": "Publish an already-built or freshly-downloaded skill into the Zynkr skills pipeline.",
+    "category": "engineer",
+    "project": "skill-publish",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/6-engineer/skill-publish/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.15.md -o ~/.claude/skills/skill-publish.md",
+    "tags": [
+      "skill-publish",
+      "engineer",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-25",
+    "first_seen": "2026-05-25"
   }
 ]
