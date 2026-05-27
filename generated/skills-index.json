@@ -18,7 +18,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -40,7 +40,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -62,7 +62,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -84,7 +84,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -106,7 +106,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -128,7 +128,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -150,7 +150,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -172,7 +172,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -194,7 +194,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -216,7 +216,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -238,7 +238,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -260,7 +260,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -282,7 +282,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -304,7 +304,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -326,7 +326,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -347,7 +347,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -369,7 +369,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -390,14 +390,14 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
     "id": "2.23",
     "slug": "cv-customizer-cv-phase2-story-extractor",
     "name": "cv-phase2-story-extractor",
-    "summary": "cv-phase2-story-extractor for cv-customizer",
+    "summary": "Surfaces underrepresented skills by comparing the candidate's CV with the job requirements from phase 1, then guides the candidate to articulate strong, job-aligned stories using the SCQA framework.",
     "category": "sales-consultant",
     "project": "cv-customizer",
     "platform": "claude",
@@ -411,14 +411,14 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
     "id": "2.24",
     "slug": "cv-customizer-cv-phase3-fit-scorer",
     "name": "cv-phase3-fit-scorer",
-    "summary": "cv-phase3-fit-scorer for cv-customizer",
+    "summary": "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements.",
     "category": "sales-consultant",
     "project": "cv-customizer",
     "platform": "claude",
@@ -432,7 +432,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -453,14 +453,14 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
     "id": "2.26",
     "slug": "cv-customizer-cv-phase5-rewriter",
     "name": "cv-phase5-rewriter",
-    "summary": "cv-phase5-rewriter for cv-customizer",
+    "summary": "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic.",
     "category": "sales-consultant",
     "project": "cv-customizer",
     "platform": "claude",
@@ -474,7 +474,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -496,14 +496,14 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
     "id": "2.28",
     "slug": "interview-question-predictor",
     "name": "interview-question-predictor",
-    "summary": "面試猜題",
+    "summary": "Anticipates likely interview questions for a specific role by analyzing the job description, the candidate's resume, the interview stage, and company context from an interviewer's perspective.",
     "category": "sales-consultant",
     "project": "interview-question-predictor",
     "platform": "claude",
@@ -518,7 +518,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -540,7 +540,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -561,7 +561,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -582,7 +582,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -603,7 +603,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -625,7 +625,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -647,7 +647,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-18"
   },
   {
@@ -669,7 +669,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -690,7 +690,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -712,7 +712,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -733,7 +733,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -754,7 +754,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -775,7 +775,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -797,7 +797,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -819,7 +819,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -841,7 +841,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -863,7 +863,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -884,7 +884,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -905,7 +905,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -926,7 +926,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -947,7 +947,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -968,7 +968,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-09"
   },
   {
@@ -990,14 +990,14 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
     "id": "5.01",
     "slug": "product-planning",
     "name": "product-planning",
-    "summary": "0 — Product Planning Framework Guide",
+    "summary": "Turns an early product idea into a structured plan — persona, user journey, prioritized pain points (size × intensity × frequency), MVP scope, and success metrics.",
     "category": "product",
     "project": "product-planning",
     "platform": "claude",
@@ -1012,7 +1012,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
@@ -1039,7 +1039,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1061,7 +1061,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1083,7 +1083,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1105,7 +1105,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-12"
   },
   {
@@ -1126,7 +1126,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-12"
   },
   {
@@ -1147,7 +1147,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-12"
   },
   {
@@ -1168,7 +1168,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-12"
   },
   {
@@ -1189,7 +1189,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-12"
   },
   {
@@ -1211,12 +1211,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34279,
-    "github_forks": 2151,
+    "github_stars": 34465,
+    "github_forks": 2168,
     "first_seen": "2026-05-12"
   },
   {
@@ -1238,12 +1238,12 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 167075,
-    "github_forks": 27614,
+    "github_stars": 170059,
+    "github_forks": 28408,
     "first_seen": "2026-05-20"
   },
   {
@@ -1265,7 +1265,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-24"
   },
   {
@@ -1287,7 +1287,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1309,12 +1309,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 20031,
-    "github_forks": 1610,
+    "github_stars": 20332,
+    "github_forks": 1633,
     "first_seen": "2026-05-25"
   },
   {
@@ -1336,7 +1336,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1358,7 +1358,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1379,7 +1379,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1400,7 +1400,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1421,7 +1421,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   },
   {
@@ -1442,7 +1442,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-25",
+    "updated_at": "2026-05-27",
     "first_seen": "2026-05-25"
   }
 ]
