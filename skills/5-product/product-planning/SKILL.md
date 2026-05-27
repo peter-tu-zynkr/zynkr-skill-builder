@@ -5,7 +5,7 @@ project: product-planning
 platform: claude
 status: Done
 author: "MrPM-Stanley"
-description: "0 — Product Planning Framework Guide"
+description: "Turns an early product idea into a structured plan — persona, user journey, prioritized pain points (size × intensity × frequency), MVP scope, and success metrics. Based on the 產品企劃力 design-thinking + product-positioning framework by MrPM-Stanley. Works for software, hardware, and service products. Use when you have a raw idea and need it shaped into a planning artifact, not just brainstormed."
 input: "See upstream README"
 process: "See upstream README"
 output: "See upstream README"

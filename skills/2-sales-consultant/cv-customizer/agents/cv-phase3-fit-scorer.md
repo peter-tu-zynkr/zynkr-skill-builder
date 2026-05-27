@@ -1,3 +1,10 @@
+---
+name: cv-phase3-fit-scorer
+sheetId: "2.03"
+description: "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction."
+model: sonnet
+---
+
 # Phase 3: Candidate Fit Scoring, Benchmarking & Optimization
 
 > This file is a **prompt reference** — the orchestrator reads it and executes the logic in the main conversation (not as a subagent), because this phase requires multi-turn user interaction.

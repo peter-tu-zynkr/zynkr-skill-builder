@@ -1,3 +1,10 @@
+---
+name: cv-phase5-rewriter
+sheetId: "2.05"
+description: "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction."
+model: sonnet
+---
+
 # Phase 5: Rewrite & Final Quality Check
 
 > This file is a **prompt reference** — the orchestrator reads it and executes the logic in the main conversation (not as a subagent), because this phase requires multi-turn user interaction (Accept / Modify / Skip per section).
