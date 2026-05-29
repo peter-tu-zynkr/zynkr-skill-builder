@@ -18,7 +18,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Sync a newsletter article from Google Docs to the Notion Content DB. Use this skill whenever the user shares a Google Doc URL and wants to create a Notion page, sync to Notion, add to Content DB, or archive a newsletter. Trigger on phrases like \"幫我放上 Notion\", \"sync to Notion\", \"add this to Notion\", \"同步到 Notion\", or any message combining a Google Doc link with Notion/archive intent.",
     "input": "The user provides an abstract philosophical question and answers assistant's prompts.",
@@ -49,7 +49,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Drafts Peter's weekly Chinese newsletter by combining three sources: (1) the user's article outline or topic, (2) last 7 days of Threads engagement data to understand what readers care about, and (3) Claude Code /insights from the past week to surface what Peter has been building and learning. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫 newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will pull the other context automatically.",
     "input": "User gives article draft (topic + core ideas); templates and style guide are preloaded.",
@@ -80,7 +80,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
     "process": "Check presence of article, verify relevance to Style Guide, then list edit suggestions: original text, proposed revision, and reason. Ensure mobile-friendly style, avoid “不是⋯而是⋯”, and confirm choices with the user.",
@@ -117,7 +117,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the socratic-ideation-partner agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the socratic-ideation-partner agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the socratic-ideation-partner agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
     "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
@@ -156,7 +156,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the article-style-selector agent. </commentary> </example>",
     "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
@@ -195,7 +195,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from article-style-selector and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the article-drafter agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the article-drafter agent. </commentary> </example>",
     "input": "An article draft provided by the author.",
@@ -234,7 +234,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from article-drafter and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the article-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the article-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the article-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the article-editor agent. </commentary> </example>",
     "input": "Completed draft",
@@ -273,7 +273,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the reader-perspective agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the reader-perspective agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the reader-perspective agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the reader-perspective agent. </commentary> </example>",
     "input": "A full or partial article text, optionally with a writing or critique goal.",
@@ -312,7 +312,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the article-title-suggester agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the article-title-suggester agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the article-title-suggester agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the article-title-suggester agent. </commentary> </example>",
     "input": "User provides text in English or another language.",
@@ -351,7 +351,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the cta-writer agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the cta-writer agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the cta-writer agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the cta-writer agent. </commentary> </example>",
     "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
@@ -390,7 +390,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Article fission — extract outline + summary from any popular article, then run 3 rounds of reflective dialogue to surface the writer's own refined take, ending with a new actionable outline ready for style + writing handoff.",
     "input": "A prepared context packet describing audience, pain point, constraints, and desired outcome.",
@@ -421,7 +421,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Turn an AI-literacy context packet (audience, pain point, constraints, desired outcome) into a publish-ready first-person article using a pattern-break → reframe → copy-paste approach. Each article ends with immediate, reusable prompts the reader can copy.",
     "input": "A prepared context packet describing audience, pain point, constraints, and desired outcome — typically the handoff packet from ai-literacy-topic-selector (1.10)",
@@ -452,7 +452,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Pick the right AI-literacy article topic for a target role. Validates user context, selects a target professional role, and generates 3 realistic workplace problems using a strict 3-stage IPO pipeline grounded in AI judgment rules.",
     "input": "Unstructured user context (writing intent, knowledge, audience, workflow) plus two reference documents: AI judgment rules (K1) and role distribution (K2)",
@@ -483,9 +483,9 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
-    "description": "Translate English (or any source language) into natural, conversational Traditional Chinese using Taiwanese expressions and tone. Removes the 'translation smell' that comes from word-for-word renderings.",
+    "description": "Translate English (or any source language) into natural, conversational Traditional Chinese using Taiwanese expressions and tone. Removes the 'translation smell' that comes from word-for-word renderings. Also supports a reverse zh-TW → English mode for producing English 'flagship' versions of SEO articles (used by seo-article-pipeline for AEO reach in English-dominant AI engines).",
     "input": "Text in English or another language (plain text, paragraph, document, or code-block-free passage)",
     "process": "Translate into natural conversational Traditional Chinese using Taiwanese expressions and tone; localize idioms, units, and references; preserve any code fences untouched",
     "output": "Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language, not machine-translated",
@@ -494,6 +494,316 @@
       "1.14"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/zh-tw-translator/SKILL.md"
+  },
+  "1.15": {
+    "id": "1.15",
+    "slug": "seo-angle-finder",
+    "name": "seo-angle-finder",
+    "summary": "SEO 流程第三棒：從 SEO 專家角度＋競爭對手網址，找出「哪裡可以加強」的內容切角與差異化機會。對應 v2 流程圖「從 SEO 角度思考加強 + 參考競爭對手網址思考加強」。當使用者交出 Questions 交棒包、提供競品網址、說「找 SEO 切角」時觸發。只找切角，不做關鍵字地圖、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-angle-finder",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-angle-finder/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.15.md -o ~/.claude/skills/seo-angle-finder.md",
+    "tags": [
+      "seo-angle-finder",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第三棒：從 SEO 專家角度＋競爭對手網址，找出「哪裡可以加強」的內容切角與差異化機會。對應 v2 流程圖「從 SEO 角度思考加強 + 參考競爭對手網址思考加強」。當使用者交出 Questions 交棒包、提供競品網址、說「找 SEO 切角」時觸發。只找切角，不做關鍵字地圖、不寫文章。",
+    "input": "seo-question-miner 的 SEO_PACKET ▸ Questions；可選：已知競爭對手網址（文章資料包）",
+    "process": "從問題與競品內容找出未被滿足的角度、可加強處、Zynkr 第一手證據可切入點 → 人工驗證 → 交棒",
+    "output": "差異化內容切角清單（含競品缺口），交給 seo-keyword-mapper",
+    "kind": "skill",
+    "synergy": [
+      "1.15"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-angle-finder/SKILL.md"
+  },
+  "1.16": {
+    "id": "1.16",
+    "slug": "seo-article-finalizer",
+    "name": "seo-article-finalizer",
+    "summary": "SEO 流程最後一棒：替已校稿的文章加上內部/反向連結、meta description 與結構化資料（schema），產出可上架版本。對應 v2 流程圖節點 (11) 的「列出哪個段落可以上連結 + 上 meta description」與「文章設定」。當使用者交出已校稿文章、說「做 SEO 設定」、「上 meta」、「準備上架」時觸發。只做上架前設定，不重寫內容。",
+    "category": "brand-marketing",
+    "project": "seo-article-finalizer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-article-finalizer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.16.md -o ~/.claude/skills/seo-article-finalizer.md",
+    "tags": [
+      "seo-article-finalizer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程最後一棒：替已校稿的文章加上內部/反向連結、meta description 與結構化資料（schema），產出可上架版本。對應 v2 流程圖節點 (11) 的「列出哪個段落可以上連結 + 上 meta description」與「文章設定」。當使用者交出已校稿文章、說「做 SEO 設定」、「上 meta」、「準備上架」時觸發。只做上架前設定，不重寫內容。",
+    "input": "已經過 article-editor（含 SEO 審核準則）校稿的文章 + 該篇 SEO_PACKET ▸ Brief",
+    "process": "依 internal-link-rules 標出可上內部/反向連結的段落 → 依 meta-schema-rules 寫 meta description 與 FAQ/Article schema → 人工確認 → 產出上架包",
+    "output": "上架包：內/外連結建議 + meta description + schema markup + 上架檢查表",
+    "kind": "skill",
+    "synergy": [
+      "1.16"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-article-finalizer/SKILL.md"
+  },
+  "1.17": {
+    "id": "1.17",
+    "slug": "seo-article-pipeline",
+    "name": "seo-article-pipeline",
+    "summary": "Zynkr SEO 內容生產的總指揮：把 v2 流程圖的九階段串成一條從品牌資料到可上架文章的管線。前半段（人物誌→種子問題→切角→關鍵字地圖→意圖分類→需求驗證→Brief→大綱/FAQ）呼叫各 SEO skill，後半段（撰寫→下標題→校稿）沿用既有 write-article 子代理人，最後做 SEO 設定與 EN 旗艦版。當使用者說「跑 SEO 文章流程」、「開始寫一篇 SEO 文章」、「/seo-article-pipelin",
+    "category": "brand-marketing",
+    "project": "seo-article-pipeline",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-article-pipeline/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.17.md -o ~/.claude/skills/seo-article-pipeline.md",
+    "tags": [
+      "seo-article-pipeline",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "Zynkr SEO 內容生產的總指揮：把 v2 流程圖的九階段串成一條從品牌資料到可上架文章的管線。前半段（人物誌→種子問題→切角→關鍵字地圖→意圖分類→需求驗證→Brief→大綱/FAQ）呼叫各 SEO skill，後半段（撰寫→下標題→校稿）沿用既有 write-article 子代理人，最後做 SEO 設定與 EN 旗艦版。當使用者說「跑 SEO 文章流程」、「開始寫一篇 SEO 文章」、「/seo-article-pipeline」或交出品牌/文章資料包時觸發。",
+    "input": "品牌資料包（首次）或文章資料包（每篇）；或任一階段的 SEO_PACKET 交棒包",
+    "process": "偵測進入點 → 逐階段呼叫對應 SEO skill / 既有子代理人 → 每階段人工閘門 → 把工作檔存入 Drive 本篇子資料夾",
+    "output": "一篇通過 SEO/AEO 校稿、含 meta/schema/連結的可上架文章（zh-TW，旗艦另出 EN）",
+    "kind": "skill",
+    "synergy": [
+      "1.17"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-article-pipeline/SKILL.md"
+  },
+  "1.18": {
+    "id": "1.18",
+    "slug": "seo-brief-writer",
+    "name": "seo-brief-writer",
+    "summary": "SEO 流程第七棒：針對一個選定主題，找出價值主張與勝出關鍵，產出一份完整 SEO 寫作 Brief。對應 v2 流程圖「選擇主題：設計 Brief」。當使用者交出 Topics 交棒包、提供參考文章/論壇/專家意見、說「寫 Brief」時觸發。只寫 Brief，不設計大綱、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-brief-writer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-brief-writer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.18.md -o ~/.claude/skills/seo-brief-writer.md",
+    "tags": [
+      "seo-brief-writer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第七棒：針對一個選定主題，找出價值主張與勝出關鍵，產出一份完整 SEO 寫作 Brief。對應 v2 流程圖「選擇主題：設計 Brief」。當使用者交出 Topics 交棒包、提供參考文章/論壇/專家意見、說「寫 Brief」時觸發。只寫 Brief，不設計大綱、不寫文章。",
+    "input": "seo-demand-validator 的 SEO_PACKET ▸ Topics；可選：參考文章/論壇問答/專家意見（文章資料包）",
+    "process": "依 ceiling-article-features 分析天花板文章 → winning-key-scoring 找勝出關鍵與價值主張 → 套 brief-template 產出 Brief → 人工驗證並補充 → 交棒",
+    "output": "一份 SEO 寫作 Brief，交給 seo-outline-designer",
+    "kind": "skill",
+    "synergy": [
+      "1.18"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-brief-writer/SKILL.md"
+  },
+  "1.19": {
+    "id": "1.19",
+    "slug": "seo-demand-validator",
+    "name": "seo-demand-validator",
+    "summary": "SEO 流程第六棒：驗證關鍵字的真實需求與競爭難度，比較現有 SERP 共通點，刪去不必要的字，整理出目標關鍵字與主題清單。對應 v2 流程圖節點 (6)。當使用者交出 Classified 交棒包、說「驗證需求」、「整理主題清單」時觸發。只驗證與收斂，不寫 Brief、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-demand-validator",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-demand-validator/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.19.md -o ~/.claude/skills/seo-demand-validator.md",
+    "tags": [
+      "seo-demand-validator",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第六棒：驗證關鍵字的真實需求與競爭難度，比較現有 SERP 共通點，刪去不必要的字，整理出目標關鍵字與主題清單。對應 v2 流程圖節點 (6)。當使用者交出 Classified 交棒包、說「驗證需求」、「整理主題清單」時觸發。只驗證與收斂，不寫 Brief、不寫文章。",
+    "input": "seo-keyword-classifier 的 SEO_PACKET ▸ Classified；人工 Google/SERP 觀察與工具難度數據",
+    "process": "依 competitor-review-table 比較 SERP 共通點與競爭難度 → 人工驗證需求、刪不必要字 → 收斂成主題清單＋目標關鍵字 → 交棒",
+    "output": "主題清單 + 目標關鍵字 + SERP 共通點，交給 seo-brief-writer",
+    "kind": "skill",
+    "synergy": [
+      "1.19"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-demand-validator/SKILL.md"
+  },
+  "1.20": {
+    "id": "1.20",
+    "slug": "seo-keyword-classifier",
+    "name": "seo-keyword-classifier",
+    "summary": "SEO 流程第五棒：把關鍵字地圖「按搜尋意圖」分類（不是按產品類別），並提供多種分群版本供選擇。對應 v2 流程圖「按照不同分類方式分類，提供不同版本」。當使用者交出 KeywordMap 交棒包、說「關鍵字分類」、「按意圖分群」時觸發。只分類，不驗證需求難度、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-keyword-classifier",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-keyword-classifier/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.20.md -o ~/.claude/skills/seo-keyword-classifier.md",
+    "tags": [
+      "seo-keyword-classifier",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第五棒：把關鍵字地圖「按搜尋意圖」分類（不是按產品類別），並提供多種分群版本供選擇。對應 v2 流程圖「按照不同分類方式分類，提供不同版本」。當使用者交出 KeywordMap 交棒包、說「關鍵字分類」、「按意圖分群」時觸發。只分類，不驗證需求難度、不寫文章。",
+    "input": "seo-keyword-mapper 的 SEO_PACKET ▸ KeywordMap",
+    "process": "依 intent-taxonomy 按搜尋意圖分群 + keyword-sop 篩選原則 → 產出 2–3 種分群版本 → 人工 Trigger 選版本 → 交棒",
+    "output": "依意圖分群的關鍵字（多版本擇一），交給 seo-demand-validator",
+    "kind": "skill",
+    "synergy": [
+      "1.20"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-keyword-classifier/SKILL.md"
+  },
+  "1.21": {
+    "id": "1.21",
+    "slug": "seo-keyword-mapper",
+    "name": "seo-keyword-mapper",
+    "summary": "SEO 流程第四棒：用關鍵字工具（Ubersuggest / AnswerThePublic）把切角與種子字擴展成完整關鍵字地圖。對應 v2 流程圖「篩選關鍵字製作關鍵字地圖 + 整理完整關鍵字地圖」。當使用者交出 Angles 交棒包、貼上關鍵字工具匯出、說「做關鍵字地圖」時觸發。只做地圖，不分類意圖、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-keyword-mapper",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-keyword-mapper/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.21.md -o ~/.claude/skills/seo-keyword-mapper.md",
+    "tags": [
+      "seo-keyword-mapper",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第四棒：用關鍵字工具（Ubersuggest / AnswerThePublic）把切角與種子字擴展成完整關鍵字地圖。對應 v2 流程圖「篩選關鍵字製作關鍵字地圖 + 整理完整關鍵字地圖」。當使用者交出 Angles 交棒包、貼上關鍵字工具匯出、說「做關鍵字地圖」時觸發。只做地圖，不分類意圖、不寫文章。",
+    "input": "seo-angle-finder 的 SEO_PACKET ▸ Angles；使用者貼上的 Ubersuggest / AnswerThePublic 匯出（CSV/文字）",
+    "process": "依 keyword-checklist 擴展種子字 → 整理含搜尋量/難度的關鍵字地圖（線頭→關鍵字）→ 人工用工具補充 → 交棒",
+    "output": "完整關鍵字地圖（關鍵字、線頭、量/難度），交給 seo-keyword-classifier",
+    "kind": "skill",
+    "synergy": [
+      "1.21"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-keyword-mapper/SKILL.md"
+  },
+  "1.22": {
+    "id": "1.22",
+    "slug": "seo-outline-designer",
+    "name": "seo-outline-designer",
+    "summary": "SEO 流程第八棒：把 SEO Brief 變成文章大綱與 FAQ 區塊，輸出與 article-drafter 相容的交棒摘要。對應 v2 流程圖「架構文章：大綱設計」與「建立 FAQ」。當使用者交出 Brief 交棒包、說「設計大綱」、「做 FAQ」時觸發。只做大綱與 FAQ，實際撰寫交給 article-drafter。",
+    "category": "brand-marketing",
+    "project": "seo-outline-designer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-outline-designer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.22.md -o ~/.claude/skills/seo-outline-designer.md",
+    "tags": [
+      "seo-outline-designer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第八棒：把 SEO Brief 變成文章大綱與 FAQ 區塊，輸出與 article-drafter 相容的交棒摘要。對應 v2 流程圖「架構文章：大綱設計」與「建立 FAQ」。當使用者交出 Brief 交棒包、說「設計大綱」、「做 FAQ」時觸發。只做大綱與 FAQ，實際撰寫交給 article-drafter。",
+    "input": "seo-brief-writer 的 SEO_PACKET ▸ Brief；可選：是否補充資訊（其他參考文章）、業主第一手資訊",
+    "process": "依 outline-patterns 設計 H2/H3 大綱（answer-first 開場）→ 由 Brief 的必答題建 FAQ → 決定是否補資訊 → 人工審核 → 輸出 article-drafter 相容交棒摘要",
+    "output": "文章大綱 + FAQ + 目標關鍵字的交棒摘要，交給 article-drafter（1.06）撰寫",
+    "kind": "skill",
+    "synergy": [
+      "1.22"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-outline-designer/SKILL.md"
+  },
+  "1.23": {
+    "id": "1.23",
+    "slug": "seo-persona-builder",
+    "name": "seo-persona-builder",
+    "summary": "SEO 內容流程的第一棒：讀取品牌資料（從 SEO 知識庫資料夾或品牌資料包），打造目標讀者／潛在客戶的人物誌與消費者輪廓，作為後續關鍵字與選題的依據。當使用者說「幫我建立 SEO 人物誌」、「先做受眾輪廓」、「開始 SEO 流程」、或交出品牌資料包時觸發。只做人物誌，不做關鍵字、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-persona-builder",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-persona-builder/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.23.md -o ~/.claude/skills/seo-persona-builder.md",
+    "tags": [
+      "seo-persona-builder",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 內容流程的第一棒：讀取品牌資料（從 SEO 知識庫資料夾或品牌資料包），打造目標讀者／潛在客戶的人物誌與消費者輪廓，作為後續關鍵字與選題的依據。當使用者說「幫我建立 SEO 人物誌」、「先做受眾輪廓」、「開始 SEO 流程」、或交出品牌資料包時觸發。只做人物誌，不做關鍵字、不寫文章。",
+    "input": "品牌資料（品牌文化、網站內容、產業背景、產品項目、熱門商品）— 來自 SEO 知識庫 Drive 資料夾或品牌資料包",
+    "process": "讀品牌資料 → 依 persona-rubric 萃取 1–3 個潛在客戶人物誌（含痛點、決策角色、購買旅程）→ 經人工審核同意 → 輸出交棒包",
+    "output": "1–3 份消費者人物誌 + 交棒包，交給 seo-question-miner 發想常見問題",
+    "kind": "skill",
+    "synergy": [
+      "1.23"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-persona-builder/SKILL.md"
+  },
+  "1.24": {
+    "id": "1.24",
+    "slug": "seo-question-miner",
+    "name": "seo-question-miner",
+    "summary": "SEO 流程第二棒：根據人物誌，發想目標讀者「在購買前真正會問的問題」，並從問題反推種子關鍵字。對應 v2 流程圖「發想常見問題 + 訪談回答常見問題並列出關鍵字」。當使用者交出 persona 交棒包、說「發想常見問題」、「挖種子關鍵字」時觸發。只發想問題與種子字，不做難度分析、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-question-miner",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-question-miner/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.24.md -o ~/.claude/skills/seo-question-miner.md",
+    "tags": [
+      "seo-question-miner",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29",
+    "description": "SEO 流程第二棒：根據人物誌，發想目標讀者「在購買前真正會問的問題」，並從問題反推種子關鍵字。對應 v2 流程圖「發想常見問題 + 訪談回答常見問題並列出關鍵字」。當使用者交出 persona 交棒包、說「發想常見問題」、「挖種子關鍵字」時觸發。只發想問題與種子字，不做難度分析、不寫文章。",
+    "input": "seo-persona-builder 的 SEO_PACKET ▸ Persona 交棒包",
+    "process": "依 question-frames 從每個人物誌的痛點展開購買前問題（問題／比較／使用情境）→ 從問題反推種子關鍵字 → 人工審核 → 交棒",
+    "output": "分階段（TOFU/MOFU/BOFU）的買家問題清單 + 種子關鍵字，交給 seo-angle-finder",
+    "kind": "skill",
+    "synergy": [
+      "1.24"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-question-miner/SKILL.md"
   },
   "2.19": {
     "id": "2.19",
@@ -514,7 +824,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
     "input": "Business card image(s) — single or batch",
@@ -545,7 +855,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the biz-card pipeline.",
     "kind": "subagent",
@@ -574,7 +884,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Job description (text, URL, or file) and candidate CV/resume",
@@ -609,7 +919,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
     "kind": "subagent",
@@ -641,7 +951,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Surfaces underrepresented skills by comparing the candidate's CV with the job requirements from phase 1, then guides the candidate to articulate strong, job-aligned stories using the SCQA framework. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "kind": "subagent",
@@ -673,7 +983,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "kind": "subagent",
@@ -705,7 +1015,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
     "kind": "subagent",
@@ -737,7 +1047,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "kind": "subagent",
@@ -770,7 +1080,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Intake an inbound sales / consulting email, gather all of its context, create a project folder in Drive with a structured context doc + attachments, and create a matching Notion ticket in the Consultant service DB with status 'Consult intake'. Trigger whenever the user forwards or references an inbound lead email and says things like '幫我建專案', 'create a ticket for this', 'intake this email', 'kick off this lead', 'log this inbound', or shares an inbound proposal / introduction / 講座提案 / 合作邀請 and wants it stacked up into a trackable project — even if they only say 'I got this email' with intent to process it.",
     "input": "Gmail message (ID, thread link, or search query) for an inbound sales / consulting lead",
@@ -801,7 +1111,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Anticipates likely interview questions for a specific role by analyzing the job description, the candidate's resume, the interview stage, and company context from an interviewer's perspective. Returns a prioritized question map with rationale and evaluation signals. Use when a candidate is preparing for an upcoming interview and needs to know what's coming — strictly prediction, not coaching or model answers.",
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
@@ -833,7 +1143,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work.",
     "input": "A consulting client (founder, department head, or senior manager) ready to discuss business challenges and company strategy",
@@ -865,7 +1175,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "顧問助理 ─ 公司未來願景描繪 — agent of consulting-discovery",
     "input": "Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.",
@@ -897,7 +1207,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "顧問助理 ─ 痛點解析 — agent of consulting-discovery",
     "input": "User shares business context, team structure, challenges, and goals through guided Q&A.",
@@ -929,7 +1239,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "模擬面試 — agent of interview-question-predictor",
     "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
@@ -961,7 +1271,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "9-step BD sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag.",
     "input": "Google Sheet of survey participants — each row has company name, AI challenges, topic interests, and attend-motivation signals",
@@ -992,7 +1302,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-18",
     "description": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
     "input": "無（排程自動觸發，讀取 Google Calendar 與 Gmail）",
@@ -1024,7 +1334,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "讀取 Gmail 中所有貼有 support 標籤但尚未回覆的信件，到知識庫資料夾搜尋相關內容，幫你在原信 thread 上起一份回信草稿。語言自動配合來信（中／英），找不到答案時會起一份 holding reply 並用 [[NEEDS PETER: ...]] 區塊標出缺漏，避免回信時亂編產品行為。",
     "input": "Gmail label `<your-support-label>` 下的未回覆 threads；KB 來源為 Google Drive 資料夾 `<your-support-kb-folder-id>`",
@@ -1054,7 +1364,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
     "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
@@ -1086,7 +1396,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints.",
     "input": "A client-described inefficient or unclear business process, ideally with prior discovery context from consulting-discovery",
@@ -1119,7 +1429,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "營運助理 ─ 數位轉型評估 — agent of operations-transformation",
     "input": "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).",
@@ -1152,7 +1462,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "營運助理 ─ 流程探勘 — agent of operations-transformation",
     "input": "Raw meeting notes, transcripts, or unstructured updates.",
@@ -1185,7 +1495,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "營運經理 ─ 流程重構 — agent of operations-transformation",
     "input": "Bi-weekly meeting document with weekly summaries and sectioned updates.",
@@ -1219,7 +1529,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter.",
     "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
@@ -1250,7 +1560,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-27",
     "description": "Weekly hygiene ritual for Zynkr's local↔cloud knowledge governance. Lists Google Drive Docs modified in the last N days across the 8 LOB folders (and Drive root), diffs against local `_INDEX.md` entries in `~/Desktop/Claude/zynkr/`, and proposes specific index edits: new entries to add, broken/renamed links to fix, deleted Docs to remove. Triggers on phrases like 'drift check', 'weekly hygiene', 'sync indexes', 'check cloud changes', 'what changed in cloud this week', '/drift-check', or when the user pastes nothing but asks to reconcile local/cloud state. Should fire eagerly when the user references the weekly hygiene ritual from the Zynkr knowledge-governance model.",
     "input": "Optional: number of days to look back (default 7). Optional: LOB scope as either an LOB number ('2.0', '7.1') or 'all' (default 'all'). Optional: Google account override...",
@@ -1281,7 +1591,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese.",
     "input": "User-provided video file or the transcript.",
@@ -1312,7 +1622,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
@@ -1348,7 +1658,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "description": "Minimally clean subtitle .srt files into readable Traditional Chinese while preserving original wording, cue timing, and subtitle alignment.",
     "input": "One .srt subtitle file containing raw speech-to-text output",
@@ -1378,7 +1688,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -1409,7 +1719,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -1440,7 +1750,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -1471,7 +1781,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -1502,7 +1812,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -1534,7 +1844,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Turn a video file or transcript into a reader-friendly lecture recap structured into five fixed sections — Summary, Theme, Q&A, Tools, Call to Action — while strictly avoiding any reference-outline detail leakage.",
     "input": "A user-provided video file, a video URL, or the verbatim transcript of a recorded lecture/livestream",
@@ -1565,7 +1875,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
@@ -1601,7 +1911,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Refactor a prompt (or prompt idea) into a production-ready package via 4 phases — GUIDE intake → diagnosis → structured refactor with explicit IPO sections + system/developer/user layers → optional multi-turn conversation blueprint.",
     "input": "User provides a prompt to optimize.",
@@ -1632,7 +1942,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Recommend the right Zynkr assistant(s) for a user's task. Interprets intent, matches against the structured assistant index, filters to usable entries, and either recommends or asks a single clarifying question.",
     "input": "A user inquiry describing a task, problem, or workflow they want help with",
@@ -1663,7 +1973,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Read, draft, edit, and lint Lucid charts using Peter's FE/BE/DB three-layer architecture convention. Triggers whenever the user shares a `lucid.app` URL with no further direction, asks to diagram/chart/visualize a process or workflow, asks to 'read' or 'summarize' an existing Lucid diagram, asks to add/modify nodes on a Lucid chart, or asks whether a chart follows the Zynkr convention. Should fire eagerly on phrases like '幫我畫流程圖', 'draw this workflow', 'diagram this', 'visualize this process', 'turn this into a Lucid chart', '/lucid-specialist', or any pasted Lucid URL. Bridges the human-facing Shape × Color principles (`5.0 product/architecture_principles_guidebook.md`, `5.0 product/color-shape-principles.md`) to the Lucid MCP tools (`mcp__lucid__fetch`, `mcp__lucid__lucid_create_diagram_from_specification`, `mcp__lucid__lucid_add_block`, `mcp__lucid__lucid_add_line`, `mcp__lucid__lucid_edit_item`). Use even when the user does not name 'Lucid' explicitly — if they want a process flow drawn or interpreted, this skill applies.",
     "input": "A Lucid document URL/id, OR a natural-language process description, OR a chart-edit request.",
@@ -1694,7 +2004,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the GitHub Project pipeline, and propose new skills as issues for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
@@ -1732,7 +2042,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "kind": "subagent",
@@ -1768,7 +2078,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline GitHub Project for duplication or semantic overlap",
     "kind": "subagent",
@@ -1804,7 +2114,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
     "kind": "subagent",
@@ -1840,7 +2150,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12",
     "description": "Propose a verified-new skill by opening an issue in zynkr-skill-idea and adding it to the skills pipeline GitHub Project. The triage-ready label is added only on approval.",
     "kind": "subagent",
@@ -1877,12 +2187,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34472,
-    "github_forks": 2170,
+    "github_stars": 34702,
+    "github_forks": 2187,
     "first_seen": "2026-05-12",
     "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
     "input": "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture",
@@ -1917,12 +2227,12 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 170161,
-    "github_forks": 28441,
+    "github_stars": 172727,
+    "github_forks": 29089,
     "first_seen": "2026-05-20",
     "description": "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard.",
     "input": "Conversation with the agent via CLI or any messaging platform; configuration via `hermes config`; optional user-authored skills in `~/.hermes/skills/`",
@@ -1958,7 +2268,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24",
     "description": "Triage the queue of approved skill proposals in peter-tu-zynkr/zynkr-skill-idea (label: triage-ready), present each as a one-screen review packet, and on assign-build fire a repository_dispatch event to zynkr-skill-builder so the pickup-approved-issue workflow scaffolds the SKILL.md. The DevOps-admin middle layer of the skill pipeline. Trigger on phrases like 'triage skills', 'review skill queue', 'skill triage', or '/skill-triager'.",
     "input": "None (reads triage-ready issues from peter-tu-zynkr/zynkr-skill-idea) — or a specific issue number",
@@ -1988,7 +2298,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "Land a freshly-built SKILL.md into the Zynkr skills pipeline — the closing step of the canonical 4-skill chain (/skill-sourcer → /skill-triager → /skill-creator → /skill-publish). Attaches the artifact to the existing pipeline issue, fires the publish-skill workflow to open a PR, and hands off to /skill-triager confirm-ship for closure. Trigger on phrases like 'publish this skill', 'land this skill', 'I finished building, push it', 'register this skill', 'add this built skill', 'check category and dedup before upload', or '/skill-publish'. Use whenever the user has a finished SKILL.md and wants it landed in zynkr-skill-builder — whether it came from /skill-creator (happy path) or from elsewhere (fresh intake fallback).",
     "input": "A path to the finished SKILL.md (folder or file), a GitHub URL to a SKILL.md, or pasted content. Optionally an existing pipeline issue number — if not given, the skill tries to...",
@@ -2023,12 +2333,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 20339,
-    "github_forks": 1634,
+    "github_stars": 20612,
+    "github_forks": 1649,
     "first_seen": "2026-05-25",
     "description": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
     "input": "A user query about an unmet capability (e.g., 'how do I make my React app faster?', 'can you help with PR reviews?')",
@@ -2059,7 +2369,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr rather than asking the user to remember the right slash command.",
     "input": "Anything: a URL, local file path, skill slug, free-text idea, status question, or pasted content. The skill classifies the input shape before doing anything else.",
@@ -2090,7 +2400,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (中英) outputs throughout.",
     "input": "Hiring manager provides rough notes or ideas about the role.",
@@ -2124,7 +2434,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "招募助理 ─ 面試評分校準與決策 — agent of recruiting-pipeline",
     "input": "JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size.",
@@ -2158,7 +2468,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "招募助理 ─ 設計考題與計分卡 — agent of recruiting-pipeline",
     "input": "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).",
@@ -2192,7 +2502,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "招募助理 ─ 對齊職務需求 — agent of recruiting-pipeline",
     "input": "Interview transcripts, interviewer scorecards, Assistant A’s question set and scoring standards, and hiring manager/HR inputs.",
@@ -2226,7 +2536,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25",
     "description": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
     "input": "Candidate information, hiring stage, interview details (if applicable), and any specific instructions regarding tone or language preference.",

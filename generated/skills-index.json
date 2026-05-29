@@ -18,7 +18,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -40,7 +40,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -62,7 +62,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -84,7 +84,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -106,7 +106,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -128,7 +128,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -150,7 +150,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -172,7 +172,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -194,7 +194,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -216,7 +216,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -238,7 +238,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -260,7 +260,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -282,7 +282,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -304,8 +304,228 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
+  },
+  {
+    "id": "1.15",
+    "slug": "seo-angle-finder",
+    "name": "seo-angle-finder",
+    "summary": "SEO 流程第三棒：從 SEO 專家角度＋競爭對手網址，找出「哪裡可以加強」的內容切角與差異化機會。對應 v2 流程圖「從 SEO 角度思考加強 + 參考競爭對手網址思考加強」。當使用者交出 Questions 交棒包、提供競品網址、說「找 SEO 切角」時觸發。只找切角，不做關鍵字地圖、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-angle-finder",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-angle-finder/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.15.md -o ~/.claude/skills/seo-angle-finder.md",
+    "tags": [
+      "seo-angle-finder",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.16",
+    "slug": "seo-article-finalizer",
+    "name": "seo-article-finalizer",
+    "summary": "SEO 流程最後一棒：替已校稿的文章加上內部/反向連結、meta description 與結構化資料（schema），產出可上架版本。對應 v2 流程圖節點 (11) 的「列出哪個段落可以上連結 + 上 meta description」與「文章設定」。當使用者交出已校稿文章、說「做 SEO 設定」、「上 meta」、「準備上架」時觸發。只做上架前設定，不重寫內容。",
+    "category": "brand-marketing",
+    "project": "seo-article-finalizer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-article-finalizer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.16.md -o ~/.claude/skills/seo-article-finalizer.md",
+    "tags": [
+      "seo-article-finalizer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.17",
+    "slug": "seo-article-pipeline",
+    "name": "seo-article-pipeline",
+    "summary": "Zynkr SEO 內容生產的總指揮：把 v2 流程圖的九階段串成一條從品牌資料到可上架文章的管線。前半段（人物誌→種子問題→切角→關鍵字地圖→意圖分類→需求驗證→Brief→大綱/FAQ）呼叫各 SEO skill，後半段（撰寫→下標題→校稿）沿用既有 write-article 子代理人，最後做 SEO 設定與 EN 旗艦版。當使用者說「跑 SEO 文章流程」、「開始寫一篇 SEO 文章」、「/seo-article-pipelin",
+    "category": "brand-marketing",
+    "project": "seo-article-pipeline",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-article-pipeline/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.17.md -o ~/.claude/skills/seo-article-pipeline.md",
+    "tags": [
+      "seo-article-pipeline",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.18",
+    "slug": "seo-brief-writer",
+    "name": "seo-brief-writer",
+    "summary": "SEO 流程第七棒：針對一個選定主題，找出價值主張與勝出關鍵，產出一份完整 SEO 寫作 Brief。對應 v2 流程圖「選擇主題：設計 Brief」。當使用者交出 Topics 交棒包、提供參考文章/論壇/專家意見、說「寫 Brief」時觸發。只寫 Brief，不設計大綱、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-brief-writer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-brief-writer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.18.md -o ~/.claude/skills/seo-brief-writer.md",
+    "tags": [
+      "seo-brief-writer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.19",
+    "slug": "seo-demand-validator",
+    "name": "seo-demand-validator",
+    "summary": "SEO 流程第六棒：驗證關鍵字的真實需求與競爭難度，比較現有 SERP 共通點，刪去不必要的字，整理出目標關鍵字與主題清單。對應 v2 流程圖節點 (6)。當使用者交出 Classified 交棒包、說「驗證需求」、「整理主題清單」時觸發。只驗證與收斂，不寫 Brief、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-demand-validator",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-demand-validator/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.19.md -o ~/.claude/skills/seo-demand-validator.md",
+    "tags": [
+      "seo-demand-validator",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.20",
+    "slug": "seo-keyword-classifier",
+    "name": "seo-keyword-classifier",
+    "summary": "SEO 流程第五棒：把關鍵字地圖「按搜尋意圖」分類（不是按產品類別），並提供多種分群版本供選擇。對應 v2 流程圖「按照不同分類方式分類，提供不同版本」。當使用者交出 KeywordMap 交棒包、說「關鍵字分類」、「按意圖分群」時觸發。只分類，不驗證需求難度、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-keyword-classifier",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-keyword-classifier/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.20.md -o ~/.claude/skills/seo-keyword-classifier.md",
+    "tags": [
+      "seo-keyword-classifier",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.21",
+    "slug": "seo-keyword-mapper",
+    "name": "seo-keyword-mapper",
+    "summary": "SEO 流程第四棒：用關鍵字工具（Ubersuggest / AnswerThePublic）把切角與種子字擴展成完整關鍵字地圖。對應 v2 流程圖「篩選關鍵字製作關鍵字地圖 + 整理完整關鍵字地圖」。當使用者交出 Angles 交棒包、貼上關鍵字工具匯出、說「做關鍵字地圖」時觸發。只做地圖，不分類意圖、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-keyword-mapper",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-keyword-mapper/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.21.md -o ~/.claude/skills/seo-keyword-mapper.md",
+    "tags": [
+      "seo-keyword-mapper",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.22",
+    "slug": "seo-outline-designer",
+    "name": "seo-outline-designer",
+    "summary": "SEO 流程第八棒：把 SEO Brief 變成文章大綱與 FAQ 區塊，輸出與 article-drafter 相容的交棒摘要。對應 v2 流程圖「架構文章：大綱設計」與「建立 FAQ」。當使用者交出 Brief 交棒包、說「設計大綱」、「做 FAQ」時觸發。只做大綱與 FAQ，實際撰寫交給 article-drafter。",
+    "category": "brand-marketing",
+    "project": "seo-outline-designer",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-outline-designer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.22.md -o ~/.claude/skills/seo-outline-designer.md",
+    "tags": [
+      "seo-outline-designer",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.23",
+    "slug": "seo-persona-builder",
+    "name": "seo-persona-builder",
+    "summary": "SEO 內容流程的第一棒：讀取品牌資料（從 SEO 知識庫資料夾或品牌資料包），打造目標讀者／潛在客戶的人物誌與消費者輪廓，作為後續關鍵字與選題的依據。當使用者說「幫我建立 SEO 人物誌」、「先做受眾輪廓」、「開始 SEO 流程」、或交出品牌資料包時觸發。只做人物誌，不做關鍵字、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-persona-builder",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-persona-builder/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.23.md -o ~/.claude/skills/seo-persona-builder.md",
+    "tags": [
+      "seo-persona-builder",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
+  },
+  {
+    "id": "1.24",
+    "slug": "seo-question-miner",
+    "name": "seo-question-miner",
+    "summary": "SEO 流程第二棒：根據人物誌，發想目標讀者「在購買前真正會問的問題」，並從問題反推種子關鍵字。對應 v2 流程圖「發想常見問題 + 訪談回答常見問題並列出關鍵字」。當使用者交出 persona 交棒包、說「發想常見問題」、「挖種子關鍵字」時觸發。只發想問題與種子字，不做難度分析、不寫文章。",
+    "category": "brand-marketing",
+    "project": "seo-question-miner",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/seo-question-miner/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.24.md -o ~/.claude/skills/seo-question-miner.md",
+    "tags": [
+      "seo-question-miner",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-05-29",
+    "first_seen": "2026-05-29"
   },
   {
     "id": "2.19",
@@ -326,7 +546,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -347,7 +567,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -369,7 +589,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -390,7 +610,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -411,7 +631,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -432,7 +652,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -453,7 +673,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -474,7 +694,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -496,7 +716,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -518,7 +738,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -540,7 +760,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -561,7 +781,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -582,7 +802,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -603,7 +823,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -625,7 +845,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -647,7 +867,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-18"
   },
   {
@@ -669,7 +889,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -690,7 +910,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -712,7 +932,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -733,7 +953,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -754,7 +974,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -775,7 +995,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -797,7 +1017,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -819,7 +1039,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-27"
   },
   {
@@ -841,7 +1061,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -863,7 +1083,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -885,7 +1105,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -906,7 +1126,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -927,7 +1147,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -948,7 +1168,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -969,7 +1189,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -990,7 +1210,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-09"
   },
   {
@@ -1012,7 +1232,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1034,7 +1254,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
@@ -1061,7 +1281,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1083,7 +1303,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1105,7 +1325,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1127,7 +1347,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12"
   },
   {
@@ -1148,7 +1368,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12"
   },
   {
@@ -1169,7 +1389,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12"
   },
   {
@@ -1190,7 +1410,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12"
   },
   {
@@ -1211,7 +1431,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-12"
   },
   {
@@ -1233,12 +1453,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34472,
-    "github_forks": 2170,
+    "github_stars": 34702,
+    "github_forks": 2187,
     "first_seen": "2026-05-12"
   },
   {
@@ -1260,12 +1480,12 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 170161,
-    "github_forks": 28441,
+    "github_stars": 172727,
+    "github_forks": 29089,
     "first_seen": "2026-05-20"
   },
   {
@@ -1287,7 +1507,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-24"
   },
   {
@@ -1309,7 +1529,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1331,12 +1551,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 20339,
-    "github_forks": 1634,
+    "github_stars": 20612,
+    "github_forks": 1649,
     "first_seen": "2026-05-25"
   },
   {
@@ -1358,7 +1578,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1380,7 +1600,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1401,7 +1621,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1422,7 +1642,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1443,7 +1663,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   },
   {
@@ -1464,7 +1684,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-05-27",
+    "updated_at": "2026-05-29",
     "first_seen": "2026-05-25"
   }
 ]
