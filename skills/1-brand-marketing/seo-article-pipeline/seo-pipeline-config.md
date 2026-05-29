@@ -29,7 +29,7 @@ Resolve `<your-seo-kb-folder-id>` in every SEO skill to `seo_kb_folder_id`.
 
 | File | ID | Purpose |
 |---|---|---|
-| 00 Brand Context (SEO source of truth) | 1B3R7FLUqy4wMA2pjq4qchclyLPrpyXNM12_iCP4aM9c | Brand-level fuel for persona + brief (seeded from V-M-S v2) |
+| 00 Brand Context (SEO source of truth) | 1XF5VbcDtAcktE8wptTF7ejqPi21DFbtEMm3bHsF9ssE | Brand-level fuel for persona + brief. v2 — aligned to the authoritative Zynkr Brand Guide (decision-first voice, words-to-reduce list). |
 | TEMPLATE — Brand-level Context Packet | 1sumEZUBE2V6c2pSl67Dh2b8Kj_5t5W-LuXQJ_C92pj0 | FE intake, fill once |
 | TEMPLATE — Article-level Context Packet | 1TX-mpHDMAkXzXbtcCJ6wtB403as_ZEyUN4_fR6llZ2w | FE intake, per article |
 
