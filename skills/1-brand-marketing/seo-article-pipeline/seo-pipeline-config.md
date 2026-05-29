@@ -69,13 +69,24 @@ rubrics_folder_url: https://drive.google.com/drive/folders/1YUUrX0e5JDKy6C0QcWeW
 
 ---
 
+### SEO-KB subfolders
+
+```
+rubrics_folder_id:        1YUUrX0e5JDKy6C0QcWeWD9NfKQpKqXWW   # 01 Rubrics & Templates
+seed_knowledge_folder_id: 1K-pSQtVR7ezWADIH2_tSCqpOcY-btAkK   # 02 Seed Knowledge
+```
+
+Other KB files: `03 AEO Prompt Panel & Metrics (measurement)` = `1qx9_tXF2Zp8zLGkB4qYQB9k8-vCKapNsEfMqiGlwFoM` (Phase-5 measurement template, run monthly — manual).
+
 ### Per-article working subfolders
 
 `seo-article-pipeline` creates one subfolder per article (named by working title) under `seo_kb_folder_id`. Each holds the durable green artifacts: 人物誌 · 關鍵字地圖 · 主題清單 · Brief · 大綱 · FAQ · 初稿 · 上架包.
 
 ### Seed knowledge (self-heal source)
 
-Livestream-derived insights/angles land here via `process-livestream` (`qa-knowledge-base` + `content-idea-curator`), human-gated. `seo-brief-writer` and `seo-persona-builder` read it for first-hand material.
+Lives in the `02 Seed Knowledge` subfolder (`seed_knowledge_folder_id`). `seo-angle-finder`, `seo-brief-writer`, `seo-persona-builder` `search_drive_files` here for first-hand angles/evidence.
+
+**Living-KB self-heal bridge — MANUAL (not yet automated):** after running a livestream through `process-livestream`, copy its `content-idea-curator` ideas + accepted `qa-knowledge-base` entries into `02 Seed Knowledge` (one doc per stream, named `seed_<date>_<topic>`). Keep entries decision-first (angle = a decision/trade-off, not a feature). Until a sync step is built, this deposit is done by hand so the SEO skills see fresh seed knowledge. Future automation: extend `process-livestream` to write an SEO-seed doc straight into `seed_knowledge_folder_id`.
 
 ---
 
