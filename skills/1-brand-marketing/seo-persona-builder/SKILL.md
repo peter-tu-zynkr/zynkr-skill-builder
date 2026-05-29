@@ -1,0 +1,74 @@
+---
+name: seo-persona-builder
+description: "SEO 內容流程的第一棒：讀取品牌資料（從 SEO 知識庫資料夾或品牌資料包），打造目標讀者／潛在客戶的人物誌與消費者輪廓，作為後續關鍵字與選題的依據。當使用者說「幫我建立 SEO 人物誌」、「先做受眾輪廓」、「開始 SEO 流程」、或交出品牌資料包時觸發。只做人物誌，不做關鍵字、不寫文章。"
+category: brand-marketing
+project: seo-persona-builder
+platform: claude
+status: WIP
+author: Peter Tu
+input: "品牌資料（品牌文化、網站內容、產業背景、產品項目、熱門商品）— 來自 SEO 知識庫 Drive 資料夾或品牌資料包"
+process: "讀品牌資料 → 依 persona-rubric 萃取 1–3 個潛在客戶人物誌（含痛點、決策角色、購買旅程）→ 經人工審核同意 → 輸出交棒包"
+output: "1–3 份消費者人物誌 + 交棒包，交給 seo-question-miner 發想常見問題"
+synergy: ["seo-question-miner"]
+---
+
+# SEO Persona Builder
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill seo-persona-builder
+```
+
+這是 Zynkr SEO 內容流程的第一棒，對應 v2 流程圖的「定位 — 打造潛在消費者人物誌」節點。它讀取品牌資料，產出鎖定 B2B 決策者（HR／L&D／營運／轉型主管）為主、專業工作者為輔的人物誌，讓後面的關鍵字研究與選題都有明確對象。它只負責人物誌，產出後即交棒，不自行往下做。
+
+---
+
+## Resources you'll use
+
+> **知識來源**：本 skill 用到的 rubric/範本優先從 SEO Knowledge Base 的「01 Rubrics & Templates」(Drive，google-workspace MCP，依名稱 search) 讀取；取不到時 fallback 本地 `./references/`。對照表見 `seo-article-pipeline/seo-pipeline-config.md`。
+
+- **SEO 知識庫資料夾 ID**：`<your-seo-kb-folder-id>`（品牌資料、種子知識、每篇文章工作檔都在這）
+- **Google 帳號**：`<your-google-workspace-account>`
+- **MCP server**：`google-workspace`（Drive 讀取）
+- **評估標準**：`./references/persona-rubric.md`
+
+---
+
+## Step 1 — 取得品牌資料
+
+優先順序：
+1. 若使用者已附上「品牌資料包」，直接使用。
+2. 否則用 `search_drive_files` 在 `<your-seo-kb-folder-id>` 搜尋品牌資料文件（品牌文化／網站內容／產業背景／產品項目／熱門商品），再用 `get_drive_file_content` 讀取。
+3. 兩者皆無，向使用者要一份品牌資料包（見 `seo-article-pipeline` 的品牌資料包範本），**先問再做**。
+
+## Step 2 — 萃取人物誌
+
+依 `./references/persona-rubric.md` 的欄位，產出 1–3 個潛在客戶人物誌。每個人物誌必含：角色與職稱、所屬組織情境、核心痛點（對照知識／認知／執行三鴻溝）、目前如何解決、購買旅程階段、會用什麼字搜尋。**每輪只做一件事，選項一律編號。**
+
+## Step 3 — 人工審核同意（HITL）
+
+把人物誌列給使用者，問：「這些人物誌是否正確？需要增刪或調整哪一個？（請輸入編號）」。對應流程圖的「使用者審核以及同意」閘門——**未確認前不交棒**。
+
+## Step 4 — 輸出交棒包並存檔
+
+確認後：
+- 將人物誌存入 `<your-seo-kb-folder-id>` 的本篇工作子資料夾（durable 紀錄）。
+- 輸出交棒包：
+
+```
+✅ 人物誌已確認
+
+SEO_PACKET ▸ Persona
+- 目標人物誌：<逐一列出，含痛點與搜尋語言>
+- 主要鎖定：<B2B 決策者 / 專業工作者>
+- 三鴻溝定位：<知識 / 認知 / 執行>
+
+人物誌已確認，可交棒給 seo-question-miner 發想常見問題與種子關鍵字。
+```
+
+## Outputs
+
+1–3 份消費者人物誌（存於 Drive 工作子資料夾）+ `SEO_PACKET ▸ Persona` 交棒區塊。
+
+## Limitations
+
+不做關鍵字研究、不寫文章。品牌資料不足時只問一個最關鍵的補充問題，不憑空編造品牌事實。

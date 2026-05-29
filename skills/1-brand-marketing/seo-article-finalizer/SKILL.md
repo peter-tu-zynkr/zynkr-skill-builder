@@ -1,0 +1,72 @@
+---
+name: seo-article-finalizer
+description: "SEO 流程最後一棒：替已校稿的文章加上內部/反向連結、meta description 與結構化資料（schema），產出可上架版本。對應 v2 流程圖節點 (11) 的「列出哪個段落可以上連結 + 上 meta description」與「文章設定」。當使用者交出已校稿文章、說「做 SEO 設定」、「上 meta」、「準備上架」時觸發。只做上架前設定，不重寫內容。"
+category: brand-marketing
+project: seo-article-finalizer
+platform: claude
+status: WIP
+author: Peter Tu
+input: "已經過 article-editor（含 SEO 審核準則）校稿的文章 + 該篇 SEO_PACKET ▸ Brief"
+process: "依 internal-link-rules 標出可上內部/反向連結的段落 → 依 meta-schema-rules 寫 meta description 與 FAQ/Article schema → 人工確認 → 產出上架包"
+output: "上架包：內/外連結建議 + meta description + schema markup + 上架檢查表"
+synergy: []
+---
+
+# SEO Article Finalizer
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill seo-article-finalizer
+```
+
+SEO 流程最後一棒，對應流程圖「文章設定：反向連結及 meta description」。文章內容此時已寫好、校稿完（含 SEO/AEO 審核），這個 skill 只負責上架前的技術設定：連結、meta、schema。它**不重寫內容**。
+
+---
+
+## Resources you'll use
+
+> **知識來源**：本 skill 用到的 rubric/範本優先從 SEO Knowledge Base 的「01 Rubrics & Templates」(Drive，google-workspace MCP，依名稱 search) 讀取；取不到時 fallback 本地 `./references/`。對照表見 `seo-article-pipeline/seo-pipeline-config.md`。
+
+- **連結規則**：`./references/internal-link-rules.md`
+- **meta / schema 規則**：`./references/meta-schema-rules.md`
+- **SEO 知識庫資料夾 ID**：`<your-seo-kb-folder-id>`（看支柱頁 / 既有文章做內部連結）
+
+## Step 1 — 接收文章與 Brief
+
+讀取已校稿文章 + `SEO_PACKET ▸ Brief`（拿目標關鍵字、CTA、內部連結對象）。
+
+## Step 2 — 連結建議
+
+依 `./references/internal-link-rules.md`：
+- 標出可上**內部連結**的段落（支柱頁、相關文章、/consult B2B 頁）。
+- 標出適合放**反向連結 / 外部引用**的段落（第三方權威、digital PR）。對應「列出哪個段落可以上連結」。
+
+## Step 3 — meta description + schema
+
+依 `./references/meta-schema-rules.md`：
+- 寫 meta description（含主關鍵字、誘因、長度合規）。對應「上 meta description」。
+- 產出 FAQ schema（用大綱階段的 FAQ）+ Article schema。
+
+## Step 4 — 人工確認（HITL）
+
+把上架包列給使用者確認，對應後續「上文章」人工步驟。
+
+## Step 5 — 輸出上架包並存檔
+
+```
+SEO_PACKET ▸ Finalize
+- 內部連結：<段落 → 目標頁（錨文字）>
+- 反向/外部連結：<段落 → 來源型態>
+- meta description：<...>
+- schema：FAQ + Article（附 JSON-LD）
+- 上架檢查表：見 meta-schema-rules
+
+文章已完成 SEO 設定，可上架。EN 旗艦版可交 zh-tw-translator。
+```
+
+## Outputs
+
+上架包（連結建議 + meta + schema + 上架檢查表）。
+
+## Limitations
+
+不重寫內容、不評分（那是 article-editor）。實際發佈到網站由人工 / CMS 完成。

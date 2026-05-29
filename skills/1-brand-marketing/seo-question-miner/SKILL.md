@@ -1,0 +1,68 @@
+---
+name: seo-question-miner
+description: "SEO 流程第二棒：根據人物誌，發想目標讀者「在購買前真正會問的問題」，並從問題反推種子關鍵字。對應 v2 流程圖「發想常見問題 + 訪談回答常見問題並列出關鍵字」。當使用者交出 persona 交棒包、說「發想常見問題」、「挖種子關鍵字」時觸發。只發想問題與種子字，不做難度分析、不寫文章。"
+category: brand-marketing
+project: seo-question-miner
+platform: claude
+status: WIP
+author: Peter Tu
+input: "seo-persona-builder 的 SEO_PACKET ▸ Persona 交棒包"
+process: "依 question-frames 從每個人物誌的痛點展開購買前問題（問題／比較／使用情境）→ 從問題反推種子關鍵字 → 人工審核 → 交棒"
+output: "分階段（TOFU/MOFU/BOFU）的買家問題清單 + 種子關鍵字，交給 seo-angle-finder"
+synergy: ["seo-angle-finder"]
+---
+
+# SEO Question Miner
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill seo-question-miner
+```
+
+SEO 流程的第二棒。Neil Patel 的核心觀點：最好的關鍵字機會藏在「客戶購買前真正會問的問題」裡，而不是搜尋量表格。這個 skill 把人物誌的痛點展開成真實問句，再反推成種子關鍵字，餵給後面的關鍵字研究。
+
+---
+
+## Resources you'll use
+
+> **知識來源**：本 skill 用到的 rubric/範本優先從 SEO Knowledge Base 的「01 Rubrics & Templates」(Drive，google-workspace MCP，依名稱 search) 讀取；取不到時 fallback 本地 `./references/`。對照表見 `seo-article-pipeline/seo-pipeline-config.md`。
+
+- **問題展開框架**：`./references/question-frames.md`
+- **SEO 知識庫資料夾 ID**：`<your-seo-kb-folder-id>`（可選讀：Line 社群提問、support 信箱、種子知識）
+- **MCP server**：`google-workspace`
+
+## Step 1 — 接收人物誌
+
+讀取上一棒的 `SEO_PACKET ▸ Persona`。若使用者未提供，請先要求或先跑 `seo-persona-builder`，**不提前展開**。
+
+## Step 2 — 展開購買前問題
+
+針對每個人物誌，用 `./references/question-frames.md` 的四類框架（問題型、比較型、情境型、決策型）各展開數題，並標上漏斗階段 TOFU / MOFU / BOFU。可選：用 `search_drive_files` 在知識庫撈 Line 社群、support 真實提問補充。
+
+## Step 3 — 反推種子關鍵字
+
+每個問題對應 1–3 個口語化種子關鍵字（這是給下一棒丟進 Ubersuggest / AnswerThePublic 的起點，不是最終關鍵字）。
+
+## Step 4 — 人工審核（HITL）
+
+列出問題＋種子字，問使用者要保留／刪除哪些（編號）。對應流程圖「常見問題使用者審核以及同意」。
+
+## Step 5 — 交棒並存檔
+
+存入本篇工作子資料夾，輸出：
+
+```
+SEO_PACKET ▸ Questions
+- TOFU 問題：<...> ｜種子字：<...>
+- MOFU 問題：<...> ｜種子字：<...>
+- BOFU 問題：<...> ｜種子字：<...>
+
+問題與種子關鍵字已確認，可交棒給 seo-angle-finder。
+```
+
+## Outputs
+
+分階段買家問題清單 + 種子關鍵字（`SEO_PACKET ▸ Questions`）。
+
+## Limitations
+
+不做搜尋量／難度分析（那是 seo-keyword-mapper / seo-demand-validator）。不寫文章。
