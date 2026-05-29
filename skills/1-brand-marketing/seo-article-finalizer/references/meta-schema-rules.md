@@ -25,6 +25,7 @@
 - [ ] meta description 合規、含關鍵字
 - [ ] title 不以句號結尾、含關鍵字
 - [ ] 真實作者署名（E-E-A-T）
-- [ ] 圖片 alt、第一手截圖（proof-over-promise）
+- [ ] 圖片 alt、第一手截圖（show the thinking — 佐證判斷，非炫耀）
+- [ ] 品牌聲音：無 Words to reduce（賦能/生產力工具/無縫/AI-powered…）；收尾收在明確方向（Commit）
 - [ ] 旗艦：標記需 EN 版（交 zh-tw-translator）
 - [ ] 已存入 Drive 本篇工作子資料夾（durable 紀錄）

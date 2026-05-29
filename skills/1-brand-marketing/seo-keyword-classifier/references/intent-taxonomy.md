@@ -13,17 +13,17 @@
 
 ## 三種可提供的分群版本
 
-1. **純意圖版**：四意圖各一群。簡單，看得出漏斗缺口。
-2. **意圖 × 漏斗矩陣版**：意圖再切 TOFU/MOFU/BOFU，補洞用。
-3. **意圖 × 五大支柱版**：對映策略文件的五個內容支柱（流程改造／打造 Agent／AI 素養／Vibe Coding／變革管理），直接接選題。
+1. 純意圖版：四意圖各一群。
+2. 意圖 × 漏斗矩陣版：意圖再切 TOFU/MOFU/BOFU，補洞用。
+3. 意圖 × 五大支柱版：對映 decision-first 五支柱，直接接選題。
 
-## 對映五大內容支柱（B2B 優先）
+## 五大內容支柱（decision-first；B2B 優先）
 
-- 流程改造與 Agent 化（B2B 核心）
-- 打造 AI Agent（builder 可信度）
-- AI 素養與新工作方式（TOFU thought leadership）
-- Vibe Coding / 用 AI 蓋產品（practitioner，AEO 強）
-- AI 導入的組織與變革管理（B2B BOFU 決策）
+1. **AI 決策思維**：在不確定中做更好的判斷（TOFU thought leadership；品牌核心）
+2. **流程即決策**：用 AI 重構工作流程的判斷點（B2B 核心 / authority）
+3. **打造會思考的 AI 夥伴**：Agent 先問對問題再給答案（builder 可信度）
+4. **AI 導入的關鍵抉擇**：該自動化什麼、何時、為何（B2B BOFU / 決策）
+5. **用 AI 蓋產品**：每一步都是一個決策（practitioner，AEO 強）
 
 ## 品質檢查
 

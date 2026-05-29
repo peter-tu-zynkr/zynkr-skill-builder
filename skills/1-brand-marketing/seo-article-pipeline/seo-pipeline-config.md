@@ -79,6 +79,21 @@ Livestream-derived insights/angles land here via `process-livestream` (`qa-knowl
 
 ---
 
+## Brand voice (Brand Guide — authoritative)
+
+Zynkr is a **decision-first AI consulting counterpart**, not "AI enablement / productivity." Every article must: lead with a decision, name the real trade-off, commit to a direction; make at least one Zynkr Method move visible (Frame · Clarify · Constrain · Compare · Commit). First-hand experience is evidence for judgment, not the selling point.
+- **Words to own:** 決策 · 取捨/trade-off · 判斷 · 方向 · 脈絡 · 顧問夥伴 · 框架 · 清晰.
+- **Words to reduce (never in copy):** 賦能/empower · unleash · 生產力工具/productivity tool · AI-powered · seamless/無縫 · 智慧助理 · 顛覆/redefine · supercharge · cutting-edge · game-changing.
+- Governance: every article answers YES to all 4 (decision not feature · only-Zynkr-could-say-this · asking/framing/committing not selling · Method shows through).
+
+## Content pillars (decision-first; B2B-priority)
+
+1. **AI 決策思維** — 在不確定中做更好的判斷（TOFU thought leadership；品牌核心）
+2. **流程即決策** — 用 AI 重構工作流程的判斷點（B2B core / authority）
+3. **打造會思考的 AI 夥伴** — Agent 先問對問題再給答案（builder credibility）
+4. **AI 導入的關鍵抉擇** — 該自動化什麼、何時、為何（B2B BOFU / decision）
+5. **用 AI 蓋產品** — 每一步都是一個決策（practitioner，AEO-strong）
+
 ## Conventions
 
 - zh-TW headings/taglines do not end with 句號 (。); series separator is ·.
