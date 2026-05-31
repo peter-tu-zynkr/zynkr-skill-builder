@@ -22,7 +22,7 @@
       "1.01"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/newsletter-to-notion.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/newsletter-to-notion/SKILL.md"
@@ -84,7 +84,7 @@
       "1.10"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/writing-agent.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/CLAUDE.md"
@@ -120,7 +120,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md"
@@ -156,7 +156,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md"
@@ -191,7 +191,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-drafter.md"
@@ -227,7 +227,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-editor.md"
@@ -263,7 +263,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md"
@@ -299,7 +299,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md"
@@ -335,7 +335,7 @@
       "1.09",
       "1.10"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/writing-agent/.claude/agents/cta-writer.md"
@@ -364,7 +364,7 @@
       "1.11"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.11.md -o ~/.claude/skills/article-fission.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/article-fission/SKILL.md"
@@ -393,7 +393,7 @@
       "1.12"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.12.md -o ~/.claude/skills/ai-literacy-article-writer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/ai-literacy-article-writer/SKILL.md"
@@ -422,7 +422,7 @@
       "1.13"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.13.md -o ~/.claude/skills/ai-literacy-topic-selector.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/ai-literacy-topic-selector/SKILL.md"
@@ -451,7 +451,7 @@
       "1.14"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.14.md -o ~/.claude/skills/zh-tw-translator.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/zh-tw-translator/SKILL.md"
@@ -479,7 +479,7 @@
       "1.15"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.15.md -o ~/.claude/skills/seo-angle-finder.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-angle-finder/SKILL.md"
@@ -507,7 +507,7 @@
       "1.16"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.16.md -o ~/.claude/skills/seo-article-finalizer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-article-finalizer/SKILL.md"
@@ -535,7 +535,7 @@
       "1.17"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.17.md -o ~/.claude/skills/seo-article-pipeline.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-article-pipeline/SKILL.md"
@@ -563,7 +563,7 @@
       "1.18"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.18.md -o ~/.claude/skills/seo-brief-writer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-brief-writer/SKILL.md"
@@ -591,7 +591,7 @@
       "1.19"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.19.md -o ~/.claude/skills/seo-demand-validator.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-demand-validator/SKILL.md"
@@ -619,7 +619,7 @@
       "1.20"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.20.md -o ~/.claude/skills/seo-keyword-classifier.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-keyword-classifier/SKILL.md"
@@ -647,7 +647,7 @@
       "1.21"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.21.md -o ~/.claude/skills/seo-keyword-mapper.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-keyword-mapper/SKILL.md"
@@ -675,7 +675,7 @@
       "1.22"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.22.md -o ~/.claude/skills/seo-outline-designer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-outline-designer/SKILL.md"
@@ -703,7 +703,7 @@
       "1.23"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.23.md -o ~/.claude/skills/seo-persona-builder.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-persona-builder/SKILL.md"
@@ -731,7 +731,7 @@
       "1.24"
     ],
     "installCommand": "curl -sL zynkr.ai/s/1.24.md -o ~/.claude/skills/seo-question-miner.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-29",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/seo-question-miner/SKILL.md"
@@ -760,7 +760,7 @@
       "2.20"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.19.md -o ~/.claude/skills/biz-card.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/biz-card/SKILL.md"
@@ -781,7 +781,7 @@
       "2.19",
       "2.20"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/biz-card/agents/followup-email-writer.md"
@@ -814,7 +814,7 @@
       "2.26"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.21.md -o ~/.claude/skills/cv-customizer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/SKILL.md"
@@ -840,7 +840,7 @@
       "2.25",
       "2.26"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase1-job-decoder.md"
@@ -866,7 +866,7 @@
       "2.25",
       "2.26"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase2-story-extractor.md"
@@ -892,7 +892,7 @@
       "2.25",
       "2.26"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase3-fit-scorer.md"
@@ -918,7 +918,7 @@
       "2.25",
       "2.26"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase4-progression.md"
@@ -944,7 +944,7 @@
       "2.25",
       "2.26"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase5-rewriter.md"
@@ -972,7 +972,7 @@
       "2.27"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.27.md -o ~/.claude/skills/inbound-sales-project-init.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/inbound-sales-project-init/SKILL.md"
@@ -1002,7 +1002,7 @@
       "2.32"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.28.md -o ~/.claude/skills/interview-question-predictor.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/interview-question-predictor/SKILL.md"
@@ -1032,7 +1032,7 @@
       "2.31"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.29.md -o ~/.claude/skills/consulting-discovery.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/consulting-discovery/SKILL.md"
@@ -1062,7 +1062,7 @@
       "2.30",
       "2.31"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/consulting-discovery/agents/company-vision-discovery.md"
@@ -1092,7 +1092,7 @@
       "2.30",
       "2.31"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/consulting-discovery/agents/pain-point-discovery.md"
@@ -1121,7 +1121,7 @@
       "2.28",
       "2.32"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/interview-question-predictor/agents/mock-interview.md"
@@ -1149,7 +1149,7 @@
       "2.33"
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.33.md -o ~/.claude/skills/bd-sourcing.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/bd-sourcing/SKILL.md"
@@ -1178,7 +1178,7 @@
       "3.03"
     ],
     "installCommand": "curl -sL zynkr.ai/s/3.01.md -o ~/.claude/skills/meeting-prep.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-18",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/meeting-prep/SKILL.md"
@@ -1206,7 +1206,7 @@
       "3.02"
     ],
     "installCommand": "curl -sL zynkr.ai/s/3.02.md -o ~/.claude/skills/support-reply-drafter.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/support-reply-drafter/SKILL.md"
@@ -1235,7 +1235,7 @@
       "3.01",
       "3.03"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/meeting-prep/agents/meeting-notes-organizer.md"
@@ -1266,7 +1266,7 @@
       "3.07"
     ],
     "installCommand": "curl -sL zynkr.ai/s/3.04.md -o ~/.claude/skills/operations-transformation.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/operations-transformation/SKILL.md"
@@ -1297,7 +1297,7 @@
       "3.06",
       "3.07"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/operations-transformation/agents/digital-transformation-assessor.md"
@@ -1328,7 +1328,7 @@
       "3.06",
       "3.07"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/operations-transformation/agents/process-discovery.md"
@@ -1359,7 +1359,7 @@
       "3.06",
       "3.07"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/operations-transformation/agents/process-redesigner.md"
@@ -1388,7 +1388,7 @@
       "3.08"
     ],
     "installCommand": "curl -sL zynkr.ai/s/3.08.md -o ~/.claude/skills/project-charter-facilitator.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/project-charter-facilitator/SKILL.md"
@@ -1416,7 +1416,7 @@
       "3.09"
     ],
     "installCommand": "curl -sL zynkr.ai/s/3.09.md -o ~/.claude/skills/drift-check.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-27",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/drift-check/SKILL.md"
@@ -1444,7 +1444,7 @@
       "4.01"
     ],
     "installCommand": "curl -sL zynkr.ai/s/4.01.md -o ~/.claude/skills/polish-lecture-transcript.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/polish-lecture-transcript/SKILL.md"
@@ -1477,7 +1477,7 @@
       "4.08"
     ],
     "installCommand": "curl -sL zynkr.ai/s/4.02.md -o ~/.claude/skills/process-livestream.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/SKILL.md"
@@ -1505,7 +1505,7 @@
       "4.03"
     ],
     "installCommand": "curl -sL zynkr.ai/s/4.03.md -o ~/.claude/skills/srt-optimizer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/srt-optimizer/SKILL.md"
@@ -1529,7 +1529,7 @@
       "4.07",
       "4.08"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/admin.md"
@@ -1553,7 +1553,7 @@
       "4.07",
       "4.08"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/content-idea-curator.md"
@@ -1577,7 +1577,7 @@
       "4.07",
       "4.08"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/course-outline-enhancer.md"
@@ -1601,7 +1601,7 @@
       "4.07",
       "4.08"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/event-recap.md"
@@ -1625,7 +1625,7 @@
       "4.07",
       "4.08"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/process-livestream/agents/qa-knowledge-base.md"
@@ -1654,7 +1654,7 @@
       "4.09"
     ],
     "installCommand": "curl -sL zynkr.ai/s/4.09.md -o ~/.claude/skills/lecture-recap-writer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/lecture-recap-writer/SKILL.md"
@@ -1682,7 +1682,7 @@
       "5.01"
     ],
     "installCommand": "curl -sL zynkr.ai/s/5.01.md -o ~/.claude/skills/product-planning.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-20",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "5-product/product-planning/SKILL.md",
@@ -1716,7 +1716,7 @@
       "5.02"
     ],
     "installCommand": "curl -sL zynkr.ai/s/5.02.md -o ~/.claude/skills/prompt-engineer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "5-product/prompt-engineer/SKILL.md"
@@ -1745,7 +1745,7 @@
       "5.03"
     ],
     "installCommand": "curl -sL zynkr.ai/s/5.03.md -o ~/.claude/skills/skill-finder.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "5-product/skill-finder/SKILL.md"
@@ -1773,7 +1773,7 @@
       "5.04"
     ],
     "installCommand": "curl -sL zynkr.ai/s/5.04.md -o ~/.claude/skills/lucid-specialist.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "5-product/lucid-specialist/SKILL.md"
@@ -1803,7 +1803,7 @@
       "6.11"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.07.md -o ~/.claude/skills/skill-sourcer.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/SKILL.md",
@@ -1832,7 +1832,7 @@
       "6.10",
       "6.11"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/classifier.md",
@@ -1861,7 +1861,7 @@
       "6.10",
       "6.11"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/deduplicator.md",
@@ -1890,7 +1890,7 @@
       "6.10",
       "6.11"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/extractor.md",
@@ -1919,7 +1919,7 @@
       "6.10",
       "6.11"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-sourcer/agents/proposer.md",
@@ -1950,7 +1950,7 @@
       "6.12"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/agent-browser.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-12",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/vercel-labs-agent-browser/SKILL.md",
@@ -1962,8 +1962,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 34704,
-    "githubForks": 2187
+    "githubStars": 34841,
+    "githubForks": 2194
   },
   {
     "id": "6.13",
@@ -1988,7 +1988,7 @@
       "6.13"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.13.md -o ~/.claude/skills/hermes-agent.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-20",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/hermes-agent/SKILL.md",
@@ -2000,8 +2000,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 172742,
-    "githubForks": 29100
+    "githubStars": 174560,
+    "githubForks": 29654
   },
   {
     "id": "6.14",
@@ -2024,7 +2024,7 @@
       "6.14"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.14.md -o ~/.claude/skills/skill-triager.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-24",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-triager/SKILL.md"
@@ -2050,7 +2050,7 @@
       "6.15"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.15.md -o ~/.claude/skills/skill-publish.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/skill-publish/SKILL.md",
@@ -2083,15 +2083,15 @@
       "6.16"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.16.md -o ~/.claude/skills/find-skills.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/find-skills/SKILL.md",
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 20614,
-    "githubForks": 1649
+    "githubStars": 20805,
+    "githubForks": 1668
   },
   {
     "id": "6.17",
@@ -2116,7 +2116,7 @@
       "6.17"
     ],
     "installCommand": "curl -sL zynkr.ai/s/6.17.md -o ~/.claude/skills/zynkr.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/zynkr/SKILL.md"
@@ -2148,7 +2148,7 @@
       "7.05"
     ],
     "installCommand": "curl -sL zynkr.ai/s/7.01.md -o ~/.claude/skills/recruiting-pipeline.md",
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/recruiting-pipeline/SKILL.md"
@@ -2180,7 +2180,7 @@
       "7.04",
       "7.05"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/recruiting-pipeline/agents/interview-calibrator.md"
@@ -2212,7 +2212,7 @@
       "7.04",
       "7.05"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/recruiting-pipeline/agents/interview-question-designer.md"
@@ -2244,7 +2244,7 @@
       "7.04",
       "7.05"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/recruiting-pipeline/agents/jd-architect.md"
@@ -2276,7 +2276,7 @@
       "7.04",
       "7.05"
     ],
-    "updatedAt": "2026-05-29",
+    "updatedAt": "2026-05-31",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/recruiting-pipeline/agents/resume-screener.md"
