@@ -1,14 +1,14 @@
 ---
 name: biz-card
-description: "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting."
+description: "Business card pipeline — OCR extraction, schema normalization, Google Sheet logging, Supabase CRM contact creation, company research, and personalized follow-up email drafting."
 category: sales-consultant
 project: biz-card
 platform: claude
 status: Done
 author: Peter Tu
 input: "Business card image(s) — single or batch"
-process: "OCR via Claude Vision → schema normalization → user review → Google Sheet append → company research → follow-up email draft → Gmail save"
-output: "CRM row in Google Sheet + personalized follow-up email saved to Gmail Drafts"
+process: "OCR via Claude Vision → schema normalization → user review → Google Sheet append → Supabase CRM contact → company research → follow-up email draft → Gmail save"
+output: "Row in Google Sheet + contact in the Supabase CRM (contacts page) + personalized follow-up email saved to Gmail Drafts"
 synergy: []
 ---
 
@@ -35,6 +35,8 @@ Store:
 - `SHEET_TAB` — sheet tab name (default: `Contacts`)
 - `EMAIL_SIGNATURE` — signature block from config
 - `SCHEMA_FIELDS` — the 12-field list: name, title, company, email, phone, mobile, website, address, linkedin, industry, notes, card_date
+- `CRM_PROJECT_ID` — Supabase project id from config (the Zynkr CRM)
+- `CONTACT_SQL` — the contents of `./references/contact-insert.sql` (read it now; you'll fill its placeholders per contact in Step 4.5)
 
 **If `SHEET_ID` is `TBD`:**
 ```
@@ -196,6 +198,74 @@ Display confirmation:
 
 ---
 
+## Step 4.5 — CRM Contact Write (Supabase)
+
+Display:
+```
+---------------------------------------------
+Adding to Zynkr CRM (contacts)...
+---------------------------------------------
+```
+
+This mirrors the Sheet write but lands each card in the **Supabase CRM** so it
+shows up on the live contacts page (`https://zynkr-crm.vercel.app/contacts`),
+where the sales team works the funnel. The Sheet stays as the full-fidelity
+record; the CRM holds the working "client name list". Both writes happen — this
+is a dual-write, not a replacement.
+
+The CRM `crm_contacts` table is narrower than the 12-field card: it only stores
+**name (split into 姓/名), title, email, phone, and company**. The other card
+fields (mobile, website, address, linkedin, industry, notes, card_date) have no
+column there and simply stay in the Google Sheet — that's expected, not a loss.
+
+Run this **autonomously** for every confirmed contact (no extra approval gate —
+they already signed off in Step 3). For each contact in `CONTACTS[]`:
+
+**1. Clean the values.** Translate the `—` sentinel (and any blank) to an empty
+string for every field before using it. The CRM should never store a literal `—`.
+
+**2. Use the name as printed.** The contacts page renders a contact as
+`last_name + first_name`, so to show the name exactly as it appears on the card,
+put the **whole** name in `{{FULL_NAME}}` (it maps to `last_name`) and leave
+`first_name` empty — don't split it into 姓/名. If the card prints both a Chinese
+and a romanized name (e.g. `王大明 / David Wang`), use the Chinese name if present,
+otherwise the romanized one — and store it whole (`王大明`, or `David Wang`).
+
+**3. Pick the phone.** `crm_contacts` has one phone column. Use `mobile` if present,
+otherwise `phone` (the office line). The other number remains in the Sheet.
+
+**4. Fill and run the SQL.** Take `CONTACT_SQL` (loaded in Step 0 from
+`./references/contact-insert.sql`) and substitute the placeholders, **doubling any
+single quote** (`O'Brien` → `O''Brien`):
+
+| Placeholder      | Value |
+|------------------|-------|
+| `{{FULL_NAME}}`  | the name as printed (Chinese side if bilingual) |
+| `{{EMAIL}}`      | `email` (empty string if the card had none) |
+| `{{TITLE}}`      | `title` |
+| `{{PHONE}}`      | `mobile` or `phone` per step 3 |
+| `{{COMPANY}}`    | `company` (empty string if blank) |
+
+Run it with `mcp__supabase__execute_sql`, `project_id` = `CRM_PROJECT_ID`. The
+statement find-or-creates the company, then inserts the contact **only if the email
+isn't already in the CRM**, with the baked-in defaults
+(`lifecycle_stage=lead`, `legal_basis=consent`, `lead_status=other`, owner = Peter).
+
+**5. Read the result and report.**
+- One row back (a `contact_id`) → created. Display:
+  ```
+  ✓ [Contact Name] @ [Company] — added to CRM → https://zynkr-crm.vercel.app/contacts/[contact_id]
+  ```
+- Zero rows back → a contact with this email already exists (de-duped). Display:
+  ```
+  ⏭️ [Contact Name] — already in CRM (matched by email), skipped
+  ```
+
+If the insert errors, surface it and continue with the rest of the pipeline — a
+CRM hiccup must not block the Sheet row (already written) or the follow-up email.
+
+---
+
 ## Step 5 — Company Research
 
 Display:
@@ -317,15 +387,18 @@ Display final completion summary:
 Processed: [N] contact(s)
 
 [Contact 1 Name] @ [Company]
-  ✓ CRM row added to Google Sheet
+  ✓ Row added to Google Sheet
+  ✓ Added to CRM (or ⏭️ already existed)
   ✓ Email drafted / sent
 
 [Contact 2 Name] @ [Company]
-  ✓ CRM row added to Google Sheet
+  ✓ Row added to Google Sheet
+  ✓ Added to CRM (or ⏭️ already existed)
   ✓ Email saved to Drafts
   ...
 
 Google Sheet: https://docs.google.com/spreadsheets/d/[SHEET_ID]
+CRM contacts: https://zynkr-crm.vercel.app/contacts
 =============================================
 ```
 
@@ -336,7 +409,7 @@ Google Sheet: https://docs.google.com/spreadsheets/d/[SHEET_ID]
 Show this line at the top of each phase:
 
 ```
-📇 Intake → Extract → Review → Website → Sheet → Research → Email → Done
+📇 Intake → Extract → Review → Website → Sheet → CRM → Research → Email → Done
 ```
 
 Use `▶` for current phase, `✓` for completed, `○` for upcoming.
@@ -347,6 +420,7 @@ Use `▶` for current phase, `✓` for completed, `○` for upcoming.
 
 - If OCR fails to extract a field: mark it `?` and flag it in the review table
 - If Google Sheet write fails: display the error and offer to retry or skip
+- If the CRM insert fails: surface the error and continue — the Sheet row is already saved and the follow-up email shouldn't be blocked by a CRM hiccup. Offer to retry the CRM write at the end.
 - If WebSearch returns no results: note "No recent news found" and proceed to email with overview only
 - If Gmail draft/send fails: display the error; offer to copy email text to clipboard instead
 - Never silently skip a step — always surface errors clearly
