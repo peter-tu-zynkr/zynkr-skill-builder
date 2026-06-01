@@ -531,7 +531,7 @@
     "id": "2.19",
     "slug": "biz-card",
     "name": "biz-card",
-    "summary": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
+    "summary": "Business card pipeline — OCR extraction, schema normalization, Google Sheet logging, Supabase CRM contact creation, company research, and personalized follow-up email drafting.",
     "category": "sales-consultant",
     "project": "biz-card",
     "platform": "claude",
@@ -1479,7 +1479,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 34911,
+    "github_stars": 34936,
     "github_forks": 2198,
     "first_seen": "2026-05-12"
   },
@@ -1506,8 +1506,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 175495,
-    "github_forks": 29886,
+    "github_stars": 175804,
+    "github_forks": 29954,
     "first_seen": "2026-05-20"
   },
   {
@@ -1577,8 +1577,8 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 20898,
-    "github_forks": 1674,
+    "github_stars": 20925,
+    "github_forks": 1677,
     "first_seen": "2026-05-25"
   },
   {

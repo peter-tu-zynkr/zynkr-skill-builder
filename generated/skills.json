@@ -744,10 +744,10 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "7-phase business card pipeline — OCR extraction, schema normalization, Google Sheet CRM logging, company research, and personalized follow-up email drafting.",
+    "description": "Business card pipeline — OCR extraction, schema normalization, Google Sheet logging, Supabase CRM contact creation, company research, and personalized follow-up email drafting.",
     "input": "Business card image(s) — single or batch",
-    "process": "OCR via Claude Vision → schema normalization → user review → Google Sheet append → company research → follow-up email draft → Gmail save",
-    "output": "CRM row in Google Sheet + personalized follow-up email saved to Gmail Drafts",
+    "process": "OCR via Claude Vision → schema normalization → user review → Google Sheet append → Supabase CRM contact → company research → follow-up email draft → Gmail save",
+    "output": "Row in Google Sheet + contact in the Supabase CRM (contacts page) + personalized follow-up email saved to Gmail Drafts",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -1990,7 +1990,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 34911,
+    "githubStars": 34936,
     "githubForks": 2198
   },
   {
@@ -2028,8 +2028,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 175495,
-    "githubForks": 29886
+    "githubStars": 175804,
+    "githubForks": 29954
   },
   {
     "id": "6.14",
@@ -2118,8 +2118,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 20898,
-    "githubForks": 1674
+    "githubStars": 20925,
+    "githubForks": 1677
   },
   {
     "id": "6.17",
