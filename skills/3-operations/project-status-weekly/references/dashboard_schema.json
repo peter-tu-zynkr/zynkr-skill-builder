@@ -1,0 +1,58 @@
+{
+  "_comment": "This is the contract between your reasoning and scripts/render_dashboard_email.py. Produce a JSON file matching this shape, then pass it to the renderer. All text is rendered verbatim (HTML-escaped), so write final, reader-facing zh-TW copy. Omit optional sections by leaving them out or empty.",
+
+  "title": "string — project name as it should appear in the header, e.g. 'Claude Code 課程（課程名稱待定）'",
+  "update_date": "string — the run date, YYYY/MM/DD",
+  "week_range": "string — the current week window shown in THIS WEEK, e.g. '6/1 - 6/7'",
+
+  "health": {
+    "status": "one of: DELAYED | AT_RISK | ON_TRACK",
+    "summary": "one-line zh-TW reason, '・' separated, e.g. 'Stage Gate 1 已逾期（原訂 5/30）・課綱 2.3 尚未定稿・進度受阻'"
+  },
+
+  "weekly_diff": [
+    "OPTIONAL. zh-TW bullet strings describing what changed vs last week's report. Omit entirely on the first run (no prior report found). e.g. '課綱 2.3 由 Not started → WIP，本週進入收尾' "
+  ],
+
+  "blockers": [
+    {"title": "short blocker name", "detail": "why it blocks / impact"}
+  ],
+
+  "this_week": [
+    {"task": "actionable task for this week", "note": "OPTIONAL context / why it matters"}
+  ],
+
+  "current_stage": {
+    "percent": 25,
+    "_percent_help": "NUMBER (unquoted) 0-100, computed via the formula in SKILL.md. Emit a bare number like 25, NOT a string \"25\".",
+    "stage_index": 2,
+    "_stage_index_help": "integer — the leading-edge spine stage (1-based). Must match the 'now' stage's position.",
+    "total_stages": 6,
+    "_total_stages_help": "integer — number of stages on the delivery spine. The 'stages' array below should have exactly this many entries so the header and per-row numbering agree.",
+    "stages": [
+      {"name": "stage display name", "state": "done | now | todo"}
+    ]
+  },
+
+  "next_milestone": {
+    "name": "milestone / stage-gate name",
+    "due": "YYYY/MM/DD",
+    "overdue": "boolean — true if due < today and not yet met",
+    "criteria": "completion criteria, zh-TW. Use ✅ inline for already-met parts."
+  },
+
+  "overview": {
+    "project_name": "string",
+    "goal": "one-line core goal",
+    "owners": "e.g. 'Peggy（PM）& Peter（課程內容）'",
+    "timeline": "e.g. '2026/05/04 ～ 2026/11/30'"
+  },
+
+  "decisions": [
+    {"date": "YYYY/MM/DD", "decision": "what was decided", "reason": "why"}
+  ],
+
+  "timeline": [
+    {"date": "YYYY/MM/DD", "state": "done | overdue | todo | target", "label": "milestone label"}
+  ]
+}
