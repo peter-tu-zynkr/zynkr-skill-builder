@@ -1,0 +1,138 @@
+---
+name: slide-page-splitter
+description: "簡報助理三棒接力的第二棒：把上一棒通過的故事線（SLIDE_PACKET ▸ Storyline）依分頁原則切成一頁一頁的投影片清單，決定每頁對應哪個 beat、放什麼標題、放多少要點、資訊密度多高。當使用者交出 ▸ Storyline 交棒包、說「幫我分頁」、「把故事線切成投影片」、「每頁放什麼」、「規劃投影片頁數」、「slide 分頁設定」時，立刻觸發我。我只負責分頁與每頁內容配置，產出 ▸ Pages 後即交棒；不設計版式與視覺、不算繪 .pptx（那是 slide-visual-selector 和 pptx 技能），也不回頭重寫故事線（那是 slide-storyline-designer）。"
+category: brand-marketing
+project: slide-page-splitter
+platform: claude
+status: Done
+author: Peter Tu
+sheetId: "1.13"
+originalName: "品牌行銷助理 ─ 分頁設定"
+input: "slide-storyline-designer 的 SLIDE_PACKET ▸ Storyline 交棒包（簡報目標、受眾與情境、核心主張 through-line、敘事弧線 beats、邏輯檢查）"
+process: "把每個 beat 依分頁原則展開成一或多頁 → 為每頁定標題（自帶結論）、內容要點、頁面類型、資訊密度 → 控管單頁資訊量上限 → 人工審核保留/刪除/合併 → 交棒"
+output: "有序的分頁清單 SLIDE_PACKET ▸ Pages，交給 slide-visual-selector 選版式與視覺"
+synergy: ["slide-storyline-designer", "slide-visual-selector"]
+---
+
+# Slide Page Splitter
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill slide-page-splitter
+```
+
+這是 Zynkr 簡報助理三棒接力的**第二棒**（legacy 1.13《品牌行銷助理 ─ 分頁設定》）。完整接力鏈：
+
+```
+slide-storyline-designer (1.12)
+        │  SLIDE_PACKET ▸ Storyline
+        ▼
+slide-page-splitter (1.13)   ← 你在這
+        │  SLIDE_PACKET ▸ Pages
+        ▼
+slide-visual-selector (1.14)
+        │  SLIDE_PACKET ▸ Visuals (render-ready)
+        ▼
+pptx 技能  → 算繪成 .pptx
+```
+
+**核心理念：故事線是「線」，投影片是「點」。** 觀眾一頁只能吸收一個重點，所以分頁不是把文字平均灌進格子，而是替每個 beat 決定「要拆成幾頁、每頁聚焦哪一句結論、塞多少資訊才不會爆」。
+
+- **吃**：`SLIDE_PACKET ▸ Storyline`（上一棒 slide-storyline-designer 的產出）。
+- **吐**：`SLIDE_PACKET ▸ Pages`——一份有序、每頁職責明確的投影片骨架，讓下一棒不必再猜內容、只需專心選版式。
+
+我不碰視覺，也不重寫故事（見 ## Limitations）。
+
+---
+
+## Resources you'll use
+
+- **分頁原則卡**：見下方 Step 2、Step 3 的內建準則（一頁一重點、單頁資訊量上限、標題自帶結論）。若 `./references/` 下有 `paging-principles.md` / `slide-density-rubric.md`，優先讀取作為更細的 rubric；取不到就用本文內建準則，**不要因缺檔停擺**。
+- **品牌資料**：分頁階段**不需要**動到品牌色彩／字體（那是視覺棒的事）；但若 ▸ Storyline 帶有受眾／場合資訊，分頁的詳略要據此調整（對外提案宜精簡、內部更新／教學可較密）。
+- **存檔位置**：本份簡報的工作子資料夾（與 1.12、1.14 共用同一份 SLIDE_PACKET 的 durable 紀錄）。
+
+---
+
+## Step 1 — 接收故事線交棒包
+
+讀取上一棒的 `SLIDE_PACKET ▸ Storyline`，確認五個欄位都在（欄名沿用接力合約，逐字對齊）：**簡報目標、受眾與情境、核心主張 (through-line)、敘事弧線 (beats)、邏輯檢查**。
+
+- 若使用者**未提供** ▸ Storyline，先要求他貼上，或先去跑 `slide-storyline-designer`——**不要自己腦補故事線、不提前分頁**。憑空補出來的故事線會把整份簡報的根基弄歪。
+- 若 ▸ Storyline 的「邏輯檢查」標出了未解的跳躍／缺口，先回報使用者：「故事線仍有 X 缺口，建議先補完再分頁，或你要我照現況分頁？」**先確認再做**，避免把問題帶進投影片——分頁救不了一條斷掉的故事線。
+
+## Step 2 — 逐 beat 展開成頁（決定「切幾頁」）
+
+依序處理每個 beat，套用**分頁三原則**決定它要變成幾頁：
+
+1. **一頁一個重點**：一個 beat 若只承載一句關鍵訊息 → 1 頁。若 beat 內含多個並列重點（例如三大效益、四個步驟）→ 拆成「1 張概覽頁 + N 張展開頁」或「1 張清單頁」，依資訊量而定。**寧可多一頁，也不要一頁兩個重點**——觀眾的注意力一頁只夠裝一件事。
+2. **標題自帶結論**：每頁標題寫成**完整的主張句**，不是名詞標籤。寫「導入後客服回應時間縮短 40%」而非「成效」；寫「三個原因讓現有流程撐不住」而非「痛點」。觀眾只看標題就該抓到這頁的結論。
+3. **對齊敘事節奏**：在 beats 序列的**起點補 title 頁**、**重大段落轉折處補 section 頁**、**結尾補 closing 頁**。這些是故事線沒有、但簡報需要的「骨架頁」，負責給觀眾路標感。
+
+同時替每頁標上**頁面類型**（嚴格用合約 enum：`title / section / content / data / quote / closing`）：
+
+| 頁面類型 | 何時使用（判準） |
+|---|---|
+| `title` | 全場第一頁：簡報主題 + 講者／場合。對應 through-line 的一句話版本。 |
+| `section` | 進入新的大段落（跨 beat 的轉場），給觀眾「我們現在到哪了」的路標。 |
+| `content` | 主力頁：論述、要點、概念說明。大多數頁都是這型。 |
+| `data` | 該頁的關鍵訊息**靠數字／比較／趨勢成立**（成長、佔比、前後對照、KPI）。 |
+| `quote` | 用一句客戶證言、權威引述或金句承載情緒／可信度。 |
+| `closing` | 結尾：行動呼籲 (CTA)、下一步、聯絡方式、回扣 through-line。 |
+
+> 判別 `content` vs `data` 的關鍵：拿掉數字後這頁還站得住嗎？站不住 → `data`。這個標記會幫下一棒（1.14）更快選到 data-chart 版式，但**版式由 1.14 決定，我只標頁面類型、不選 archetype**。
+
+## Step 3 — 配置每頁內容（決定「每頁放多少」）
+
+替每頁填入**內容要點**與**資訊密度**，套用**單頁資訊量上限**：
+
+- **內容要點上限**：一頁 content 以 **3–5 條要點**為原則，每條一行可讀完（約 ≤ 1.5 行）。超過 5 條 → 回 Step 2 拆頁或合併同類項。`title` / `section` / `quote` / `closing` 通常只有 1 句主訊息。
+- **層級上限**：要點最多兩層（主點 + 子點），**不要三層巢狀**——投影片不是 Word 大綱，巢狀越深觀眾越讀不下去。
+- **資訊密度**標記（給下一棒判斷留白與字級的依據），三檔擇一：
+  - `低`：1 句金句或 1 個大數字（big-statement / quote / data 單一指標感）。
+  - `中`：3–5 條要點、或一組對照、或一張單純圖表（多數 content/data 頁）。
+  - `高`：表格、流程多步、需並排比較的密集資訊（提醒：高密度頁要留意是否該再拆）。
+- **每頁固定欄位**（嚴格對齊合約，欄名不可改）：`{頁碼, 對應 beat, 頁面類型, 標題, 內容要點, 資訊密度}`。`對應 beat` 要回填來源 beat 名稱；骨架頁（title / section / closing 等故事線沒有、由本棒補出的頁）標 `—`，讓追溯回故事線時不斷鏈；唯有 closing 回扣全場時可標「全場」。
+
+完成後做一次**全局檢查**：頁碼連續、每個 beat 都有對應頁、沒有任何一頁塞了兩個重點、標題清單單獨讀下來就是一條完整故事線（這是最後的 sanity check——**標題即大綱**）。
+
+## Step 4 — 人工審核（HITL）
+
+把完整分頁清單**逐頁編號**列給使用者，明確問三件事，請他用編號回覆：
+
+1. 要**保留／刪除**哪幾頁？（哪些頁其實多餘）
+2. 要**合併／拆分**哪幾頁？（哪些頁太擠、哪些太空）
+3. 標題的**結論**是否寫對了？（有沒有哪頁標題沒抓到該頁真正想講的事）
+
+**未經使用者確認，不交棒。** 依回覆調整後，若改動大就再列一次給他過目。
+
+## Step 5 — 交棒並存檔
+
+確認後，將分頁清單存入本份簡報的工作子資料夾（durable 紀錄，與 1.12 / 1.14 同一份 SLIDE_PACKET），並輸出交棒包：
+
+```
+✅ 分頁已確認
+
+SLIDE_PACKET ▸ Pages
+- 分頁清單（有序）：
+  - 第 1 頁 | 對應 beat：— | 頁面類型：title | 標題：<一句話主題> | 內容要點：<講者/場合> | 資訊密度：低
+  - 第 2 頁 | 對應 beat：— | 頁面類型：section | 標題：<段落結論句> | 內容要點：<路標說明> | 資訊密度：低
+  - 第 3 頁 | 對應 beat：<beat 名> | 頁面類型：content | 標題：<自帶結論的主張句> | 內容要點：① … ② … ③ … | 資訊密度：中
+  - 第 4 頁 | 對應 beat：<beat 名> | 頁面類型：data | 標題：<數字結論句> | 內容要點：<關鍵指標/對照> | 資訊密度：中
+  - …
+  - 第 N 頁 | 對應 beat：全場 | 頁面類型：closing | 標題：<行動呼籲句，回扣 through-line> | 內容要點：<下一步/聯絡> | 資訊密度：低
+- 套用的分頁原則：一頁一個重點；單頁要點上限 3–5 條、層級至多兩層；標題自帶結論（標題串起來即大綱）。
+
+分頁與每頁內容已確認，可交棒給 slide-visual-selector (1.14) 選版式與視覺。
+```
+
+> 欄位名稱（頁碼／對應 beat／頁面類型／標題／內容要點／資訊密度）與頁面類型 enum（`title / section / content / data / quote / closing`）必須與接力合約**逐字一致**，下一棒 1.14 才接得住。存檔後可主動提示使用者：「分頁已定稿，要進入視覺選擇（slide-visual-selector，第三棒）了嗎？」若 slide-visual-selector 尚未安裝，提示先安裝再接力。
+
+## Outputs
+
+一份有序、每頁職責明確的分頁清單 `SLIDE_PACKET ▸ Pages`：每頁帶 `{頁碼, 對應 beat, 頁面類型, 標題, 內容要點, 資訊密度}`，並附上套用的分頁原則。交給 `slide-visual-selector` (1.14) 選版式與視覺。
+
+## Limitations
+
+- **只做分頁與每頁內容配置**——切幾頁、每頁放什麼／放多少、標題與資訊密度。產出的是「投影片頁」，不是「敘事段 beat」。
+- **不選版式 archetype、不指定視覺元素或版面配置、不套品牌色彩字體**：那是 slide-visual-selector (1.14) 的事；我只標頁面類型（`title / section / content / data / quote / closing`），不碰版式 enum（`title / big-statement / bulleted-list / …`）。
+- **不算繪 .pptx**：渲染由 1.14 的 ▸ Visuals 餵進已安裝的 pptx 技能完成。
+- **不回頭重寫故事線**：beats、through-line、敘事弧線屬於 slide-storyline-designer (1.12)；若分頁時發現故事有缺口，我只回報並建議補法、請使用者回上一棒，不擅自改敘事。
