@@ -51,7 +51,8 @@ pptx 技能  → 算繪成 .pptx
 
 - **下游算繪技能（已安裝）**：pptx 技能於 `~/.claude/skills/pptx/`。本棒交棒時會請它走 **Create from scratch** 路徑（`Read ~/.claude/skills/pptx/pptxgenjs.md`）。pptx 技能取代了已關閉的 #7 open-slide React runtime，因此 ▸ Visuals 的每個視覺元素都要對得上一個 pptxgenjs 原語，下游才能 1:1 算繪。
 - **算繪畫布常識**（寫版面配置時心裡要有底，座標單位英吋）：pptx 技能預設 `pres.layout = 'LAYOUT_16x9'`；但本棒一律以 **16:9 寬版 ≈ 13.33" × 7.5"** 描述版面（即 pptxgenjs 的 `LAYOUT_WIDE`，下游若要更大畫布即用此 layout），預留 0.5" 邊界。座標只給「相對區塊」即可（例如「左半 / 右半」「上方標題帶 / 下方內容區」），精確 x/y/w/h 由 pptx 技能換算，本棒不寫死像素級座標。
-- **品牌規範**：色彩、字體、強調色一律依 brandbook。本棒只在「設計備註」標出**要用品牌主色／強調色之處**，不寫死非品牌的色碼。
+- **內容→視覺判定框架**：`./references/visual-decision-framework.md` ──「看到這種內容 → 用這組 building blocks」的完整判定邏輯（內容關係分類、偵測線索、building-block 配方、worked examples、反模式；綜合 Zelazny《Say It With Charts》先定訊息再選圖、Minto 金字塔、visualframeworks.com 框架目錄）。Step 2 判版式時先查它。
+- **品牌視覺來源（設定）**：`./references/brand-source.md` ── 本技能**不內建品牌內容**；此檔設定要從哪裡載入你的品牌視覺規範（色彩角色、字級、影像法則、logo），並附通用 schema。Step 3 寫「設計備註」時依它載入品牌；未設定則走中性預設。
 
 ---
 
@@ -67,6 +68,8 @@ pptx 技能  → 算繪成 .pptx
 
 對**每一頁**，先讀它的「頁面類型 + 內容要點 + 資訊密度」，再用下表把它映到一個**版式 archetype**。版式 enum（嚴格對齊合約）：
 `title / big-statement / bulleted-list / two-column-compare / data-chart / process-diagram / image-led / quote / closing-CTA`。
+
+> 下表是**常用快速判準**。完整的「內容關係 → building blocks」分類（含偵測線索、配方、worked examples、反模式）見 `./references/visual-decision-framework.md`──遇到不確定怎麼選的頁先查它。核心原則：**先定訊息，再選形式**（同一份資料，訊息不同視覺就不同）。
 
 判準對應表（內容特徵 → 版式 archetype）：
 
@@ -98,6 +101,7 @@ pptx 技能  → 算繪成 .pptx
 - **標題自帶結論**（沿用上一棒的標題哲學）。視覺只負責把那個結論「演」出來，不是裝飾。
 - **拒絕無資訊的圖**。若一頁沒有可量化的數字，就不要硬塞 chart；條列或大字更誠實。
 - **資訊密度爆表 = 退回上一棒**。若某頁要塞 >6 條列或 >1 張主圖才講得完，這是分頁問題，標記出來請使用者回 `slide-page-splitter` 拆頁，本棒不靠縮字硬擠。
+- **不裝飾，要圖解 + 用色節制**（通用設計原則）。能用結構性圖解（幾何形狀）說清楚就別塞 stock 圖；**決策色每頁最多 1 次**（只標真正的決定／CTA），強調色節制使用。實際色值由 `./references/brand-source.md` 載入的品牌決定。
 
 ---
 
@@ -126,7 +130,13 @@ pptx 技能  → 算繪成 .pptx
 - `quote`：大引號 + 引文（斜體或大字）置中／靠左 + 出處小字靠下；大量留白。
 - `closing-CTA`：明確單一行動（`addText` 大字）+ 必要聯絡資訊/QR；深底收尾呼應封面，形成「深—淺—深」三明治。
 
-**設計備註**逐頁標出：要用品牌主色／強調色的位置、深淺底選擇、字級層級（標題 36–44pt、區塊標 20–24pt、內文 14–16pt、註腳 10–12pt）、以及任何「強調哪個字／哪個數字」的指示。色彩細節一律「依 brandbook」，不寫死非品牌色碼。
+**設計備註**逐頁標出，並依 `./references/brand-source.md` 載入的品牌套用（未設定品牌則用中性預設）：
+
+- **底色**：用品牌「預設表面色」；封面／章節／結尾用品牌「深對比色」全幅深底（文字翻成表面色）。
+- **決策強調**：每頁最多一個「決策色」（CTA／唯一的決定）；思考關鍵動詞用「強調色」（每標題 ≤ 1）。
+- **字級**：依品牌字級級距（標題／內文／註腳／編號）給 pptx `fontSize`；字體用品牌字體角色（顯示／內文／編號／中文）。
+- **圖表配色**：用品牌色盤，只有要點序列才上決策色，**不要**用 Office 預設花色。
+- 標出每頁要「強調哪個字／哪個數字」。給 pptx 的色值一律去掉 `#`（例 `color: "RRGGBB"`）。
 
 ---
 
@@ -148,7 +158,7 @@ pptx 技能  → 算繪成 .pptx
 
 1. 把完整 `SLIDE_PACKET ▸ Visuals` 存入本份簡報的工作子資料夾（durable 紀錄，與 1.12 / 1.13 同一份 SLIDE_PACKET）。
 2. **呼叫已安裝的 pptx 技能**：請它走 **Create from scratch** 路徑（`Read ~/.claude/skills/pptx/pptxgenjs.md`），以 `SLIDE_PACKET ▸ Visuals` 為輸入，逐頁 `pres.addSlide()` 把每個視覺元素用對應原語算繪成 `.pptx`，並完成 pptx 技能本身要求的 QA（markitdown 文字檢查 + 子代理視覺檢查）。
-3. 提醒 pptx 技能：色彩依 brandbook、版面依本棒給的版面配置。
+3. 提醒 pptx 技能：色彩與字體依 `./references/brand-source.md` 載入的品牌（表面色底、單一決策色、品牌色盤圖表，色值去 `#`），版面依本棒給的版面配置；未設定品牌則用中性預設。
 
 交棒區塊（render-ready，欄位嚴格對齊合約）：
 
