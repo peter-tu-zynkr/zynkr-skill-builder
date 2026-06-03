@@ -853,8 +853,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 146100,
-    "githubForks": 17214
+    "githubStars": 146102,
+    "githubForks": 17216
   },
   {
     "id": "1.29",
@@ -2138,7 +2138,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35139,
+    "githubStars": 35140,
     "githubForks": 2213
   },
   {
@@ -2176,8 +2176,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 179031,
-    "githubForks": 30669
+    "githubStars": 179063,
+    "githubForks": 30673
   },
   {
     "id": "6.14",
@@ -2266,7 +2266,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 21184,
+    "githubStars": 21185,
     "githubForks": 1701
   },
   {
