@@ -1,0 +1,48 @@
+name: QA skills
+
+# Hard QA gate on every PR to main that touches a skill. Closes the bypass that
+# the dispatch-only workflows (publish-skill.yml / pickup-approved-issue.yml)
+# leave open: hand-pushed branches and hand-opened PRs run this too. Make it a
+# REQUIRED status check in branch protection so it cannot be merged around.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/**'
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: QA changed skills (ERROR-tier blocks the PR)
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- 'skills/**/SKILL.md' || true)
+          if [ -z "$FILES" ]; then echo "No changed SKILL.md — nothing to QA."; exit 0; fi
+          echo "QA-checking changed skills:"; echo "$FILES"
+          fail=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            echo "::group::QA $f"
+            ( cd scripts && npx tsx validate-skill.ts "$GITHUB_WORKSPACE/$f" --tier=all --github ) || fail=1
+            echo "::endgroup::"
+          done <<< "$FILES"
+          if [ "$fail" -ne 0 ]; then echo "::error::QA failed — fix the ERROR-tier findings above."; exit 1; fi
+          echo "All changed skills passed QA."

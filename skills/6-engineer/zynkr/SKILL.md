@@ -32,6 +32,7 @@ Pattern-match the user's input against the table below. **First match wins.** He
 |---|---|
 | `https://github.com/<owner>/<repo>` or `https://skills.sh/...` referencing a SKILL.md or repo of skills | `external-skill-url` |
 | `https://github.com/peter-tu-zynkr/zynkr-skill-idea/issues/<N>` or `#<N>` referring to an idea-repo issue | `pipeline-issue-ref` |
+| User says "qa `<slug>`", "check this skill", "健檢", "does this pass QA", "review this skill" — OR drops a SKILL.md with an explicit QA/review verb | `qa-request` |
 | A folder path or file path that resolves to a `SKILL.md` on disk | `local-skill-md` |
 | `https://docs.google.com/document/...` | `google-doc` |
 | `.srt` / `.vtt` extension OR `youtu.be` / `youtube.com/watch` URL OR words like "transcript", "字幕", "逐字稿" | `transcript` |
@@ -54,7 +55,7 @@ For `external-skill-url`, `pipeline-issue-ref`, or `local-skill-md` inputs, gath
 |---|---|---|
 | GitHub Project | `gh project item-list 1 --owner peter-tu-zynkr --limit 200 --format json` — match by slug (derived from URL or frontmatter `name`) | Pipeline Status, Build Status, Keep, Intake Source, Built Skill URL |
 | Issue + labels | `gh issue list --repo peter-tu-zynkr/zynkr-skill-idea --search "<slug>" --json number,title,labels,state` | Existence of an issue, current label (`triage-ready` / `building` / `shipped` / `parked` / `rejected`), open vs closed |
-| On-disk SKILL.md | `ls "/Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skill-builder/skills/<N-cat>/<slug>/SKILL.md"` | Whether scaffold or publish already landed in the repo |
+| On-disk SKILL.md | `ls skills/<N-cat>/<slug>/SKILL.md` (run from the repo root) | Whether scaffold or publish already landed in the repo |
 | Live `/api/skills` | `curl -sL https://www.zynkr.ai/api/skills` and grep for slug | Whether the skill is live on the marketplace |
 
 Pick the slug from either the URL last segment (`.../tree/main/skills/<slug>`) or the SKILL.md frontmatter `name`. If you can't resolve a slug, skip the state lookup and treat as `unclassified`.
@@ -72,11 +73,23 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 | `external-skill-url`, no prior state | Invoke `/skill-sourcer <URL>` | High → auto |
 | `pipeline-issue-ref`, label = `triage-ready` | Invoke `/skill-triager` (cue Option A) | High → auto |
 | `pipeline-issue-ref`, label = `building`, on-disk file absent | Nudge: "Run `/skill-creator` on branch `skill/<slug>` to write the body" — don't auto-invoke; creator is human-in-the-loop interactive | High → nudge |
-| `local-skill-md`, slug matches an open `triage-ready` or `building` issue | Invoke `/skill-publish` (continuation mode) | High → auto |
-| `local-skill-md`, no matching open issue | Invoke `/skill-publish` (fresh-intake mode) | High → auto |
+| `local-skill-md`, slug matches an open `triage-ready` or `building` issue | Invoke `/skill-qa <path>` FIRST. On **PASS** → chain to `/skill-publish` (continuation mode). On **ERROR** → stop, surface the QA report, don't publish. On **WARN-only** → list warnings, ask "publish anyway?" then chain. | High → auto (QA → publish on PASS) |
+| `local-skill-md`, no matching open issue | Invoke `/skill-qa <path>` FIRST, then `/skill-publish` (fresh-intake mode) on PASS (same ERROR/WARN handling). | High → auto (QA → publish on PASS) |
 | `pipeline-issue-ref`, PR merged + slug on `/api/skills` + Project Build Status = `ready-to-ship` (or open issue still has `building` label) | Invoke `/skill-triager` (cue Option D `confirm-ship`) | High → auto |
 | `pipeline-issue-ref`, Project Pipeline Status = `shipped` | Render: "Already shipped — live at `https://www.zynkr.ai/ai-skills-marketplace` (slug `<slug>`). Nothing to do." | High → no-op |
 | `pipeline-issue-ref`, Project = `parked` / `rejected` | Render the state, ask if user wants to revive | Medium → ask |
+
+### QA inputs (standalone — any skill, any lifecycle stage)
+
+`/skill-qa` is also the on-demand health-check. Explicit QA intent never auto-publishes.
+
+| Input × State | Action | Confidence |
+|---|---|---|
+| `qa-request` + a local SKILL.md path or folder | Invoke `/skill-qa <path>` standalone; report the verdict. | High → auto |
+| `qa-request` + slug resolving to an in-pipeline `building` issue | Resolve the on-disk path (`skills/<N-cat>/<slug>/SKILL.md`) or the `skill/<slug>` branch head; invoke `/skill-qa`. | High → auto |
+| `qa-request` + slug of an already-`shipped` skill | Invoke `/skill-qa <slug>` against the in-tree `main` copy (re-audit / regression check). | High → auto |
+| `qa-request` + an `external-skill-url` / candidate not yet in the pipeline | Invoke `/skill-qa` on the fetched SKILL.md as a pre-intake quality probe. On PASS, offer: "Want to source this? → `/skill-sourcer`." | High → auto, then offer |
+| `qa-request` but no resolvable artifact | Ask once: "Point me at the SKILL.md (path, slug, or URL) to QA." | Medium → ask |
 
 ### Knowledge-pipeline inputs (broader Zynkr scope)
 
@@ -98,6 +111,7 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 |---|---|
 | "What's in my triage queue?" / "show me triage-ready" | `gh issue list ... --label triage-ready` and render a table |
 | "Where is `<slug>`?" / "status of `<slug>`?" | Run the Step 2 four-signal lookup and render a one-screen state card |
+| "Does `<slug>` pass QA?" / "is `<slug>` QA-clean?" | Resolve the artifact (on-disk → branch → `main`), invoke `/skill-qa <slug>` in report-only mode, render the PASS/FAIL verdict card. Read-only — never publishes. |
 | "What shipped this week?" | `gh issue list ... --label shipped --search "closed:>2026-mm-dd"` and render |
 | "What's stuck?" / "what's in approved >7 days?" | Read Project, filter by `Pipeline Status=approved` AND age > 7 days, render |
 
@@ -121,6 +135,8 @@ When confidence is **High** and the action is `auto`:
 1. State your route in one sentence: "Routing to `/skill-publish` continuation against issue #84."
 2. Invoke the sub-skill via the **Skill** tool, passing the relevant input as `args`.
 3. Let the sub-skill drive from there. Don't re-implement its logic inline.
+
+**QA → publish chaining.** When the route is a finished `local-skill-md` for a build issue, invoke `/skill-qa` first and read its verdict. Only chain to `/skill-publish` on a **PASS** (zero ERROR-tier findings). On FAIL, print the QA report and stop — never publish an ERROR-tier skill from the router.
 
 ### Nudge
 

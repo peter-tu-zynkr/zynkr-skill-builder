@@ -114,9 +114,9 @@ jobs:
           # add the whole tree (matters in bundle mode where references/ landed too).
           echo "skill_dir=$(dirname "$OUT")" >> "$GITHUB_OUTPUT"
 
-      - name: Validate authored frontmatter
+      - name: Validate + QA (blocks PR on ERROR-tier findings)
         working-directory: scripts
-        run: npx tsx validate-skill.ts "../${{ steps.publish.outputs.skill_path }}"
+        run: npx tsx validate-skill.ts "../${{ steps.publish.outputs.skill_path }}" --tier=all --github
 
       - name: Create branch, commit, push
         id: push

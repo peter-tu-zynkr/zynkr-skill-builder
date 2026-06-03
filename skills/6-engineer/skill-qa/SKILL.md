@@ -1,0 +1,86 @@
+---
+name: skill-qa
+description: "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'."
+category: engineer
+project: skill-qa
+platform: claude
+status: WIP
+author: Peter Tu
+disable-model-invocation: true
+input: "A target SKILL.md: a file path, a skill folder, a skill/<slug> branch, or a bare slug to resolve under skills/**."
+process: "Locate target → run validate-skill.ts --tier=all --json → render a tiered report → offer HITL auto-fixes for mechanical findings → emit PASS (0 errors) / FAIL verdict and hand off to /skill-publish."
+output: "A QA report (✅/⚠️/❌ per check with file:line + fix), a PASS/FAIL verdict gated on ERROR-tier checks, and optional confirmed auto-fixes applied to the working tree."
+synergy: ["skill-publish", "skill-triager", "zynkr"]
+---
+
+# skill-qa
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill skill-qa
+```
+
+The **quality tollgate** of the skill pipeline. Run it on a finished `SKILL.md` after `/skill-creator` and before `/skill-publish`, or any time you want to health-check a skill — `/zynkr` routes "qa `<slug>`" / 「健檢」 here. It does not author or publish; it inspects, reports, and (with your OK) fixes mechanical issues, then returns a clear PASS/FAIL.
+
+QA is a thin wrapper over one engine — `scripts/validate-skill.ts`. Never re-implement a check here: that script is the single source of truth CI also runs, so a local PASS means CI's QA check will pass too.
+
+---
+
+## Step 1 — Locate the target
+
+Resolve the target SKILL.md, in priority order:
+
+1. An explicit file path → use it.
+2. A skill-folder path → `./SKILL.md` inside it.
+3. A `skill/<slug>` branch → `git fetch origin <branch>`, then read `skills/**/<slug>/SKILL.md` on that ref.
+4. A bare slug → glob `skills/**/<slug>/SKILL.md`. If more than one matches, list them and ask which.
+5. Nothing resolvable → ask: "Point me at the SKILL.md — a path, slug, or branch."
+
+## Step 2 — Run the engine
+
+From `scripts/`, run the shared engine in JSON mode:
+
+```bash
+npx tsx scripts/validate-skill.ts <resolved-path> --tier=all --json
+```
+
+Parse the output — an array of per-file objects `{ file, pass, errors, warns, infos, findings[] }`, where each finding is `{ check, tier, message, file, line, fixable, suggestion }`. Do not re-run individual checks by hand.
+
+## Step 3 — Render the report
+
+Lead with the verdict line, then group findings by tier:
+
+- ❌ **ERROR** (blocks ship) — frontmatter schema failure, missing H1 title, leaked machine-specific absolute path.
+- ⚠️ **WARN** (advisory) — no install snippet / workflow section, synergy slug not found, IPO field over length.
+- ℹ️ **INFO** (notes) — reference-entry downgrades, the post-ship live-download reminder.
+
+For each finding print `<glyph> <CHECK> (<file>:<line>) — <message>`, and the `suggestion` beneath it when present.
+
+## Step 4 — Offer auto-fix (HITL)
+
+For findings flagged `fixable: true`, propose the concrete edit and **ask before writing**:
+
+- `paths.absolute_home` → show the offending line; propose a repo-relative path or the `{{SKILL_DIR}}` placeholder.
+- `body.install_snippet` (missing or wrong slug) → insert or repair the snippet immediately after the H1.
+- `body.h1_matches_name` → offer to rename the H1 (skip for reference entries).
+
+Never auto-fix prose checks (`body.summary_paragraph`, `attribution.case_c_section`) — leave those as TODOs for the author. After applying any fix, re-run Step 2 to confirm it cleared.
+
+## Step 5 — Verdict & handoff
+
+- **PASS** (0 ERROR): say so, note the WARN count, and point to `/skill-publish`. If `/zynkr` chained you here, return a PASS so it can continue to publish.
+- **FAIL** (≥1 ERROR): list the blocking ERRORs and stop. Tell the user to fix and re-run `/skill-qa`. Never publish on a FAIL.
+
+QA is a **pre-ship** gate. The live-download check (that `zynkr.ai/s/<id>.md` resolves) runs **post-ship** in `/skill-triager` Option D — `/skill-qa` only emits an INFO pointer to it.
+
+---
+
+## Error handling
+
+- **Target not found / empty** → report and ask for a valid path or slug.
+- **Ambiguous slug** (multiple matches) → list them and ask which.
+- **Branch fetch fails** → report the git error; offer to QA the local working copy instead.
+- **Engine exits 2** (usage/IO) → a tooling failure, not a skill FAIL; surface stderr and retry. Exit 1 means real ERROR findings (a genuine FAIL).
+
+## Reuse, don't reinvent
+
+Every check lives in `scripts/validate-skill.ts` — the same engine run by CI (`qa.yml`, `publish-skill.yml`, `pickup-approved-issue.yml`). `/skill-qa` only locates the target, runs the engine, presents results, and applies confirmed fixes. If a new check is needed, add it to the engine; never fork the logic into this skill. The pipeline order is `/skill-sourcer → /skill-triager → /skill-creator → /skill-qa → /skill-publish`.

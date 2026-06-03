@@ -102,9 +102,9 @@ jobs:
           OUT=$(npx tsx ingest-from-issue.ts | tail -n1)
           echo "skill_path=$OUT" >> "$GITHUB_OUTPUT"
 
-      - name: Validate scaffolded frontmatter
+      - name: Validate + QA scaffold (blocks on ERROR-tier; stub body checks are advisory)
         working-directory: scripts
-        run: npx tsx validate-skill.ts "../${{ steps.scaffold.outputs.skill_path }}"
+        run: npx tsx validate-skill.ts "../${{ steps.scaffold.outputs.skill_path }}" --tier=all --github
 
       - name: Create branch, commit, push
         id: push
