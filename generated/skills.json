@@ -853,8 +853,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 146087,
-    "githubForks": 17213
+    "githubStars": 146098,
+    "githubForks": 17214
   },
   {
     "id": "2.19",
@@ -2110,8 +2110,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35134,
-    "githubForks": 2212
+    "githubStars": 35139,
+    "githubForks": 2213
   },
   {
     "id": "6.13",
@@ -2148,8 +2148,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 178965,
-    "githubForks": 30663
+    "githubStars": 179017,
+    "githubForks": 30668
   },
   {
     "id": "6.14",
@@ -2185,7 +2185,7 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "Land a freshly-built SKILL.md into the Zynkr skills pipeline — the closing step of the canonical 4-skill chain (/skill-sourcer → /skill-triager → /skill-creator → /skill-publish). Attaches the artifact to the existing pipeline issue, fires the publish-skill workflow to open a PR, and hands off to /skill-triager confirm-ship for closure. Trigger on phrases like 'publish this skill', 'land this skill', 'I finished building, push it', 'register this skill', 'add this built skill', 'check category and dedup before upload', or '/skill-publish'. Use whenever the user has a finished SKILL.md and wants it landed in zynkr-skill-builder — whether it came from /skill-creator (happy path) or from elsewhere (fresh intake fallback).",
+    "description": "Land a freshly-built SKILL.md into the Zynkr skills pipeline — the closing step of the canonical chain (/skill-sourcer → /skill-triager → /skill-creator → /skill-qa → /skill-publish). Attaches the artifact to the existing pipeline issue, fires the publish-skill workflow to open a PR, and hands off to /skill-triager confirm-ship for closure. Trigger on phrases like 'publish this skill', 'land this skill', 'I finished building, push it', 'register this skill', 'add this built skill', 'check category and dedup before upload', or '/skill-publish'. Use whenever the user has a finished SKILL.md and wants it landed in zynkr-skill-builder — whether it came from /skill-creator (happy path) or from elsewhere (fresh intake fallback).",
     "input": "A path to the finished SKILL.md (folder or file), a GitHub URL to a SKILL.md, or pasted content. Optionally an existing pipeline issue number — if not given, the skill tries to...",
     "output": "Either (a) continuation mode: existing Project item updated (Build Status=ready-to-ship, Built Skill URL=PR URL, Artifact=skill-md-only), publish-skill.yml dispatched, PR...",
     "ipoProvenance": {
@@ -2238,7 +2238,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 21179,
+    "githubStars": 21182,
     "githubForks": 1701
   },
   {
@@ -2268,6 +2268,34 @@
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "6-engineer/zynkr/SKILL.md"
+  },
+  {
+    "id": "6.18",
+    "name": "skill-qa",
+    "category": "engineer",
+    "project": "skill-qa",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'.",
+    "input": "A target SKILL.md: a file path, a skill folder, a skill/<slug> branch, or a bare slug to resolve under skills/**.",
+    "process": "Locate target → run validate-skill.ts --tier=all --json → render a tiered report → offer HITL auto-fixes for mechanical findings → emit PASS (0 errors) / FAIL verdict and hand off to /skill-publish.",
+    "output": "A QA report (✅/⚠️/❌ per check with file:line + fix), a PASS/FAIL verdict gated on ERROR-tier checks, and optional confirmed auto-fixes applied to the working tree.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "6.18",
+    "kind": "skill",
+    "synergy": [
+      "6.18"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/6.18.md -o ~/.claude/skills/skill-qa.md",
+    "updatedAt": "2026-06-03",
+    "firstSeen": "2026-06-03",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "6-engineer/skill-qa/SKILL.md"
   },
   {
     "id": "7.01",
