@@ -1,0 +1,43 @@
+---
+name: pptx
+category: brand-marketing
+project: pptx
+platform: claude
+status: Done
+author: Anthropic, PBC
+description: "簡報三棒接力之後的『算繪引擎』（第四棒，由 Anthropic 維護）：把 slide-visual-selector 交出的 SLIDE_PACKET ▸ Visuals 逐頁算成真正的 .pptx 檔，也能反向讀取、解析、編修既有簡報。這是 Anthropic 官方的 pptx 技能，Zynkr 不轉散佈其程式碼——本卡片僅作引用與導流，安裝請從 Anthropic 來源取得。The .pptx rendering engine the Zynkr slide chain hands off to: it turns a per-page visual spec into an actual .pptx file (and can read / parse / edit existing decks). Authored and licensed by Anthropic — listed here only so you see the full four-step picture; install from Anthropic's source, not from Zynkr."
+input: "SLIDE_PACKET ▸ Visuals 逐頁視覺規格（由 slide-visual-selector 交棒），或一個既有的 .pptx 檔。"
+process: "讀取每頁的版式 archetype 與 pptxgenjs 原語 → 以 pptxgenjs / LibreOffice 算繪 → 輸出 .pptx；既有檔則解析、編修後回寫。"
+output: "可直接開啟、編輯的 .pptx 簡報檔。"
+synergy: ["slide-visual-selector"]
+upstream_repo: https://github.com/anthropics/skills
+original_source_url: https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md
+original_author: Anthropic, PBC
+install_command: npx skills add https://github.com/anthropics/skills --skill pptx
+---
+
+# pptx — Anthropic 官方簡報算繪技能（引用卡）
+
+> **這是引用，不是轉散佈。** `pptx` 由 Anthropic 撰寫並保有著作權（© Anthropic, PBC — All rights reserved），其授權禁止第三方重製、改作或散佈。Zynkr **不在本站託管其任何程式碼**；本頁只標註作者、連往官方來源，並提供官方安裝指令——做法與 [skills.sh](https://www.skills.sh/anthropics/skills/pptx) 相同。
+
+## 在「簡報助理」鏈中的位置（第 4 棒）
+
+```
+1. slide-storyline-designer  → ▸ Storyline   敘事骨架      （Zynkr 自製）
+2. slide-page-splitter       → ▸ Pages       每頁配置      （Zynkr 自製）
+3. slide-visual-selector     → ▸ Visuals     逐頁視覺規格  （Zynkr 自製）
+4. pptx (by Anthropic)       → .pptx 檔       算繪 ← 你在這裡
+```
+
+前三棒是 Zynkr 自製的「設計」關卡，負責想清楚每頁放什麼、長什麼樣；`pptx` 是把規格算成真正檔案的「算繪」關卡。三棒交出 `▸ Visuals` 後，由 `pptx` 收尾產出 `.pptx`。
+
+若你只需要故事線或分頁規劃、或打算改用 Canva／Google Slides 出圖，可以停在第三棒，不一定要用到 `pptx`。
+
+## 安裝（從 Anthropic 官方來源）
+
+```bash
+npx skills add https://github.com/anthropics/skills --skill pptx
+```
+
+- 官方來源：<https://github.com/anthropics/skills>（skill：`pptx`）
+- skills.sh 參考頁：<https://www.skills.sh/anthropics/skills/pptx>

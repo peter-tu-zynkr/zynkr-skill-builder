@@ -69,6 +69,10 @@ const SkillFrontmatter = z.object({
   upstream_repo: z.string().optional(),
   original_source_url: z.string().url().optional(),
   original_author: z.string().min(1).optional(),
+  // Override the auto-generated install command. Used by reference-only entries
+  // (e.g. a third-party skill we attribute + link to but do NOT re-host) so the
+  // command installs from the upstream source instead of zynkr.ai/s/<id>.md.
+  install_command: z.string().min(1).optional(),
   security_audits: z.object({
     gen_agent_trust_hub: z.enum(["pass", "fail", "pending"]).optional(),
     socket: z.enum(["pass", "fail", "pending"]).optional(),
@@ -837,7 +841,7 @@ function ingestProjectSkills(
     sheetId: manifest.sheetId,
     kind: agentFiles.length > 0 ? "orchestrator" : "skill",
     synergy,
-    installCommand: buildInstallCommand(orchestratorId, orchestratorSlug),
+    installCommand: manifest.install_command ?? buildInstallCommand(orchestratorId, orchestratorSlug),
     updatedAt: today,
     firstSeen: readFirstSeen(orchestratorOutPath) ?? today,
     sourceRepo: repoUrl,
@@ -1400,7 +1404,7 @@ async function main() {
           legacyIpoId,
           kind: "skill",
           synergy: fm.synergy,
-          installCommand: buildInstallCommand(id, slug),
+          installCommand: fm.install_command ?? buildInstallCommand(id, slug),
           updatedAt: today,
           firstSeen: readFirstSeen(outPath) ?? today,
           sourceRepo: repoUrl,

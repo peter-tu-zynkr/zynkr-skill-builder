@@ -11,7 +11,7 @@ originalName: "品牌行銷助理 ─ 品牌行銷視覺呈現選擇"
 input: "slide-page-splitter 的 SLIDE_PACKET ▸ Pages 交棒包（已分頁、每頁有頁碼/對應 beat/頁面類型/標題/內容要點/資訊密度）"
 process: "逐頁用『內容特徵 → 版式 archetype』判準選版式 → 把標題與內容要點對應到 pptxgenjs 原語（addText/bullets/addTable/addChart/addShape/addImage）並寫出版面配置 → 人工審核保留/調整 → 交棒"
 output: "render-ready 的逐頁視覺規格 SLIDE_PACKET ▸ Visuals，交給已安裝的 pptx 技能（Create from scratch / pptxgenjs.md）算繪成 .pptx"
-synergy: ["slide-page-splitter"]
+synergy: ["slide-page-splitter", "pptx"]
 ---
 
 # Slide Visual Selector
