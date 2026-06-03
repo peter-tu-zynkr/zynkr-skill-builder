@@ -77,7 +77,7 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 | `local-skill-md`, slug matches an open `triage-ready` or `building` issue | Invoke `/skill-qa <path>` FIRST. On **PASS** → chain to `/skill-publish` (continuation mode). On **ERROR** → stop, surface the QA report, don't publish. On **WARN-only** → list warnings, ask "publish anyway?" then chain. | High → auto (QA → publish on PASS) |
 | `local-skill-md`, no matching open issue | Invoke `/skill-qa <path>` FIRST, then `/skill-publish` (fresh-intake mode) on PASS (same ERROR/WARN handling). | High → auto (QA → publish on PASS) |
 | `pipeline-issue-ref`, PR merged + slug on `/api/skills` + Project Build Status = `ready-to-ship` (or open issue still has `building` label) | Invoke `/skill-triager` (cue Option D `confirm-ship`) | High → auto |
-| `pipeline-issue-ref`, Project Pipeline Status = `shipped` | Render: "Already shipped — live at `https://www.zynkr.ai/ai-skills-marketplace` (slug `<slug>`). Nothing to do." | High → no-op |
+| `pipeline-issue-ref`, Project Pipeline Status = `shipped` | Render: "Already shipped — live at `https://www.zynkr.ai/ai-skills-marketplace` (slug `<slug>`)." Then, if `~/.claude/skills/<slug>/` is absent, offer `npx skills add … --skill <slug>` so it's invocable locally (marketplace-live ≠ installed in your session). | High → no-op (offer local install if missing) |
 | `pipeline-issue-ref`, Project = `parked` / `rejected` | Render the state, ask if user wants to revive | Medium → ask |
 
 ### QA inputs (standalone — any skill, any lifecycle stage)
