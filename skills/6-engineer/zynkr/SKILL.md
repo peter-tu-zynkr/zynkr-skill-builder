@@ -1,6 +1,6 @@
 ---
 name: zynkr
-description: "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr rather than asking the user to remember the right slash command."
+description: "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr rather than asking the user to remember the right slash command. Also fire on deck / 簡報 requests — 'make me a deck', '幫我做簡報', '做投影片', 'pitch deck', 'deep dive 簡報', 'all-hands 簡報', '把這份資料做成簡報' — and route them to /zynkr-slide (the slide-relay orchestrator)."
 category: engineer
 project: zynkr
 platform: claude
@@ -9,7 +9,7 @@ author: Peter Tu
 input: "Anything: a URL, local file path, skill slug, free-text idea, status question, or pasted content. The skill classifies the input shape before doing anything else."
 process: "Classify input shape → look up state across the four signals (Project / issues / on-disk / live API) when the input references a skill-pipeline item → route to the right sub-skill via the Skill tool when confidence is high, or ask one targeted clarifying question when ambiguous. Surfaces queue / dashboard views on read-only queries."
 output: "Either: (a) an auto-invocation of the right Zynkr sub-skill (most common); (b) one targeted clarifying question when intent is genuinely ambiguous; (c) a compact state table when the user asks 'what's in my queue' / 'where is X'."
-synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "write-newsletter", "polish-lecture-transcript", "biz-card", "cv-customizer", "support-reply-drafter", "newsletter-to-notion", "write-article", "srt-optimizer"]
+synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "write-newsletter", "polish-lecture-transcript", "biz-card", "cv-customizer", "support-reply-drafter", "newsletter-to-notion", "write-article", "srt-optimizer", "zynkr-slide"]
 ---
 
 # Zynkr
@@ -39,6 +39,7 @@ Pattern-match the user's input against the table below. **First match wins.** He
 | Image of a business card (jpg/png/heic) or words like "business card", "名片" | `biz-card` |
 | Question-shaped — starts with `what / where / how many / show me / list / 還有什麼 / 還有哪些` | `query` |
 | Free text mentioning a known sub-skill domain (newsletter / 電子報, CV / 履歷, support 信箱, article 文章) | `typed-text` |
+| Free text asking to build a deck / 簡報 / 投影片 / presentation / pitch deck (make / build / 做 / produce) | `deck-request` |
 | Anything else | `unclassified` |
 
 State what you detected to the user in one sentence so they can correct if needed:
@@ -104,6 +105,7 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 | `typed-text` mentioning CV / 履歷 / resume | Invoke `/cv-customizer` | Medium → confirm |
 | `typed-text` mentioning article / 文章 outline | Invoke `/write-article` | Medium → confirm |
 | `typed-text` about support inbox / 客服 | Invoke `/support-reply-drafter` | High → auto |
+| `deck-request` — build a slide deck / 簡報 / 投影片 (from material, a topic, or a resume-mid-relay packet) | Invoke `/zynkr-slide` | High → auto |
 
 ### Read-only state queries
 

@@ -23,6 +23,8 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sli
 這是 Zynkr 簡報助理三棒接力的**第二棒**（legacy 1.13《品牌行銷助理 ─ 分頁設定》）。完整接力鏈：
 
 ```
+zynkr-slide（總指揮，選用）─ 一路帶著 SLIDE_PACKET ▸ Brief
+        ▼
 slide-storyline-designer (1.12)
         │  SLIDE_PACKET ▸ Storyline
         ▼
@@ -58,6 +60,8 @@ pptx 技能  → 算繪成 .pptx
 
 - 若使用者**未提供** ▸ Storyline，先要求他貼上，或先去跑 `slide-storyline-designer`——**不要自己腦補故事線、不提前分頁**。憑空補出來的故事線會把整份簡報的根基弄歪。
 - 若 ▸ Storyline 的「邏輯檢查」標出了未解的跳躍／缺口，先回報使用者：「故事線仍有 X 缺口，建議先補完再分頁，或你要我照現況分頁？」**先確認再做**，避免把問題帶進投影片——分頁救不了一條斷掉的故事線。
+
+> **若帶有上游 `SLIDE_PACKET ▸ Brief`（由 `zynkr-slide` 產生）**：先讀「逐棒強調 ▸ 分頁 (棒2)」directives 與 `頁數預算`、預設密度，作為本棒判斷的權重──`頁數預算` 當切頁的 **target（非硬上限）**，預設密度當 Step 3 的起點密度。若 ▸ Brief 的「模式 (mode)」值為 express，本棒人工審核（Step 4）改走**非阻斷式**：仍把分頁清單列給使用者並標明「可隨時喊停／修改」，但無重大問題即自動往下交，不停下逐項等確認；「模式 (mode)」值為 guided、**或沒有 ▸ Brief** 時，維持 Step 4 原本逐頁阻斷式 HITL。▸ Brief 與本棒原則衝突時，以本棒原則與使用者裁示為準。**沒有 ▸ Brief 時，本棒完全照 Step 1–5 原流程獨立運作、以上權重一律不套用。**
 
 ## Step 2 — 逐 beat 展開成頁（決定「切幾頁」）
 

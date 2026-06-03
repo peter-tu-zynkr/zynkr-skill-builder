@@ -25,6 +25,8 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sli
 簡報助理三棒接力的**第三棒**。完整接力鏈是：
 
 ```
+zynkr-slide（總指揮，選用）─ 一路帶著 SLIDE_PACKET ▸ Brief
+        ▼
 slide-storyline-designer (1.12)
         │  SLIDE_PACKET ▸ Storyline
         ▼
@@ -61,6 +63,8 @@ pptx 技能  → 算繪成 .pptx
 讀取上一棒的 `SLIDE_PACKET ▸ Pages`，確認每頁都帶齊合約欄位：`{頁碼, 對應 beat, 頁面類型, 標題, 內容要點, 資訊密度}`，且頁面類型用的是合約 enum（`title / section / content / data / quote / closing`）。
 
 若使用者**沒有提供** ▸ Pages，先要求他貼上，或先去跑 `slide-page-splitter`（再往前是 `slide-storyline-designer`）。**不要**自己腦補分頁、也不要在沒有 ▸ Pages 的情況下提前展開視覺規格——那會破壞接力合約的欄位銜接，下一棒（pptx 技能）也接不住。
+
+> **若帶有上游 `SLIDE_PACKET ▸ Brief`（由 `zynkr-slide` 產生）**：先讀「逐棒強調 ▸ 視覺 (棒3)」directives 與 `簡報用途`，作為選 archetype 與寫設計備註的權重（例：deep-dive 偏 `data-chart` / `two-column-compare`（含 before/after 對照）揭示衝擊；all-hands 偏 `big-statement`、低密度，`section` 頁用 `big-statement` 或 title 章節變體承載）。`套用品牌` 為「是」時依本棒 `./references/brand-source.md` 載入品牌，「否」走中性預設。若 ▸ Brief 的「模式 (mode)」值為 express，本棒人工審核（Step 4）改走**非阻斷式**：列出逐頁視覺規格並標明可隨時喊停，無重大問題即自動往下交給 pptx 算繪；「模式 (mode)」值為 guided、**或沒有 ▸ Brief** 時，維持 Step 4 原本逐頁阻斷式 HITL。▸ Brief 的視覺偏好仍受本棒把關原則約束（一頁一主視覺、只輸出九種 archetype enum 內的版式名、拒絕無資訊的圖、密度爆表退回棒2）。**沒有 ▸ Brief 時，本棒完全照 Step 1–5 原流程獨立運作、以上權重一律不套用。**
 
 ---
 
