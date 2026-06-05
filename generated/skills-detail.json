@@ -921,8 +921,8 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 146859,
-    "github_forks": 17327,
+    "github_stars": 146875,
+    "github_forks": 17328,
     "first_seen": "2026-06-03",
     "description": "簡報三棒接力之後的『算繪引擎』（第四棒，由 Anthropic 維護）：把 slide-visual-selector 交出的 SLIDE_PACKET ▸ Visuals 逐頁算成真正的 .pptx 檔，也能反向讀取、解析、編修既有簡報。這是 Anthropic 官方的 pptx 技能，Zynkr 不轉散佈其程式碼——本卡片僅作引用與導流，安裝請從 Anthropic 來源取得。The .pptx rendering engine the Zynkr slide chain hands off to: it turns a per-page visual spec into an actual .pptx file (and can read / parse / edit existing decks). Authored and licensed by Anthropic — listed here only so you see the full four-step picture; install from Anthropic's source, not from Zynkr.",
     "input": "SLIDE_PACKET ▸ Visuals 逐頁視覺規格（由 slide-visual-selector 交棒），或一個既有的 .pptx 檔。",
@@ -1443,38 +1443,6 @@
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/bd-sourcing/SKILL.md"
   },
-  "3.01": {
-    "id": "3.01",
-    "slug": "meeting-prep",
-    "name": "meeting-prep",
-    "summary": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/meeting-prep/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/3.01.md -o ~/.claude/skills/meeting-prep.md",
-    "tags": [
-      "meeting-prep",
-      "operations",
-      "claude",
-      "orchestrator"
-    ],
-    "updated_at": "2026-06-05",
-    "first_seen": "2026-05-18",
-    "description": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
-    "input": "無（排程自動觸發，讀取 Google Calendar 與 Gmail）",
-    "process": "9am cron：掃描 7 天日曆 → 發 action 提醒到 Google Chat｜3pm cron：掃 Gmail 找與會者背景 → 發 briefing 到 Google Chat",
-    "output": "Google Chat 自我訊息：早上為 action checklist，下午為結構化 briefing",
-    "kind": "orchestrator",
-    "synergy": [
-      "3.01",
-      "3.03"
-    ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/meeting-prep/SKILL.md"
-  },
   "3.02": {
     "id": "3.02",
     "slug": "support-reply-drafter",
@@ -1505,37 +1473,6 @@
       "3.02"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/support-reply-drafter/SKILL.md"
-  },
-  "3.03": {
-    "id": "3.03",
-    "slug": "meeting-prep-meeting-notes-organizer",
-    "name": "meeting-notes-organizer",
-    "summary": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md",
-    "tags": [
-      "meeting-prep",
-      "operations",
-      "claude",
-      "subagent"
-    ],
-    "updated_at": "2026-06-05",
-    "first_seen": "2026-05-25",
-    "description": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
-    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
-    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
-    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
-    "kind": "subagent",
-    "synergy": [
-      "3.01",
-      "3.03"
-    ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md"
   },
   "3.04": {
     "id": "3.04",
@@ -1793,6 +1730,36 @@
       "3.11"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/zynkr-kms/SKILL.md"
+  },
+  "3.12": {
+    "id": "3.12",
+    "slug": "meeting-prep",
+    "name": "project-note-specialist",
+    "summary": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next).",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-note-specialist/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.12.md -o ~/.claude/skills/project-note-specialist.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-05",
+    "first_seen": "2026-06-05",
+    "description": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next). Trigger whenever the user pastes meeting notes/transcripts and asks to 'organize my notes', 'tidy up these notes', 'turn this into a weekly update', '整理會議筆記', '整理一下筆記', '幫我寫週報摘要', or shares messy meeting/voice-memo text wanting it cleaned into an internal-stakeholder update. Source: meeting-prep agent (sheetId 3.06).",
+    "input": "Raw meeting notes, transcripts, voice memos, or unstructured updates.",
+    "output": "A structured \"Weekly Project Update\" featuring Summary, Progress, Blockers, and What's Next.",
+    "kind": "skill",
+    "synergy": [
+      "3.12"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/project-note-specialist/SKILL.md"
   },
   "4.01": {
     "id": "4.01",
@@ -2413,7 +2380,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 35304,
+    "github_stars": 35306,
     "github_forks": 2222,
     "first_seen": "2026-05-12",
     "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
@@ -2453,8 +2420,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 182185,
-    "github_forks": 31251,
+    "github_stars": 182325,
+    "github_forks": 31268,
     "first_seen": "2026-05-20",
     "description": "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard.",
     "input": "Conversation with the agent via CLI or any messaging platform; configuration via `hermes config`; optional user-authored skills in `~/.hermes/skills/`",
@@ -2559,7 +2526,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 21390,
+    "github_stars": 21398,
     "github_forks": 1716,
     "first_seen": "2026-05-25",
     "description": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",

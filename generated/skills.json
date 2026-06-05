@@ -853,8 +853,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 146859,
-    "githubForks": 17327
+    "githubStars": 146875,
+    "githubForks": 17328
   },
   {
     "id": "1.29",
@@ -1303,35 +1303,6 @@
     "sourceFile": "2-sales-consultant/bd-sourcing/SKILL.md"
   },
   {
-    "id": "3.01",
-    "name": "meeting-prep",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "description": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
-    "input": "無（排程自動觸發，讀取 Google Calendar 與 Gmail）",
-    "process": "9am cron：掃描 7 天日曆 → 發 action 提醒到 Google Chat｜3pm cron：掃 Gmail 找與會者背景 → 發 briefing 到 Google Chat",
-    "output": "Google Chat 自我訊息：早上為 action checklist，下午為結構化 briefing",
-    "ipoProvenance": {
-      "input": "frontmatter",
-      "process": "frontmatter",
-      "output": "frontmatter"
-    },
-    "legacyIpoId": "3.01",
-    "kind": "orchestrator",
-    "synergy": [
-      "3.01",
-      "3.03"
-    ],
-    "installCommand": "curl -sL zynkr.ai/s/3.01.md -o ~/.claude/skills/meeting-prep.md",
-    "updatedAt": "2026-06-05",
-    "firstSeen": "2026-05-18",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "3-operations/meeting-prep/SKILL.md"
-  },
-  {
     "id": "3.02",
     "name": "support-reply-drafter",
     "category": "operations",
@@ -1358,35 +1329,6 @@
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/support-reply-drafter/SKILL.md"
-  },
-  {
-    "id": "3.03",
-    "name": "meeting-notes-organizer",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "description": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
-    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
-    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
-    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "3.03",
-    "sheetId": "3.06",
-    "kind": "subagent",
-    "synergy": [
-      "3.01",
-      "3.03"
-    ],
-    "updatedAt": "2026-06-05",
-    "firstSeen": "2026-05-25",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "3-operations/meeting-prep/agents/meeting-notes-organizer.md"
   },
   {
     "id": "3.04",
@@ -1624,6 +1566,32 @@
     "firstSeen": "2026-06-05",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/zynkr-kms/SKILL.md"
+  },
+  {
+    "id": "3.12",
+    "name": "project-note-specialist",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next). Trigger whenever the user pastes meeting notes/transcripts and asks to 'organize my notes', 'tidy up these notes', 'turn this into a weekly update', '整理會議筆記', '整理一下筆記', '幫我寫週報摘要', or shares messy meeting/voice-memo text wanting it cleaned into an internal-stakeholder update. Source: meeting-prep agent (sheetId 3.06).",
+    "input": "Raw meeting notes, transcripts, voice memos, or unstructured updates.",
+    "output": "A structured \"Weekly Project Update\" featuring Summary, Progress, Blockers, and What's Next.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.12",
+    "kind": "skill",
+    "synergy": [
+      "3.12"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.12.md -o ~/.claude/skills/project-note-specialist.md",
+    "updatedAt": "2026-06-05",
+    "firstSeen": "2026-06-05",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/project-note-specialist/SKILL.md"
   },
   {
     "id": "4.01",
@@ -2166,7 +2134,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35304,
+    "githubStars": 35306,
     "githubForks": 2222
   },
   {
@@ -2204,8 +2172,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 182185,
-    "githubForks": 31251
+    "githubStars": 182325,
+    "githubForks": 31268
   },
   {
     "id": "6.14",
@@ -2294,7 +2262,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 21390,
+    "githubStars": 21398,
     "githubForks": 1716
   },
   {

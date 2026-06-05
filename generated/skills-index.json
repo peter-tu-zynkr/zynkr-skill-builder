@@ -616,8 +616,8 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 146859,
-    "github_forks": 17327,
+    "github_stars": 146875,
+    "github_forks": 17328,
     "first_seen": "2026-06-03"
   },
   {
@@ -964,28 +964,6 @@
     "first_seen": "2026-05-25"
   },
   {
-    "id": "3.01",
-    "slug": "meeting-prep",
-    "name": "meeting-prep",
-    "summary": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/meeting-prep/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/3.01.md -o ~/.claude/skills/meeting-prep.md",
-    "tags": [
-      "meeting-prep",
-      "operations",
-      "claude",
-      "orchestrator"
-    ],
-    "updated_at": "2026-06-05",
-    "first_seen": "2026-05-18"
-  },
-  {
     "id": "3.02",
     "slug": "support-reply-drafter",
     "name": "support-reply-drafter",
@@ -1003,27 +981,6 @@
       "operations",
       "claude",
       "skill"
-    ],
-    "updated_at": "2026-06-05",
-    "first_seen": "2026-05-25"
-  },
-  {
-    "id": "3.03",
-    "slug": "meeting-prep-meeting-notes-organizer",
-    "name": "meeting-notes-organizer",
-    "summary": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
-    "category": "operations",
-    "project": "meeting-prep",
-    "platform": "claude",
-    "status": "WIP",
-    "author": "Jane Liao",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md",
-    "tags": [
-      "meeting-prep",
-      "operations",
-      "claude",
-      "subagent"
     ],
     "updated_at": "2026-06-05",
     "first_seen": "2026-05-25"
@@ -1194,6 +1151,28 @@
     "install_command": "curl -sL zynkr.ai/s/3.11.md -o ~/.claude/skills/zynkr-kms.md",
     "tags": [
       "zynkr-kms",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-05",
+    "first_seen": "2026-06-05"
+  },
+  {
+    "id": "3.12",
+    "slug": "meeting-prep",
+    "name": "project-note-specialist",
+    "summary": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next).",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-note-specialist/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.12.md -o ~/.claude/skills/project-note-specialist.md",
+    "tags": [
+      "meeting-prep",
       "operations",
       "claude",
       "skill"
@@ -1616,7 +1595,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 35304,
+    "github_stars": 35306,
     "github_forks": 2222,
     "first_seen": "2026-05-12"
   },
@@ -1643,8 +1622,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 182185,
-    "github_forks": 31251,
+    "github_stars": 182325,
+    "github_forks": 31268,
     "first_seen": "2026-05-20"
   },
   {
@@ -1714,7 +1693,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 21390,
+    "github_stars": 21398,
     "github_forks": 1716,
     "first_seen": "2026-05-25"
   },
