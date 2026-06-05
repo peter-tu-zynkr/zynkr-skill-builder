@@ -11,6 +11,10 @@ Each section ends with an anchor line `<!-- ▼APPEND:<intent>▼ -->`. To add a
 the same anchor (so it stays at the bottom of the section for next time). The single
 `<!-- ▼NEW-SECTIONS▼ -->` at the very end is where brand-new sections get inserted.
 
+The **`## Core Facts`** section sits first and holds canonical `### FACT:<id>` blocks (pricing,
+policy…) via its own `<!-- ▼APPEND:core-facts▼ -->` anchor. Q&A entries below **cite** these
+facts (`Cites: FACT:<id>`) instead of restating numbers — see `entry-schema.md`.
+
 > These anchor lines are intentionally visible plain text in the Doc — they're harmless
 > markers and they make appends index-free. Don't delete them.
 
@@ -26,8 +30,15 @@ support-reply-drafter reads to draft replies. Each entry is one resolved Q&A.
 Do not hand-edit the ▼ anchor lines — the skill uses them to append/update.
 
 Owner: Peter Tu (peter_tu@zynkr.ai)
-Conventions: one entry per resolved ticket · facts preserved verbatim · zh-TW default,
-bilingual keywords · supersede stale answers rather than duplicating.
+Conventions: canonical numbers live once in Core Facts · Q&A entries cite facts, don't restate them
+· zh-TW default, bilingual keywords · supersede stale facts rather than duplicating.
+
+========================================================================
+
+## Core Facts
+> Canonical facts = the single source of truth. Q&A entries cite these by ID (Cites:) instead of restating them, so updating a fact here updates every answer that depends on it.
+
+<!-- ▼APPEND:core-facts▼ -->
 
 ========================================================================
 
@@ -88,6 +99,7 @@ bilingual keywords · supersede stale answers rather than duplicating.
 
 | Section title | anchor intent tag |
 |---|---|
+| Core Facts | `core-facts` (holds `FACT:<id>` blocks, not Q&A) |
 | Pricing & Quoting | `pricing-quoting` |
 | Course Content & Curriculum | `course-content` |
 | Scheduling & Logistics | `scheduling-logistics` |
