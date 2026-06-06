@@ -621,8 +621,6 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 147227,
-    "github_forks": 17384,
     "first_seen": "2026-06-03"
   },
   {
@@ -1259,8 +1257,6 @@
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
-    "github_stars": 39,
-    "github_forks": 9,
     "first_seen": "2026-05-20"
   },
   {
@@ -1333,8 +1329,6 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 21515,
-    "github_forks": 1725,
     "first_seen": "2026-05-25"
   },
   {
@@ -1564,8 +1558,6 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 35400,
-    "github_forks": 2227,
     "first_seen": "2026-05-12"
   },
   {
@@ -1592,8 +1584,6 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 184566,
-    "github_forks": 31661,
     "first_seen": "2026-05-20"
   },
   {

@@ -809,9 +809,7 @@
     "sourceFile": "1-brand-marketing/pptx/SKILL.md",
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
-    "originalAuthor": "Anthropic, PBC",
-    "githubStars": 147227,
-    "githubForks": 17384
+    "originalAuthor": "Anthropic, PBC"
   },
   {
     "id": "1.29",
@@ -1839,9 +1837,7 @@
     "sourceFile": "5-product/product-planning/SKILL.md",
     "upstreamRepo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "originalSourceUrl": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
-    "originalAuthor": "MrPM-Stanley",
-    "githubStars": 39,
-    "githubForks": 9
+    "originalAuthor": "MrPM-Stanley"
   },
   {
     "id": "5.02",
@@ -2119,9 +2115,7 @@
       "gen_agent_trust_hub": "pending",
       "socket": "pending",
       "snyk": "pending"
-    },
-    "githubStars": 35400,
-    "githubForks": 2227
+    }
   },
   {
     "id": "6.13",
@@ -2158,9 +2152,7 @@
       "gen_agent_trust_hub": "pending",
       "socket": "pending",
       "snyk": "pending"
-    },
-    "githubStars": 184566,
-    "githubForks": 31661
+    }
   },
   {
     "id": "6.14",
@@ -2251,9 +2243,7 @@
     "sourceFile": "6-engineer/find-skills/SKILL.md",
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
-    "originalAuthor": "vercel-labs",
-    "githubStars": 21515,
-    "githubForks": 1725
+    "originalAuthor": "vercel-labs"
   },
   {
     "id": "6.17",
