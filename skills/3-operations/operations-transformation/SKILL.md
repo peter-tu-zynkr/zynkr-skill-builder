@@ -1,5 +1,6 @@
 ---
 name: operations-transformation
+sheetId: "3.09"
 description: "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints."
 category: operations
 project: operations-transformation

@@ -1,5 +1,6 @@
 ---
 name: skill-deduplicator
+sheetId: "6.05"
 description: Check an incoming skill against the Zynkr Skills Pipeline GitHub Project for duplication or semantic overlap
 category: tech
 project: skill-sourcer

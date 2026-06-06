@@ -1,8 +1,18 @@
 ---
 name: write-newsletter
-description: Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /write-article pipeline. Use this skill whenever Peter says "幫我寫電子報", "來寫電子報", "寫newsletter", "電子報大綱", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.
+sheetId: "1.06"
+description: >-
+  Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /write-article pipeline. Use this skill whenever Peter says "幫我寫電子報", "來寫電子報", "寫newsletter", "電子報大綱", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.
+category: brand-marketing
+project: write-newsletter
+platform: claude
+status: Done
+author: Peter Tu
+input: "Peter's article outline, topic, or rough idea for the weekly newsletter"
+process: "Shape the outline/topic into a structured weekly-newsletter outline and hand it off to the /write-article pipeline"
+output: "A structured newsletter outline ready for the /write-article drafting pipeline"
+synergy: []
 ---
-
 # Write Newsletter
 
 Peter writes a weekly Chinese newsletter for career professionals and AI practitioners. The newsletter's strength is that Peter doesn't just theorize — he shows real things he's been building and learning.

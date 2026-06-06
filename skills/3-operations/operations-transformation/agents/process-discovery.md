@@ -1,7 +1,7 @@
 ---
 name: process-discovery
 description: "營運助理 ─ 流程探勘 — agent of operations-transformation"
-sheetId: "2.14"
+sheetId: "3.10"
 originalName: "營運助理 ─ 流程探勘"
 input: "A client's description of an inefficient or unclear business process."
 process: "Guide structured questioning to map end-to-end steps, identify suppliers and customers, and infer standard inputs/outputs."

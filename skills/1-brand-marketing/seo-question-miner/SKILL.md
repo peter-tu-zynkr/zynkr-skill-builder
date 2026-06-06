@@ -1,5 +1,6 @@
 ---
 name: seo-question-miner
+sheetId: "1.16"
 description: "SEO 流程第二棒：根據人物誌，發想目標讀者「在購買前真正會問的問題」，並從問題反推種子關鍵字。對應 v2 流程圖「發想常見問題 + 訪談回答常見問題並列出關鍵字」。當使用者交出 persona 交棒包、說「發想常見問題」、「挖種子關鍵字」時觸發。只發想問題與種子字，不做難度分析、不寫文章。"
 category: brand-marketing
 project: seo-question-miner

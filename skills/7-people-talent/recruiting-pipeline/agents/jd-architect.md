@@ -1,7 +1,7 @@
 ---
 name: jd-architect
 description: "招募助理 ─ 對齊職務需求 — agent of recruiting-pipeline"
-sheetId: "7.01"
+sheetId: "7.08"
 originalName: "招募助理 ─ 對齊職務需求"
 input: "Hiring manager provides rough notes or ideas about the role."
 process: "Assistant asks structured clarifying questions and guides the user through a JD-creation workflow."

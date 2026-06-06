@@ -1,5 +1,6 @@
 ---
 name: skill-triager
+sheetId: "6.08"
 description: "Triage the queue of approved skill proposals in peter-tu-zynkr/zynkr-skill-idea (label: triage-ready), present each as a one-screen review packet, and on assign-build fire a repository_dispatch event to zynkr-skill-builder so the pickup-approved-issue workflow scaffolds the SKILL.md. The DevOps-admin middle layer of the skill pipeline. Trigger on phrases like 'triage skills', 'review skill queue', 'skill triage', or '/skill-triager'."
 category: engineer
 project: skill-triager

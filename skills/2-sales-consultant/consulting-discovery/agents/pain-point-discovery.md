@@ -1,7 +1,7 @@
 ---
-name: pain-point-discovery
+name: as-is-discovery
 description: "顧問助理 ─ 痛點解析 — agent of consulting-discovery"
-sheetId: "2.11"
+sheetId: "2.08"
 originalName: "顧問助理 ─ 痛點解析"
 input: "User shares business context, team structure, challenges, and goals through guided Q&A."
 process: "Conducts structured, step-by-step needs discovery by asking one question at a time, confirming understanding, and probing deeper."

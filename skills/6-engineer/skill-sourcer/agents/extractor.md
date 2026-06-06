@@ -1,5 +1,6 @@
 ---
 name: skill-extractor
+sheetId: "6.06"
 description: Parse raw input (text, URL, file) and extract structured skill intent
 category: tech
 project: skill-sourcer

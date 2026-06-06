@@ -1,5 +1,6 @@
 ---
 name: drift-check
+sheetId: "3.08"
 description: "Weekly hygiene ritual for Zynkr's local↔cloud knowledge governance. Lists Google Drive Docs modified in the last N days across the 8 LOB folders (and Drive root), diffs against local `_INDEX.md` entries in `~/Desktop/Claude/zynkr/`, and proposes specific index edits: new entries to add, broken/renamed links to fix, deleted Docs to remove. Triggers on phrases like 'drift check', 'weekly hygiene', 'sync indexes', 'check cloud changes', 'what changed in cloud this week', '/drift-check', or when the user pastes nothing but asks to reconcile local/cloud state. Should fire eagerly when the user references the weekly hygiene ritual from the Zynkr knowledge-governance model."
 category: operations
 project: drift-check

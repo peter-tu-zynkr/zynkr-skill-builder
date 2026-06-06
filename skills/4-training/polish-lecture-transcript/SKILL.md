@@ -1,5 +1,6 @@
 ---
 name: polish-lecture-transcript
+sheetId: "4.01"
 description: "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese."
 category: training
 project: polish-lecture-transcript

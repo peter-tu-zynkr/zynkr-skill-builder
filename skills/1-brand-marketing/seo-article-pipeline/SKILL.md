@@ -1,5 +1,6 @@
 ---
 name: seo-article-pipeline
+sheetId: "1.14"
 description: "Zynkr SEO 內容生產的總指揮：把 v2 流程圖的九階段串成一條從品牌資料到可上架文章的管線。前半段（人物誌→種子問題→切角→關鍵字地圖→意圖分類→需求驗證→Brief→大綱/FAQ）呼叫各 SEO skill，後半段（撰寫→下標題→校稿）沿用既有 write-article 子代理人，最後做 SEO 設定與 EN 旗艦版。當使用者說「跑 SEO 文章流程」、「開始寫一篇 SEO 文章」、「/seo-article-pipeline」或交出品牌/文章資料包時觸發。"
 category: brand-marketing
 project: seo-article-pipeline

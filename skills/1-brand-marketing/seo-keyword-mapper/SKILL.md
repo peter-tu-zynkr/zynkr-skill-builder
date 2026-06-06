@@ -1,5 +1,6 @@
 ---
 name: seo-keyword-mapper
+sheetId: "1.18"
 description: "SEO 流程第四棒：用關鍵字工具（Ubersuggest / AnswerThePublic）把切角與種子字擴展成完整關鍵字地圖。對應 v2 流程圖「篩選關鍵字製作關鍵字地圖 + 整理完整關鍵字地圖」。當使用者交出 Angles 交棒包、貼上關鍵字工具匯出、說「做關鍵字地圖」時觸發。只做地圖，不分類意圖、不寫文章。"
 category: brand-marketing
 project: seo-keyword-mapper

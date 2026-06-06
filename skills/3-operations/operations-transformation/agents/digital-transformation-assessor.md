@@ -1,7 +1,7 @@
 ---
-name: digital-transformation-assessor
+name: automation-validation
 description: "營運助理 ─ 數位轉型評估 — agent of operations-transformation"
-sheetId: "2.15"
+sheetId: "3.11"
 originalName: "營運助理 ─ 數位轉型評估"
 input: "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules)."
 process: "Diagnose automation suitability, assess ROI, classify tasks, and recommend appropriate technologies with concise rationale."

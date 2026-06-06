@@ -6,7 +6,7 @@ project: article-fission
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "1.08"
+sheetId: "1.03"
 originalName: "寫作助理 ─ 文章裂變"
 input: "A full or partial article text, optionally with a writing or critique goal."
 process: "Analyze structure and ideas, extract an outline and summary, reflect through guided questions, then synthesize refined insights."

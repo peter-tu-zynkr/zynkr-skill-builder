@@ -1,7 +1,7 @@
 ---
 name: interview-calibrator
 description: "招募助理 ─ 面試評分校準與決策 — agent of recruiting-pipeline"
-sheetId: "7.04"
+sheetId: "7.13"
 originalName: "招募助理 ─ 面試評分校準與決策"
 input: "Interview transcripts, interviewer scorecards, Assistant A's question set and scoring standards, and hiring manager/HR inputs."
 process: "Extract behavioral evidence → compile independent feedback → detect discrepancies across interviewers → prepare pre-calibration summaries → support calibration discussions → document final hire/no-hire decisions with rationale and risk considerations."

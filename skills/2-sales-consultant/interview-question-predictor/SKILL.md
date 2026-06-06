@@ -6,7 +6,7 @@ project: interview-question-predictor
 platform: claude
 status: Done
 author: Jane Liao
-sheetId: "2.06"
+sheetId: "7.11"
 originalName: "面試猜題"
 input: "Resume or key experiences, job description, interview stage, and company context (inferred if missing)."
 process: "Analyze the interview context from an interviewer's perspective and identify likely questions and evaluation signals."

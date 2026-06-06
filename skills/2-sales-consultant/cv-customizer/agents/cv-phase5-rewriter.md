@@ -1,6 +1,6 @@
 ---
 name: cv-phase5-rewriter
-sheetId: "2.05"
+sheetId: "7.06"
 description: "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction."
 model: sonnet
 ---

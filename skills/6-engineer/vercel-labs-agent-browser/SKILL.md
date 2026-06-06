@@ -1,5 +1,6 @@
 ---
 name: agent-browser
+sheetId: "6.11"
 description: "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js"
 category: engineer
 project: vercel-labs-agent-browser

@@ -1,5 +1,6 @@
 ---
 name: seo-brief-writer
+sheetId: "1.21"
 description: "SEO 流程第七棒：針對一個選定主題，找出價值主張與勝出關鍵，產出一份完整 SEO 寫作 Brief。對應 v2 流程圖「選擇主題：設計 Brief」。當使用者交出 Topics 交棒包、提供參考文章/論壇/專家意見、說「寫 Brief」時觸發。只寫 Brief，不設計大綱、不寫文章。"
 category: brand-marketing
 project: seo-brief-writer

@@ -1,5 +1,6 @@
 ---
 name: seo-angle-finder
+sheetId: "1.17"
 description: "SEO 流程第三棒：從 SEO 專家角度＋競爭對手網址，找出「哪裡可以加強」的內容切角與差異化機會。對應 v2 流程圖「從 SEO 角度思考加強 + 參考競爭對手網址思考加強」。當使用者交出 Questions 交棒包、提供競品網址、說「找 SEO 切角」時觸發。只找切角，不做關鍵字地圖、不寫文章。"
 category: brand-marketing
 project: seo-angle-finder

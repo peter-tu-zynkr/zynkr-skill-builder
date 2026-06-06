@@ -6,7 +6,7 @@ project: slide-page-splitter
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "1.13"
+sheetId: "1.26"
 originalName: "品牌行銷助理 ─ 分頁設定"
 input: "slide-storyline-designer 的 SLIDE_PACKET ▸ Storyline 交棒包（簡報目標、受眾與情境、核心主張 through-line、敘事弧線 beats、邏輯檢查）"
 process: "把每個 beat 依分頁原則展開成一或多頁 → 為每頁定標題（自帶結論）、內容要點、頁面類型、資訊密度 → 控管單頁資訊量上限 → 人工審核保留/刪除/合併 → 交棒"

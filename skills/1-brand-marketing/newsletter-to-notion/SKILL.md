@@ -1,5 +1,6 @@
 ---
-name: newsletter-to-notion
+name: article-governance
+sheetId: "1.12"
 description: Sync a newsletter article from Google Docs to the Notion Content DB. Use this skill whenever the user shares a Google Doc URL and wants to create a Notion page, sync to Notion, add to Content DB, or archive a newsletter. Trigger on phrases like "幫我放上 Notion", "sync to Notion", "add this to Notion", "同步到 Notion", or any message combining a Google Doc link with Notion/archive intent.
 category: brand-marketing
 project: newsletter-to-notion

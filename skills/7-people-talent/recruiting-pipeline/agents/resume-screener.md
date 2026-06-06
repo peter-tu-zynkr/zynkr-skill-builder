@@ -1,7 +1,7 @@
 ---
 name: resume-screener
 description: "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline"
-sheetId: "7.02"
+sheetId: "7.09"
 originalName: "招募助理 ─ 履歷篩選"
 input: "JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size."
 process: "Decode JD → analyze resumes → score candidates using hard-skill gate, domain fit, weighted metrics, and risk indicators."

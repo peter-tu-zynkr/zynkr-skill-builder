@@ -1,5 +1,6 @@
 ---
 name: article-drafter
+sheetId: "1.05"
 description: "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\".\n\n<example>\nContext: The user has received a handoff summary from article-style-selector and is ready to write.\nuser: \"架構和要點都確認了，幫我開始撰寫文章。\"\nassistant: \"Let me bring in the article-drafter agent to draft the article paragraph by paragraph.\"\n<commentary>\nSince the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the article-drafter agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to start drafting after planning is complete.\nuser: \"I have my structure and key points ready, let's start drafting.\"\nassistant: \"I'll use the article-drafter agent to draft your article section by section.\"\n<commentary>\nSince the user is ready to draft, launch the article-drafter agent.\n</commentary>\n</example>"
 model: sonnet
 ---

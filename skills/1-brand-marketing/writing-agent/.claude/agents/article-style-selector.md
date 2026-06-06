@@ -1,6 +1,6 @@
 ---
 name: article-style-selector
-sheetId: "1.02"
+sheetId: "1.04"
 description: "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\".\n\n<example>\nContext: The user has a topic and some initial thoughts and wants to structure their article.\nuser: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\"\nassistant: \"Let me bring in the article-style-selector agent to help you choose the best structure and plan out your section key points.\"\n<commentary>\nSince the user has a draft topic and wants structure guidance, use the Task tool to launch the article-style-selector agent.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to plan their article before writing.\nuser: \"Help me pick a structure for my article about remote work productivity.\"\nassistant: \"I'll use the article-style-selector agent to recommend the most fitting structures for your topic.\"\n<commentary>\nSince the user needs structure selection help, launch the article-style-selector agent.\n</commentary>\n</example>"
 model: sonnet
 ---

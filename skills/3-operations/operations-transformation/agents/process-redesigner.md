@@ -1,7 +1,7 @@
 ---
-name: process-redesigner
+name: process-redesign
 description: "營運經理 ─ 流程重構 — agent of operations-transformation"
-sheetId: "2.16"
+sheetId: "3.12"
 originalName: "營運經理 ─ 流程重構"
 input: "Diagnosed process steps with automation readiness scores."
 process: "Redesign each step into structured, automation-ready workflows with task breakdowns, system layer mapping, and tool suggestions."

@@ -1,5 +1,6 @@
 ---
 name: zynkr-slide
+sheetId: "1.24"
 description: "簡報接力的總指揮（站在三棒接力之上）：使用者說「做一份簡報／做個 deck／幫我把這些做成投影片／做季報簡報／all-hands 簡報／deep dive 簡報／pitch deck」時主動觸發。我做一次到位的智慧 intake──偵測這是哪種簡報（deep-dive 深掘 / business-review 業務檢視 / data-presentation 數據簡報 / all-hands 全員大會 / planning 規劃 / pitch 提案 / update 更新 / teach 培訓 / fundraise 募資）、盤點使用者已給的素材與故事線、提案頁數讓使用者確認、收齊必含素材與模式──組出一份 SLIDE_PACKET ▸ Brief，再依序驅動 slide-storyline-designer → slide-page-splitter → slide-visual-selector → pptx 技能算成 .pptx。預設 express 模式（前面一次問清楚，只在故事線定稿與最終檔兩處請使用者拍板）；帶 guided 參數則保留三棒各自的逐棒人工審核。範圍界線：我只做意圖偵測、context 收斂、▸ Brief 注入與接力調度；不自己排敘事弧線、不自己分頁、不自己選版式、不自己算繪 .pptx──那是三棒與 pptx 技能各自的事。另外，若使用者給的是一個固定模板（charter / QBR 一頁版 / 既有 deck 要套版）或要求一種與模板庫對得上的成品，我走 template-fill 分支（複製模板→抽取內容→填固定欄位→外部模板預設 recolor 成 Zynkr 品牌色），而非三棒接力。"
 category: brand-marketing
 project: zynkr-slide

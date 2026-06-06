@@ -1,5 +1,6 @@
 ---
 name: lucid-specialist
+sheetId: "5.03"
 description: "Read, draft, edit, and lint Lucid charts using Peter's FE/BE/DB three-layer architecture convention. Triggers whenever the user shares a `lucid.app` URL with no further direction, asks to diagram/chart/visualize a process or workflow, asks to 'read' or 'summarize' an existing Lucid diagram, asks to add/modify nodes on a Lucid chart, or asks whether a chart follows the Zynkr convention. Should fire eagerly on phrases like '幫我畫流程圖', 'draw this workflow', 'diagram this', 'visualize this process', 'turn this into a Lucid chart', '/lucid-specialist', or any pasted Lucid URL. Bridges the human-facing Shape × Color principles (`5.0 product/architecture_principles_guidebook.md`, `5.0 product/color-shape-principles.md`) to the Lucid MCP tools (`mcp__lucid__fetch`, `mcp__lucid__lucid_create_diagram_from_specification`, `mcp__lucid__lucid_add_block`, `mcp__lucid__lucid_add_line`, `mcp__lucid__lucid_edit_item`). Use even when the user does not name 'Lucid' explicitly — if they want a process flow drawn or interpreted, this skill applies."
 category: product
 project: lucid-specialist

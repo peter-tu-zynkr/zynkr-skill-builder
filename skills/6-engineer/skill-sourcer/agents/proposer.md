@@ -1,5 +1,6 @@
 ---
 name: skill-proposer
+sheetId: "6.07"
 description: Propose a verified-new skill by opening an issue in zynkr-skill-idea and adding it to the skills pipeline GitHub Project. The triage-ready label is added only on approval.
 category: tech
 project: skill-sourcer

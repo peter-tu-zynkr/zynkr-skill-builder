@@ -1,5 +1,6 @@
 ---
 name: bd-sourcing
+sheetId: "2.01"
 description: "9-step BD sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag."
 category: sales-consultant
 project: bd-sourcing

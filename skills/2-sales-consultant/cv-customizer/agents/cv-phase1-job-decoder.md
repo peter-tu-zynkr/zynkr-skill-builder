@@ -1,6 +1,6 @@
 ---
 name: cv-phase1-job-decoder
-sheetId: "2.01"
+sheetId: "7.02"
 description: "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow."
 model: sonnet
 ---

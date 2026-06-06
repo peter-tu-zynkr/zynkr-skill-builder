@@ -1,5 +1,6 @@
 ---
 name: skill-sourcer
+sheetId: "6.03"
 description: "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the GitHub Project pipeline, and propose new skills as issues for review."
 category: engineer
 project: skill-sourcer

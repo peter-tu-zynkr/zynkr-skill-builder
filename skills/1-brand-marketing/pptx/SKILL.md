@@ -1,5 +1,6 @@
 ---
 name: pptx
+sheetId: "1.28"
 category: brand-marketing
 project: pptx
 platform: claude

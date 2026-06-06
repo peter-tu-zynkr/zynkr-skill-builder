@@ -6,7 +6,7 @@ project: zh-tw-translator
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "1.09"
+sheetId: "1.13"
 originalName: "寫作助理 ─ 翻譯蒟蒻"
 input: "Text in English or another language (plain text, paragraph, document, or code-block-free passage)"
 process: "Translate into natural conversational Traditional Chinese using Taiwanese expressions and tone; localize idioms, units, and references; preserve any code fences untouched"

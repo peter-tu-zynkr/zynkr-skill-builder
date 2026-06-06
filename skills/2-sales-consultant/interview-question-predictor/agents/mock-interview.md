@@ -1,7 +1,7 @@
 ---
 name: mock-interview
 description: "模擬面試 — agent of interview-question-predictor"
-sheetId: "2.07"
+sheetId: "7.12"
 originalName: "模擬面試"
 input: "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure)."
 process: "Analyze interview context, generate likely questions, and refine answers through structured, interviewer-perspective feedback."

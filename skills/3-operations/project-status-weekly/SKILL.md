@@ -1,5 +1,6 @@
 ---
-name: project-status-weekly
+name: project-status-update
+sheetId: "3.07"
 description: Generates a weekly project status update for a project tracked in a Google Sheet. Reads the live 「專案管理總表」 task tab of a project-tracker Google Sheet you configure, reasons over task status + dates against today to derive project health, blockers, this-week actions, % complete, next milestone, recent decisions and a timeline (the 「專案狀態看板」 dashboard format), renders it as a styled HTML email, and creates a Gmail DRAFT (never auto-sends) to a configurable recipient list. Trigger this skill EAGERLY whenever the user says "週報", "專案週報", "weekly report", "project weekly update", "draft the weekly status", "更新專案狀態", "PM 進度", "進度更新", "週進度更新", "跑一下專案看板", "update the dashboard", "draft the project dashboard", "寄週報給團隊", "/project-status-weekly", or otherwise asks for a weekly / status / progress update or dashboard on a project — even if they don't name the sheet, name a recipient instead of the project, or just say "the weekly". This is also the skill a scheduled / recurring / cron weekly run should invoke. When in doubt about a project status or weekly-update request, prefer this skill.
 category: operations
 project: project-status-weekly

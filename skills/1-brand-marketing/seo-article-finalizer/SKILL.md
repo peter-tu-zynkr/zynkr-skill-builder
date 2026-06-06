@@ -1,5 +1,6 @@
 ---
 name: seo-article-finalizer
+sheetId: "1.23"
 description: "SEO 流程最後一棒：替已校稿的文章加上內部/反向連結、meta description 與結構化資料（schema），產出可上架版本。對應 v2 流程圖節點 (11) 的「列出哪個段落可以上連結 + 上 meta description」與「文章設定」。當使用者交出已校稿文章、說「做 SEO 設定」、「上 meta」、「準備上架」時觸發。只做上架前設定，不重寫內容。"
 category: brand-marketing
 project: seo-article-finalizer

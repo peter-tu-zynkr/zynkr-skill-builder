@@ -1,5 +1,6 @@
 ---
 name: meeting-prep
+sheetId: "3.03"
 description: "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。"
 category: operations
 project: meeting-prep

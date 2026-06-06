@@ -1,5 +1,6 @@
 ---
 name: hermes-agent
+sheetId: "6.13"
 description: "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard."
 category: engineer
 project: hermes-agent

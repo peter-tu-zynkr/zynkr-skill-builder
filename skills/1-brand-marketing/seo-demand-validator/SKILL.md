@@ -1,5 +1,6 @@
 ---
 name: seo-demand-validator
+sheetId: "1.20"
 description: "SEO 流程第六棒：驗證關鍵字的真實需求與競爭難度，比較現有 SERP 共通點，刪去不必要的字，整理出目標關鍵字與主題清單。對應 v2 流程圖節點 (6)。當使用者交出 Classified 交棒包、說「驗證需求」、「整理主題清單」時觸發。只驗證與收斂，不寫 Brief、不寫文章。"
 category: brand-marketing
 project: seo-demand-validator

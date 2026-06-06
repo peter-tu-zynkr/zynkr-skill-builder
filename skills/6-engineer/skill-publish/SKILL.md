@@ -1,5 +1,6 @@
 ---
 name: skill-publish
+sheetId: "6.10"
 description: "Land a freshly-built SKILL.md into the Zynkr skills pipeline — the closing step of the canonical chain (/skill-sourcer → /skill-triager → /skill-creator → /skill-qa → /skill-publish). Attaches the artifact to the existing pipeline issue, fires the publish-skill workflow to open a PR, and hands off to /skill-triager confirm-ship for closure. Trigger on phrases like 'publish this skill', 'land this skill', 'I finished building, push it', 'register this skill', 'add this built skill', 'check category and dedup before upload', or '/skill-publish'. Use whenever the user has a finished SKILL.md and wants it landed in zynkr-skill-builder — whether it came from /skill-creator (happy path) or from elsewhere (fresh intake fallback)."
 category: engineer
 project: skill-publish

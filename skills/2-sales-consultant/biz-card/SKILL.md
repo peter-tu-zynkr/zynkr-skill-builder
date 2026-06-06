@@ -1,5 +1,6 @@
 ---
-name: biz-card
+name: sales-specialist
+sheetId: "2.02"
 description: "Business card pipeline — OCR extraction, schema normalization, Google Sheet logging, Supabase CRM contact creation, company research, and personalized follow-up email drafting."
 category: sales-consultant
 project: biz-card

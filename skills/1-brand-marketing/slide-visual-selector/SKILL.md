@@ -6,7 +6,7 @@ project: slide-visual-selector
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "1.14"
+sheetId: "1.27"
 originalName: "品牌行銷助理 ─ 品牌行銷視覺呈現選擇"
 input: "slide-page-splitter 的 SLIDE_PACKET ▸ Pages 交棒包（已分頁、每頁有頁碼/對應 beat/頁面類型/標題/內容要點/資訊密度）"
 process: "逐頁用『內容特徵 → 版式 archetype』判準選版式 → 把標題與內容要點對應到 pptxgenjs 原語（addText/bullets/addTable/addChart/addShape/addImage）並寫出版面配置 → 人工審核保留/調整 → 交棒"

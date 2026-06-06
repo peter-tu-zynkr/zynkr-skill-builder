@@ -1,5 +1,6 @@
 ---
 name: find-skills
+sheetId: "6.01"
 category: engineer
 project: find-skills
 platform: claude

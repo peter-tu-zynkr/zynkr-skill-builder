@@ -6,7 +6,7 @@ project: skill-finder
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "0.01"
+sheetId: "5.01"
 originalName: "行政助理 ─ 搜尋助理索引"
 input: "A user inquiry describing a task, problem, or workflow they want help with"
 process: "Interpret intent, match against the structured assistant index using functional descriptions, filter to usable entries, decide whether to recommend or ask one clarification"

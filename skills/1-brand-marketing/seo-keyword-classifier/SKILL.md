@@ -1,5 +1,6 @@
 ---
 name: seo-keyword-classifier
+sheetId: "1.19"
 description: "SEO 流程第五棒：把關鍵字地圖「按搜尋意圖」分類（不是按產品類別），並提供多種分群版本供選擇。對應 v2 流程圖「按照不同分類方式分類，提供不同版本」。當使用者交出 KeywordMap 交棒包、說「關鍵字分類」、「按意圖分群」時觸發。只分類，不驗證需求難度、不寫文章。"
 category: brand-marketing
 project: seo-keyword-classifier

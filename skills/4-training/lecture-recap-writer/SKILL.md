@@ -6,7 +6,7 @@ project: lecture-recap-writer
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "4.01"
+sheetId: "4.08"
 originalName: "處理影片回顧"
 input: "A user-provided video file, a video URL, or the verbatim transcript of a recorded lecture/livestream"
 process: "Transcribe the video (if not already a transcript), remove filler words, map the cleaned content to the reference outline structure, then render the recap"

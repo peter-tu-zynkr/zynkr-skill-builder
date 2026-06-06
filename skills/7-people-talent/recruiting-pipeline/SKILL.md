@@ -1,5 +1,6 @@
 ---
-name: recruiting-pipeline
+name: zynkr-recruiter
+sheetId: "7.07"
 description: "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (中英) outputs throughout."
 category: people-talent
 project: recruiting-pipeline

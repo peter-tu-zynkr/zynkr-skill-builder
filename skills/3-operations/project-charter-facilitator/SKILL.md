@@ -1,12 +1,12 @@
 ---
-name: project-charter-facilitator
+name: project-planning
 description: "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter."
 category: operations
 project: project-charter-facilitator
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "3.03"
+sheetId: "3.04"
 originalName: "專案章程發想 (New)"
 input: "A proposed project, initiative, or problem the user wants to validate before execution."
 process: "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks."

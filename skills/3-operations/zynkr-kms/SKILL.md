@@ -1,5 +1,6 @@
 ---
 name: zynkr-kms
+sheetId: "3.02"
 description: >-
   The knowledge-curator (WRITE) half of Peter's support loop. After a support /
   inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual

@@ -1,5 +1,6 @@
 ---
 name: zynkr
+sheetId: "6.02"
 description: "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr rather than asking the user to remember the right slash command. Also fire on deck / 簡報 requests — 'make me a deck', '幫我做簡報', '做投影片', 'pitch deck', 'deep dive 簡報', 'all-hands 簡報', '把這份資料做成簡報' — and route them to /zynkr-slide (the slide-relay orchestrator)."
 category: engineer
 project: zynkr

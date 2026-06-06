@@ -1,5 +1,6 @@
 ---
 name: skill-classifier
+sheetId: "6.04"
 description: Map an extracted skill to the Zynkr taxonomy category (0–9)
 category: tech
 project: skill-sourcer

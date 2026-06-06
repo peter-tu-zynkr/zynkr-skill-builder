@@ -6,7 +6,7 @@ project: slide-storyline-designer
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "1.12"
+sheetId: "1.25"
 originalName: "品牌行銷助理 ─ 設計品牌行銷故事線"
 input: "原始簡報素材／主題 + 想傳達的訊息（零散筆記、bullet、舊版 deck、口頭重點皆可）"
 process: "釐清目標與受眾 → 定核心主張 → 排敘事弧線 beats → 邏輯流暢度檢查 → 人工審核 (HITL) → 交棒並存檔"

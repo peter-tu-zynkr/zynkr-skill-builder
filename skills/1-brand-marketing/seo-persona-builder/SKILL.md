@@ -1,5 +1,6 @@
 ---
 name: seo-persona-builder
+sheetId: "1.15"
 description: "SEO 內容流程的第一棒：讀取品牌資料（從 SEO 知識庫資料夾或品牌資料包），打造目標讀者／潛在客戶的人物誌與消費者輪廓，作為後續關鍵字與選題的依據。當使用者說「幫我建立 SEO 人物誌」、「先做受眾輪廓」、「開始 SEO 流程」、或交出品牌資料包時觸發。只做人物誌，不做關鍵字、不寫文章。"
 category: brand-marketing
 project: seo-persona-builder

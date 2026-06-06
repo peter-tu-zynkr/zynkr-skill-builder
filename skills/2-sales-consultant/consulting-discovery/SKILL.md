@@ -1,5 +1,6 @@
 ---
 name: consulting-discovery
+sheetId: "2.06"
 description: "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work."
 category: sales-consultant
 project: consulting-discovery

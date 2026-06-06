@@ -1,5 +1,6 @@
 ---
 name: process-livestream
+sheetId: "4.02"
 description: "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds."
 category: training
 project: process-livestream

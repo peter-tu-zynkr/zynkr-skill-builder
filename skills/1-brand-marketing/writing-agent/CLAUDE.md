@@ -1,5 +1,6 @@
 ---
-name: "Writing Agent"
+name: zynkr-content-writer
+sheetId: "1.01"
 category: "brand-marketing"
 project: "writing-agent"
 platform: "claude"

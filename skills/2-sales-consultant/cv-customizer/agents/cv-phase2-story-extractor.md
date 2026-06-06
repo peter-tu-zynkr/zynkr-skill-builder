@@ -1,6 +1,6 @@
 ---
 name: cv-phase2-story-extractor
-sheetId: "2.02"
+sheetId: "7.03"
 description: "Surfaces underrepresented skills by comparing the candidate's CV with the job requirements from phase 1, then guides the candidate to articulate strong, job-aligned stories using the SCQA framework. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction."
 model: sonnet
 ---

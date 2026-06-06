@@ -1,6 +1,6 @@
 ---
 name: cv-phase3-fit-scorer
-sheetId: "2.03"
+sheetId: "7.04"
 description: "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction."
 model: sonnet
 ---

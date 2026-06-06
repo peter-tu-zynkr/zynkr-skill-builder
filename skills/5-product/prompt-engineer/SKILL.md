@@ -6,7 +6,7 @@ project: prompt-engineer
 platform: claude
 status: Done
 author: Peter Tu
-sheetId: "5.02"
+sheetId: "5.04"
 originalName: "指令工程助理 ─ 重構指令"
 input: "User provides a prompt to optimize."
 process: "Apply GUIDE and IPO, clarify only when needed, restructure into system/developer/user layers, and define goals, reasoning steps, and output format."

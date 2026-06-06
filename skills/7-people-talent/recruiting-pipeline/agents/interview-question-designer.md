@@ -1,7 +1,7 @@
 ---
 name: interview-question-designer
 description: "招募助理 ─ 設計考題與計分卡 — agent of recruiting-pipeline"
-sheetId: "7.03"
+sheetId: "7.10"
 originalName: "招募助理 ─ 設計考題與計分卡"
 input: "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening)."
 process: "Convert role requirements into a competency model → assign competencies to interview rounds → generate structured question bank (behavioral, situational, technical, culture) → produce tailored risk-based questions → build weighted scorecard with behavioral indicators and scoring anchors."

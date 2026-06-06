@@ -1,5 +1,6 @@
 ---
 name: product-planning
+sheetId: "5.02"
 category: product
 project: product-planning
 platform: claude

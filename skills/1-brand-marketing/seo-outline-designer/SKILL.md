@@ -1,5 +1,6 @@
 ---
 name: seo-outline-designer
+sheetId: "1.22"
 description: "SEO 流程第八棒：把 SEO Brief 變成文章大綱與 FAQ 區塊，輸出與 article-drafter 相容的交棒摘要。對應 v2 流程圖「架構文章：大綱設計」與「建立 FAQ」。當使用者交出 Brief 交棒包、說「設計大綱」、「做 FAQ」時觸發。只做大綱與 FAQ，實際撰寫交給 article-drafter。"
 category: brand-marketing
 project: seo-outline-designer

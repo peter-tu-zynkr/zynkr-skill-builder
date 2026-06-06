@@ -13,6 +13,7 @@ export type SecurityAudits = {
 
 export type NormalizedSkillRecord = {
   id: string;
+  sheetId?: string;
   name: string;
   category: string;
   project: string;
@@ -44,6 +45,7 @@ export type NormalizedSkillRecord = {
 
 export type MarketplaceIndexEntry = {
   id: string;
+  sheet_id?: string;
   slug: string;
   name: string;
   summary: string;
@@ -249,6 +251,7 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
 
       const indexEntry: MarketplaceIndexEntry = {
         id: skill.id,
+        sheet_id: ensureString(skill.sheetId),
         slug,
         name: skill.name.trim(),
         summary: buildSummary(skill),
@@ -287,7 +290,13 @@ export function buildMarketplaceArtifacts(skills: NormalizedSkillRecord[]): Mark
 
       return detailEntry;
     })
-    .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
+    .sort((a, b) => {
+      const as = a.sheet_id, bs = b.sheet_id;
+      if (as && bs) return as.localeCompare(bs, undefined, { numeric: true }) || a.id.localeCompare(b.id, undefined, { numeric: true });
+      if (as) return -1;
+      if (bs) return 1;
+      return a.id.localeCompare(b.id, undefined, { numeric: true });
+    });
 
   return {
     index: detailEntries.map(({ description, input, process, output, kind, stage, synergy, github_url, security_audits, ...entry }) => entry),

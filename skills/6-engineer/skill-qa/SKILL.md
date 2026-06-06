@@ -1,5 +1,6 @@
 ---
 name: skill-qa
+sheetId: "6.09"
 description: "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'."
 category: engineer
 project: skill-qa
