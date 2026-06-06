@@ -2,7 +2,7 @@
 name: cv-customizer
 sheetId: "7.01"
 description: "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output."
-category: sales-consultant
+category: people-talent
 project: cv-customizer
 platform: claude
 status: Done

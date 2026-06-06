@@ -1,7 +1,7 @@
 ---
 name: interview-question-predictor
 description: "Anticipates likely interview questions for a specific role by analyzing the job description, the candidate's resume, the interview stage, and company context from an interviewer's perspective. Returns a prioritized question map with rationale and evaluation signals. Use when a candidate is preparing for an upcoming interview and needs to know what's coming — strictly prediction, not coaching or model answers."
-category: sales-consultant
+category: people-talent
 project: interview-question-predictor
 platform: claude
 status: Done

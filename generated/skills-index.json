@@ -621,8 +621,8 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 147237,
-    "github_forks": 17384,
+    "github_stars": 147239,
+    "github_forks": 17385,
     "first_seen": "2026-06-03"
   },
   {
@@ -830,6 +830,29 @@
     "first_seen": "2026-06-05"
   },
   {
+    "id": "3.14",
+    "sheet_id": "3.03",
+    "slug": "meeting-prep",
+    "name": "meeting-prep",
+    "summary": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/meeting-prep/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.14.md -o ~/.claude/skills/meeting-prep.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "orchestrator"
+    ],
+    "updated_at": "2026-06-06",
+    "first_seen": "2026-06-06"
+  },
+  {
     "id": "3.08",
     "sheet_id": "3.04",
     "slug": "project-charter-facilitator",
@@ -855,11 +878,11 @@
   {
     "id": "3.12",
     "sheet_id": "3.05",
-    "slug": "meeting-prep",
+    "slug": "project-note-specialist",
     "name": "project-note-specialist",
     "summary": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next).",
     "category": "operations",
-    "project": "meeting-prep",
+    "project": "project-note-specialist",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
@@ -867,13 +890,35 @@
     "source_path": "skills/3-operations/project-note-specialist/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/3.12.md -o ~/.claude/skills/project-note-specialist.md",
     "tags": [
-      "meeting-prep",
+      "project-note-specialist",
       "operations",
       "claude",
       "skill"
     ],
     "updated_at": "2026-06-06",
     "first_seen": "2026-06-05"
+  },
+  {
+    "id": "3.15",
+    "sheet_id": "3.06",
+    "slug": "meeting-prep-meeting-notes-organizer",
+    "name": "meeting-notes-organizer",
+    "summary": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/meeting-prep/agents/meeting-notes-organizer.md",
+    "tags": [
+      "meeting-prep",
+      "operations",
+      "claude",
+      "subagent"
+    ],
+    "updated_at": "2026-06-06",
+    "first_seen": "2026-06-06"
   },
   {
     "id": "3.10",
@@ -1592,8 +1637,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 184590,
-    "github_forks": 31672,
+    "github_stars": 184601,
+    "github_forks": 31674,
     "first_seen": "2026-05-20"
   },
   {
@@ -1602,22 +1647,22 @@
     "slug": "cv-customizer",
     "name": "cv-customizer",
     "summary": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/SKILL.md",
+    "source_path": "skills/7-people-talent/cv-customizer/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.21.md -o ~/.claude/skills/cv-customizer.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "orchestrator"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.22",
@@ -1625,21 +1670,21 @@
     "slug": "cv-customizer-cv-phase1-job-decoder",
     "name": "cv-phase1-job-decoder",
     "summary": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/agents/cv-phase1-job-decoder.md",
+    "source_path": "skills/7-people-talent/cv-customizer/agents/cv-phase1-job-decoder.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.23",
@@ -1647,21 +1692,21 @@
     "slug": "cv-customizer-cv-phase2-story-extractor",
     "name": "cv-phase2-story-extractor",
     "summary": "Surfaces underrepresented skills by comparing the candidate's CV with the job requirements from phase 1, then guides the candidate to articulate strong, job-aligned stories using the SCQA framework.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/agents/cv-phase2-story-extractor.md",
+    "source_path": "skills/7-people-talent/cv-customizer/agents/cv-phase2-story-extractor.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.24",
@@ -1669,21 +1714,21 @@
     "slug": "cv-customizer-cv-phase3-fit-scorer",
     "name": "cv-phase3-fit-scorer",
     "summary": "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/agents/cv-phase3-fit-scorer.md",
+    "source_path": "skills/7-people-talent/cv-customizer/agents/cv-phase3-fit-scorer.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.25",
@@ -1691,21 +1736,21 @@
     "slug": "cv-customizer-cv-phase4-progression",
     "name": "cv-phase4-progression",
     "summary": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/agents/cv-phase4-progression.md",
+    "source_path": "skills/7-people-talent/cv-customizer/agents/cv-phase4-progression.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.26",
@@ -1713,21 +1758,21 @@
     "slug": "cv-customizer-cv-phase5-rewriter",
     "name": "cv-phase5-rewriter",
     "summary": "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/cv-customizer/agents/cv-phase5-rewriter.md",
+    "source_path": "skills/7-people-talent/cv-customizer/agents/cv-phase5-rewriter.md",
     "tags": [
       "cv-customizer",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "7.01",
@@ -1824,22 +1869,22 @@
     "slug": "interview-question-predictor",
     "name": "interview-question-predictor",
     "summary": "Anticipates likely interview questions for a specific role by analyzing the job description, the candidate's resume, the interview stage, and company context from an interviewer's perspective.",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "interview-question-predictor",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/interview-question-predictor/SKILL.md",
+    "source_path": "skills/7-people-talent/interview-question-predictor/SKILL.md",
     "install_command": "curl -sL zynkr.ai/s/2.28.md -o ~/.claude/skills/interview-question-predictor.md",
     "tags": [
       "interview-question-predictor",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "orchestrator"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-24"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "2.32",
@@ -1847,21 +1892,21 @@
     "slug": "interview-question-predictor-mock-interview",
     "name": "mock-interview",
     "summary": "模擬面試 — agent of interview-question-predictor",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "interview-question-predictor",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/interview-question-predictor/agents/mock-interview.md",
+    "source_path": "skills/7-people-talent/interview-question-predictor/agents/mock-interview.md",
     "tags": [
       "interview-question-predictor",
-      "sales-consultant",
+      "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-06",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-06"
   },
   {
     "id": "7.02",

@@ -810,8 +810,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 147237,
-    "githubForks": 17384
+    "githubStars": 147239,
+    "githubForks": 17385
   },
   {
     "id": "1.29",
@@ -897,7 +897,7 @@
   {
     "id": "2.21",
     "name": "cv-customizer",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -924,14 +924,14 @@
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.21.md -o ~/.claude/skills/cv-customizer.md",
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/SKILL.md"
+    "sourceFile": "7-people-talent/cv-customizer/SKILL.md"
   },
   {
     "id": "2.22",
     "name": "cv-phase1-job-decoder",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -950,14 +950,14 @@
       "2.26"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase1-job-decoder.md"
+    "sourceFile": "7-people-talent/cv-customizer/agents/cv-phase1-job-decoder.md"
   },
   {
     "id": "2.23",
     "name": "cv-phase2-story-extractor",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -976,14 +976,14 @@
       "2.26"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase2-story-extractor.md"
+    "sourceFile": "7-people-talent/cv-customizer/agents/cv-phase2-story-extractor.md"
   },
   {
     "id": "2.24",
     "name": "cv-phase3-fit-scorer",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -1002,14 +1002,14 @@
       "2.26"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase3-fit-scorer.md"
+    "sourceFile": "7-people-talent/cv-customizer/agents/cv-phase3-fit-scorer.md"
   },
   {
     "id": "2.25",
     "name": "cv-phase4-progression",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -1028,14 +1028,14 @@
       "2.26"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase4-progression.md"
+    "sourceFile": "7-people-talent/cv-customizer/agents/cv-phase4-progression.md"
   },
   {
     "id": "2.26",
     "name": "cv-phase5-rewriter",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "cv-customizer",
     "platform": "claude",
     "status": "Done",
@@ -1054,14 +1054,14 @@
       "2.26"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/cv-customizer/agents/cv-phase5-rewriter.md"
+    "sourceFile": "7-people-talent/cv-customizer/agents/cv-phase5-rewriter.md"
   },
   {
     "id": "2.28",
     "name": "interview-question-predictor",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "interview-question-predictor",
     "platform": "claude",
     "status": "Done",
@@ -1084,9 +1084,9 @@
     ],
     "installCommand": "curl -sL zynkr.ai/s/2.28.md -o ~/.claude/skills/interview-question-predictor.md",
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-24",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/interview-question-predictor/SKILL.md"
+    "sourceFile": "7-people-talent/interview-question-predictor/SKILL.md"
   },
   {
     "id": "2.29",
@@ -1182,7 +1182,7 @@
   {
     "id": "2.32",
     "name": "mock-interview",
-    "category": "sales-consultant",
+    "category": "people-talent",
     "project": "interview-question-predictor",
     "platform": "claude",
     "status": "Done",
@@ -1204,9 +1204,9 @@
       "2.32"
     ],
     "updatedAt": "2026-06-06",
-    "firstSeen": "2026-05-25",
+    "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/interview-question-predictor/agents/mock-interview.md"
+    "sourceFile": "7-people-talent/interview-question-predictor/agents/mock-interview.md"
   },
   {
     "id": "2.33",
@@ -1511,7 +1511,7 @@
     "id": "3.12",
     "name": "project-note-specialist",
     "category": "operations",
-    "project": "meeting-prep",
+    "project": "project-note-specialist",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
@@ -1562,6 +1562,65 @@
     "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/zynkr-support/SKILL.md"
+  },
+  {
+    "id": "3.14",
+    "name": "meeting-prep",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "description": "排程自動執行的會議準備助手：每天早上 9 點掃描 7 天內的會議並發送 action 提醒，每天下午 3 點發送隔天會議的完整 briefing。通知透過 Google Chat 傳給自己。不需要手動觸發，不處理會後追蹤。",
+    "input": "無（排程自動觸發，讀取 Google Calendar 與 Gmail）",
+    "process": "9am cron：掃描 7 天日曆 → 發 action 提醒到 Google Chat｜3pm cron：掃 Gmail 找與會者背景 → 發 briefing 到 Google Chat",
+    "output": "Google Chat 自我訊息：早上為 action checklist，下午為結構化 briefing",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.14",
+    "sheetId": "3.03",
+    "kind": "orchestrator",
+    "synergy": [
+      "3.14",
+      "3.15"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.14.md -o ~/.claude/skills/meeting-prep.md",
+    "updatedAt": "2026-06-06",
+    "firstSeen": "2026-06-06",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/meeting-prep/SKILL.md"
+  },
+  {
+    "id": "3.15",
+    "name": "meeting-notes-organizer",
+    "category": "operations",
+    "project": "meeting-prep",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "description": "專案助理 ─ 整理會議筆記 — agent of meeting-prep",
+    "input": "Raw meeting notes, transcripts, or unstructured updates.",
+    "process": "Reorganize scattered details into logical categories, inferring context while maintaining professional clarity.",
+    "output": "A structured \"Weekly Project Update\" featuring Summary, Progress, Blockers, and What's Next.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.15",
+    "sheetId": "3.06",
+    "kind": "subagent",
+    "synergy": [
+      "3.14",
+      "3.15"
+    ],
+    "updatedAt": "2026-06-06",
+    "firstSeen": "2026-06-06",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/meeting-prep/agents/meeting-notes-organizer.md"
   },
   {
     "id": "4.01",
@@ -2159,8 +2218,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 184590,
-    "githubForks": 31672
+    "githubStars": 184601,
+    "githubForks": 31674
   },
   {
     "id": "6.14",
