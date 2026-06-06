@@ -732,7 +732,7 @@
     "description": "簡報三棒接力的第一棒：把原始簡報素材／主題＋想傳達的訊息，順成一條邏輯流暢的故事線──確認簡報目標與受眾、定出貫穿全場的核心主張、排出有序的敘事弧線 (beats)、並逐一檢查轉折是否跳躍或有缺口，產出 SLIDE_PACKET ▸ Storyline 敘事骨架交給 slide-page-splitter 分頁。當使用者說「幫我設計簡報故事線」「順一下這份簡報的邏輯」「這個 deck 的敘事怎麼排」「我要做提案／募資／培訓簡報，先把骨架抓出來」「檢查我的簡報流暢度」或丟給你一堆零散簡報素材想先理清結構時，主動觸發我。範圍界線：我只負責故事線與邏輯骨架，不切投影片頁、不寫每頁文案、不選版式或視覺──分頁是第二棒 slide-page-splitter 的事，視覺規格是第三棒 slide-visual-selector 的事，算繪 .pptx 是 pptx 技能的事。",
     "input": "原始簡報素材／主題 + 想傳達的訊息（零散筆記、bullet、舊版 deck、口頭重點皆可）",
     "process": "釐清目標與受眾 → 定核心主張 → 排敘事弧線 beats → 邏輯流暢度檢查 → 人工審核 (HITL) → 交棒並存檔",
-    "output": "SLIDE_PACKET ▸ Storyline 敘事骨架，交給 slide-page-splitter (1.13) 分頁",
+    "output": "SLIDE_PACKET ▸ Storyline 敘事骨架，交給 slide-page-splitter (1.26) 分頁",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -810,7 +810,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 147241,
+    "githubStars": 147242,
     "githubForks": 17386
   },
   {
@@ -2179,8 +2179,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35400,
-    "githubForks": 2227
+    "githubStars": 35402,
+    "githubForks": 2228
   },
   {
     "id": "6.13",
@@ -2218,8 +2218,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 184608,
-    "githubForks": 31674
+    "githubStars": 184641,
+    "githubForks": 31678
   },
   {
     "id": "6.14",
