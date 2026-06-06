@@ -27,13 +27,13 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sli
 ```
 zynkr-slide（總指揮，選用）─ 一路帶著 SLIDE_PACKET ▸ Brief
         ▼
-slide-storyline-designer (1.12)
+slide-storyline-designer (1.25)
         │  SLIDE_PACKET ▸ Storyline
         ▼
-slide-page-splitter (1.13)
+slide-page-splitter (1.26)
         │  SLIDE_PACKET ▸ Pages
         ▼
-slide-visual-selector (1.14)  ← 你在這
+slide-visual-selector (1.27)  ← 你在這
         │  SLIDE_PACKET ▸ Visuals (render-ready)
         ▼
 pptx 技能  → 算繪成 .pptx
@@ -160,7 +160,7 @@ pptx 技能  → 算繪成 .pptx
 
 審核通過後：
 
-1. 把完整 `SLIDE_PACKET ▸ Visuals` 存入本份簡報的工作子資料夾（durable 紀錄，與 1.12 / 1.13 同一份 SLIDE_PACKET）。
+1. 把完整 `SLIDE_PACKET ▸ Visuals` 存入本份簡報的工作子資料夾（durable 紀錄，與 1.25 / 1.26 同一份 SLIDE_PACKET）。
 2. **呼叫已安裝的 pptx 技能**：請它走 **Create from scratch** 路徑（`Read ~/.claude/skills/pptx/pptxgenjs.md`），以 `SLIDE_PACKET ▸ Visuals` 為輸入，逐頁 `pres.addSlide()` 把每個視覺元素用對應原語算繪成 `.pptx`，並完成 pptx 技能本身要求的 QA（markitdown 文字檢查 + 子代理視覺檢查）。
 3. 提醒 pptx 技能：色彩與字體依 `./references/brand-source.md` 載入的品牌（表面色底、單一決策色、品牌色盤圖表，色值去 `#`），版面依本棒給的版面配置；未設定品牌則用中性預設。
 
@@ -196,6 +196,6 @@ SLIDE_PACKET ▸ Visuals   （交給 pptx 技能算繪成 .pptx）
 
 只做「內容 → 版式 archetype → pptxgenjs 算繪原語」的視覺選擇與版面配置。**不做**：
 
-- **不重寫故事線**：簡報目標 / 核心主張 / 敘事弧線屬於第一棒 `slide-storyline-designer` (1.12)（▸ Storyline）。
-- **不重新分頁、不改每頁要講什麼**：那是第二棒 `slide-page-splitter` (1.13)（▸ Pages）；遇到單頁資訊量爆表只標記退回，不自己硬塞。
+- **不重寫故事線**：簡報目標 / 核心主張 / 敘事弧線屬於第一棒 `slide-storyline-designer` (1.25)（▸ Storyline）。
+- **不重新分頁、不改每頁要講什麼**：那是第二棒 `slide-page-splitter` (1.26)（▸ Pages）；遇到單頁資訊量爆表只標記退回，不自己硬塞。
 - **不實際產生 `.pptx` 檔、不寫 pptxgenjs 程式碼、不做最終算繪 QA**：那是下游已安裝的 **pptx 技能**（`~/.claude/skills/pptx`，Create from scratch / pptxgenjs.md），本棒只把 ▸ Visuals 交給它。

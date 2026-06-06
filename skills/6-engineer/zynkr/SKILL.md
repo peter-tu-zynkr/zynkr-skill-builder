@@ -10,7 +10,7 @@ author: Peter Tu
 input: "Anything: a URL, local file path, skill slug, free-text idea, status question, or pasted content. The skill classifies the input shape before doing anything else."
 process: "Classify input shape → look up state across the four signals (Project / issues / on-disk / live API) when the input references a skill-pipeline item → route to the right sub-skill via the Skill tool when confidence is high, or ask one targeted clarifying question when ambiguous. Surfaces queue / dashboard views on read-only queries."
 output: "Either: (a) an auto-invocation of the right Zynkr sub-skill (most common); (b) one targeted clarifying question when intent is genuinely ambiguous; (c) a compact state table when the user asks 'what's in my queue' / 'where is X'."
-synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "write-newsletter", "polish-lecture-transcript", "biz-card", "cv-customizer", "support-reply-drafter", "newsletter-to-notion", "write-article", "srt-optimizer", "zynkr-slide"]
+synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "write-newsletter", "polish-lecture-transcript", "biz-card", "cv-customizer", "zynkr-support", "newsletter-to-notion", "write-article", "srt-optimizer", "zynkr-slide"]
 ---
 
 # Zynkr
@@ -21,7 +21,7 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zyn
 
 The **front-door router** for everything Peter drops into the assistant. Take any input — a URL, a path, a slug, a half-formed idea, a "where am I with X?" question — figure out which Zynkr capability it belongs to, read the relevant state, and route. This is Zynkr's mission expressed as a skill: *gather knowledge, turn it into a capability, add it to the knowledge base* — applied recursively to the assistant itself.
 
-> **Where this fits:** `/zynkr` sits **above** the canonical 4-skill skill-authoring chain (`/skill-sourcer` → `/skill-triager` → `/skill-creator` → `/skill-publish`) and beside the content skills (`/write-newsletter`, `/biz-card`, `/polish-lecture-transcript`, etc.). It does not replace any of them. Power users still call them directly. `/zynkr` is the catch-all for unstructured input.
+> **Where this fits:** `/zynkr` sits **above** the canonical skill-authoring chain (`/skill-sourcer` → `/skill-triager` → `/skill-creator` → `/skill-publish`) and beside the content skills (`/write-newsletter`, `/biz-card`, `/polish-lecture-transcript`, etc.). It does not replace any of them. Power users still call them directly. `/zynkr` is the catch-all for unstructured input.
 
 ---
 
@@ -105,7 +105,7 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 | `typed-text` mentioning newsletter / 電子報 | Invoke `/write-newsletter` | Medium → confirm intent |
 | `typed-text` mentioning CV / 履歷 / resume | Invoke `/cv-customizer` | Medium → confirm |
 | `typed-text` mentioning article / 文章 outline | Invoke `/write-article` | Medium → confirm |
-| `typed-text` about support inbox / 客服 | Invoke `/support-reply-drafter` | High → auto |
+| `typed-text` about support inbox / 客服 | Invoke `/zynkr-support` | High → auto |
 | `deck-request` — build a slide deck / 簡報 / 投影片 (from material, a topic, or a resume-mid-relay packet) | Invoke `/zynkr-slide` | High → auto |
 
 ### Read-only state queries
