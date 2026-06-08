@@ -810,7 +810,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 148000,
+    "githubStars": 148001,
     "githubForks": 17469
   },
   {
@@ -2180,7 +2180,7 @@
       "snyk": "pending"
     },
     "githubStars": 35587,
-    "githubForks": 2241
+    "githubForks": 2242
   },
   {
     "id": "6.13",
@@ -2218,8 +2218,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 187202,
-    "githubForks": 32241
+    "githubStars": 187206,
+    "githubForks": 32244
   },
   {
     "id": "6.14",

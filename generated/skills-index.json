@@ -621,7 +621,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 148000,
+    "github_stars": 148001,
     "github_forks": 17469,
     "first_seen": "2026-06-03"
   },
@@ -1610,7 +1610,7 @@
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
     "github_stars": 35587,
-    "github_forks": 2241,
+    "github_forks": 2242,
     "first_seen": "2026-05-12"
   },
   {
@@ -1637,8 +1637,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 187202,
-    "github_forks": 32241,
+    "github_stars": 187206,
+    "github_forks": 32244,
     "first_seen": "2026-05-20"
   },
   {
