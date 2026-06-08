@@ -63,6 +63,10 @@
     "7-people-talent/interview-question-predictor/agents/mock-interview.md": {
       "forcedId": "2.32",
       "legacyIpoId": "2.32"
+    },
+    "2-sales-consultant/sales-client-sourcing/SKILL.md": {
+      "forcedId": "2.33",
+      "legacyIpoId": "2.33"
     }
   }
 }
