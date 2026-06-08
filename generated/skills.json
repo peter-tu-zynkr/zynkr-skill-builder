@@ -1210,13 +1210,13 @@
   },
   {
     "id": "2.33",
-    "name": "bd-sourcing",
+    "name": "sales-client-sourcing",
     "category": "sales-consultant",
-    "project": "bd-sourcing",
+    "project": "sales-client-sourcing",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "9-step BD sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag.",
+    "description": "9-step sales client sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag.",
     "input": "Google Sheet of survey participants — each row has company name, AI challenges, topic interests, and attend-motivation signals",
     "process": "Header auto-detection → generic-name filter → output column provisioning → formula writes (Hot Lead / 平均分數) → parallel WebSearch enrichment → strategy synthesis weaving challenges + interests → sort-safe write-back → Well-Known judgment → run summary",
     "output": "Same sheet + 5–7 new columns: 官網, 公司背景, 陌生開發策略, Hot Lead?, 知名企業? (and optionally 有普通?, 平均分數); plus a 'needs follow-up' list for unknowns",
@@ -1231,11 +1231,11 @@
     "synergy": [
       "2.33"
     ],
-    "installCommand": "curl -sL zynkr.ai/s/2.33.md -o ~/.claude/skills/bd-sourcing.md",
+    "installCommand": "curl -sL zynkr.ai/s/2.33.md -o ~/.claude/skills/sales-client-sourcing.md",
     "updatedAt": "2026-06-08",
     "firstSeen": "2026-05-25",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "2-sales-consultant/bd-sourcing/SKILL.md"
+    "sourceFile": "2-sales-consultant/sales-client-sourcing/SKILL.md"
   },
   {
     "id": "2.34",

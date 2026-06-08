@@ -1,9 +1,9 @@
 ---
-name: bd-sourcing
+name: sales-client-sourcing
 sheetId: "2.01"
-description: "9-step BD sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag."
+description: "9-step sales client sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag."
 category: sales-consultant
-project: bd-sourcing
+project: sales-client-sourcing
 platform: claude
 status: Done
 author: Peter Tu
@@ -13,20 +13,20 @@ output: "Same sheet + 5–7 new columns: 官網, 公司背景, 陌生開發策�
 synergy: []
 ---
 
-# BD Sourcing
+# Sales Client Sourcing
 
 ```bash
-npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill bd-sourcing
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sales-client-sourcing
 ```
 
-Turn a post-event satisfaction survey into a tier-1 BD outbound funnel in one pass. Use this skill after any workshop, public class, or speaking event where you've collected attendee responses with company name + AI pain points + topic interests, and you want each row enriched with company context and a tailored cold-outbound (陌生開發) angle. Trigger on phrases like "處理活動問卷", "幫我做 BD 名單", "把問卷變成陌生開發清單", "process survey for BD", or "/bd-sourcing".
+Turn a post-event satisfaction survey into a tier-1 BD outbound funnel in one pass. Use this skill after any workshop, public class, or speaking event where you've collected attendee responses with company name + AI pain points + topic interests, and you want each row enriched with company context and a tailored cold-outbound (陌生開發) angle. Trigger on phrases like "處理活動問卷", "幫我做 BD 名單", "把問卷變成陌生開發清單", "process survey for BD", or "/sales-client-sourcing".
 
 ---
 
 ## Step 0 — Load Config
 
 Read the config file at:
-`./bd-sourcing-config.md`
+`./sales-client-sourcing-config.md`
 
 Store:
 - `SHEET_ID` — Google Sheet ID
@@ -51,7 +51,7 @@ Wait for user input. Update `SHEET_ID` in memory for this session.
 Display:
 ```
 ---------------------------------------------
-🎯 BD Sourcing
+🎯 Sales Client Sourcing
 ---------------------------------------------
 Phase: Header Detection
 ---------------------------------------------
@@ -271,7 +271,7 @@ mcp__google-workspace__modify_sheet_values
 Display:
 ```
 =============================================
-🎯 BD Sourcing — Complete
+🎯 Sales Client Sourcing — Complete
 =============================================
 
 Total rows:       [N]

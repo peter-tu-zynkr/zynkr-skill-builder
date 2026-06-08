@@ -1,4 +1,4 @@
-# BD Sourcing — Runtime Config
+# Sales Client Sourcing — Runtime Config
 
 Edit the values below for your environment. Placeholders in `<angle-brackets>` will be substituted at skill runtime; leave them as-is and the skill will prompt you when needed.
 
