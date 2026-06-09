@@ -621,8 +621,8 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 148343,
-    "github_forks": 17500,
+    "github_stars": 148383,
+    "github_forks": 17505,
     "first_seen": "2026-06-03"
   },
   {
@@ -853,27 +853,27 @@
     "first_seen": "2026-06-06"
   },
   {
-    "id": "3.08",
+    "id": "3.16",
     "sheet_id": "3.04",
-    "slug": "project-charter-facilitator",
+    "slug": "project-planning",
     "name": "project-planning",
     "summary": "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter.",
     "category": "operations",
-    "project": "project-charter-facilitator",
+    "project": "project-planning",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/project-charter-facilitator/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/3.08.md -o ~/.claude/skills/project-planning.md",
+    "source_path": "skills/3-operations/project-planning/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.16.md -o ~/.claude/skills/project-planning.md",
     "tags": [
-      "project-charter-facilitator",
+      "project-planning",
       "operations",
       "claude",
       "skill"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "3.12",
@@ -1378,7 +1378,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 21793,
+    "github_stars": 21805,
     "github_forks": 1743,
     "first_seen": "2026-05-25"
   },
@@ -1586,21 +1586,21 @@
     "first_seen": "2026-05-25"
   },
   {
-    "id": "6.12",
+    "id": "6.19",
     "sheet_id": "6.11",
-    "slug": "vercel-labs-agent-browser",
+    "slug": "agent-browser",
     "name": "agent-browser",
     "summary": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
     "category": "engineer",
-    "project": "vercel-labs-agent-browser",
+    "project": "agent-browser",
     "platform": "claude",
     "status": "Done",
     "author": "Vercel Labs",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/6-engineer/vercel-labs-agent-browser/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/agent-browser.md",
+    "source_path": "skills/6-engineer/agent-browser/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.19.md -o ~/.claude/skills/agent-browser.md",
     "tags": [
-      "vercel-labs-agent-browser",
+      "agent-browser",
       "engineer",
       "claude",
       "skill"
@@ -1609,9 +1609,9 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 35644,
+    "github_stars": 35648,
     "github_forks": 2245,
-    "first_seen": "2026-05-12"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "6.13",
@@ -1637,8 +1637,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 188135,
-    "github_forks": 32403,
+    "github_stars": 188266,
+    "github_forks": 32436,
     "first_seen": "2026-05-20"
   },
   {
@@ -1775,93 +1775,93 @@
     "first_seen": "2026-06-06"
   },
   {
-    "id": "7.01",
+    "id": "7.06",
     "sheet_id": "7.07",
-    "slug": "recruiting-pipeline",
+    "slug": "zynkr-recruiter",
     "name": "zynkr-recruiter",
     "summary": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (Chinese-English) outputs throughout.",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/7-people-talent/recruiting-pipeline/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/7.01.md -o ~/.claude/skills/zynkr-recruiter.md",
+    "source_path": "skills/7-people-talent/zynkr-recruiter/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/7.06.md -o ~/.claude/skills/zynkr-recruiter.md",
     "tags": [
-      "recruiting-pipeline",
+      "zynkr-recruiter",
       "people-talent",
       "claude",
       "orchestrator"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "7.04",
+    "id": "7.09",
     "sheet_id": "7.08",
-    "slug": "recruiting-pipeline-jd-architect",
+    "slug": "zynkr-recruiter-jd-architect",
     "name": "jd-architect",
-    "summary": "Recruiting assistant — align role requirements (招募助理 ─ 對齊職務需求) — agent of recruiting-pipeline",
+    "summary": "Recruiting assistant — align role requirements (招募助理 ─ 對齊職務需求) — agent of zynkr-recruiter",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/jd-architect.md",
+    "source_path": "skills/7-people-talent/zynkr-recruiter/agents/jd-architect.md",
     "tags": [
-      "recruiting-pipeline",
+      "zynkr-recruiter",
       "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "7.05",
+    "id": "7.10",
     "sheet_id": "7.09",
-    "slug": "recruiting-pipeline-resume-screener",
+    "slug": "zynkr-recruiter-resume-screener",
     "name": "resume-screener",
-    "summary": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
+    "summary": "招募助理 ─ 履歷篩選 — agent of zynkr-recruiter",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/resume-screener.md",
+    "source_path": "skills/7-people-talent/zynkr-recruiter/agents/resume-screener.md",
     "tags": [
-      "recruiting-pipeline",
+      "zynkr-recruiter",
       "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "7.03",
+    "id": "7.08",
     "sheet_id": "7.10",
-    "slug": "recruiting-pipeline-interview-question-designer",
+    "slug": "zynkr-recruiter-interview-question-designer",
     "name": "interview-question-designer",
-    "summary": "Recruiting Assistant ─ Interview Question & Scorecard Designer — agent of recruiting-pipeline",
+    "summary": "Recruiting Assistant ─ Interview Question & Scorecard Designer — agent of zynkr-recruiter",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-question-designer.md",
+    "source_path": "skills/7-people-talent/zynkr-recruiter/agents/interview-question-designer.md",
     "tags": [
-      "recruiting-pipeline",
+      "zynkr-recruiter",
       "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "2.28",
@@ -1909,25 +1909,25 @@
     "first_seen": "2026-06-06"
   },
   {
-    "id": "7.02",
+    "id": "7.07",
     "sheet_id": "7.13",
-    "slug": "recruiting-pipeline-interview-calibrator",
+    "slug": "zynkr-recruiter-interview-calibrator",
     "name": "interview-calibrator",
-    "summary": "Recruiting assistant — interview score calibration and decision (招募助理 ─ 面試評分校準與決策) — agent of recruiting-pipeline",
+    "summary": "Recruiting assistant — interview score calibration and decision (招募助理 ─ 面試評分校準與決策) — agent of zynkr-recruiter",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/7-people-talent/recruiting-pipeline/agents/interview-calibrator.md",
+    "source_path": "skills/7-people-talent/zynkr-recruiter/agents/interview-calibrator.md",
     "tags": [
-      "recruiting-pipeline",
+      "zynkr-recruiter",
       "people-talent",
       "claude",
       "subagent"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-25"
+    "first_seen": "2026-06-09"
   }
 ]

@@ -810,8 +810,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 148343,
-    "githubForks": 17500
+    "githubStars": 148383,
+    "githubForks": 17505
   },
   {
     "id": "1.29",
@@ -1392,35 +1392,6 @@
     "sourceFile": "3-operations/operations-transformation/agents/process-redesigner.md"
   },
   {
-    "id": "3.08",
-    "name": "project-planning",
-    "category": "operations",
-    "project": "project-charter-facilitator",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Peter Tu",
-    "description": "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter.",
-    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
-    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
-    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
-    "ipoProvenance": {
-      "input": "frontmatter",
-      "process": "frontmatter",
-      "output": "frontmatter"
-    },
-    "legacyIpoId": "3.08",
-    "sheetId": "3.04",
-    "kind": "skill",
-    "synergy": [
-      "3.08"
-    ],
-    "installCommand": "curl -sL zynkr.ai/s/3.08.md -o ~/.claude/skills/project-planning.md",
-    "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "3-operations/project-charter-facilitator/SKILL.md"
-  },
-  {
     "id": "3.09",
     "name": "drift-check",
     "category": "operations",
@@ -1621,6 +1592,35 @@
     "firstSeen": "2026-06-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "3-operations/meeting-prep/agents/meeting-notes-organizer.md"
+  },
+  {
+    "id": "3.16",
+    "name": "project-planning",
+    "category": "operations",
+    "project": "project-planning",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter.",
+    "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
+    "process": "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks.",
+    "output": "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.16",
+    "sheetId": "3.04",
+    "kind": "skill",
+    "synergy": [
+      "3.16"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.16.md -o ~/.claude/skills/project-planning.md",
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/project-planning/SKILL.md"
   },
   {
     "id": "4.01",
@@ -2146,43 +2146,6 @@
     }
   },
   {
-    "id": "6.12",
-    "name": "agent-browser",
-    "category": "engineer",
-    "project": "vercel-labs-agent-browser",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Vercel Labs",
-    "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
-    "input": "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture",
-    "output": "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web...",
-    "ipoProvenance": {
-      "input": "frontmatter",
-      "output": "frontmatter"
-    },
-    "legacyIpoId": "6.12",
-    "sheetId": "6.11",
-    "kind": "skill",
-    "synergy": [
-      "6.12"
-    ],
-    "installCommand": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/agent-browser.md",
-    "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-12",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "6-engineer/vercel-labs-agent-browser/SKILL.md",
-    "upstreamRepo": "https://github.com/vercel-labs/agent-browser",
-    "originalSourceUrl": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
-    "originalAuthor": "Vercel Labs",
-    "securityAudits": {
-      "gen_agent_trust_hub": "pending",
-      "socket": "pending",
-      "snyk": "pending"
-    },
-    "githubStars": 35644,
-    "githubForks": 2245
-  },
-  {
     "id": "6.13",
     "name": "hermes-agent",
     "category": "engineer",
@@ -2218,8 +2181,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 188135,
-    "githubForks": 32403
+    "githubStars": 188266,
+    "githubForks": 32436
   },
   {
     "id": "6.14",
@@ -2311,7 +2274,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 21793,
+    "githubStars": 21805,
     "githubForks": 1743
   },
   {
@@ -2373,164 +2336,201 @@
     "sourceFile": "6-engineer/skill-qa/SKILL.md"
   },
   {
-    "id": "7.01",
+    "id": "6.19",
+    "name": "agent-browser",
+    "category": "engineer",
+    "project": "agent-browser",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Vercel Labs",
+    "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
+    "input": "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture",
+    "output": "Accessibility-tree snapshots with element refs, page text/HTML/attributes, screenshots (PNG/JPEG/PDF), JSON results, HAR recordings, visual diffs, React component trees, Web...",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "6.19",
+    "sheetId": "6.11",
+    "kind": "skill",
+    "synergy": [
+      "6.19"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/6.19.md -o ~/.claude/skills/agent-browser.md",
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "6-engineer/agent-browser/SKILL.md",
+    "upstreamRepo": "https://github.com/vercel-labs/agent-browser",
+    "originalSourceUrl": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
+    "originalAuthor": "Vercel Labs",
+    "securityAudits": {
+      "gen_agent_trust_hub": "pending",
+      "socket": "pending",
+      "snyk": "pending"
+    },
+    "githubStars": 35648,
+    "githubForks": 2245
+  },
+  {
+    "id": "7.06",
     "name": "zynkr-recruiter",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
     "description": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (Chinese-English) outputs throughout.",
-    "input": "Hiring manager provides rough notes or ideas about the role.",
-    "process": "Assistant asks structured clarifying questions and guides the user through a JD-creation workflow.",
-    "output": "A complete JD draft in YAML with versioning and an optional alignment summary.",
+    "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
+    "process": "Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.",
+    "output": "Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",
     "ipoProvenance": {
       "input": "csv",
       "process": "csv",
       "output": "csv"
     },
-    "legacyIpoId": "7.01",
+    "legacyIpoId": "7.06",
     "sheetId": "7.07",
     "kind": "orchestrator",
     "synergy": [
-      "7.01",
-      "7.02",
-      "7.03",
-      "7.04",
-      "7.05"
+      "7.06",
+      "7.07",
+      "7.08",
+      "7.09",
+      "7.10"
     ],
-    "installCommand": "curl -sL zynkr.ai/s/7.01.md -o ~/.claude/skills/zynkr-recruiter.md",
+    "installCommand": "curl -sL zynkr.ai/s/7.06.md -o ~/.claude/skills/zynkr-recruiter.md",
     "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
+    "firstSeen": "2026-06-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "7-people-talent/recruiting-pipeline/SKILL.md"
+    "sourceFile": "7-people-talent/zynkr-recruiter/SKILL.md"
   },
   {
-    "id": "7.02",
+    "id": "7.07",
     "name": "interview-calibrator",
     "category": "people-talent",
-    "project": "recruiting-pipeline",
+    "project": "zynkr-recruiter",
     "platform": "claude",
     "status": "Done",
     "author": "Jane Liao",
-    "description": "Recruiting assistant — interview score calibration and decision (招募助理 ─ 面試評分校準與決策) — agent of recruiting-pipeline",
+    "description": "Recruiting assistant — interview score calibration and decision (招募助理 ─ 面試評分校準與決策) — agent of zynkr-recruiter",
+    "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
+    "process": "Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.",
+    "output": "Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "7.07",
+    "sheetId": "7.13",
+    "kind": "subagent",
+    "synergy": [
+      "7.06",
+      "7.07",
+      "7.08",
+      "7.09",
+      "7.10"
+    ],
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "7-people-talent/zynkr-recruiter/agents/interview-calibrator.md"
+  },
+  {
+    "id": "7.08",
+    "name": "interview-question-designer",
+    "category": "people-talent",
+    "project": "zynkr-recruiter",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "description": "Recruiting Assistant ─ Interview Question & Scorecard Designer — agent of zynkr-recruiter",
+    "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
+    "process": "Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.",
+    "output": "Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "7.08",
+    "sheetId": "7.10",
+    "kind": "subagent",
+    "synergy": [
+      "7.06",
+      "7.07",
+      "7.08",
+      "7.09",
+      "7.10"
+    ],
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "7-people-talent/zynkr-recruiter/agents/interview-question-designer.md"
+  },
+  {
+    "id": "7.09",
+    "name": "jd-architect",
+    "category": "people-talent",
+    "project": "zynkr-recruiter",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "description": "Recruiting assistant — align role requirements (招募助理 ─ 對齊職務需求) — agent of zynkr-recruiter",
+    "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
+    "process": "Apply course frameworks to quiz, evaluate, or explain through guided questioning and structured feedback.",
+    "output": "Scored assessments or clear, practical explanations that deepen understanding and improve AI-assisted writing skills.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "7.09",
+    "sheetId": "7.08",
+    "kind": "subagent",
+    "synergy": [
+      "7.06",
+      "7.07",
+      "7.08",
+      "7.09",
+      "7.10"
+    ],
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "7-people-talent/zynkr-recruiter/agents/jd-architect.md"
+  },
+  {
+    "id": "7.10",
+    "name": "resume-screener",
+    "category": "people-talent",
+    "project": "zynkr-recruiter",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "description": "招募助理 ─ 履歷篩選 — agent of zynkr-recruiter",
     "input": "JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size.",
     "process": "Decode JD → analyze resumes → score candidates using hard-skill gate, domain fit, weighted metrics, and risk indicators.",
     "output": "Ranked candidate evaluation with scores, risks, cultural fit notes, and a final HR decision summary.",
     "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
     },
-    "legacyIpoId": "7.02",
-    "sheetId": "7.13",
-    "kind": "subagent",
-    "synergy": [
-      "7.01",
-      "7.02",
-      "7.03",
-      "7.04",
-      "7.05"
-    ],
-    "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "7-people-talent/recruiting-pipeline/agents/interview-calibrator.md"
-  },
-  {
-    "id": "7.03",
-    "name": "interview-question-designer",
-    "category": "people-talent",
-    "project": "recruiting-pipeline",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Jane Liao",
-    "description": "Recruiting Assistant ─ Interview Question & Scorecard Designer — agent of recruiting-pipeline",
-    "input": "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).",
-    "process": "Convert role requirements into a competency model → assign competencies to interview rounds → generate structured question bank (behavioral, situational, technical, culture) → produce tailored risk-based questions → build weighted scorecard with behavioral...",
-    "output": "A complete bilingual interview kit including competency model, question sets, risk questions, scoring rubrics, and a finalized scorecard ready for interviewers to use.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "7.03",
-    "sheetId": "7.10",
-    "kind": "subagent",
-    "synergy": [
-      "7.01",
-      "7.02",
-      "7.03",
-      "7.04",
-      "7.05"
-    ],
-    "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "7-people-talent/recruiting-pipeline/agents/interview-question-designer.md"
-  },
-  {
-    "id": "7.04",
-    "name": "jd-architect",
-    "category": "people-talent",
-    "project": "recruiting-pipeline",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Jane Liao",
-    "description": "Recruiting assistant — align role requirements (招募助理 ─ 對齊職務需求) — agent of recruiting-pipeline",
-    "input": "Interview transcripts, interviewer scorecards, Assistant A’s question set and scoring standards, and hiring manager/HR inputs.",
-    "process": "Extract behavioral evidence → compile independent feedback → detect discrepancies across interviewers → prepare pre-calibration summaries → support calibration discussions → document final hire/no-hire decisions with rationale and risk considerations.",
-    "output": "A structured final evaluation package including evidence summaries, discrepancy analysis, calibration notes, final decision record, and candidate communication guidelines.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "7.04",
-    "sheetId": "7.08",
-    "kind": "subagent",
-    "synergy": [
-      "7.01",
-      "7.02",
-      "7.03",
-      "7.04",
-      "7.05"
-    ],
-    "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
-    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "7-people-talent/recruiting-pipeline/agents/jd-architect.md"
-  },
-  {
-    "id": "7.05",
-    "name": "resume-screener",
-    "category": "people-talent",
-    "project": "recruiting-pipeline",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Jane Liao",
-    "description": "招募助理 ─ 履歷篩選 — agent of recruiting-pipeline",
-    "input": "Candidate information, hiring stage, interview details (if applicable), and any specific instructions regarding tone or language preference.",
-    "process": "Auto-detect communication scenario → classify risk level → check required information → generate a compliant formal email using structured templates and context-aware tone → provide optional refinements.",
-    "output": "A polished, risk-compliant, formal business email (Chinese, English, or bilingual), fully personalized and ready to send.",
-    "ipoProvenance": {
-      "input": "csv",
-      "process": "csv",
-      "output": "csv"
-    },
-    "legacyIpoId": "7.05",
+    "legacyIpoId": "7.10",
     "sheetId": "7.09",
     "kind": "subagent",
     "synergy": [
-      "7.01",
-      "7.02",
-      "7.03",
-      "7.04",
-      "7.05"
+      "7.06",
+      "7.07",
+      "7.08",
+      "7.09",
+      "7.10"
     ],
     "updatedAt": "2026-06-09",
-    "firstSeen": "2026-05-25",
+    "firstSeen": "2026-06-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "sourceFile": "7-people-talent/recruiting-pipeline/agents/resume-screener.md"
+    "sourceFile": "7-people-talent/zynkr-recruiter/agents/resume-screener.md"
   }
 ]
