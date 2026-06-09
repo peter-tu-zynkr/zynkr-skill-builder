@@ -8,11 +8,15 @@
  * — e.g. an orchestrator sourced from CLAUDE.md. So the tree mirrors
  * https://zynkr.ai/ai-skills-marketplace in the normal case. Each node shows:
  *
- *   <sheetId> <name> (<folder-slug>/)   ✓ <description>  +agents
+ *   <sheetId> <name>   ✓ <description>  +agents
+ *   <sheetId> <name> (<folder-slug>/)   ✓ ...   ← only when slug ≠ name (drift)
  *
- * The folder slug is the frozen canonical id (drives /s/{id}.md install URLs);
- * the display name may differ (renames are frontmatter-only). Within a
- * category, skills are ordered by sheetId.
+ * The `(<folder-slug>/)` column is a quiet drift flag: it renders ONLY when the
+ * folder slug differs from the display name. The convention is that they match
+ * (frontmatter `name` is canonical — folder, project, slug and name are kept in
+ * lockstep), so the column normally collapses and the page stays clean; it
+ * re-appears the moment a new/renamed skill drifts. Within a category, skills
+ * are ordered by sheetId.
  *
  * Beyond the missing/short/title-description checks, the tree flags genuine
  * source↔catalog drift so the README stays honest:
@@ -233,9 +237,14 @@ function renderTree(categories: Category[]): string {
       const isLastSkill = si === cat.skills.length - 1;
       const skillPrefix = isLastSkill ? '└── ' : '├── ';
       const numCol = pad(skill.sheetId || '—', 5);
-      const nameCol = pad(skill.displayName, 26);
-      const folderCol = pad(`(${skill.slug}/)`, 24);
-      const left = `${childIndent}${skillPrefix}${numCol}${nameCol}${folderCol}`;
+      // Folder-slug column only renders on drift (slug ≠ display name) — a
+      // quiet drift flag. When they match (the norm), collapse it so the name
+      // spans the full width and the description column stays aligned.
+      const drift = skill.slug !== skill.displayName;
+      const nameBlock = drift
+        ? `${pad(skill.displayName, 26)}${pad(`(${skill.slug}/)`, 24)}`
+        : pad(skill.displayName, 50);
+      const left = `${childIndent}${skillPrefix}${numCol}${nameBlock}`;
       const right = `${badge(skill)} ${truncate(skill.description, 48)}${tags(skill)}`;
       lines.push(`${left}${right}`);
     });

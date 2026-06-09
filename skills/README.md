@@ -40,64 +40,64 @@ _52 skill folders across 10 categories (7 populated) · 85 catalog entries incl.
 skills/
 ├── 0-strategy/                           (empty)
 ├── 1-brand-marketing/
-│   ├── 1.01 zynkr-content-writer      (zynkr-content-writer/) ✓ Article topic or idea — can be vague, an outlin…
-│   ├── 1.03 article-fission           (article-fission/)      ✓ Article fission — extract outline + summary fro…
-│   ├── 1.06 write-newsletter          (write-newsletter/)     ✓ Drafts Peter's weekly Chinese newsletter from t…
-│   ├── 1.12 article-governance        (article-governance/)   ✓ Sync a newsletter article from Google Docs to t…
-│   ├── 1.13 zh-tw-translator          (zh-tw-translator/)     ✓ Translate English (or any source language) into…
-│   ├── 1.14 seo-article-pipeline      (seo-article-pipeline/) ✓ The orchestrator for Zynkr SEO content producti…
-│   ├── 1.15 seo-persona-builder       (seo-persona-builder/)  ✓ First leg of the SEO content pipeline: reads br…
-│   ├── 1.16 seo-question-miner        (seo-question-miner/)   ✓ Second leg of the SEO pipeline: based on the pe…
-│   ├── 1.17 seo-angle-finder          (seo-angle-finder/)     ✓ Third leg of the SEO pipeline: working from an…
-│   ├── 1.18 seo-keyword-mapper        (seo-keyword-mapper/)   ✓ Fourth leg of the SEO pipeline: use keyword too…
-│   ├── 1.19 seo-keyword-classifier    (seo-keyword-classifier/) ✓ Fifth leg of the SEO pipeline: classify the key…
-│   ├── 1.20 seo-demand-validator      (seo-demand-validator/) ✓ Sixth stage of the SEO pipeline: validate the r…
-│   ├── 1.21 seo-brief-writer          (seo-brief-writer/)     ✓ Seventh stage of the SEO pipeline: for one sele…
-│   ├── 1.22 seo-outline-designer      (seo-outline-designer/) ✓ Stage 8 of the SEO pipeline: turn the SEO Brief…
-│   ├── 1.23 seo-article-finalizer     (seo-article-finalizer/) ✓ The final leg of the SEO pipeline: add internal…
-│   ├── 1.24 zynkr-slide               (zynkr-slide/)          ✓ The conductor of the slide relay (sitting above…
-│   ├── 1.25 slide-storyline-designer  (slide-storyline-designer/) ✓ Leg 1 of the three-leg slide relay: take the ra…
-│   ├── 1.26 slide-page-splitter       (slide-page-splitter/)  ✓ The second leg of the slide-assistant three-leg…
-│   ├── 1.27 slide-visual-selector     (slide-visual-selector/) ✓ The third leg of the slide-assistant three-leg…
-│   └── 1.28 pptx                      (pptx/)                 ✓ The 'rendering engine' that comes after the thr…
+│   ├── 1.01 zynkr-content-writer                              ✓ Article topic or idea — can be vague, an outlin…
+│   ├── 1.03 article-fission                                   ✓ Article fission — extract outline + summary fro…
+│   ├── 1.06 write-newsletter                                  ✓ Drafts Peter's weekly Chinese newsletter from t…
+│   ├── 1.12 article-governance                                ✓ Sync a newsletter article from Google Docs to t…
+│   ├── 1.13 zh-tw-translator                                  ✓ Translate English (or any source language) into…
+│   ├── 1.14 seo-article-pipeline                              ✓ The orchestrator for Zynkr SEO content producti…
+│   ├── 1.15 seo-persona-builder                               ✓ First leg of the SEO content pipeline: reads br…
+│   ├── 1.16 seo-question-miner                                ✓ Second leg of the SEO pipeline: based on the pe…
+│   ├── 1.17 seo-angle-finder                                  ✓ Third leg of the SEO pipeline: working from an…
+│   ├── 1.18 seo-keyword-mapper                                ✓ Fourth leg of the SEO pipeline: use keyword too…
+│   ├── 1.19 seo-keyword-classifier                            ✓ Fifth leg of the SEO pipeline: classify the key…
+│   ├── 1.20 seo-demand-validator                              ✓ Sixth stage of the SEO pipeline: validate the r…
+│   ├── 1.21 seo-brief-writer                                  ✓ Seventh stage of the SEO pipeline: for one sele…
+│   ├── 1.22 seo-outline-designer                              ✓ Stage 8 of the SEO pipeline: turn the SEO Brief…
+│   ├── 1.23 seo-article-finalizer                             ✓ The final leg of the SEO pipeline: add internal…
+│   ├── 1.24 zynkr-slide                                       ✓ The conductor of the slide relay (sitting above…
+│   ├── 1.25 slide-storyline-designer                          ✓ Leg 1 of the three-leg slide relay: take the ra…
+│   ├── 1.26 slide-page-splitter                               ✓ The second leg of the slide-assistant three-leg…
+│   ├── 1.27 slide-visual-selector                             ✓ The third leg of the slide-assistant three-leg…
+│   └── 1.28 pptx                                              ✓ The 'rendering engine' that comes after the thr…
 ├── 2-sales-consultant/
-│   ├── 2.01 sales-client-sourcing     (sales-client-sourcing/) ✓ 9-step sales client sourcing pipeline — turn a…
-│   ├── 2.02 sales-specialist          (sales-specialist/)     ✓ Business card pipeline — OCR extraction, schema… +agents
-│   ├── 2.04 consult-intake            (consult-intake/)       ✓ Turn this week's inbound "AI 顧問服務" consulting i…
-│   ├── 2.05 sales-project-specialist  (sales-project-specialist/) ✓ Turn a single sales / consulting meeting into t…
-│   └── 2.06 consulting-discovery      (consulting-discovery/) ✓ Two-stage consulting discovery — pain-point int… +agents
+│   ├── 2.01 sales-client-sourcing                             ✓ 9-step sales client sourcing pipeline — turn a…
+│   ├── 2.02 sales-specialist                                  ✓ Business card pipeline — OCR extraction, schema… +agents
+│   ├── 2.04 consult-intake                                    ✓ Turn this week's inbound "AI 顧問服務" consulting i…
+│   ├── 2.05 sales-project-specialist                          ✓ Turn a single sales / consulting meeting into t…
+│   └── 2.06 consulting-discovery                              ✓ Two-stage consulting discovery — pain-point int… +agents
 ├── 3-operations/
-│   ├── 3.01 zynkr-support             (zynkr-support/)        ✓ The READ half of Peter's support loop (formerly…
-│   ├── 3.02 zynkr-kms                 (zynkr-kms/)            ✓ The knowledge-curator (WRITE) half of Peter's s…
-│   ├── 3.03 meeting-prep              (meeting-prep/)         ✓ A scheduled, auto-running meeting-prep assistan… +agents
-│   ├── 3.04 project-planning          (project-planning/)     ✓ Stress-test and refine a project idea before ex…
-│   ├── 3.05 project-note-specialist   (project-note-specialist/) ✓ Turn raw meeting notes, transcripts, voice memo…
-│   ├── 3.07 project-status-update     (project-status-update/) ✓ Generates a weekly project status update for a…
-│   ├── 3.08 drift-check               (drift-check/)          ✓ Weekly hygiene ritual for Zynkr's local↔cloud k…
-│   └── 3.09 operations-transformation (operations-transformation/) ✓ Three-stage operations transformation pipeline… +agents
+│   ├── 3.01 zynkr-support                                     ✓ The READ half of Peter's support loop (formerly…
+│   ├── 3.02 zynkr-kms                                         ✓ The knowledge-curator (WRITE) half of Peter's s…
+│   ├── 3.03 meeting-prep                                      ✓ A scheduled, auto-running meeting-prep assistan… +agents
+│   ├── 3.04 project-planning                                  ✓ Stress-test and refine a project idea before ex…
+│   ├── 3.05 project-note-specialist                           ✓ Turn raw meeting notes, transcripts, voice memo…
+│   ├── 3.07 project-status-update                             ✓ Generates a weekly project status update for a…
+│   ├── 3.08 drift-check                                       ✓ Weekly hygiene ritual for Zynkr's local↔cloud k…
+│   └── 3.09 operations-transformation                         ✓ Three-stage operations transformation pipeline… +agents
 ├── 4-training/
-│   ├── 4.01 polish-lecture-transcript (polish-lecture-transcript/) ✓ Polish long video lecture transcripts into lect… +agents
-│   ├── 4.02 process-livestream        (process-livestream/)   ✓ Post-process a livestream transcript into four… +agents
-│   ├── 4.08 lecture-recap-writer      (lecture-recap-writer/) ✓ Turn a video file or transcript into a reader-f…
-│   └── 4.10 srt-optimizer             (srt-optimizer/)        ✓ Minimally clean subtitle .srt files into readab… +agents
+│   ├── 4.01 polish-lecture-transcript                         ✓ Polish long video lecture transcripts into lect… +agents
+│   ├── 4.02 process-livestream                                ✓ Post-process a livestream transcript into four… +agents
+│   ├── 4.08 lecture-recap-writer                              ✓ Turn a video file or transcript into a reader-f…
+│   └── 4.10 srt-optimizer                                     ✓ Minimally clean subtitle .srt files into readab… +agents
 ├── 5-product/
-│   ├── 5.01 skill-finder              (skill-finder/)         ✓ Recommend the right Zynkr assistant(s) for a us…
-│   ├── 5.02 product-planning          (product-planning/)     ✓ Turns an early product idea into a structured p…
-│   ├── 5.03 lucid-specialist          (lucid-specialist/)     ✓ Read, draft, edit, and lint Lucid charts using…
-│   └── 5.04 prompt-engineer           (prompt-engineer/)      ✓ Refactor a prompt (or prompt idea) into a produ…
+│   ├── 5.01 skill-finder                                      ✓ Recommend the right Zynkr assistant(s) for a us…
+│   ├── 5.02 product-planning                                  ✓ Turns an early product idea into a structured p…
+│   ├── 5.03 lucid-specialist                                  ✓ Read, draft, edit, and lint Lucid charts using…
+│   └── 5.04 prompt-engineer                                   ✓ Refactor a prompt (or prompt idea) into a produ…
 ├── 6-engineer/
-│   ├── 6.01 find-skills               (find-skills/)          ✓ Helps users discover and install agent skills w…
-│   ├── 6.02 zynkr                     (zynkr/)                ✓ The front-door router for the Zynkr assistant e…
-│   ├── 6.03 skill-sourcer             (skill-sourcer/)        ✓ Aggregate skill candidates from any source, cla… +agents
-│   ├── 6.08 skill-triager             (skill-triager/)        ✓ Triage the queue of approved skill proposals in…
-│   ├── 6.09 skill-qa                  (skill-qa/)             ✓ Quality-gate a SKILL.md before it ships — runs…
-│   ├── 6.10 skill-publish             (skill-publish/)        ✓ Land a freshly-built SKILL.md into the Zynkr sk…
-│   ├── 6.11 agent-browser             (agent-browser/)        ✓ Give AI agents full browser control via CDP — n…
-│   └── 6.13 hermes-agent              (hermes-agent/)         ✓ Self-improving AI agent runtime by Nous Researc…
+│   ├── 6.01 find-skills                                       ✓ Helps users discover and install agent skills w…
+│   ├── 6.02 zynkr                                             ✓ The front-door router for the Zynkr assistant e…
+│   ├── 6.03 skill-sourcer                                     ✓ Aggregate skill candidates from any source, cla… +agents
+│   ├── 6.08 skill-triager                                     ✓ Triage the queue of approved skill proposals in…
+│   ├── 6.09 skill-qa                                          ✓ Quality-gate a SKILL.md before it ships — runs…
+│   ├── 6.10 skill-publish                                     ✓ Land a freshly-built SKILL.md into the Zynkr sk…
+│   ├── 6.11 agent-browser                                     ✓ Give AI agents full browser control via CDP — n…
+│   └── 6.13 hermes-agent                                      ✓ Self-improving AI agent runtime by Nous Researc…
 ├── 7-people-talent/
-│   ├── 7.01 cv-customizer             (cv-customizer/)        ✓ 5-phase CV optimization workflow — job analysis… +agents
-│   ├── 7.07 zynkr-recruiter           (zynkr-recruiter/)      ✓ End-to-end recruiting pipeline — JD authoring,… +agents
-│   └── 7.11 interview-question-predictor (interview-question-predictor/) ✓ Anticipates likely interview questions for a sp… +agents
+│   ├── 7.01 cv-customizer                                     ✓ 5-phase CV optimization workflow — job analysis… +agents
+│   ├── 7.07 zynkr-recruiter                                   ✓ End-to-end recruiting pipeline — JD authoring,… +agents
+│   └── 7.11 interview-question-predictor                      ✓ Anticipates likely interview questions for a sp… +agents
 ├── 8-finance-admin/                      (empty)
 └── 9-legal/                              (empty)
 ```
