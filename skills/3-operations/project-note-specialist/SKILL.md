@@ -1,7 +1,7 @@
 ---
 name: project-note-specialist
 sheetId: "3.08"
-description: "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next). Trigger whenever the user pastes meeting notes/transcripts and asks to 'organize my notes', 'tidy up these notes', 'turn this into a weekly update', '整理會議筆記', '整理一下筆記', '幫我寫週報摘要', or shares messy meeting/voice-memo text wanting it cleaned into an internal-stakeholder update. Source: admin-meeting-prep agent (sheetId 3.06)."
+description: "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next). Trigger whenever the user pastes meeting notes/transcripts and asks to 'organize my notes', 'tidy up these notes', 'turn this into a weekly update', '整理會議筆記', '整理一下筆記', '幫我寫週報摘要', or shares messy meeting/voice-memo text wanting it cleaned into an internal-stakeholder update. Source: admin-meeting-prep agent (sheetId 3.04)."
 category: operations
 project: project-note-specialist
 platform: claude
