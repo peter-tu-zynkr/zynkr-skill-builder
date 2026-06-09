@@ -1,49 +1,49 @@
 [
   {
-    "id": "1.03",
+    "id": "1.31",
     "sheet_id": "1.01",
-    "slug": "writing-agent",
+    "slug": "zynkr-content-writer",
     "name": "zynkr-content-writer",
-    "summary": "User provides an article draft; a Style Guide exists in the knowledge base.",
+    "summary": "Article topic or idea — can be vague, an outline, a draft, or completed copy at any stage 7-stage pipeline orchestrated by /write-article — ideation, style selection, drafting, editing, reader perspective scoring, title",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/CLAUDE.md",
-    "install_command": "curl -sL zynkr.ai/s/1.03.md -o ~/.claude/skills/zynkr-content-writer.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/CLAUDE.md",
+    "install_command": "curl -sL zynkr.ai/s/1.31.md -o ~/.claude/skills/zynkr-content-writer.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "orchestrator"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.04",
+    "id": "1.32",
     "sheet_id": "1.02",
-    "slug": "writing-agent-socratic-ideation-partner",
+    "slug": "zynkr-content-writer-socratic-ideation-partner",
     "name": "socratic-ideation-partner",
     "summary": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/socratic-ideation-partner.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/socratic-ideation-partner.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "0-optional"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "1.11",
@@ -69,50 +69,50 @@
     "first_seen": "2026-05-25"
   },
   {
-    "id": "1.05",
+    "id": "1.33",
     "sheet_id": "1.04",
-    "slug": "writing-agent-article-style-selector",
+    "slug": "zynkr-content-writer-article-style-selector",
     "name": "article-style-selector",
     "summary": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-style-selector.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/article-style-selector.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "1"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.06",
+    "id": "1.34",
     "sheet_id": "1.05",
-    "slug": "writing-agent-article-drafter",
+    "slug": "zynkr-content-writer-article-drafter",
     "name": "article-drafter",
     "summary": "Triggered when the user has a confirmed article structure and section key points (typically from the article-style-selector handoff summary) and is ready to draft the article paragraph by paragraph.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-drafter.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/article-drafter.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "2"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "1.02",
@@ -138,119 +138,119 @@
     "first_seen": "2026-05-09"
   },
   {
-    "id": "1.07",
+    "id": "1.35",
     "sheet_id": "1.07",
-    "slug": "writing-agent-article-editor",
+    "slug": "zynkr-content-writer-article-editor",
     "name": "article-editor",
     "summary": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-editor.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/article-editor.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "3"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.08",
+    "id": "1.36",
     "sheet_id": "1.08",
-    "slug": "writing-agent-reader-perspective",
+    "slug": "zynkr-content-writer-reader-perspective",
     "name": "reader-perspective",
     "summary": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/reader-perspective.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/reader-perspective.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "35-optional"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.09",
+    "id": "1.37",
     "sheet_id": "1.09",
-    "slug": "writing-agent-article-title-suggester",
+    "slug": "zynkr-content-writer-article-title-suggester",
     "name": "article-title-suggester",
     "summary": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/article-title-suggester.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/article-title-suggester.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "4"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.10",
+    "id": "1.38",
     "sheet_id": "1.10",
-    "slug": "writing-agent-cta-writer",
+    "slug": "zynkr-content-writer-cta-writer",
     "name": "cta-writer",
     "summary": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions.",
     "category": "brand-marketing",
-    "project": "writing-agent",
+    "project": "zynkr-content-writer",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/writing-agent/.claude/agents/cta-writer.md",
+    "source_path": "skills/1-brand-marketing/zynkr-content-writer/.claude/agents/cta-writer.md",
     "tags": [
-      "writing-agent",
+      "zynkr-content-writer",
       "brand-marketing",
       "claude",
       "subagent",
       "5"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
-    "id": "1.01",
+    "id": "1.30",
     "sheet_id": "1.12",
-    "slug": "newsletter-to-notion",
+    "slug": "article-governance",
     "name": "article-governance",
     "summary": "Sync a newsletter article from Google Docs to the Notion Content DB.",
     "category": "brand-marketing",
-    "project": "newsletter-to-notion",
+    "project": "article-governance",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/newsletter-to-notion/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/1.01.md -o ~/.claude/skills/article-governance.md",
+    "source_path": "skills/1-brand-marketing/article-governance/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.30.md -o ~/.claude/skills/article-governance.md",
     "tags": [
-      "newsletter-to-notion",
+      "article-governance",
       "brand-marketing",
       "claude",
       "skill"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-05-09"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "1.14",
@@ -944,27 +944,27 @@
     "first_seen": "2026-06-06"
   },
   {
-    "id": "3.10",
+    "id": "3.17",
     "sheet_id": "3.07",
-    "slug": "project-status-weekly",
+    "slug": "project-status-update",
     "name": "project-status-update",
     "summary": "Generates a weekly project status update for a project tracked in a Google Sheet.",
     "category": "operations",
-    "project": "project-status-weekly",
+    "project": "project-status-update",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/3-operations/project-status-weekly/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/3.10.md -o ~/.claude/skills/project-status-update.md",
+    "source_path": "skills/3-operations/project-status-update/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.17.md -o ~/.claude/skills/project-status-update.md",
     "tags": [
-      "project-status-weekly",
+      "project-status-update",
       "operations",
       "claude",
       "skill"
     ],
     "updated_at": "2026-06-09",
-    "first_seen": "2026-06-01"
+    "first_seen": "2026-06-09"
   },
   {
     "id": "3.09",
@@ -1660,8 +1660,8 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 188274,
-    "github_forks": 32438,
+    "github_stars": 188277,
+    "github_forks": 32439,
     "first_seen": "2026-05-20"
   },
   {
