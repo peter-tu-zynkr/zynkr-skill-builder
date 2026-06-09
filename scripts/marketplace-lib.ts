@@ -176,7 +176,9 @@ function buildSlug(skill: NormalizedSkillRecord): string {
   }
 
   if (skill.kind === "subagent") {
-    return toSlug(`${skill.project}-${genericSourceStem ? skill.name : sourceStem}`);
+    // Flat canonical slug: a subagent's slug is its own name (folder=name=slug),
+    // not prefixed with the parent project.
+    return toSlug(skill.name);
   }
 
   return toSlug(genericSourceStem ? skill.project || skill.name : sourceStem);

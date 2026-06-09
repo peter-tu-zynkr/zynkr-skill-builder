@@ -9,7 +9,7 @@
       "drop": "Sheet says do not migrate (Migrate=Drop). Skip permanently.",
       "skip": "Not actionable today (Not started / WIP / Pause / Out dated). Re-evaluate when sheet status flips to Done."
     },
-    "id_policy": "Sheet 'no.' is advisory only. Stored as sheetId in generated frontmatter. Repo content IDs stay FIFO-assigned by ingest.ts to avoid URL churn.",
+    "id_policy": "REVERSED 2026-06-09: the authored frontmatter sheetId IS the canonical content id (ingest.ts precedence-0). FIFO assignment only applies to sheetId-less stubs. Old FIFO ids redirect via generated/id-redirects.json.",
     "unmapped_default": "warn"
   },
   "rows": {

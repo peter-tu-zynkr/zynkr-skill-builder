@@ -595,7 +595,8 @@ function allocateIdsForSourceFiles(
   prefix: number,
   repoUrl: string,
   sourceFiles: string[],
-  skillIdOverrides: SkillIdOverrideMap
+  skillIdOverrides: SkillIdOverrideMap,
+  sheetIdBySourceFile?: Map<string, string | undefined>
 ): Map<string, string> {
   const existing = loadExistingSkillRecords();
   const existingBySource = new Map<string, string[]>();
@@ -615,6 +616,25 @@ function allocateIdsForSourceFiles(
   const currentSourceKeys = new Set(sourceFiles.map((sourceFile) => buildSourceKey(repoUrl, sourceFile)));
 
   for (const sourceFile of sourceFiles) {
+    // Precedence 0: the authored frontmatter sheetId is the canonical id.
+    // Overrides / existing ids / FIFO only apply to sheetId-less sources.
+    const authoredSheetId = sheetIdBySourceFile?.get(sourceFile);
+    if (authoredSheetId) {
+      if (!/^\d+\.\d+$/.test(authoredSheetId)) {
+        throw new Error(
+          `Malformed sheetId "${authoredSheetId}" on ${sourceFile} — expected N.NN (e.g. 3.06)`
+        );
+      }
+      if (reservedIds.has(authoredSheetId)) {
+        throw new Error(
+          `Duplicate sheetId ${authoredSheetId}: claimed by more than one source file (latest: ${sourceFile})`
+        );
+      }
+      assigned.set(sourceFile, authoredSheetId);
+      reservedIds.add(authoredSheetId);
+      continue;
+    }
+
     const overrideEntry = repoOverrides.get(sourceFile);
     if (overrideEntry) {
       const existingRecord = existingById.get(overrideEntry.forcedId);
@@ -679,12 +699,13 @@ function cleanupRepoRecords(
       record.sourceFile === "CLAUDE.md" ||
       record.sourceFile.endsWith("/CLAUDE.md");
 
-    if (!isManagedPipelineRecord) {
-      continue;
-    }
-
-    const shouldDelete =
-      !activeSourceKeys.has(normalizedKey) || !activeIds.has(record.id);
+    // Managed pipeline records: prune when the source vanished or the id moved.
+    // Plain skill records: prune ONLY when this same source is being re-ingested
+    // under a different id (id := sheetId migration) — never on source removal,
+    // which cleanupOrphanedRepoRecords handles repo-wide.
+    const shouldDelete = isManagedPipelineRecord
+      ? !activeSourceKeys.has(normalizedKey) || !activeIds.has(record.id)
+      : activeSourceKeys.has(normalizedKey) && !activeIds.has(record.id);
 
     if (shouldDelete && fs.existsSync(record.filePath)) {
       fs.rmSync(record.filePath, { force: true });
@@ -801,7 +822,19 @@ function ingestProjectSkills(
   }
 
   const sourceFiles = [skillFile.relPath, ...agentFiles.map((f) => f.relPath)];
-  const idsBySourceFile = allocateIdsForSourceFiles(prefix, repoUrl, sourceFiles, skillIdOverrides);
+  const sheetIdBySourceFile = new Map<string, string | undefined>([
+    [skillFile.relPath, manifest.sheetId],
+    ...agentFiles.map(
+      (f) => [f.relPath, optionalString(f.data as Record<string, unknown>, "sheetId")] as const
+    ),
+  ]);
+  const idsBySourceFile = allocateIdsForSourceFiles(
+    prefix,
+    repoUrl,
+    sourceFiles,
+    skillIdOverrides,
+    sheetIdBySourceFile
+  );
   const synergy = sourceFiles.map((sf) => idsBySourceFile.get(sf)!);
   const ingested: IngestRecord[] = [];
 
@@ -974,11 +1007,24 @@ function ingestRepoAsPipeline(
       agentByName.get(stage.agent);
     return agentFile?.relPath ?? `.claude/agents/${stage.agent}.md`;
   })];
+  const pipelineSheetIdBySourceFile = new Map<string, string | undefined>([
+    [manifestFile.relPath, manifest.sheetId],
+  ]);
+  for (const stage of stages) {
+    const agentFile = agentByStem.get(stage.agent) ?? agentByName.get(stage.agent);
+    if (agentFile) {
+      pipelineSheetIdBySourceFile.set(
+        agentFile.relPath,
+        optionalString(agentFile.data as Record<string, unknown>, "sheetId")
+      );
+    }
+  }
   const idsBySourceFile = allocateIdsForSourceFiles(
     TAXONOMY[manifest.category],
     repoUrl,
     sourceFiles,
-    skillIdOverrides
+    skillIdOverrides,
+    pipelineSheetIdBySourceFile
   );
   const ids = sourceFiles.map((sourceFile) => idsBySourceFile.get(sourceFile)!);
   const synergy = ids;
@@ -1372,7 +1418,13 @@ async function main() {
         const fm = parsed.data;
         const prefix = TAXONOMY[fm.category];
         const sourceFile = relPath;
-        const id = allocateIdsForSourceFiles(prefix, repoUrl, [sourceFile], skillIdOverrides).get(sourceFile)!;
+        const id = allocateIdsForSourceFiles(
+          prefix,
+          repoUrl,
+          [sourceFile],
+          skillIdOverrides,
+          new Map([[sourceFile, fm.sheetId]])
+        ).get(sourceFile)!;
         const slug = toSlug(fm.name);
         const today = new Date().toISOString().split("T")[0];
         const overrideEntry = getOverrideEntry(skillIdOverrides, repoUrl, sourceFile);
