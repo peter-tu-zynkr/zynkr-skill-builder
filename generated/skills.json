@@ -810,7 +810,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 148383,
+    "githubStars": 148387,
     "githubForks": 17505
   },
   {
@@ -1265,6 +1265,35 @@
     "firstSeen": "2026-06-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/sales-specialist/agents/followup-email-writer.md"
+  },
+  {
+    "id": "2.37",
+    "name": "sales-project-specialist",
+    "category": "sales-consultant",
+    "project": "sales-project-specialist",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a single sales / consulting meeting into tracked work. Give it a meeting transcript or notes — pasted text, a Google Doc, or a Gemini Notes link — and it produces a structured Weekly Project Update, then lays down the three things the engagement needs: a numbered Google Drive project folder, a kickoff/context Doc inside it, and a CRM deal in Supabase with a meeting + links-note + one task per \"What's Next\" item. Trigger on /sales-project-specialist or when Peter says \"turn this meeting into a project\", \"建立顧問專案\", \"把這次會議建成 deal\", \"log this engagement into the CRM\", \"document this consult\", \"建專案資料夾 + CRM\", or hands over a meeting transcript / Gemini Notes about a sales or consulting engagement and wants it tracked end-to-end. This is the document-one-engagement skill — distinct from project-note-specialist (which ONLY tidies notes into a Weekly Update and writes NO folder or CRM record) and from consult-intake (which sweeps the week's inbound website consult EMAILS in batch). When Peter has ONE meeting/debrief he wants captured as a project + deal, prefer this skill.",
+    "input": "A meeting transcript / notes (pasted text, a Google Doc, or a Gemini Notes link), optionally a CRM company/contact reference (a zynkr-crm URL or names/emails).",
+    "process": "Read input → write a Weekly Project Update → create a numbered Drive project folder + kickoff doc → create a NEW Supabase CRM deal with meeting/note/task activities → backlink + report.",
+    "output": "A Weekly Project Update, a numbered Drive project folder, a kickoff/context Doc, and a CRM deal with its activity timeline.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.37",
+    "sheetId": "2.05",
+    "kind": "skill",
+    "synergy": [
+      "2.37"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.37.md -o ~/.claude/skills/sales-project-specialist.md",
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/sales-project-specialist/SKILL.md"
   },
   {
     "id": "3.04",
@@ -2181,8 +2210,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 188266,
-    "githubForks": 32436
+    "githubStars": 188274,
+    "githubForks": 32438
   },
   {
     "id": "6.14",
@@ -2274,7 +2303,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 21805,
+    "githubStars": 21806,
     "githubForks": 1743
   },
   {
@@ -2369,7 +2398,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35648,
+    "githubStars": 35651,
     "githubForks": 2245
   },
   {
