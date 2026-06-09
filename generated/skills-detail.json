@@ -917,7 +917,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 148394,
+    "github_stars": 148395,
     "github_forks": 17507,
     "first_seen": "2026-06-03",
     "description": "The 'rendering engine' that comes after the three-stage slide relay (the fourth stage, maintained by Anthropic): it takes the SLIDE_PACKET ▸ Visuals handed off by slide-visual-selector and renders it page by page into a real .pptx file, and can also read, parse, and edit existing decks in reverse. This is Anthropic's official pptx skill; Zynkr does not redistribute its code — this card is only a reference and a hand-off pointer, so install it from the Anthropic source.",
@@ -2387,7 +2387,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 35651,
+    "github_stars": 35652,
     "github_forks": 2245,
     "first_seen": "2026-06-09",
     "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
@@ -2428,7 +2428,7 @@
     "upstream_repo": "https://github.com/NousResearch/hermes-agent",
     "original_source_url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md",
     "original_author": "Nous Research",
-    "github_stars": 188284,
+    "github_stars": 188286,
     "github_forks": 32445,
     "first_seen": "2026-05-20",
     "description": "Self-improving AI agent runtime by Nous Research. A persistent agent that lives across CLI plus every major messaging platform (Telegram, Discord, Slack, WhatsApp, Signal, Email), autonomously creates and improves its own skills from experience, persists memory across sessions, and runs anywhere from a $5 VPS to serverless. Use when you want an agent that isn't tied to your laptop, supports any LLM provider, and is compatible with the agentskills.io open standard.",
@@ -2888,5 +2888,36 @@
       "7.10"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/zynkr-recruiter/agents/interview-calibrator.md"
+  },
+  "3.18": {
+    "id": "3.18",
+    "slug": "admin-video-document",
+    "name": "admin-video-document",
+    "summary": "Files loose meeting recordings sitting in a Google Drive recording inbox into the right category sub-folder, with an approval gate.",
+    "category": "operations",
+    "project": "admin-video-document",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/admin-video-document/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.18.md -o ~/.claude/skills/admin-video-document.md",
+    "tags": [
+      "admin-video-document",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-09",
+    "first_seen": "2026-06-09",
+    "description": "Files loose meeting recordings sitting in a Google Drive recording inbox into the right category sub-folder, with an approval gate. For each loose video it groups the same-prefix siblings (the ` - Notes by Gemini` Doc, ` - Chat` .txt, any .srt) into one unit, reads the Gemini Notes to classify which sub-folder it belongs in, shows the user a filing plan to approve, then moves the whole group and logs the move to a `Video Index` sheet. If nothing fits it proposes a new sub-folder. Trigger on /admin-video-document, '整理錄影檔', '歸檔錄影', '歸檔影片到資料夾', '整理錄影資料夾', 'file my recordings', 'sort the recording folder', 'organise the recordings folder', or when the user points at the recording inbox and wants the videos filed.",
+    "input": "None — the recordings root folder and Video Index sheet are constants below. Reads whatever videos are currently loose at the root.",
+    "process": "snapshot inbox → group siblings into recording units → read Notes to classify → APPROVAL GATE → move whole group → log to Video Index → report",
+    "output": "Each approved recording unit moved into its category sub-folder (video + Notes + Chat + SRT together), one new row per unit in the Video Index sheet, and a zh-TW run report.",
+    "kind": "skill",
+    "synergy": [
+      "3.18"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/admin-video-document/SKILL.md"
   }
 }

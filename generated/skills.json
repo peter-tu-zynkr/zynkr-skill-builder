@@ -494,7 +494,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 148394,
+    "githubStars": 148395,
     "githubForks": 17507
   },
   {
@@ -1652,6 +1652,34 @@
     "sourceFile": "3-operations/project-status-update/SKILL.md"
   },
   {
+    "id": "3.18",
+    "name": "admin-video-document",
+    "category": "operations",
+    "project": "admin-video-document",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Files loose meeting recordings sitting in a Google Drive recording inbox into the right category sub-folder, with an approval gate. For each loose video it groups the same-prefix siblings (the ` - Notes by Gemini` Doc, ` - Chat` .txt, any .srt) into one unit, reads the Gemini Notes to classify which sub-folder it belongs in, shows the user a filing plan to approve, then moves the whole group and logs the move to a `Video Index` sheet. If nothing fits it proposes a new sub-folder. Trigger on /admin-video-document, '整理錄影檔', '歸檔錄影', '歸檔影片到資料夾', '整理錄影資料夾', 'file my recordings', 'sort the recording folder', 'organise the recordings folder', or when the user points at the recording inbox and wants the videos filed.",
+    "input": "None — the recordings root folder and Video Index sheet are constants below. Reads whatever videos are currently loose at the root.",
+    "process": "snapshot inbox → group siblings into recording units → read Notes to classify → APPROVAL GATE → move whole group → log to Video Index → report",
+    "output": "Each approved recording unit moved into its category sub-folder (video + Notes + Chat + SRT together), one new row per unit in the Video Index sheet, and a zh-TW run report.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.18",
+    "kind": "skill",
+    "synergy": [
+      "3.18"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.18.md -o ~/.claude/skills/admin-video-document.md",
+    "updatedAt": "2026-06-09",
+    "firstSeen": "2026-06-09",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/admin-video-document/SKILL.md"
+  },
+  {
     "id": "4.01",
     "name": "polish-lecture-transcript",
     "category": "training",
@@ -2210,7 +2238,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 188284,
+    "githubStars": 188286,
     "githubForks": 32445
   },
   {
@@ -2398,7 +2426,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35651,
+    "githubStars": 35652,
     "githubForks": 2245
   },
   {
