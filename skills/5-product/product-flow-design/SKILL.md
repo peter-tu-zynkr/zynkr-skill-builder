@@ -199,3 +199,18 @@ For the **clean register**, apply these moves (modelled on Lucid's stock "AI pro
 6. **Bold dark lane headers, one strong colour per role, no empty lanes** (drop or merge a lane with nothing in it — e.g. collapse an empty `External user` band).
 
 Keep the convention intact in **both** registers: the clean version still uses the same Shape × Colour semantics and lints clean — it just spends its complexity budget on clarity instead of completeness. **Don't drop information that changes meaning** (e.g. *which* RAG source feeds *which* stage) — keep those as distinct dashed edges, not one generic node.
+
+## 10) Chart file naming & foldering
+
+All flow charts live in the Lucid process-flows folder (folder id `422779259`). Title every chart:
+
+`[N.M] <Process name> (<qualifier>) vK`
+
+- **`[N.M]`** — `N` is the Zynkr LOB taxonomy digit (0 strategy · 1 brand-marketing · 2 sales-consultant · 3 operations · 4 training · 5 product · 6 tech · 7 people-talent · 8 finance-admin · 9 legal). `M` is the next free sequence number within that LOB — check the folder before assigning; never reuse a number. Client consulting charts go under `2`.
+- **Process name** — noun phrase ≤5 words, zh-TW or English to match the audience, no trailing 。
+- **`(qualifier)`** — optional scope/variant in parens: `(AI knowledge)`, `(manual lane)`, `(presentation)`.
+- **`vK`** — bump for real revisions of the same process. **Never `_updated`** — a revision either bumps `vK` or supersedes in place; a new file is only for a genuinely different process.
+- **`[@]`** — reserved prefix for meta/template assets that belong to no LOB (e.g. `[@] Architecture template`), matching the Drive convention.
+- **One process = one file.** Registers (audit-detail vs presentation-clean) and lane-by-lane build stages are pages inside the same document, not sibling files.
+
+After `lucid_create_diagram_from_specification`, always set the final title and move the doc into the folder via `lucid_update_document` — create-time non-ASCII titles can garble (render as `?`), while the update call handles UTF-8 correctly. Note the folder may 403 on `lucid_list_folder_contents`; use `search` (results carry `parent` folder ids) to see what numbers are taken.
