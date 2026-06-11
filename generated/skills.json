@@ -840,7 +840,7 @@
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
     "githubStars": 149305,
-    "githubForks": 17609
+    "githubForks": 17610
   },
   {
     "id": "2.01",
@@ -2172,7 +2172,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 35818,
+    "githubStars": 35817,
     "githubForks": 2255
   },
   {
