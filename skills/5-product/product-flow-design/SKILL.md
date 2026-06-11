@@ -44,7 +44,12 @@ At runtime, also fetch:
 
 External canonical references (links, not content):
 
-- Course narrative: Google Doc Ch5 "Process re-design" — <https://docs.google.com/document/d/14uvozN-ZAymS4oxSiGPWXXtykg_MEQ48XNjYSGfCtI8/edit#heading=h.4a2agfampqmy>
+- **Human-canonical convention docs** (Drive, cloud-canonical since 2026-06-11): `[5.1] Lucid Workflow Engineering conventions` — <https://drive.google.com/drive/folders/1R4DfLi07Z5SaYBB4Q8-8QuKMjh7o0JYm>
+  - `[5.1.1] Architecture principles guidebook` — <https://drive.google.com/file/d/1u6BuFgORv63NaPR54zy-bJoa943GWqco/view>
+  - `[5.1.2] Color & shape principles` — <https://drive.google.com/file/d/1KauyMMbGrYcsoaStv6dzHBrl-md1D8jv/view>
+  - `[5.1.3] Lucid LLM guidebook` — <https://drive.google.com/file/d/1_COxoO-_0bQjfDYaFZsFBdeNOvqNSgBa/view>
+  - Local mirrors: `6.0 tech/engineering-conventions/` (read-only; edit the Drive copies)
+- Course origin (background only, no longer canonical): Google Doc Ch5 "Process re-design" — <https://docs.google.com/document/d/14uvozN-ZAymS4oxSiGPWXXtykg_MEQ48XNjYSGfCtI8/edit#heading=h.4a2agfampqmy>
 - Canonical baseline chart `[@] Architecture template`: doc id `bb9ba9aa-b4c2-4ad2-a432-87f6a805c4e0` — <https://lucid.app/lucidchart/bb9ba9aa-b4c2-4ad2-a432-87f6a805c4e0/edit>
 
 ---
