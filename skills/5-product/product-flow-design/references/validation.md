@@ -1,6 +1,6 @@
 # Validation / Lint Rules
 
-Ten rules. Each cites the underlying principle (from `architecture-principles.md`), how to detect it in Lucid-JSON terms, and how to fix it. Apply them on every read and as a self-check after every draft/edit.
+Thirteen rules (V1–V13). Each cites the underlying principle (from `architecture-principles.md`), how to detect it in Lucid-JSON terms, and how to fix it. Apply them on every read and as a self-check after every draft/edit.
 
 ---
 
@@ -81,6 +81,12 @@ Ten rules. Each cites the underlying principle (from `architecture-principles.md
 - **Principle**: two registers, `SKILL.md` §9.
 - **Detect**: a stakeholder-facing chart missing a legend or "how to read" panel, with sentence-long node labels, empty lanes, or every edge labelled; OR distinct knowledge sources collapsed into one node so a coupling is lost.
 - **Fix**: add a colour-chip legend + overview panel; shorten labels to ≤4 words; drop/merge empty lanes; demote plumbing edges to dashed grey and label only decisions; keep each RAG source as its own dashed edge to its consuming stage.
+
+### V13 — Final polish: straight lines + legible lane headers (soft)
+
+- **Principle**: final-polish learnings from `[1.6] Slide production v4` (2026-06-12) — readers track straight connectors far more easily, and the lane-title column is the first thing they read.
+- **Detect**: (a) an elbow connector that bends between two nodes that could share an axis; (b) a dark lane `headerFill` (e.g. `#3a3f4b`) swallowing the small vertical title text; (c) any node or edge label not pinned to `fontSize` 10.
+- **Fix**: nudge node bounding boxes onto shared centre-axes (same centre-x for vertical runs, same centre-y for horizontal runs) so connectors run exactly straight where applicable; restyle lane headers to light fill + dark text; pin fonts via `lucid_edit_item` (`font_size: 10`). Judge all three from the PNG export, not the JSON.
 
 ---
 

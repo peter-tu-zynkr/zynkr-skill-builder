@@ -115,7 +115,7 @@ When the chart is for stakeholders rather than an engineering audit ("make it hu
 
 - **Drop empty lanes** (no `External user` step → don't render that band) and you may collapse the BE sub-bands to `Backend · human gate (HITL)` + `Backend · AI / rules`. Net **4–5 lanes, no empty rows**.
 - Add a **legend** (colour-chip key) and a **"How to read this"** panel beside the flow.
-- **Bold dark lane headers** (`headerFill` ≈ `#3a3f4b`) with a faint per-layer `laneFill`.
+- **Light lane headers with dark, legible titles** (avoid dark `headerFill` like `#3a3f4b` — the small vertical titles drown in it; see V13) with a faint per-layer `laneFill`.
 - One node per step, **≤4-word labels**, `fontSize` **10**, generous column pitch (~300).
 - Plumbing edges (saves / loads / consults) = thin **dashed grey** (`#888888`, width 1); only decisions and gate outcomes get labels.
 - Don't collapse distinct knowledge into one node — keep *which* RAG source feeds *which* stage as separate dashed edges.
