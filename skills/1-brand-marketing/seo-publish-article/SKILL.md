@@ -6,9 +6,9 @@ project: seo-publish-article
 platform: claude
 status: WIP
 author: Peter Tu
-input: "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block (slug/seo_title/meta_description/keywords/category), plus the local CMS repo for its Supabase URL + service-role key."
-process: "Read the Doc → split body from the 「SEO 交付物」metadata → build + schema-validate CMS-safe Tiptap JSON + content_html (tables→lists, ▋ H2s) → resolve author/category + slug check → preview → on confirm POST to Supabase `articles` (service role, status=published) → verify /blog/<slug>"
-output: "The article live at <site>/blog/<slug> — the inserted articles row (id, slug, status, published_at) + verification the public API and page render correctly."
+input: "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block, plus the local CMS repo for its Supabase URL + service-role key."
+process: "Read Doc → split body/metadata → build + validate Tiptap JSON + content_html → resolve ids + slug check → preview → confirm → POST to Supabase `articles` (service role, published) → verify /blog/<slug> → archive Doc + update tracker"
+output: "The article live at <site>/blog/<slug> — inserted articles row + verified page; the source Doc archived and the SEO tracker (Topic List + Keyword Pool) updated."
 synergy: ["seo-article-finalizer", "seo-article-pipeline", "content-translator"]
 ---
 
@@ -97,13 +97,29 @@ Expect **HTTP 201**. For an **update-in-place** (slug already exists and you cho
 
 Report the live URL.
 
+## Step 7 — Governance: archive the Doc + update the tracker
+
+Once published and verified, close the loop so the draft doesn't linger in Drive and the team can see what shipped. This runs under the same publish approval — confirm both actions in the Step 4 preview (or a quick "also archive + log it?").
+
+1. **Archive the source Doc** — move the article's Google Doc into the team's published-article folder (`<your-published-archive-folder-id>`; it's team-shared, so the move also shares it). Read the current parent first, then re-parent:
+   ```
+   get_drive_file_permissions(<doc-id>)                       # → current parent
+   update_drive_file(<doc-id>, add_parents=<archive-folder-id>, remove_parents=<current-parent-id>)
+   ```
+
+2. **Update the SEO content tracker** (`<your-seo-sheet-id>`) — match this article to its rows by intent cluster / primary keyword:
+   - **Topic List tab** (article-level): on the article's row, set `Status=Published` · `Published URL=<site>/blog/<slug>` · `Published Date=<today>`. Add those three header columns once if they don't exist.
+   - **Keyword Pool tab** (keyword coverage): write `<site>/blog/<slug>` into the `Published URL` column for **every keyword row in this article's intent cluster**, so the keyword map reflects what's now covered. If the grid is too narrow for the new column, append one first: `resize_sheet_dimensions(sheet_name=..., insert_columns=1)` — Sheets rejects writes beyond the current grid width.
+
+Report which rows were marked. (Actual IDs + the column scheme live in `references/cms-publishing.md`.)
+
 ## Outputs
 
-The published row (id / slug / status / published_at) + the verified live URL.
+The published row (id / slug / status / published_at), the verified live URL, the source Doc archived to the published-article folder, and the SEO tracker updated (Topic List status + Keyword Pool coverage).
 
 ## Limitations / boundaries
 
-- **Publishes only.** It doesn't draft (that's the SEO pipeline / write-article), doesn't add meta/links/schema (that's `seo-article-finalizer`), and doesn't make the EN flagship (that's `content-translator`).
+- **Publishes + post-publish governance** (archive the Doc + update the tracker). It does NOT draft (the SEO pipeline / write-article), add meta/links/schema (`seo-article-finalizer`), or make the EN flagship (`content-translator`).
 - **No tables** in CMS content — converted to lists; if a table is truly essential, ship it as an image.
 - House style (`▋` H2s, `<p><br></p>` spacers) is baked into the converter — change it there if the brand changes.
 - Not for social — that's `/publish-article` (Buffer).

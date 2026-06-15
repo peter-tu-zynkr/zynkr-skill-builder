@@ -95,3 +95,20 @@ Live editor extensions (`src/components/editor/TiptapEditor.tsx`):
   correctly in the public list.
 - **Unverified figures** in the body go public under the author's name — surface any
   specific numbers/claims you can't source in the Step-4 preview.
+
+## Governance: archive + tracker (Step 7)
+
+After publish, archive the source Doc and update the content tracker.
+
+- **Published-article folder** — a team-shared Drive folder where shipped article Docs
+  are filed (`<your-published-archive-folder-id>`). Read the Doc's current parent
+  (`get_drive_file_permissions`), then `update_drive_file(add_parents=<folder>,
+  remove_parents=<current>)`. The folder being team-shared means the move also shares it.
+- **Content tracker** = the SEO keyword/topic sheet (`<your-seo-sheet-id>`), two tabs:
+  - **Topic List** (one row per planned article): columns `Status` · `Published URL` ·
+    `Published Date`. Append these headers once; set them on the article's row at publish.
+  - **Keyword Pool** (one row per keyword): a `Published URL` column; set it on **every
+    row whose Intent Cluster matches** the published article, so the keyword map shows
+    what's now covered. Sheets rejects writes past the current grid width — if the column
+    doesn't exist yet, `resize_sheet_dimensions(insert_columns=1)` first.
+- Match article → rows by **Intent Cluster** (Keyword Pool) / **Primary Keyword** (Topic List).
