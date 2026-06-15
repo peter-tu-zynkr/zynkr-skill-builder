@@ -1,0 +1,131 @@
+---
+name: guest-lecturer-program
+description: "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statutory tax withholding. Use when the user says '外部講師', '講師合作', '講師結算', '講師合約', 'guest lecturer', or asks to run any stage of the lecturer program (接洽新講師 / 上架講師活動 / 月末結算). Commercial terms (revenue split, thresholds, penalty caps) come from a local program-config.md — they are never hardcoded in this skill."
+category: operations
+project: guest-lecturer-program
+platform: claude
+status: WIP
+author: Jane Liao
+input: "The lifecycle stage to run (intake / contract / event ops / settlement) plus the lecturer or event in question; commercial parameters from a local program-config.md"
+process: "Stage-based playbook: screen and onboard lecturers via form + tracker, generate contracts from templates, drive the D-30→D+3 per-event SOP checklist, then compute monthly settlement (fees → net revenue → split → withholding) and issue the statement"
+output: "Stage artifacts: lecturer tracker updates, contract drafts, per-event checklist status, and a monthly settlement statement ready for lecturer sign-off and finance payout"
+synergy: ["accupass-agent", "training-process-video"]
+---
+
+# Guest Lecturer Program
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill guest-lecturer-program
+```
+
+A stage-based playbook for running Zynkr's external guest-lecturer collaborations end to end: screening and onboarding lecturers, preparing contracts, executing the per-event operations timeline, and closing the loop with monthly fee settlement and statutory tax withholding. Built for the operations specialist coordinating multiple lecturers in parallel — each stage is a self-contained checklist with clear handoffs, so nothing falls through between contract signing and final payout.
+
+---
+
+## Configuration
+
+All commercial terms live in a **local** `program-config.md` maintained outside this repo (they are business-confidential and vary by negotiation). Read it at the start of every run. Expected fields:
+
+- `revenue_split`: per-plan split ratios by registration source
+- `hourly_revenue_floor`: minimum gross ticket revenue per course-hour used to compute the go/no-go attendance threshold
+- `cancellation_terms`: compensation caps by cancellation scenario and timing
+- `quality_thresholds`: post-event rating floors and the escalation/termination rules
+- `tracker_sheet_id`, `intake_form_id`, `feedback_form_id`, `contract_template_ids`, `settlement_template_ids`: Google Workspace IDs of the program's live documents
+
+If `program-config.md` is missing, stop and ask the user for it — never substitute assumed numbers for commercial terms.
+
+---
+
+## Step 1 — Lecturer intake & screening
+
+1. New lecturers enter via the intake Google Form (`intake_form_id`); responses land in the tracker Sheet (`tracker_sheet_id`).
+2. Screening requirements before any contract talk:
+   - Past teaching/speaking footage (≥ 10 minutes)
+   - Social/community audience overview
+3. First-time collaborations run as a small pilot session (試講) before scaling.
+4. All promotional material uses Zynkr-provided templates — lecturers do not restyle them.
+5. Record every touchpoint in the tracker Sheet; the program supports 10+ lecturers in parallel, so the Sheet is the single source of truth for pipeline state.
+
+**Lecturers supply their own topic and materials.** Zynkr provides: event listing (Accupass), promotion support, pre-event notices, recording, and the post-event recap email.
+
+---
+
+## Step 2 — Contract preparation
+
+Generate the contract draft from the plan-specific template (`contract_template_ids`), then verify the clause checklist:
+
+- Plan selection and its `revenue_split` terms (from config)
+- Accupass platform fee schedule attached as an appendix — per ticket: 票面額 × 5% + NT$10 (金流) + NT$15 (代開發票)
+- Minimum-attendance threshold for this event: ⌈(`hourly_revenue_floor` × course hours) ÷ ticket price⌉ — confirm in the contract appendix **before** the event is listed
+- Payment schedule (monthly close, settlement statement, sign-back window, payout)
+- Tax responsibility: Zynkr is the statutory withholding agent (see Step 4)
+- IP terms: lecturer-supplied materials remain the lecturer's copyright; recordings are for attendee replay only, not for resale; future productization requires renegotiation. Short promo clips (1–3 min) and visual assets (poster with lecturer photo) — confirm permitted scope in the contract
+- Attendee data (Email / LINE ID) belongs to Zynkr; lecturers may not retain or market to it
+- Promotion obligations: lecturer provides a bio (200–300 字) and headshot, and posts on their own channels
+- Cancellation/postponement terms per `cancellation_terms` (from config)
+
+Contract drafts go to legal review before first use — this skill prepares drafts, it does not bypass review.
+
+---
+
+## Step 3 — Per-event operations timeline (D-30 → D+3)
+
+Drive each event through this SOP; track every item in the tracker Sheet:
+
+```
+[D-30] 合約簽署 → 確認票價/時長/最低人數門檻
+[D-25] 活動上架活動通（用 accupass-agent 產出活動頁文案與設定）
+[D-14] 講師素材截止（課綱/簡報 + 形象照）→ 未準時提供視同同意延期
+[D-14] Zynkr 製作 Banner、撰寫活動頁文案
+[D-14] 宣傳啟動（LINE 群 + 講師社群，確認講師確實發布）
+[D-7]  行前通知第一波（活動通發送）
+[D-3]  確認報名人數是否達門檻 → 未達則啟動加推或取消流程
+[D-1]  行前通知第二波（活動通發送，含 Google Meet 連結）
+[D-0]  活動執行、Google Meet 錄影、出席確認
+[D+3]  活動回顧（活動通發送，附錄影連結）＋ 學員評分收集（feedback_form_id）
+```
+
+Post-event additions:
+- Upload the recording to Drive and set link permissions before the D+3 recap
+- First-time lecturers: confirm ID + bank-book copies are on file before the first settlement
+- Review attendee ratings against `quality_thresholds` and apply the escalation rules from config
+
+---
+
+## Step 4 — Monthly settlement & tax withholding
+
+Run at month-end close:
+
+1. **Tally** the month's completed, valid sessions per lecturer from the tracker Sheet.
+2. **Compute** per session:
+   ```
+   手續費合計 = (票面額 × 5% + NT$25) × 實售張數
+   淨收入 = 票面額 × 實售張數 − 手續費合計
+   講師收入 = 淨收入 × 分潤比例（from revenue_split，依報名來源）
+   ```
+   Accupass's own settlement numbers are authoritative when they differ.
+3. **Apply statutory withholding** (Taiwan, 執行業務所得 9A — these are legal rates, not negotiable terms):
+   - Resident lecturers: single payment > NT$20,010 → withhold 10% income tax
+   - Non-residents: 20%
+   - NHI supplementary premium: single payment ≥ NT$20,000 → withhold 2.11%
+   - Issue withholding statements (扣繳憑單) by end of January for the prior year
+4. **Issue the settlement statement** from the plan-specific template (`settlement_template_ids`), showing pre- and post-withholding amounts, by the 10th of the following month. Lecturer signs back within 3 working days; no objection = confirmed.
+5. **Hand off to finance** for payout by end of the following month; archive the signed statement for year-end filing.
+
+If a payment could plausibly exceed the withholding thresholds, flag it in the statement notes — surprises here are the main source of lecturer disputes.
+
+---
+
+## Outputs
+
+- Updated lecturer tracker (pipeline state, per-event checklist status)
+- Contract drafts ready for legal review
+- Per-event SOP checklist with timeline alerts
+- Monthly settlement statements (pre/post-withholding) ready for sign-off and payout
+
+## Limitations
+
+- Lecturer personal data (ID copies, bank details, contract specifics) lives only in Zynkr's private Drive — never in this repo or any generated artifact
+- Commercial terms come exclusively from the local `program-config.md`; this skill contains no negotiable numbers
+- Statutory rates reflect Taiwan regulations as of 2026 — confirm with the accountant before each filing season
+- Contract templates require lawyer review before first use; this skill does not provide legal advice
