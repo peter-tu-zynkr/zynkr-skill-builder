@@ -839,8 +839,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 150997,
-    "githubForks": 17817
+    "githubStars": 151004,
+    "githubForks": 17819
   },
   {
     "id": "1.29",
@@ -1521,6 +1521,62 @@
     "sourceFile": "3-operations/operations-transformation/agents/operations-process-redesign.md"
   },
   {
+    "id": "3.14",
+    "name": "accupass-agent",
+    "category": "operations",
+    "project": "accupass-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "description": "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow-up checklist. Use when the user says '我要上架活動', '上架活動通', '填活動通', '活動上架', 'accupass', '幫我填模板', or '活動資訊填寫'. Does not publish to Accupass directly (the platform has no API) — it produces the filled template for manual entry.",
+    "input": "Event seed material (existing event description, outline, or a past event listing) plus the event format (online / in-person / hybrid)",
+    "process": "Two interview phases — event content fields confirmed one at a time, then ticketing & schedule fields — followed by one consolidated template output",
+    "output": "A fully filled Accupass listing template: pre-launch goals, platform settings, event copy, marketing emails, reminder email, and post-event follow-up checklist",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.14",
+    "kind": "skill",
+    "synergy": [
+      "3.14"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.14.md -o ~/.claude/skills/accupass-agent.md",
+    "updatedAt": "2026-06-15",
+    "firstSeen": "2026-06-15",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/accupass-agent/SKILL.md"
+  },
+  {
+    "id": "3.15",
+    "name": "guest-lecturer-program",
+    "category": "operations",
+    "project": "guest-lecturer-program",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "description": "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statutory tax withholding. Use when the user says '外部講師', '講師合作', '講師結算', '講師合約', 'guest lecturer', or asks to run any stage of the lecturer program (接洽新講師 / 上架講師活動 / 月末結算). Commercial terms (revenue split, thresholds, penalty caps) come from a local program-config.md — they are never hardcoded in this skill.",
+    "input": "The lifecycle stage to run (intake / contract / event ops / settlement) plus the lecturer or event in question; commercial parameters from a local program-config.md",
+    "process": "Stage-based playbook: screen and onboard lecturers via form + tracker, generate contracts from templates, drive the D-30→D+3 per-event SOP checklist, then compute monthly settlement (fees → net revenue → split → withholding) and issue the statement",
+    "output": "Stage artifacts: lecturer tracker updates, contract drafts, per-event checklist status, and a monthly settlement statement ready for lecturer sign-off and finance payout",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "3.15",
+    "kind": "skill",
+    "synergy": [
+      "3.15"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/3.15.md -o ~/.claude/skills/guest-lecturer-program.md",
+    "updatedAt": "2026-06-15",
+    "firstSeen": "2026-06-15",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "3-operations/guest-lecturer-program/SKILL.md"
+  },
+  {
     "id": "4.01",
     "name": "training-lecture-transcript",
     "category": "training",
@@ -1947,7 +2003,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 22441,
+    "githubStars": 22444,
     "githubForks": 1805
   },
   {

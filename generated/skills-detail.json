@@ -917,8 +917,8 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 150997,
-    "github_forks": 17817,
+    "github_stars": 151004,
+    "github_forks": 17819,
     "first_seen": "2026-06-03",
     "description": "The 'rendering engine' that comes after the three-stage slide relay (the fourth stage, maintained by Anthropic): it takes the SLIDE_PACKET ▸ Visuals handed off by slide-visual-selector and renders it page by page into a real .pptx file, and can also read, parse, and edit existing decks in reverse. This is Anthropic's official slide-pptx skill; Zynkr does not redistribute its code — this card is only a reference and a hand-off pointer, so install it from the Anthropic source.",
     "input": "The SLIDE_PACKET ▸ Visuals per-page visual spec (handed off by slide-visual-selector), or an existing .pptx file.",
@@ -2098,7 +2098,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 22441,
+    "github_stars": 22444,
     "github_forks": 1805,
     "first_seen": "2026-06-09",
     "description": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
@@ -2990,5 +2990,67 @@
       "1.30"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/seo-publish-article/SKILL.md"
+  },
+  "3.14": {
+    "id": "3.14",
+    "slug": "accupass-agent",
+    "name": "accupass-agent",
+    "summary": "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow",
+    "category": "operations",
+    "project": "accupass-agent",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/accupass-agent/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.14.md -o ~/.claude/skills/accupass-agent.md",
+    "tags": [
+      "accupass-agent",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-15",
+    "first_seen": "2026-06-15",
+    "description": "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow-up checklist. Use when the user says '我要上架活動', '上架活動通', '填活動通', '活動上架', 'accupass', '幫我填模板', or '活動資訊填寫'. Does not publish to Accupass directly (the platform has no API) — it produces the filled template for manual entry.",
+    "input": "Event seed material (existing event description, outline, or a past event listing) plus the event format (online / in-person / hybrid)",
+    "process": "Two interview phases — event content fields confirmed one at a time, then ticketing & schedule fields — followed by one consolidated template output",
+    "output": "A fully filled Accupass listing template: pre-launch goals, platform settings, event copy, marketing emails, reminder email, and post-event follow-up checklist",
+    "kind": "skill",
+    "synergy": [
+      "3.14"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/accupass-agent/SKILL.md"
+  },
+  "3.15": {
+    "id": "3.15",
+    "slug": "guest-lecturer-program",
+    "name": "guest-lecturer-program",
+    "summary": "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statuto",
+    "category": "operations",
+    "project": "guest-lecturer-program",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Jane Liao",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/guest-lecturer-program/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.15.md -o ~/.claude/skills/guest-lecturer-program.md",
+    "tags": [
+      "guest-lecturer-program",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-15",
+    "first_seen": "2026-06-15",
+    "description": "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statutory tax withholding. Use when the user says '外部講師', '講師合作', '講師結算', '講師合約', 'guest lecturer', or asks to run any stage of the lecturer program (接洽新講師 / 上架講師活動 / 月末結算). Commercial terms (revenue split, thresholds, penalty caps) come from a local program-config.md — they are never hardcoded in this skill.",
+    "input": "The lifecycle stage to run (intake / contract / event ops / settlement) plus the lecturer or event in question; commercial parameters from a local program-config.md",
+    "process": "Stage-based playbook: screen and onboard lecturers via form + tracker, generate contracts from templates, drive the D-30→D+3 per-event SOP checklist, then compute monthly settlement (fees → net revenue → split → withholding) and issue the statement",
+    "output": "Stage artifacts: lecturer tracker updates, contract drafts, per-event checklist status, and a monthly settlement statement ready for lecturer sign-off and finance payout",
+    "kind": "skill",
+    "synergy": [
+      "3.15"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/guest-lecturer-program/SKILL.md"
   }
 }
