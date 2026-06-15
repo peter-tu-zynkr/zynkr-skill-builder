@@ -1,0 +1,115 @@
+---
+name: seo-publish-article
+description: "Publishes a FINISHED SEO blog article to the live website (e.g. zynkr.ai/blog) by writing it straight into the CMS's Supabase `articles` table — the fast path, because the CMS admin page (e.g. cms.zynkr.ai/content) is an auth-gated dashboard, not a write API. Reads the article from a Google Doc (body + the embedded 「SEO 交付物」block for slug/seo_title/meta_description/keywords/category), converts it to CMS-safe Tiptap JSON + content_html (tables→lists, ▋ headings, schema-validated so it never corrupts on a later in-CMS edit), shows a preview, and on your explicit confirm publishes it live (status=published + published_at) then verifies the public URL renders. Use whenever the user already has a finished/proofed article and says 上架文章 / 發佈到網站 / 把這篇放到部落格 / 上線這篇文章 / publish this article to the blog / push this post live on the site / put this on the web — or hands over a finished article Doc and wants it on the web. Boundaries — this is the WEB/CMS publisher and should win against, but NOT be confused with: /publish-article (posts to SOCIAL channels like Threads/IG/FB via Buffer), /seo-article-finalizer (only adds meta/links/schema, does NOT publish), article DRAFTING (the SEO pipeline / write-article write the article), and /skill-publish (ships a SKILL to the marketplace, not an article). Trigger eagerly whenever a finished, proofed article needs to go live on the website."
+category: brand-marketing
+project: seo-publish-article
+platform: claude
+status: WIP
+author: Peter Tu
+input: "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block (slug/seo_title/meta_description/keywords/category), plus the local CMS repo for its Supabase URL + service-role key."
+process: "Read the Doc → split body from the 「SEO 交付物」metadata → build + schema-validate CMS-safe Tiptap JSON + content_html (tables→lists, ▋ H2s) → resolve author/category + slug check → preview → on confirm POST to Supabase `articles` (service role, status=published) → verify /blog/<slug>"
+output: "The article live at <site>/blog/<slug> — the inserted articles row (id, slug, status, published_at) + verification the public API and page render correctly."
+synergy: ["seo-article-finalizer", "seo-article-pipeline", "content-translator"]
+---
+
+# SEO Publish Article
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill seo-publish-article
+```
+
+The **last leg** of the SEO pipeline. The article is already drafted, proofed, and SEO-finalized (meta / links / schema) — now get it **live on the website**. Picks up where `seo-article-finalizer` ends ("可上架") and does the actual publish.
+
+The key insight that makes this fast and reliable: **there is no public write endpoint on the CMS.** `cms.zynkr.ai/content` is an auth-gated dashboard, and the only public API is read-only. The editor *and* the public site both read from one Supabase table — `articles` — so the most efficient path is to write that row directly (PostgREST, service role). Details + schema live in `references/cms-publishing.md`.
+
+## The one rule — confirm before it goes public
+
+Publishing sets `status=published`, and the article becomes publicly readable and indexable at `<site>/blog/<slug>` within seconds. That's outward-facing and hard to fully undo. Never run the live POST without showing the Step 4 preview and getting an explicit "yes". If the body contains an unverified claim or a specific number you can't source, surface it in the preview — a made-up figure under the author's name on a public, indexed page is a real credibility risk.
+
+## Configuration
+
+- **The CMS app's local checkout** — for its `.env.local` (gitignored) holding `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`. Path: `<your-cms-repo-path>`. The service key is **read at runtime only** — never embed it in this skill, in command args, or in chat.
+- **Node** + the cms repo's installed `node_modules` (the validator imports the editor's real Tiptap to schema-check the content).
+- **Supabase MCP** (or psql) for the two ID lookups in Step 3.
+- Author email + site host are deployment-specific: `<your-author-email>`, `<site>` (e.g. `https://zynkr.ai`), `<CMS>` (e.g. `https://cms.zynkr.ai`).
+- ⚠️ A direct service-role write to production is (correctly) flagged by Claude Code's safety classifier as a privileged production write. **Expect to approve the Bash permission prompt each run** — that's the human gate, not a bug.
+
+## Step 1 — Read the Doc, split body from metadata
+
+Read the article (google-workspace `get_doc_as_markdown` / `get_drive_file_content`, or a markdown file). Produce two files in a scratch dir:
+
+- **`body.md`** — the article body ONLY. Drop the H1 (it becomes `title`) and everything from the `SEO 交付物` heading onward. **Keep the FAQ section.** If the body has a markdown **table**, convert it to a bullet list here — the editor has no table node (see Step 2). The script also flattens tables as a backstop, but a hand-made list reads better.
+- **`meta.json`** — `{ "title", "slug", "seo_title", "meta_description", "summary", "keywords": [...], "category_slug" }`. Take `title` from the H1; the rest from the 交付物 block. If there's no 交付物 block, derive them (English kebab-case slug; ~70–80-char `meta_description` including the primary keyword; a 1–2 sentence `summary`) and confirm with the user. Map the category to one CMS category — see the table in `references/cms-publishing.md`; if ambiguous, ask.
+
+## Step 2 — Build + schema-validate the payload
+
+The editor stores Tiptap JSON in `content` and pre-rendered HTML in `content_html` (what readers see). Build both from `body.md`:
+
+```bash
+node <skill>/scripts/build_payload.mjs --body body.md --meta meta.json \
+  --status published --published-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  [--author-id <AUTHOR_ID> --category-id <CATEGORY_ID>] --out payload.json
+```
+
+The converter: `## ` → `▋`-prefixed H2, paragraphs, `**bold**`, `- ` → bulletList, `1. ` → orderedList, `> ` → blockquote, `---` → hr, `<p><br></p>` spacers between blocks (house style), and **flattens any markdown table to a bullet list** — because the editor's schema has **no table node**, so a `<table>` would be silently dropped and erased on the next in-CMS save.
+
+Then **schema-validate** — the definitive "will it round-trip in the real editor" check:
+
+```bash
+node <skill>/scripts/validate_payload.mjs --payload payload.json --repo "<your-cms-repo-path>"
+```
+
+It builds the editor's exact ProseMirror schema and runs `nodeFromJSON(content).check()`. Expect `SCHEMA VALID ✅` + a node histogram. If it prints `SCHEMA INVALID`, fix the offending block before going further (a leftover `<table>` is the usual cause).
+
+## Step 3 — Resolve IDs + check the slug
+
+Look these up dynamically (don't hard-code UUIDs — see `references/cms-publishing.md`):
+
+```sql
+SELECT id FROM auth.users WHERE email = '<your-author-email>';   -- author_id (Supabase MCP / SQL; not on PostgREST)
+SELECT id FROM categories WHERE slug = '<category_slug>';        -- category_id
+SELECT id, status FROM articles WHERE slug = '<slug>';           -- slug collision?
+```
+
+If a row with that slug exists, **stop and ask**: update it in place (Step 5 PATCH) or pick a new slug — `slug` is UNIQUE, a blind insert returns 409. Then re-run `build_payload.mjs` with `--author-id` / `--category-id` so `payload.json` is complete.
+
+## Step 4 — Preview & confirm ⟵ the gate
+
+Show, clearly: **title · slug · category · seo_title · meta_description · keywords · target URL `<site>/blog/<slug>` · mode (LIVE — public immediately)**. Call out any unverified numbers/claims in the body. Ask **"Publish live? (yes / edit / cancel)"**. Proceed only on an explicit yes. (`edit` → fix and rebuild; `cancel` → stop.)
+
+## Step 5 — Publish (PostgREST, service role)
+
+```bash
+set -a; source "<your-cms-repo-path>/.env.local"; set +a
+curl -sS -X POST "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/articles?select=id,slug,status,published_at" \
+  -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Content-Type: application/json" -H "Prefer: return=representation" \
+  --data @payload.json -w "\n[HTTP %{http_code}]\n"
+```
+
+Expect **HTTP 201**. For an **update-in-place** (slug already exists and you chose to overwrite), use `PATCH "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/articles?slug=eq.<slug>"` with only the changed fields (e.g. content/content_html/published_at).
+
+## Step 6 — Verify it's really live
+
+- `GET <CMS>/api/blog/posts/<slug>` → 200; returns `content_html` (confirm **no `<table>`**), title, meta.
+- `GET <CMS>/api/blog/posts?category=<category_slug>` → the new slug appears in the list.
+- `GET <site>/blog/<slug>` → 200; `<title>`/canonical/OG come from your `seo_title`/`meta_description`, Article JSON-LD present, body renders.
+
+Report the live URL.
+
+## Outputs
+
+The published row (id / slug / status / published_at) + the verified live URL.
+
+## Limitations / boundaries
+
+- **Publishes only.** It doesn't draft (that's the SEO pipeline / write-article), doesn't add meta/links/schema (that's `seo-article-finalizer`), and doesn't make the EN flagship (that's `content-translator`).
+- **No tables** in CMS content — converted to lists; if a table is truly essential, ship it as an image.
+- House style (`▋` H2s, `<p><br></p>` spacers) is baked into the converter — change it there if the brand changes.
+- Not for social — that's `/publish-article` (Buffer).
+
+## Bundled resources
+
+- `scripts/build_payload.mjs` — markdown → Tiptap JSON + content_html (house style; table→list).
+- `scripts/validate_payload.mjs` — schema-validate `content` against the editor's real Tiptap schema.
+- `references/cms-publishing.md` — `articles` schema, category map, field mapping, public URL pattern, full gotcha list.
