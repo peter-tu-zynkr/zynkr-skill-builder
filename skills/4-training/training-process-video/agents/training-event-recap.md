@@ -56,12 +56,16 @@ Segment the cleaned transcript into logical blocks:
 
 From the segmented transcript, extract:
 
-1. **Executive summary** — 2–3 sentences capturing the session's purpose and main outcome
-2. **Theme** — single sentence naming the central topic or thesis of this session
-3. **Key insights** — 3–5 standalone takeaways, each with a short explanation (2–4 sentences)
-4. **Q&A pairs** — extract each attendee question and the lecturer's answer as an explicit pair; if questions were not asked aloud, extract the implied question from context
-5. **Tools & Resources** — list tools mentioned first (with brief description), then links, files, or other references
-6. **Call to action** — attendee-facing next steps: what should participants do after this session; include deadline or owner if mentioned, else "自行安排"
+1. **Subtitle** — one punchy line capturing the session's central thesis (e.g. "從『用 AI』，到『讓 AI 幫你做事』")
+2. **Opening message** — 2–3 short sentences from the speaker's perspective thanking attendees and naming the one thing that was demonstrated (not a bullet list — natural prose)
+3. **Main sections** — 3–5 numbered sections (一、二、三…). Each section has:
+   - A heading that names the topic
+   - 2–5 short bullet points or lines. Use 👉 to introduce the most important single point in the section.
+   - Keep each section under 80 words
+4. **Call to action** — 2–3 lines listing what attendees can do next (join community, book consultation, fill survey, etc.). Use the actual links or instructions mentioned in the transcript.
+5. **Closing** — 1–2 lines of warm personal sign-off from the speaker, including the speaker's first name.
+
+Follow the tone rules in `references/recap-article-template.md` (first-person speaker voice, 昨晚 not 今晚, no Q&A/tools/resources sections, 👉 once per section at most).
 
 ---
 
@@ -80,10 +84,10 @@ Return a single structured result block to the manager:
 ```
 AGENT: training-event-recap
 STATUS: complete
-DOC_TITLE: [proposed document title: "[Stream Title] — 直播回顧 [YYYY-MM-DD]"]
+DOC_TITLE: [proposed document title: "[Stream Title] 直播筆記 [YYYY-MM-DD]"]
 SUMMARY: [1-paragraph plain text summary of what was captured]
 CONTENT:
-[full formatted recap article, ready to paste into Google Docs]
+[full formatted newsletter-style recap, ready to paste into Google Docs]
 ```
 
 If formatting fails (e.g. template cannot be applied), return:

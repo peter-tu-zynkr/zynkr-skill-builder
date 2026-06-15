@@ -2,73 +2,46 @@
 
 Use this template when creating the Google Doc event recap. Fill every section from the transcript. Do not invent content.
 
----
-
-# [Stream Title] — 直播回顧
-
-**日期：** [YYYY-MM-DD]
-**主題：** [One-sentence theme — the central topic or thesis of this session]
+The recap is a **newsletter-style message** written in first person from the speaker's perspective — like a newsletter or LINE message to attendees, not an academic article or meeting minutes.
 
 ---
 
-## 本場重點摘要
+```
+[Stream Title]
+[Subtitle — one punchy line capturing the session's central thesis]
 
-> [2–3 sentence executive summary for readers who only read the top]
+[Opening message — 2–3 short sentences from the speaker's perspective thanking attendees and naming the one thing that was demonstrated. Natural prose, not a bullet list.]
 
----
+________________
 
-## 核心洞察
+一、[Section title — names the topic]
+[2–5 short bullet points or lines. Use 👉 to introduce the most important single point in the section. Keep the section under 80 words.]
+________________
 
-List 3–5 key insights from the stream. Each insight is a standalone takeaway.
+二、[Section title]
+[content]
+________________
 
-### 1. [Insight title]
-[2–4 sentences expanding on the insight. Quote the speaker directly if possible.]
+（continue for all sections — 3–5 numbered sections total）
 
-### 2. [Insight title]
-[2–4 sentences]
+________________
 
-### 3. [Insight title]
-[2–4 sentences]
+[Call to action — 2–3 lines listing what attendees can do next (join community, book consultation, fill survey, etc.). Use the actual links or instructions mentioned in the transcript.]
 
-*(Add more as needed)*
+________________
 
----
-
-## 學員問答
-
-Capture each attendee question and the lecturer's answer as an explicit pair. If a question was implied rather than asked aloud, state it as the implied question.
-
-**Q：** [Attendee question]
-**A：** [Lecturer's answer — summarise faithfully, keep key terms]
-
-**Q：** [Attendee question]
-**A：** [Lecturer's answer]
-
-*(Add more as needed; use "無" if no Q&A occurred)*
+[Closing — 1–2 lines of warm personal sign-off from the speaker]
+[Speaker first name]
+```
 
 ---
 
-## 工具與資源
+## Tone rules
 
-List tools mentioned during the stream first, then other links, files, or references.
-
-**工具：**
-- **[Tool name]** — [One-line description of what it does / how it was used]
-
-**其他資源：**
-- [Resource name or description]
-
----
-
-## 課後行動
-
-Attendee-facing next steps after this session. Include deadline or owner if mentioned.
-
-| 行動項目 | 負責人 | 預計完成 |
-|----------|--------|----------|
-| [Action] | [Name or 自行安排] | [Date or 自行安排] |
-| [Action] | [Name or 自行安排] | [Date or 自行安排] |
-
----
-
-*本文由 Claude Code 自動從直播逐字稿整理，僅供參考。如有錯誤請直接修改本文件。*
+- Write in first person from the speaker's perspective, addressed to 大家
+- Conversational and direct — like a newsletter or LINE message, not an academic article
+- No Q&A section, no tools list, no resources table
+- Use 👉 sparingly (once per section at most) for the key takeaway line
+- Time references: use **昨晚** (not 今晚) — the recap is posted the day after the event
+- Opening message: if there is a guest speaker, refer to them by name (e.g. "我跟 Ernie 都走過..."), NOT by the host's own name
+- Each numbered section should have a subtitle after the number (e.g. 一、這次講座的主題)
