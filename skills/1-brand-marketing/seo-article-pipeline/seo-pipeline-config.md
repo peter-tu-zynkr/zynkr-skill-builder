@@ -1,13 +1,13 @@
 # SEO Article Pipeline — Config
 
-Single source of truth for the IDs and accounts the SEO content pipeline depends on. Every SEO skill (`seo-persona-builder` … `seo-article-finalizer`) references the placeholder `<your-seo-kb-folder-id>`; resolve it here. When something moves, update this file — don't edit each SKILL.md.
+Single source of truth for the IDs and accounts the SEO content pipeline depends on. Every SEO skill (`seo-persona-builder` … `seo-article-finalizer`) references the placeholder `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2`; resolve it here. When something moves, update this file — don't edit each SKILL.md.
 
 ---
 
 ## Google account
 
 ```
-user_google_email: <your-google-workspace-account>
+user_google_email: peter_tu@zynkr.ai
 ```
 
 All Google Workspace MCP calls (Drive search/read, Doc create) use this account.
@@ -23,7 +23,7 @@ seo_kb_folder_id:  1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2
 seo_kb_folder_url: https://drive.google.com/drive/folders/1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2
 ```
 
-Resolve `<your-seo-kb-folder-id>` in every SEO skill to `seo_kb_folder_id`.
+Resolve `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2` in every SEO skill to `seo_kb_folder_id`.
 
 ### Contents (as of 2026-05-29)
 
@@ -89,6 +89,19 @@ Lives in the `02 Seed Knowledge` subfolder (`seed_knowledge_folder_id`). `seo-an
 **Living-KB self-heal bridge — MANUAL (not yet automated):** after running a livestream through `training-process-video`, copy its `training-idea-curator` ideas + accepted `training-qa-knowledge` entries into `02 Seed Knowledge` (one doc per stream, named `seed_<date>_<topic>`). Keep entries decision-first (angle = a decision/trade-off, not a feature). Until a sync step is built, this deposit is done by hand so the SEO skills see fresh seed knowledge. Future automation: extend `training-process-video` to write an SEO-seed doc straight into `seed_knowledge_folder_id`.
 
 ---
+
+## Publish targets (stage 12 — seo-publish-article)
+
+Stage 12 (`seo-publish-article`) takes the finalizer's publish-ready Doc, publishes it to the live website, archives the Doc, and updates the tracker. IDs resolved here:
+
+```
+published_article_folder_id: 16i6lt3gJP6QARR-Ib32w8YARlklffV2W   # 「03 Published article」(under seo_kb_folder_id) — source Doc archived here AFTER publish, not before
+tracker_sheet_id:            1hmVu-vy6DsniD_UHm66SEteSDZAIdMwtv06Bp-ROy8A   # Zynkr SEO 關鍵字地圖 + 主題清單 — Topic List (Status=Done / Published URL / Published Date) + Keyword Pool (coverage URL on the cluster rows)
+site_blog_url:               https://zynkr.ai/blog/<slug>
+cms_repo_path:               <your-cms-repo-path>   # zynkr-cms local checkout; its .env.local holds NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY
+```
+
+The CMS write path (Supabase `articles` table, Tiptap content rules, the no-table constraint) + the tracker column scheme live in `seo-publish-article/references/cms-publishing.md` — don't duplicate them here.
 
 ## Brand voice (Brand Guide — authoritative)
 
