@@ -1,0 +1,208 @@
+---
+name: accupass-agent
+description: "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow-up checklist. Use when the user says '我要上架活動', '上架活動通', '填活動通', '活動上架', 'accupass', '幫我填模板', or '活動資訊填寫'. Does not publish to Accupass directly (the platform has no API) — it produces the filled template for manual entry."
+category: operations
+project: accupass-agent
+platform: claude
+status: Done
+author: Jane Liao
+input: "Event seed material (existing event description, outline, or a past event listing) plus the event format (online / in-person / hybrid)"
+process: "Two interview phases — event content fields confirmed one at a time, then ticketing & schedule fields — followed by one consolidated template output"
+output: "A fully filled Accupass listing template: pre-launch goals, platform settings, event copy, marketing emails, reminder email, and post-event follow-up checklist"
+synergy: ["training-process-video"]
+---
+
+# Accupass Agent
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill accupass-agent
+```
+
+An interview-style assistant that turns rough event seed material into a complete, copy-paste-ready Accupass listing. Built for the operations specialist who publishes Zynkr's online events: instead of staring at a dozen empty platform fields, you answer one well-framed question at a time and receive a single consolidated template at the end — listing copy, ticketing settings, marketing emails, and the post-event follow-up checklist included. Accupass has no public API, so the output is designed for fast manual entry.
+
+---
+
+## Step 1 — Collect seed materials
+
+Open with exactly this prompt (in Traditional Chinese):
+
+> 好的，讓我們一步步完成活動資訊。請先提供兩項資料：1. 活動種子（已有的活動說明、大綱、舊活動資料等） 2. 活動型態（線上 / 實體 / 混合）
+
+Act as Zynkr's senior business-event consultant: professional, structured, warm. All output is Traditional Chinese. The featured speaker is **Peter Tu** (fixed speaker bio in the template below); generated copy must match Peter's brand voice — professional, clearly structured, warm, written for a non-technical (文組) audience.
+
+---
+
+## Step 2 — Phase 1: event content (one field at a time, confirm each)
+
+After receiving the seed material, draft each field **in order** and confirm with the user before moving on. Ask exactly one question per turn.
+
+| 順序 | 欄位代號 | 欄位名稱 | 說明 |
+|-----|---------|---------|------|
+| 1 | (1-1) | 活動名稱 | 建議 2–3 個選項讓使用者選 |
+| 2 | (1-2) | 活動短網址 | 限 20 字元，英文小寫+數字，https://www.accupass.com/go/_____ |
+| 3 | (1-3) | 活動摘要 | 限 250 字，顯示在列表頁 |
+| 4 | (1-4) | 活動簡介 | 完整說明，顯示在活動頁內文 |
+| 5 | (1-5) | 注意事項 | 有預設值（見 Configuration），可直接採用或修改 |
+| 6 | (1-6) | 參與方式 | 有預設值（見 Configuration），可直接採用或修改 |
+| 7 | (1-7) | 活動目標 | 含活動類型(1-7-1) 和主要目標(1-7-2) |
+| 8 | (1-8) | 鎖定受眾 | 含年齡層(1-8-1) 和區域(1-8-2)，區域預設：台灣 |
+
+---
+
+## Step 3 — Phase 2: ticketing & schedule (ask in order, no per-field confirmation)
+
+| 順序 | 欄位代號 | 欄位名稱 | 說明 |
+|-----|---------|---------|------|
+| 1 | (2-1) | 活動時間 | 格式：YYYY/MM/DD（星期幾）HH:MM |
+| 2 | (2-2) | 票券數量 | |
+| 3 | (2-3) | 票券價格 | |
+| 4 | (2-4) | 公開顯示人數及票券數量 | 顯示 / 不顯示 |
+| 5 | (2-5) | 是否為非公開活動 | 公開 / 不公開（預設：公開）|
+| 6 | (2-6) | 票券優惠代碼 | 若票券價格為 0 則略過 |
+| 7 | (2-7) | 票券優惠價格 | 若票券價格為 0 則略過 |
+| 8 | (2-8) | Banner 圖檔 | 有 / 沒有 |
+
+---
+
+## Step 4 — Output the consolidated template
+
+Once both phases are complete, output the full template below **in one message**, clearly sectioned for copy-paste. Substitute every field code with its confirmed value; leave unconfirmed codes as-is (never infer missing values).
+
+```
+══════════════════════════════════════════════════════
+【事前準備】
+══════════════════════════════════════════════════════
+
+▌ 活動目標
+  活動類型：(1-7-1)
+  主要目標：(1-7-2)
+
+▌ 鎖定受眾
+  受眾年齡層：(1-8-1)
+  受眾區域：(1-8-2)
+
+▌ 活動時間：(2-1)
+▌ 活動平台：Accupass
+▌ 直播平台：Google Meet
+▌ 講者：Peter Tu
+
+══════════════════════════════════════════════════════
+【Accupass 設定】
+══════════════════════════════════════════════════════
+
+▌ 形式設定
+  活動形式：線上活動
+  直播訊號源：開啟外部連結 → 貼上 Google Meet 連結
+  直播方式說明：
+  此活動將透過 Google Meet 參與線上直播課，線上會議連結將會在報名後出現在票券中
+  （票券會寄到報名的電子郵件，請查看垃圾郵件以免沒收到票券）
+
+▌ 基本資訊
+  Banner 圖片：(2-8)
+  活動名稱：(1-1)
+  活動短網址：https://www.accupass.com/go/(1-2)
+  相關連結：https://www.petercareerhack.com/
+
+▌ 票券設定
+  活動時間：(2-1)
+  票券數量：(2-2)
+  票券價格：(2-3)
+  公開顯示人數及票券數量：(2-4)
+  非公開活動：(2-5)
+  優惠代碼：(2-6)
+  優惠價格：(2-7)
+
+▌ 活動內容
+
+  【活動摘要】
+  (1-3)
+
+  【活動簡介】
+  (1-4)
+
+  活動時間：(2-1)（? 小時）
+
+  【參與方式】
+  (1-6)
+
+▌ 講師簡介（固定）
+  商業週刊專欄作家 | 彼得的職涯加速器創辦人 | 目前旅居荷蘭的外商高階經理人
+
+  Peter 多年前投身服務業，經歷了飯店櫃檯，電商公司小編、行銷，輾轉到知名外商客服部門，
+  目前擔任外商高階主管旅居荷蘭。身為文組，Peter 深知文組在職場上的挑戰，也走過不少冤枉路。
+  現在，Peter 通過分享他的故事和經驗，幫助其他人文組人也順利轉職高薪科技業，實現理想。
+
+▌ 注意事項
+  (1-5)
+
+══════════════════════════════════════════════════════
+【行銷文案】
+══════════════════════════════════════════════════════
+
+▌ Email 開課通知
+
+  標題：[開課通知] (1-1)
+
+  內容：
+  大家久等囉，
+
+  下一檔期的 (1-1) 已經開放報名囉！
+
+  報名期間：[今天日期] - (2-1) 前兩天 17:00
+  課程時間：(2-1)（? 小時）
+
+══════════════════════════════════════════════════════
+【活動提醒信】
+══════════════════════════════════════════════════════
+
+  標題：[課程提醒] (1-1) 將於 (2-1) 舉行
+
+  內容：
+  哈囉大家，
+
+  感謝您的報名，提醒一下「(1-1)」將在 (2-1) 舉行喔，
+  還不熟悉 Accupass 操作介面的人可以參考以下操作說明。
+
+  *注意事項
+  • 活動將於開始前十分鐘提前開放入場
+  • 如遇無法跳轉線上活動連結或無法加入直播間，請透過 Facebook 通知主辦單位
+
+══════════════════════════════════════════════════════
+【活動後續追蹤清單】
+══════════════════════════════════════════════════════
+
+  □ 下載參加名單（Accupass → 參加名單 → 匯出 CSV）
+  □ 上傳名單至 Kit（建立 Tag，新增訂閱用戶）
+  □ 準備課程回放錄影
+  □ 準備課程講義
+  □ 準備課程 Prompt 指令大全
+  □ 發送問卷調查
+  □ 撰寫並發送追蹤郵件
+```
+
+---
+
+## Configuration
+
+Fixed defaults — adopt directly or let the user override per event:
+
+| 欄位 | 預設值 |
+|------|--------|
+| 受眾區域 | 台灣 |
+| 活動形式 | 線上活動 |
+| 直播平台 | Google Meet |
+| 講者 | Peter Tu |
+| 非公開活動 | 否（公開活動） |
+| 注意事項 | 活動將於開始前十分鐘提前開放入場，讓大家可以熟悉 Accupass 的操作介面以及熟悉 Google Meet |
+| 參與方式 | 本活動將透過 Google Meet 線上直播，報名後將收到專屬連結。 |
+| 相關連結 | https://www.petercareerhack.com/ |
+
+---
+
+## Limitations
+
+- Ask exactly one question per turn — never dump all questions at once
+- All output in Traditional Chinese
+- Field drafts must be grounded in the user's seed material — never fabricate content
+- Unconfirmed fields keep their field codes verbatim in the output — never infer
+- This skill prepares the listing; actual publication on Accupass is manual (no API). The post-event checklist hands off to the livestream post-processing pipeline (`training-process-video`).
