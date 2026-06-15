@@ -410,10 +410,10 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "The orchestrator for Zynkr SEO content production: it chains the nine stages of the v2 flowchart into one pipeline running from brand material to a publish-ready article. The first half (persona → seed questions → angles → keyword map → intent classification → demand validation → Brief → outline/FAQ) calls each SEO skill; the second half (drafting → titling → proofreading) reuses the existing write-article sub-agents, and finally it does SEO setup plus the EN flagship version. Triggers when the user says 「跑 SEO 文章流程」, 「開始寫一篇 SEO 文章」, 「/seo-article-pipeline」, or hands over a brand/article material packet.",
+    "description": "The orchestrator for Zynkr SEO content production: it chains the stages of the v2 flowchart into one pipeline running from brand material all the way to a published article on the live website. The first half (persona → seed questions → angles → keyword map → intent classification → demand validation → Brief → outline/FAQ) calls each SEO skill; the second half (drafting → titling → proofreading) reuses the existing write-article sub-agents; then it does SEO setup (`seo-article-finalizer` produces a publish-ready Google Doc), publishes to the live website via `seo-publish-article` (which also archives the Doc + updates the SEO tracker), and optionally produces the EN flagship. Triggers when the user says 「跑 SEO 文章流程」, 「開始寫一篇 SEO 文章」, 「/seo-article-pipeline」, or hands over a brand/article material packet.",
     "input": "A brand material packet (first time) or an article material packet (per article); or a SEO_PACKET handoff packet from any stage",
     "process": "Detect the entry point → call the corresponding SEO skill / existing sub-agent stage by stage → a manual gate at every stage → save the working files into this article's Drive subfolder",
-    "output": "One publish-ready article that has passed SEO/AEO proofreading, with meta/schema/links (zh-TW, plus a separate EN flagship)",
+    "output": "A published article live at zynkr.ai/blog/<slug> (Doc archived + SEO tracker updated), having passed SEO/AEO proofreading, with meta/schema/links — zh-TW, plus optional EN flagship",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -839,8 +839,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 151008,
-    "githubForks": 17819
+    "githubStars": 151040,
+    "githubForks": 17822
   },
   {
     "id": "1.29",
@@ -2003,8 +2003,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 22444,
-    "githubForks": 1805
+    "githubStars": 22454,
+    "githubForks": 1807
   },
   {
     "id": "6.02",
@@ -2313,8 +2313,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 36123,
-    "githubForks": 2283
+    "githubStars": 36127,
+    "githubForks": 2284
   },
   {
     "id": "7.01",
