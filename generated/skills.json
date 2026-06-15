@@ -671,10 +671,10 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "The final leg of the SEO pipeline: add internal/backlinks, a meta description, and structured data (schema) to an already-proofed article, producing a publish-ready version. Corresponds to node (11) of the v2 flow diagram — 'list which paragraphs can take links + add the meta description' and 'article settings'. Triggers when the user hands over an already-proofed article and says '做 SEO 設定', '上 meta', or '準備上架'. Does pre-publish settings only; does not rewrite content.",
+    "description": "The final leg of the SEO pipeline: add internal/backlinks, a meta description, and structured data (schema) to an already-proofed article, then assemble it into a publish-ready Google Doc (article body + a 「SEO 交付物」block carrying slug/seo_title/meta_description/keywords/category + links/schema) for seo-publish-article. Corresponds to node (11) of the v2 flow diagram — 'list which paragraphs can take links + add the meta description' and 'article settings'. Triggers when the user hands over an already-proofed article and says '做 SEO 設定', '上 meta', '準備上架', or '產出可上架的 Google Doc'. Does pre-publish settings + assembles the Doc; does not rewrite content, and does not publish/move/track (that's seo-publish-article).",
     "input": "An article proofed by content-editor (including the SEO review rubric) + that article's SEO_PACKET ▸ Brief",
-    "process": "Per internal-link-rules, mark the paragraphs that can take internal/backlinks → per meta-schema-rules, write the meta description and FAQ/Article schema → human confirmation → produce the publish package",
-    "output": "Publish package: internal/external link suggestions + meta description + schema markup + publish checklist",
+    "process": "Mark internal/backlink paragraphs → write the meta description + FAQ/Article schema → human confirm → assemble the article + settings into a publish-ready Google Doc (working folder) handed to seo-publish-article",
+    "output": "A publish-ready Google Doc (article body + 「SEO 交付物」block: slug/seo_title/meta/keywords/category + links/schema) in the SEO working folder, handed to seo-publish-article",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 151004,
+    "githubStars": 151008,
     "githubForks": 17819
   },
   {
@@ -2313,7 +2313,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 36120,
+    "githubStars": 36123,
     "githubForks": 2283
   },
   {

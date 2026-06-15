@@ -487,7 +487,7 @@
     "sheet_id": "1.23",
     "slug": "seo-article-finalizer",
     "name": "seo-article-finalizer",
-    "summary": "The final leg of the SEO pipeline: add internal/backlinks, a meta description, and structured data (schema) to an already-proofed article, producing a publish-ready version.",
+    "summary": "The final leg of the SEO pipeline: add internal/backlinks, a meta description, and structured data (schema) to an already-proofed article, then assemble it into a publish-ready Google Doc (article body + a 「SEO 交付物」block",
     "category": "brand-marketing",
     "project": "seo-article-finalizer",
     "platform": "claude",
@@ -621,7 +621,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 151004,
+    "github_stars": 151008,
     "github_forks": 17819,
     "first_seen": "2026-06-03"
   },
@@ -1678,7 +1678,7 @@
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 36120,
+    "github_stars": 36123,
     "github_forks": 2283,
     "first_seen": "2026-05-12"
   },
