@@ -839,8 +839,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 150952,
-    "githubForks": 17814
+    "githubStars": 150988,
+    "githubForks": 17817
   },
   {
     "id": "1.29",
@@ -869,6 +869,34 @@
     "firstSeen": "2026-06-14",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "1-brand-marketing/publish-article/SKILL.md"
+  },
+  {
+    "id": "1.30",
+    "name": "seo-publish-article",
+    "category": "brand-marketing",
+    "project": "seo-publish-article",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "Publishes a FINISHED SEO blog article to the live website (e.g. zynkr.ai/blog) by writing it straight into the CMS's Supabase `articles` table — the fast path, because the CMS admin page (e.g. cms.zynkr.ai/content) is an auth-gated dashboard, not a write API. Reads the article from a Google Doc (body + the embedded 「SEO 交付物」block for slug/seo_title/meta_description/keywords/category), converts it to CMS-safe Tiptap JSON + content_html (tables→lists, ▋ headings, schema-validated so it never corrupts on a later in-CMS edit), shows a preview, and on your explicit confirm publishes it live (status=published + published_at) then verifies the public URL renders. Use whenever the user already has a finished/proofed article and says 上架文章 / 發佈到網站 / 把這篇放到部落格 / 上線這篇文章 / publish this article to the blog / push this post live on the site / put this on the web — or hands over a finished article Doc and wants it on the web. Boundaries — this is the WEB/CMS publisher and should win against, but NOT be confused with: /publish-article (posts to SOCIAL channels like Threads/IG/FB via Buffer), /seo-article-finalizer (only adds meta/links/schema, does NOT publish), article DRAFTING (the SEO pipeline / write-article write the article), and /skill-publish (ships a SKILL to the marketplace, not an article). Trigger eagerly whenever a finished, proofed article needs to go live on the website.",
+    "input": "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block (slug/seo_title/meta_description/keywords/category), plus the local CMS repo for its Supabase...",
+    "process": "Read the Doc → split body from the 「SEO 交付物」metadata → build + schema-validate CMS-safe Tiptap JSON + content_html (tables→lists, ▋ H2s) → resolve author/category + slug check → preview → on confirm POST to Supabase `articles` (service role,...",
+    "output": "The article live at <site>/blog/<slug> — the inserted articles row (id, slug, status, published_at) + verification the public API and page render correctly.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "1.30",
+    "kind": "skill",
+    "synergy": [
+      "1.30"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/1.30.md -o ~/.claude/skills/seo-publish-article.md",
+    "updatedAt": "2026-06-15",
+    "firstSeen": "2026-06-15",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "1-brand-marketing/seo-publish-article/SKILL.md"
   },
   {
     "id": "2.01",
@@ -1919,7 +1947,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 22421,
+    "githubStars": 22438,
     "githubForks": 1805
   },
   {
@@ -2229,8 +2257,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 36109,
-    "githubForks": 2281
+    "githubStars": 36119,
+    "githubForks": 2283
   },
   {
     "id": "7.01",
