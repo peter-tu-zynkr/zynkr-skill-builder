@@ -352,10 +352,10 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Sync a newsletter article from Google Docs to the Notion Content DB. Use this skill whenever the user shares a Google Doc URL and wants to create a Notion page, sync to Notion, add to Content DB, or archive a newsletter. Trigger on phrases like \"幫我放上 Notion\", \"sync to Notion\", \"add this to Notion\", \"同步到 Notion\", or any message combining a Google Doc link with Notion/archive intent.",
-    "input": "Google Doc URL for a newsletter article",
-    "process": "Fetch doc content, classify Subject tags, confirm with user, create Notion page in Content DB",
-    "output": "Notion page URL in the Content DB",
+    "description": "Put a newsletter in its proper place — reconcile it between Google Docs and the Notion Content DB in EITHER direction (Doc-first OR Notion-first), and file the Doc into the newsletter Drive folder. The goal is that the content ends up correctly placed and cross-linked regardless of which was created first. Use whenever the user shares a Google Doc and/or a Notion Content-DB page and wants them synced, filed, archived, or \"put in the right place\". Triggers on \"幫我放上 Notion\", \"sync to Notion\", \"同步到 Notion\", \"add this to Notion\", \"幫我歸檔電子報\", \"file this newsletter\", \"put this in the right place\", \"從 Notion 的想法建 Doc\", or any message pairing a Doc and/or a Notion page with sync / file / archive intent.",
+    "input": "A Google Doc URL and/or a Notion Content-DB page (idea/stub) for a newsletter — in either order",
+    "process": "Detect entry point (Doc-first / Notion-first / both), create whichever anchor is missing, file the Doc into the newsletter Drive folder, assign the issue number, classify Subject tags, and sync full metadata + body into a single deduped Notion Content-DB...",
+    "output": "A filed Google Doc (newsletter folder, (N) Title) + a deduped Notion Content-DB page with full metadata, cross-linked",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 151647,
+    "githubStars": 151651,
     "githubForks": 17878
   },
   {

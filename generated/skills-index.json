@@ -234,7 +234,7 @@
     "sheet_id": "1.12",
     "slug": "content-governance",
     "name": "content-governance",
-    "summary": "Sync a newsletter article from Google Docs to the Notion Content DB.",
+    "summary": "Put a newsletter in its proper place — reconcile it between Google Docs and the Notion Content DB in EITHER direction (Doc-first OR Notion-first), and file the Doc into the newsletter Drive folder.",
     "category": "brand-marketing",
     "project": "content-governance",
     "platform": "claude",
@@ -621,7 +621,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 151647,
+    "github_stars": 151651,
     "github_forks": 17878,
     "first_seen": "2026-06-03"
   },
