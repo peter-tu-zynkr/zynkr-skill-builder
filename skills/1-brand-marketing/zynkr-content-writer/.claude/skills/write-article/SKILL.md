@@ -1,6 +1,6 @@
 ---
-name: write-article
-description: "Orchestrates the full article writing pipeline — from ideation through drafting, editing, titles, and CTA. Invoke with /write-article or when the user wants to start writing an article from scratch."
+name: zynkr-content-writer
+description: "Orchestrates the full article writing pipeline — from ideation through drafting, editing, titles, and CTA. Invoke with /zynkr-content-writer or when the user wants to start writing an article from scratch."
 user-invocable: true
 disable-model-invocation: false
 argument-hint: "[topic or stage]"
@@ -28,7 +28,7 @@ You are the orchestrator for Zynkr's article writing pipeline. Your job is to gu
 
 ## Entry Point Detection
 
-When the user invokes `/write-article`, assess what they already have and start from the appropriate stage:
+When the user invokes `/zynkr-content-writer`, assess what they already have and start from the appropriate stage:
 
 - **User has nothing / vague idea / can't articulate their angle** → Start at **Stage 0** (content-idea). Example: "I want to write about AI but I'm not sure what angle."
 - **User has a clear topic + some initial thoughts** → Start at **Stage 1** (content-style-select). Example: "I want to write about how AI tools boost content creation, here are my key points..."
@@ -36,7 +36,7 @@ When the user invokes `/write-article`, assess what they already have and start 
 - **User has a completed draft** → Start at **Stage 3** (content-editor). Example: "Here's my finished draft, help me edit it."
 - **User has a polished / edited article** → Start at **Stage 4** (content-title) or **Stage 5** (content-cta). Ask which they want first.
 
-If the user provides a specific argument (e.g., `/write-article 我想寫一篇關於AI工具的文章`), use that to determine the entry point.
+If the user provides a specific argument (e.g., `/zynkr-content-writer 我想寫一篇關於AI工具的文章`), use that to determine the entry point.
 
 ---
 

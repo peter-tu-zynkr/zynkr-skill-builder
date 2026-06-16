@@ -2,15 +2,15 @@
 name: content-newsletter-draft
 sheetId: "1.06"
 description: >-
-  Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /write-article pipeline. Use this skill whenever Peter says "幫我寫電子報", "來寫電子報", "寫newsletter", "電子報大綱", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.
+  Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /zynkr-content-writer pipeline. Use this skill whenever Peter says "幫我寫電子報", "來寫電子報", "寫newsletter", "電子報大綱", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.
 category: brand-marketing
 project: content-newsletter-draft
 platform: claude
 status: Done
 author: Peter Tu
 input: "Peter's article outline, topic, or rough idea for the weekly newsletter"
-process: "Shape the outline/topic into a structured weekly-newsletter outline and hand it off to the /write-article pipeline"
-output: "A structured newsletter outline ready for the /write-article drafting pipeline"
+process: "Shape the outline/topic into a structured weekly-newsletter outline and hand it off to the /zynkr-content-writer pipeline"
+output: "A structured newsletter outline ready for the /zynkr-content-writer drafting pipeline"
 synergy: []
 ---
 # Write Newsletter
@@ -40,11 +40,11 @@ A clear through-line is what makes the newsletter feel alive rather than generic
 
 ---
 
-## Step 3: Hand off to /write-article
+## Step 3: Hand off to /zynkr-content-writer
 
-At this point we have a structured outline with key points per section. This is exactly **Stage 2** entry point for the `/write-article` pipeline.
+At this point we have a structured outline with key points per section. This is exactly **Stage 2** entry point for the `/zynkr-content-writer` pipeline.
 
-Package the outline into a handoff summary in this format, then invoke `/write-article`:
+Package the outline into a handoff summary in this format, then invoke `/zynkr-content-writer`:
 
 ```
 ## Newsletter Handoff Summary
@@ -60,4 +60,4 @@ Package the outline into a handoff summary in this format, then invoke `/write-a
 4. CTA — [3 specific actions]
 ```
 
-Then say: "我已經整理好大綱，交給 /write-article 開始撰寫。" and invoke `/write-article` with the handoff summary as the argument — it will enter at Stage 2 (content-draft) and run the full writing pipeline from there.
+Then say: "我已經整理好大綱，交給 /zynkr-content-writer 開始撰寫。" and invoke `/zynkr-content-writer` with the handoff summary as the argument — it will enter at Stage 2 (content-draft) and run the full writing pipeline from there.

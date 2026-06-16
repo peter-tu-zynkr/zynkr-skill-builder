@@ -10,7 +10,7 @@ author: Peter Tu
 input: "Anything: a URL, local file path, skill slug, free-text idea, status question, or pasted content. The skill classifies the input shape before doing anything else."
 process: "Classify input shape → look up state across the four signals (Project / issues / on-disk / live API) when the input references a skill-pipeline item → route to the right sub-skill via the Skill tool when confidence is high, or ask one targeted clarifying question when ambiguous. Surfaces queue / dashboard views on read-only queries."
 output: "Either: (a) an auto-invocation of the right Zynkr sub-skill (most common); (b) one targeted clarifying question when intent is genuinely ambiguous; (c) a compact state table when the user asks 'what's in my queue' / 'where is X'."
-synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "content-newsletter-draft", "training-lecture-transcript", "sales-specialist", "cv-customizer", "zynkr-support", "content-governance", "write-article", "training-srt-optimizer", "zynkr-slide"]
+synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "content-newsletter-draft", "training-lecture-transcript", "sales-specialist", "cv-customizer", "zynkr-support", "content-governance", "zynkr-content-writer", "training-srt-optimizer", "zynkr-slide"]
 ---
 
 # Zynkr
@@ -104,7 +104,7 @@ Switch on `(input-type, state)` using the table below. Auto-invoke means use the
 | `sales-specialist` image | Invoke `/sales-specialist` | High → auto |
 | `typed-text` mentioning newsletter / 電子報 | Invoke `/content-newsletter-draft` | Medium → confirm intent |
 | `typed-text` mentioning CV / 履歷 / resume | Invoke `/cv-customizer` | Medium → confirm |
-| `typed-text` mentioning article / 文章 outline | Invoke `/write-article` | Medium → confirm |
+| `typed-text` mentioning article / 文章 outline | Invoke `/zynkr-content-writer` | Medium → confirm |
 | `typed-text` about support inbox / 客服 | Invoke `/zynkr-support` | High → auto |
 | `deck-request` — build a slide deck / 簡報 / 投影片 (from material, a topic, or a resume-mid-relay packet) | Invoke `/zynkr-slide` | High → auto |
 

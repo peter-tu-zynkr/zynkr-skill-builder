@@ -1,6 +1,6 @@
 # Zynkr Writing Agent
 
-A modular article writing pipeline built on [Claude Code](https://claude.ai/claude-code), designed for Zynkr's content team. Seven specialized agents handle each stage of the writing process — from ideation to CTA — orchestrated by a single `/write-article` command.
+A modular article writing pipeline built on [Claude Code](https://claude.ai/claude-code), designed for Zynkr's content team. Seven specialized agents handle each stage of the writing process — from ideation to CTA — orchestrated by a single `/zynkr-content-writer` command.
 
 ## Install
 
@@ -78,13 +78,13 @@ claude
 Then invoke the orchestrator:
 
 ```
-/write-article
+/zynkr-content-writer
 ```
 
 The orchestrator detects what you already have and starts from the appropriate stage. You can also pass a topic directly:
 
 ```
-/write-article 我想寫一篇關於AI工具的文章
+/zynkr-content-writer 我想寫一篇關於AI工具的文章
 ```
 
 ### Using Individual Agents
