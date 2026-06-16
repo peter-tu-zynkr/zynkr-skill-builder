@@ -621,9 +621,32 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 151651,
+    "github_stars": 151652,
     "github_forks": 17878,
     "first_seen": "2026-06-03"
+  },
+  {
+    "id": "1.29",
+    "sheet_id": "1.29",
+    "slug": "social-publish-article",
+    "name": "social-publish-article",
+    "summary": "Publishes a finalized post to your SOCIAL channels — Facebook, Threads & Instagram — via the Buffer API, with per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts.",
+    "category": "brand-marketing",
+    "project": "social-publish-article",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/social-publish-article/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.29.md -o ~/.claude/skills/social-publish-article.md",
+    "tags": [
+      "social-publish-article",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-16",
+    "first_seen": "2026-06-14"
   },
   {
     "id": "2.01",
@@ -1970,28 +1993,6 @@
     ],
     "updated_at": "2026-06-16",
     "first_seen": "2026-06-09"
-  },
-  {
-    "id": "1.29",
-    "slug": "publish-article",
-    "name": "publish-article",
-    "summary": "Publishes a finalized post to your Facebook, Threads & Instagram channels via the Buffer API — per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts.",
-    "category": "brand-marketing",
-    "project": "publish-article",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/publish-article/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/1.29.md -o ~/.claude/skills/publish-article.md",
-    "tags": [
-      "publish-article",
-      "brand-marketing",
-      "claude",
-      "skill"
-    ],
-    "updated_at": "2026-06-16",
-    "first_seen": "2026-06-14"
   },
   {
     "id": "1.30",

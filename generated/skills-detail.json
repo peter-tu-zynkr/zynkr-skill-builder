@@ -917,7 +917,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 151651,
+    "github_stars": 151652,
     "github_forks": 17878,
     "first_seen": "2026-06-03",
     "description": "The 'rendering engine' that comes after the three-stage slide relay (the fourth stage, maintained by Anthropic): it takes the SLIDE_PACKET ▸ Visuals handed off by slide-visual-selector and renders it page by page into a real .pptx file, and can also read, parse, and edit existing decks in reverse. This is Anthropic's official slide-pptx skill; Zynkr does not redistribute its code — this card is only a reference and a hand-off pointer, so install it from the Anthropic source.",
@@ -929,6 +929,38 @@
       "1.28"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/slide-pptx/SKILL.md"
+  },
+  "1.29": {
+    "id": "1.29",
+    "sheet_id": "1.29",
+    "slug": "social-publish-article",
+    "name": "social-publish-article",
+    "summary": "Publishes a finalized post to your SOCIAL channels — Facebook, Threads & Instagram — via the Buffer API, with per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts.",
+    "category": "brand-marketing",
+    "project": "social-publish-article",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/1-brand-marketing/social-publish-article/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/1.29.md -o ~/.claude/skills/social-publish-article.md",
+    "tags": [
+      "social-publish-article",
+      "brand-marketing",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-06-16",
+    "first_seen": "2026-06-14",
+    "description": "Publishes a finalized post to your SOCIAL channels — Facebook, Threads & Instagram — via the Buffer API, with per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts. Use when you say 'publish my post', 'post this to Threads/IG/FB', 'push this draft live to social', or 'schedule this post'. The SOCIAL publisher — not the website/blog one (seo-publish-article).",
+    "input": "A finalized post/caption (plus a public image URL for Instagram), which channels to target, and whether to draft, post now, or schedule",
+    "process": "Formats the copy per channel (Threads 500-char aware; Instagram needs a public image URL + caption), previews the exact copy for confirmation, then publishes through the Buffer API using your own token and connected channels",
+    "output": "The post created in Buffer — as a draft, an immediate publish, or a scheduled post — with the Buffer post id and status returned per channel",
+    "kind": "skill",
+    "synergy": [
+      "1.29"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/social-publish-article/SKILL.md"
   },
   "2.01": {
     "id": "2.01",
@@ -2928,37 +2960,6 @@
       "7.09"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/7-people-talent/zynkr-recruiter/agents/recruiter-calibrator.md"
-  },
-  "1.29": {
-    "id": "1.29",
-    "slug": "publish-article",
-    "name": "publish-article",
-    "summary": "Publishes a finalized post to your Facebook, Threads & Instagram channels via the Buffer API — per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts.",
-    "category": "brand-marketing",
-    "project": "publish-article",
-    "platform": "claude",
-    "status": "Done",
-    "author": "Peter Tu",
-    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/1-brand-marketing/publish-article/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/1.29.md -o ~/.claude/skills/publish-article.md",
-    "tags": [
-      "publish-article",
-      "brand-marketing",
-      "claude",
-      "skill"
-    ],
-    "updated_at": "2026-06-16",
-    "first_seen": "2026-06-14",
-    "description": "Publishes a finalized post to your Facebook, Threads & Instagram channels via the Buffer API — per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts. Use when you say 'publish my post', 'post this to Threads/IG', 'push this draft live', or 'schedule this post'.",
-    "input": "A finalized post/caption (plus a public image URL for Instagram), which channels to target, and whether to draft, post now, or schedule",
-    "process": "Formats the copy per channel (Threads 500-char aware; Instagram needs a public image URL + caption), previews the exact copy for confirmation, then publishes through the Buffer API using your own token and connected channels",
-    "output": "The post created in Buffer — as a draft, an immediate publish, or a scheduled post — with the Buffer post id and status returned per channel",
-    "kind": "skill",
-    "synergy": [
-      "1.29"
-    ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/1-brand-marketing/publish-article/SKILL.md"
   },
   "1.30": {
     "id": "1.30",
