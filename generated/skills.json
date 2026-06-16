@@ -179,7 +179,7 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /write-article pipeline. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.",
+    "description": "Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /zynkr-content-writer pipeline. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.",
     "input": "An article draft provided by the author.",
     "process": "Analyze the article’s theme, audience, and conversion goal, then match it to approved CTA categories and templates defined in Zynkr’s CTA handbook .",
     "output": "Three ready-to-use CTA options with titles, copy, category, sub-goal, placement advice, and validated links.",
@@ -839,8 +839,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 151637,
-    "githubForks": 17874
+    "githubStars": 151645,
+    "githubForks": 17878
   },
   {
     "id": "1.29",
@@ -878,7 +878,7 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "Publishes a FINISHED SEO blog article to the live website (e.g. zynkr.ai/blog) by writing it straight into the CMS's Supabase `articles` table — the fast path, because the CMS admin page (e.g. cms.zynkr.ai/content) is an auth-gated dashboard, not a write API. Reads the article from a Google Doc (body + the embedded 「SEO 交付物」block for slug/seo_title/meta_description/keywords/category), converts it to CMS-safe Tiptap JSON + content_html (tables→lists, ▋ headings, schema-validated so it never corrupts on a later in-CMS edit), shows a preview, and on your explicit confirm publishes it live (status=published + published_at) then verifies the public URL renders. Use whenever the user already has a finished/proofed article and says 上架文章 / 發佈到網站 / 把這篇放到部落格 / 上線這篇文章 / publish this article to the blog / push this post live on the site / put this on the web — or hands over a finished article Doc and wants it on the web. Boundaries — this is the WEB/CMS publisher and should win against, but NOT be confused with: /publish-article (posts to SOCIAL channels like Threads/IG/FB via Buffer), /seo-article-finalizer (only adds meta/links/schema, does NOT publish), article DRAFTING (the SEO pipeline / write-article write the article), and /skill-publish (ships a SKILL to the marketplace, not an article). Trigger eagerly whenever a finished, proofed article needs to go live on the website.",
+    "description": "Publishes a FINISHED SEO blog article to the live website (e.g. zynkr.ai/blog) by writing it straight into the CMS's Supabase `articles` table — the fast path, because the CMS admin page (e.g. cms.zynkr.ai/content) is an auth-gated dashboard, not a write API. Reads the article from a Google Doc (body + the embedded 「SEO 交付物」block for slug/seo_title/meta_description/keywords/category), converts it to CMS-safe Tiptap JSON + content_html (tables→lists, ▋ headings, schema-validated so it never corrupts on a later in-CMS edit), shows a preview, and on your explicit confirm publishes it live (status=published + published_at) then verifies the public URL renders. Use whenever the user already has a finished/proofed article and says 上架文章 / 發佈到網站 / 把這篇放到部落格 / 上線這篇文章 / publish this article to the blog / push this post live on the site / put this on the web — or hands over a finished article Doc and wants it on the web. Boundaries — this is the WEB/CMS publisher and should win against, but NOT be confused with: /publish-article (posts to SOCIAL channels like Threads/IG/FB via Buffer), /seo-article-finalizer (only adds meta/links/schema, does NOT publish), article DRAFTING (the SEO pipeline / zynkr-content-writer write the article), and /skill-publish (ships a SKILL to the marketplace, not an article). Trigger eagerly whenever a finished, proofed article needs to go live on the website.",
     "input": "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block, plus the local CMS repo for its Supabase URL + service-role key.",
     "process": "Read Doc → split body/metadata → build + validate Tiptap JSON + content_html → resolve ids + slug check → preview → confirm → POST to Supabase `articles` (service role, published) → verify /blog/<slug> → archive Doc + update tracker",
     "output": "The article live at <site>/blog/<slug> — inserted articles row + verified page; the source Doc archived and the SEO tracker (Topic List + Keyword Pool) updated.",
@@ -2003,8 +2003,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 22591,
-    "githubForks": 1823
+    "githubStars": 22594,
+    "githubForks": 1824
   },
   {
     "id": "6.02",
@@ -2314,7 +2314,7 @@
       "snyk": "pending"
     },
     "githubStars": 36227,
-    "githubForks": 2292
+    "githubForks": 2294
   },
   {
     "id": "7.01",
