@@ -1,8 +1,9 @@
 ---
-name: publish-article
-description: "Publishes a finalized post to your Facebook, Threads & Instagram channels via the Buffer API — per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts. Use when you say 'publish my post', 'post this to Threads/IG', 'push this draft live', or 'schedule this post'."
+name: social-publish-article
+sheetId: "1.29"
+description: "Publishes a finalized post to your SOCIAL channels — Facebook, Threads & Instagram — via the Buffer API, with per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts. Use when you say 'publish my post', 'post this to Threads/IG/FB', 'push this draft live to social', or 'schedule this post'. The SOCIAL publisher — not the website/blog one (seo-publish-article)."
 category: brand-marketing
-project: publish-article
+project: social-publish-article
 platform: claude
 status: Done
 author: Peter Tu
@@ -12,10 +13,10 @@ output: "The post created in Buffer — as a draft, an immediate publish, or a s
 synergy: []
 ---
 
-# Publish Article
+# Social Publish Article
 
 ```bash
-npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill publish-article
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill social-publish-article
 ```
 
 Publish a finished post to your social channels — Facebook, Threads, and Instagram — through Buffer, so you don't have to open three apps or Buffer's dashboard. You bring your own Buffer access token and your already-connected channels; the skill formats the copy per platform, shows you exactly what will go out, and only publishes after you confirm. It can stage a draft in Buffer, post immediately, or schedule for later.
