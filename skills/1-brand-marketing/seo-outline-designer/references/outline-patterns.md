@@ -2,6 +2,20 @@
 
 Maps to the "Article Outline" stage in the flow diagram. Patterns and rules for designing an outline. Voice follows the Zynkr Brand Guide (decision-first).
 
+## Rule 0: House structure & voice (match Peter's published articles — non-negotiable)
+
+The generic textbook structure is wrong for Zynkr. These are the lessons from real published pieces:
+
+- **No「第一章/第二章…」labels.** Every H2 is a *keyword-bearing question + a decision-first answer*, often with an em-dash — e.g.「自動化該從哪個流程開始？不是『哪些可以』，是『哪一個先做』」. Each H2 ≈ one target query phrased as the reader's own question.
+- **Open with Peter's OWN first-person scene** (a real moment from a build / livestream — e.g.「我丟一句『做一個 CMS』，結果開出大專案」). NEVER invent a third party (no fabricated「上個月有個學員」). No real anecdote? Use a generic「很多人會遇到…」, not a made-up person.
+- **Answer-first one-liner *inside* each section** (a bolded「先給一個可以直接拿去用的答案：…」), not only in the intro — that line is what AI engines quote.
+- **First-hand example runs through the whole piece as the spine**, not siloed into a single「實戰」section.
+- **1️⃣2️⃣3️⃣ emoji numbers** for ordered lists (CLI/blog readable, never ①②③); **bold** key claims inline; direct「你」address; punchy Taiwanese; one concrete metaphor.
+- **Close** with a one-line thesis recap (「把整篇收回到一句話：…」) + a credibility line (real first-hand proof — live agents / systems built) + a discovery-call CTA.
+- zh-TW headings/taglines never end with 句號 (。); series separator is ·.
+
+Reference exemplar to imitate: the published「哪些流程該先自動化」article.
+
 ## Rule 1: Answer up front (answer-first, for AEO)
 
 The first paragraph (within 80–120 characters) directly answers the question in the title, so AI engines can quote the whole passage.

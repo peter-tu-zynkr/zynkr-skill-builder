@@ -25,7 +25,7 @@ You are the orchestrator of Zynkr's SEO content pipeline, corresponding to the L
 
 ## Configuration
 
-The single source of truth for all IDs and accounts: `./seo-pipeline-config.md`. The `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2` and `peter_tu@zynkr.ai` used by each SEO skill are resolved there; when you move folders, change the config, not each SKILL.md. Stage 12's publish targets (the 「03 Published article」 archive folder, the SEO tracker sheet, the CMS repo) are resolved there too; the CMS/Supabase write path + schema live in `seo-publish-article/references/cms-publishing.md`.
+The single source of truth for all IDs and accounts: `./seo-pipeline-config.md`. The `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2` and `peter_tu@zynkr.ai` used by each SEO skill are resolved there; when you move folders, change the config, not each SKILL.md. Stage 12's publish targets (the 「04 Published article」 archive folder, the SEO tracker sheet, the CMS repo) are resolved there too; the CMS/Supabase write path + schema live in `seo-publish-article/references/cms-publishing.md`.
 
 ---
 
@@ -45,7 +45,7 @@ The single source of truth for all IDs and accounts: `./seo-pipeline-config.md`.
 | 10 | (10) Titling | `content-title` (existing, Task) | Title candidates |
 | 11a | (11) Scored proofreading | `content-editor` (existing, with SEO review criteria) | Proofread article |
 | 11b | (11) SEO setup | `seo-article-finalizer` | **Publish-ready Google Doc** (article body + 「SEO 交付物」block: meta/schema/links + slug/seo_title/meta_description/keywords/category) |
-| 12 | (12) Publish to web | `seo-publish-article` | Live at `zynkr.ai/blog/<slug>` + source Doc archived to 「03 Published article」 + SEO tracker updated (Topic List `Status=Done`/URL/date + Keyword Pool coverage URL) |
+| 12 | (12) Publish to web | `seo-publish-article` | Live at `zynkr.ai/blog/<slug>` + source Doc archived to 「04 Published article」 + SEO tracker updated (Topic List `Status=Done`/URL/date + Keyword Pool coverage URL) |
 | ＋ | EN flagship | `content-translator` (zh→EN mode) | EN flagship version (optional, after publish) |
 
 For the first half (1–8, 11b, 12) use the **Skill tool** to call the corresponding SEO skill; for the second half (9, 10, 11a) use **Task** to call the existing write-article sub-agents.
@@ -64,9 +64,19 @@ Look at what the user has in hand, and start from the right stage:
 - Already proofread, needs publish setup → stage 11b (finalizer).
 - Already has a publish-ready Doc (finalizer done) → stage 12 (`seo-publish-article` — publish to web + governance).
 
-## This Article's Working Folder
+## This Article's Working Folder (durable record — the standard process flow)
 
-At the start, create a working subfolder for this article under `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2` (named with the working title). Save each stage's output (persona, keyword map, topic list, Brief, outline, FAQ, draft, publish packet) into it — this implements the flowchart's principle that "HITL must land in a durable record," and makes each article auditable.
+At the start, create a working subfolder for this article **under `article_working_folder_id` (「03 Article brief & outline & draft」 in the config)**, named with the working title. Save each stage's output (persona, keyword map, topic list, Brief, outline, FAQ, draft, 上架包) into it — every HITL gate must land in a durable Drive record, so each article is auditable.
+
+The Drive process flow is fixed:
+
+```
+SEO KB ▸ 01 Rubrics ｜ 02 Seed Knowledge ｜ 03 Article brief & outline & draft ｜ 04 Published article
+                                              └ <工作標題>/  ← this article's folder (brief + outline + draft staged here)
+                                                                                    └ 上架包 Doc moves here on publish (⑬)
+```
+
+**Append-into-folder rule (every stage uses this):** `create_doc(title, content)` lands the Doc at Drive root, so immediately re-parent it into the working folder — `update_drive_file(<doc-id>, add_parents=<working-folder-id>, remove_parents='root')`. On publish, `seo-publish-article` moves the 上架包 Doc from the working folder into `04 Published article` the same way.
 
 ## Handoff Rules
 
@@ -74,14 +84,23 @@ At the start, create a working subfolder for this article under `1ujQJSPjRcqkNd-
 2. **Always ask the user before advancing into each stage; never auto-jump across stages.** This corresponds to all the light-blue nodes in the flowchart (review-and-approve / Trigger / scan articles / validate-and-supplement / review outline and FAQ / publish article) and the diamond decision (whether to supplement information).
 3. Pass the previous stage's complete `SEO_PACKET` block intact to the next stage.
 4. Stage 8's handoff summary deliberately uses the same format as `content-style-select`, so `content-draft` can take over seamlessly.
-5. After 11b (finalizer emits the publish-ready Doc), hand off to stage 12 `seo-publish-article` to publish it to the web — it also archives the Doc to 「03 Published article」 and flips the SEO tracker (Topic List `Status=Done` + Keyword Pool coverage). After publish, ask the user whether to produce the EN flagship version (`content-translator` zh→EN).
+5. After 11b (finalizer emits the publish-ready Doc), hand off to stage 12 `seo-publish-article` to publish it to the web — it also archives the Doc to 「04 Published article」 and flips the SEO tracker (Topic List `Status=Done` + Keyword Pool coverage). After publish, ask the user whether to produce the EN flagship version (`content-translator` zh→EN).
 
 ## Progress Board
 
+Render this **phase-grouped vertical** board (far more readable on a CLI than a ①…⑬ chain), refreshed once per stage. One phase per line; keep the `n/13` counter current and move the `▶️` to the active stage.
+
 ```
-①人物誌 → ②問題 → ③切角 → ④關鍵字 → ⑤分類 → ⑥驗證 → ⑦Brief → ⑧大綱/FAQ → ⑨撰寫 → ⑩標題 → ⑪校稿 → ⑫上架設定 → ⑬發佈上線
+SEO 文章流程  ▶️ 8/13
+──────────────────────────
+研究  ✅ 1人物誌  ✅ 2問題  ✅ 3切角  ✅ 4關鍵字  ✅ 5分類  ✅ 6驗證
+產製  ✅ 7Brief  ▶️ 8大綱  ⬜ 9撰寫  ⬜ 10標題  ⬜ 11校稿
+上線  ⬜ 12上架設定  ⬜ 13發佈上線
+
+Legend: ✅完成 · ▶️進行中 · ⬜待辦 · ⏭️跳過
 ```
-Mark with ✓ (done) ▶ (in progress) ○ (to do) ⊘ (skipped), updating once per stage.
+
+(The `8/13` and the `▶️` on stage 8 are just an example mid-run snapshot — set them to the real state each turn. Phases: 研究 = 1–6 · 產製 = 7–11 · 上線 = 12–13.)
 
 ## How to Call
 

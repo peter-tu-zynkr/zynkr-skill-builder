@@ -72,15 +72,18 @@ rubrics_folder_url: https://drive.google.com/drive/folders/1YUUrX0e5JDKy6C0QcWeW
 ### SEO-KB subfolders
 
 ```
-rubrics_folder_id:        1YUUrX0e5JDKy6C0QcWeWD9NfKQpKqXWW   # 01 Rubrics & Templates
-seed_knowledge_folder_id: 1K-pSQtVR7ezWADIH2_tSCqpOcY-btAkK   # 02 Seed Knowledge
+rubrics_folder_id:         1YUUrX0e5JDKy6C0QcWeWD9NfKQpKqXWW   # 01 Rubrics & Templates
+seed_knowledge_folder_id:  1K-pSQtVR7ezWADIH2_tSCqpOcY-btAkK   # 02 Seed Knowledge
+article_working_folder_id: 1BtnHEqgBeF7ak0gER8m6X98Ku-02khk5   # 03 Article brief & outline & draft — per-article working folders are created HERE
 ```
 
 Other KB files: `03 AEO Prompt Panel & Metrics (measurement)` = `1qx9_tXF2Zp8zLGkB4qYQB9k8-vCKapNsEfMqiGlwFoM` (Phase-5 measurement template, run monthly — manual).
 
-### Per-article working subfolders
+### Per-article working subfolders — the process flow
 
-`seo-article-pipeline` creates one subfolder per article (named by working title) under `seo_kb_folder_id`. Each holds the durable green artifacts: 人物誌 · 關鍵字地圖 · 主題清單 · Brief · 大綱 · FAQ · 初稿 · 上架包.
+`seo-article-pipeline` creates one subfolder per article (named by working title) under **`article_working_folder_id` (「03 Article brief & outline & draft」)**, NOT under the SEO-KB root. Each holds the durable green artifacts: 人物誌 · 關鍵字地圖 · 主題清單 · Brief · 大綱 · FAQ · 初稿 · 上架包.
+
+Fixed Drive flow: `03 Article brief & outline & draft/<工作標題>/` (all staging) → on publish, `seo-publish-article` moves the 上架包 Doc into **`04 Published article`** (`published_article_folder_id`). Append-into-folder rule: `create_doc` lands at Drive root, then `update_drive_file(add_parents=<folder>, remove_parents='root')` — every stage saves this way.
 
 ### Seed knowledge (self-heal source)
 
@@ -95,7 +98,7 @@ Lives in the `02 Seed Knowledge` subfolder (`seed_knowledge_folder_id`). `seo-an
 Stage 12 (`seo-publish-article`) takes the finalizer's publish-ready Doc, publishes it to the live website, archives the Doc, and updates the tracker. IDs resolved here:
 
 ```
-published_article_folder_id: 16i6lt3gJP6QARR-Ib32w8YARlklffV2W   # 「03 Published article」(under seo_kb_folder_id) — source Doc archived here AFTER publish, not before
+published_article_folder_id: 16i6lt3gJP6QARR-Ib32w8YARlklffV2W   # 「04 Published article」(under seo_kb_folder_id) — source Doc archived here AFTER publish, not before
 tracker_sheet_id:            1hmVu-vy6DsniD_UHm66SEteSDZAIdMwtv06Bp-ROy8A   # Zynkr SEO 關鍵字地圖 + 主題清單 — Topic List (Status=Done / Published URL / Published Date) + Keyword Pool (coverage URL on the cluster rows)
 site_blog_url:               https://zynkr.ai/blog/<slug>
 cms_repo_path:               <your-cms-repo-path>   # zynkr-cms local checkout; its .env.local holds NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY

@@ -104,3 +104,13 @@ When you need to emphasize a contrast or a turn, use these sentence patterns ins
 * **Substitution quality check**: When replacing forbidden words, the replacement must also pass the AI-flavor test — don't swap in another AI-flavored sentence pattern.
 * **Mainland-Chinese-term check**: Scan the article for Mainland Chinese terms, flag them, and suggest replacing them with the customary Taiwanese terms. Common mappings: 擴容→擴充、視頻→影片、信息→資訊、反饋→回饋、上線→上架、數據庫→資料庫、鏈接→連結、用戶→使用者.
 * **Paragraph-repetition check**: Check whether different paragraphs convey the same information or data; if so, flag it and suggest merging or deleting.
+
+## **7. Structure & headings (Zynkr blog house style)**
+
+For Zynkr blog / SEO articles, check structure — not just sentences:
+
+* **No「第一章/第二章…」labels.** Section headings must be a *keyword-bearing question + decision-first answer* (e.g.「自動化該從哪個流程開始？不是『哪些可以』，是『哪一個先做』」). Flag any 「第N章」 / generic textbook heading and rewrite it.
+* **Answer-first inside each section**: each major section opens with a one-line direct answer an AI engine could quote; flag sections that bury the answer.
+* **First-person, real, woven**: the piece opens with the author's own scene and runs that first-hand thread throughout. Flag any **invented person / anecdote** (a 「學員」 / customer that isn't real) — replace with the author's own experience or a generic「很多人…」.
+* **Ordered lists use 1️⃣2️⃣3️⃣** (not ①②③, not plain `1.`), per Peter's preference.
+* **Close** on a one-line recap + credibility + a clear next step (Commit / CTA), not「總結來說」.

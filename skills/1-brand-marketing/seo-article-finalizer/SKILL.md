@@ -60,7 +60,7 @@ Build one markdown document and create it as a Google Doc — **this Doc is the 
   - `Slug`（英文 kebab-case）· `SEO title`（<title> / OG）· `Meta description`（含主關鍵字）· `Keywords` · `Category`（對應一個 CMS 分類）
   - 內部/外部連結建議（段落 → 目標頁／錨文字）· 結構化資料（FAQ + Article schema，附 JSON-LD）
 
-Create it in the SEO working folder (e.g. the SEO hub `1ujQJSPjRcqkNd-BMGq68DmVldyr3lsJ2`, or your drafts area). **Do not** move it to "03 Published article" — that happens at publish time, in `seo-publish-article`.
+Create it in **this article's working folder** (the `<工作標題>/` subfolder under 「03 Article brief & outline & draft」 = `article_working_folder_id`, alongside the Brief / outline / draft). **Do not** move it to 「04 Published article」 — that happens at publish time, in `seo-publish-article`.
 
 ```
 import_to_google_doc(file_name="[SEO草稿] <title>", content=<assembled markdown>, source_format="md", folder_id=<working-folder-id>)
@@ -70,7 +70,7 @@ Return the Doc link.
 
 ## Step 6 — Hand off
 
-Tell the user the Doc is publish-ready and hand it to **`seo-publish-article`**, which publishes it to the web, then archives the Doc into "03 Published article" and updates the SEO tracker. The EN flagship → `content-translator`.
+Tell the user the Doc is publish-ready and hand it to **`seo-publish-article`**, which publishes it to the web, then archives the Doc into 「04 Published article」 and updates the SEO tracker. The EN flagship → `content-translator`.
 
 ## Outputs
 
@@ -78,4 +78,4 @@ A publish-ready Google Doc (article body + 「SEO 交付物」block) in the SEO 
 
 ## Limitations
 
-Does not rewrite content or score (that's content-editor). Does **not** publish to the web, move the Doc to "03 Published article", or update the tracker — those are `seo-publish-article`'s job.
+Does not rewrite content or score (that's content-editor). Does **not** publish to the web, move the Doc to 「04 Published article」, or update the tracker — those are `seo-publish-article`'s job.
