@@ -4,28 +4,7 @@ A modular article writing pipeline built on [Claude Code](https://claude.ai/clau
 
 ## Install
 
-### Option 1: Install into your current Claude workspace
-
-If you already have a project open in Claude Code and want to add this writing pipeline into that workspace, run:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/peter-tu-zynkr/writing-agent/main/scripts/install.sh | bash
-```
-
-This installs:
-
-- `.claude/skills/write-article/`
-- all 7 supporting files in `.claude/agents/`
-
-If you want to install into a different workspace path:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/peter-tu-zynkr/writing-agent/main/scripts/install.sh | bash -s -- "/path/to/your/project"
-```
-
-### Option 2: Manual install
-
-Copy the Claude assets into your target workspace:
+This skill ships inside the Zynkr `zynkr-skill-builder` monorepo. To add the pipeline to another Claude Code workspace, copy its Claude assets across:
 
 ```bash
 mkdir -p "/path/to/your/project/.claude/agents" "/path/to/your/project/.claude/skills"
@@ -33,15 +12,7 @@ cp .claude/agents/*.md "/path/to/your/project/.claude/agents/"
 cp -R .claude/skills/write-article "/path/to/your/project/.claude/skills/write-article"
 ```
 
-### Option 3: Run it directly from this repo
-
-If you prefer to use the repo as-is, clone it and open Claude Code in the repo root:
-
-```bash
-git clone https://github.com/peter-tu-zynkr/writing-agent.git
-cd writing-agent
-claude
-```
+Then open Claude Code in that workspace and invoke `/zynkr-content-writer`. You can also run it straight from this repo — open Claude Code at the repo root and invoke the same command.
 
 ## Pipeline Overview
 
@@ -126,8 +97,6 @@ Claude will automatically route to the `content-editor` agent, as long as the `.
             ├── stage-4-seo-list.md
             ├── stage-5-cta-writing.md
             └── stage-5-cta-selection.md
-scripts/
-└── install.sh
 ```
 
 ## Runtime Layout
