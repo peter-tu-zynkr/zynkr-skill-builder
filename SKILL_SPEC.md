@@ -170,6 +170,8 @@ SKILL.md files are installed into arbitrary user environments. Hardcoded paths l
 - Do not embed `<!-- SKILL BASE PATH: ... -->` comments. They are legacy and have been removed from all shipped skills.
 - External data the user must provide goes through frontmatter or runtime args, not hardcoded paths.
 
+**No real PII in examples.** SKILL.md is published publicly (`zynkr.ai/s/<id>.md`, the GitHub raw file, and the marketplace), so anything in a sample block is world-readable. Never paste a real person's name + email into an example payload. Use placeholders: a name like `王小明` / `Jane` and an address on `example.com` (e.g. `inquirer@example.com`). QA blocks (ERROR `pii.personal_email`) on any address at a free webmail provider (gmail / yahoo / outlook / icloud / qq / 163 / proton, …); `example.com` and obviously-illustrative local-parts are exempt.
+
 ---
 
 ## 6. Attribution — author vs original_source_url

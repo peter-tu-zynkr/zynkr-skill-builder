@@ -320,6 +320,56 @@ function checkPaths(file: string, info: SkillInfo): QaFinding[] {
   return out;
 }
 
+// Free / personal webmail providers. An address on one of these is almost
+// always a real individual's PII rather than a corporate or service mailbox —
+// the zynkr-support / consult-intake leak (a real inquirer's gmail pasted into
+// a sample form block) was exactly this shape. SKILL.md ships publicly
+// (zynkr.ai/s/<id>.md + GitHub raw + the marketplace), so a real personal
+// address here is a public PII disclosure. SKILL_SPEC §5.
+const PERSONAL_EMAIL_DOMAINS = new Set([
+  "gmail.com", "googlemail.com", "yahoo.com", "yahoo.com.tw", "ymail.com",
+  "hotmail.com", "hotmail.com.tw", "outlook.com", "live.com", "msn.com",
+  "icloud.com", "me.com", "mac.com", "aol.com", "proton.me", "protonmail.com",
+  "gmx.com", "gmx.net", "qq.com", "foxmail.com", "163.com", "126.com",
+  "sina.com", "sina.cn", "naver.com", "hanmail.net", "daum.net",
+]);
+
+// Local-parts that read as obviously illustrative even on a real domain — never
+// flag these (they're the placeholders we WANT authors to use).
+const PLACEHOLDER_LOCALPARTS =
+  /^(inquirer|example|sample|demo|user|username|your[._-]?name|your[._-]?email|you|name|firstname|lastname|john[._-]?doe|jane[._-]?doe|foo|bar|baz|test|customer|client|lead|contact)$/i;
+
+// Email matcher — deliberately broad on the capture, narrow on the verdict.
+const EMAIL_RE = /[A-Za-z0-9._%+-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
+
+// Reserved doc/example domains (RFC 2606) — always safe placeholders.
+function isExampleDomain(domain: string): boolean {
+  return /(^|\.)(example\.(com|org|net)|test|invalid|localhost)$/i.test(domain);
+}
+
+function checkPii(file: string, info: SkillInfo): QaFinding[] {
+  const out: QaFinding[] = [];
+  const seen = new Set<string>();
+  info.bodyLines.forEach((l, i) => {
+    EMAIL_RE.lastIndex = 0;
+    let m: RegExpExecArray | null;
+    while ((m = EMAIL_RE.exec(l))) {
+      const email = m[0];
+      const domain = m[1].toLowerCase();
+      const local = email.slice(0, email.lastIndexOf("@"));
+      if (isExampleDomain(domain)) continue;
+      if (PLACEHOLDER_LOCALPARTS.test(local)) continue;
+      if (!PERSONAL_EMAIL_DOMAINS.has(domain)) continue; // corporate/other: not a confident PII signal
+      if (seen.has(email)) continue;
+      seen.add(email);
+      out.push({ check: "pii.personal_email", tier: "ERROR", file, line: info.bodyStartLine + i,
+        message: `Personal email "${email}" looks like real PII. SKILL.md is published publicly (zynkr.ai/s/<id>.md + GitHub raw) — never paste a real person's name/email into an example.`,
+        fixable: true, suggestion: "Replace with a placeholder on example.com (e.g. inquirer@example.com) and a placeholder name." });
+    }
+  });
+  return out;
+}
+
 function checkSynergy(file: string, info: SkillInfo): QaFinding[] {
   const out: QaFinding[] = [];
   const syn = Array.isArray(info.data.synergy) ? info.data.synergy : [];
@@ -410,6 +460,7 @@ export function runChecks(filePath: string): QaFinding[] {
     ...checkFrontmatter(filePath, info),
     ...checkBody(filePath, info),
     ...checkPaths(filePath, info),
+    ...checkPii(filePath, info),
     ...checkSynergy(filePath, info),
     ...checkIpo(filePath, info),
     ...checkAttribution(filePath, info),
