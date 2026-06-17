@@ -45,13 +45,13 @@ already has a deal, so re-running the same week never creates duplicates.
 Every real inquiry is plain text from `website@zynkr.ai` and looks like this:
 
 ```
-Subject: New discovery call inquiry from Sherry
+Subject: New discovery call inquiry from Jane
 From:    website@zynkr.ai
 
 New discovery call inquiry
 
-Name: Sherry
-Email: sherry851120@gmail.com
+Name: Jane
+Email: inquirer@example.com
 Company: 轉職計劃中
 Interest: AI 顧問服務
 Source page: consult
@@ -138,7 +138,7 @@ in one idempotent statement. Mapping:
 | `{{FIRST_NAME}}` | the lead's `Name` |
 | `{{EMAIL}}`      | the lead's `Email` |
 | `{{COMPANY}}`    | the lead's `Company` (empty string if blank) |
-| `{{DEAL_NAME}}`  | **`Name（Company）AI 顧問`** — e.g. `Sherry（轉職計劃中）AI 顧問`. If `Company` is blank, use just `Name AI 顧問`. |
+| `{{DEAL_NAME}}`  | **`Name（Company）AI 顧問`** — e.g. `Jane（轉職計劃中）AI 顧問`. If `Company` is blank, use just `Name AI 顧問`. |
 | `{{NOTES}}`      | the `Brief context` text, prefixed with a source line (see below) |
 
 Escape single quotes by doubling them (`O'Brien` → `O''Brien`). Suggested
@@ -155,7 +155,7 @@ The query returns the new `deal_id`. **Zero rows back = the lead was de-duped at
 the DB level** → skip its folder/doc too and note it.
 
 **b) The Drive project folder.** The folder name is **`[N] Company（Name）`** —
-e.g. `[1] 轉職計劃中（Sherry）`. If `Company` is blank, use `[N] Name`.
+e.g. `[1] 轉職計劃中（Jane）`. If `Company` is blank, use `[N] Name`.
 
 Compute `N` by listing the parent folder and scanning **folders** (not files) for
 a leading `[number]`:
@@ -229,7 +229,7 @@ inquiry, including the skipped ones so nothing is silently dropped:
 
 | # | 姓名 | 公司 | 結果 | 交易 | 資料夾 |
 |---|------|------|------|------|--------|
-| 1 | Sherry | 轉職計劃中 | ✅ 已建立 | [deal](url) | [1] 轉職計劃中（Sherry） |
+| 1 | Jane | 轉職計劃中 | ✅ 已建立 | [deal](url) | [1] 轉職計劃中（Jane） |
 | 2 | GA4 Test | Zynkr Test | ⏭️ 跳過（測試） | — | — |
 | 3 | 小明 | 某公司 | ⏭️ 跳過（已存在） | [deal](url) | — |
 ```

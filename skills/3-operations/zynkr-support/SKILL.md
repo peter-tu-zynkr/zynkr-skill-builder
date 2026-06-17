@@ -135,8 +135,8 @@ notification to Peter's own inbox. Body looks like:
 
 ```
 New discovery call inquiry
-Name: 王俊文
-Email: dwyanekobe@gmail.com
+Name: 王小明
+Email: inquirer@example.com
 Company: ...
 Interest: 團隊訓練
 Source page: consult
