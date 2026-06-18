@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 152519,
+    "githubStars": 152520,
     "githubForks": 17973
   },
   {
@@ -2004,7 +2004,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 22838,
+    "githubStars": 22839,
     "githubForks": 1840
   },
   {
@@ -2735,5 +2735,34 @@
     "firstSeen": "2026-06-09",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "7-people-talent/zynkr-recruiter/agents/recruiter-calibrator.md"
+  },
+  {
+    "id": "7.14",
+    "name": "career-consult",
+    "category": "people-talent",
+    "project": "career-consult",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "Prepare Peter for an inbound PAID career / résumé consultation before it happens. Give it the booking — a Gmail thread, the appointment email, or just the client's name — and it reads the client's pre-consult reply + CV + LinkedIn, then builds a ready-to-use prep Doc in Peter's 職涯諮詢 folder: the GROW-model intake (Goal / Reality / Options / Will / Story / Summary) prefilled from the client's own words, an opener checklist of the make-or-break facts to confirm first (visa/work-rights for overseas moves, CV-vs-email inconsistencies), the client's own questions regrouped under GROW, a consultant-side CV health-check, and a 60-minute agenda. Trigger on /career-consult, \"prep for my consult\", \"幫我準備諮詢\", \"準備職涯諮詢\", \"prep the career consultation\", \"我等等有一場付費諮詢\", or whenever Peter forwards / points at a \"職涯、履歷付費諮詢\" appointment booking and wants something prepared ahead — even if he only gives the client's name or the calendar subject line. This is the PREP skill (build the briefing before the call). Distinct from cv-customizer (rewrites a CV against one specific job description) and from consult-project-specialist / consult-intake (which track SALES / advisory engagements as CRM deals, not 1-on-1 career coaching clients). When Peter has a career-coaching session coming up and wants to walk in prepared, prefer this skill.",
+    "input": "A career-consult booking — a Gmail thread / appointment email ('職涯、履歷付費諮詢 (Name)'), pasted text, or just the client's name. The CV is usually a PDF attachment on the thread.",
+    "process": "Read the booking + client's pre-consult reply + CV → prefill the GROW template from their materials (mark inferences) → add opener checklist + regrouped questions + CV health-check + agenda → number the case → create the Doc in the 職涯諮詢 folder.",
+    "output": "A prefilled prep Doc named '[N] {Client} 職涯諮詢' in Peter's 職涯諮詢 working folder, ready to drive a 60-minute paid session.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "7.14",
+    "sheetId": "7.14",
+    "kind": "skill",
+    "synergy": [
+      "7.14"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/7.14.md -o ~/.claude/skills/career-consult.md",
+    "updatedAt": "2026-06-18",
+    "firstSeen": "2026-06-18",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "7-people-talent/career-consult/SKILL.md"
   }
 ]
