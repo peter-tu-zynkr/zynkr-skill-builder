@@ -1,0 +1,222 @@
+---
+name: career-consult
+sheetId: "7.02"
+description: >-
+  Prepare Peter for an inbound PAID career / résumé consultation before it
+  happens. Give it the booking — a Gmail thread, the appointment email, or just
+  the client's name — and it reads the client's pre-consult reply + CV +
+  LinkedIn, then builds a ready-to-use prep Doc in Peter's 職涯諮詢 folder: the
+  GROW-model intake (Goal / Reality / Options / Will / Story / Summary) prefilled
+  from the client's own words, an opener checklist of the make-or-break facts to
+  confirm first (visa/work-rights for overseas moves, CV-vs-email
+  inconsistencies), the client's own questions regrouped under GROW, a
+  consultant-side CV health-check, and a 60-minute agenda. Trigger on
+  /career-consult, "prep for my consult", "幫我準備諮詢", "準備職涯諮詢", "prep
+  the career consultation", "我等等有一場付費諮詢", or whenever Peter forwards /
+  points at a "職涯、履歷付費諮詢" appointment booking and wants something
+  prepared ahead — even if he only gives the client's name or the calendar
+  subject line. This is the PREP skill (build the briefing before the call).
+  Distinct from cv-customizer (rewrites a CV against one specific job description)
+  and from consult-project-specialist / consult-intake (which track SALES /
+  advisory engagements as CRM deals, not 1-on-1 career coaching clients). When
+  Peter has a career-coaching session coming up and wants to walk in prepared,
+  prefer this skill.
+category: people-talent
+project: career-consult
+platform: claude
+status: WIP
+author: Peter Tu
+input: "A career-consult booking — a Gmail thread / appointment email ('職涯、履歷付費諮詢 (Name)'), pasted text, or just the client's name. The CV is usually a PDF attachment on the thread."
+process: "Read the booking + client's pre-consult reply + CV → prefill the GROW template from their materials (mark inferences) → add opener checklist + regrouped questions + CV health-check + agenda → number the case → create the Doc in the 職涯諮詢 folder."
+output: "A prefilled prep Doc named '[N] {Client} 職涯諮詢' in Peter's 職涯諮詢 working folder, ready to drive a 60-minute paid session."
+synergy: ["cv-customizer"]
+---
+
+# Career Consult Prep
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill career-consult
+```
+
+Peter runs a paid 1-on-1 career / résumé consultation service (NT$1,800 / 60 min,
+booked through Google Calendar appointment scheduling). Clients book a slot and
+are asked to email their background + questions + CV at least 48h ahead. This
+skill turns that raw inbound material into a **prep Doc Peter can walk in and
+use** — so the hour is spent advising, not reading a CV cold.
+
+The prep Doc is the **Career development (GROW)** tab of Peter's template,
+*prefilled* from what the client already told him, plus the four things that make
+preparation valuable: the facts to confirm before anything else, the client's own
+questions mapped to the framework, a quick CV health-check, and a time plan.
+
+It runs **mostly autonomously**: read → prefill → create → report. The one place
+to pause is if you genuinely can't find the client's materials (see Step 1).
+
+## How this differs from its neighbours
+
+- **cv-customizer** — rewrites ONE CV against ONE job description through a 5-phase
+  pipeline. Use it when the client has picked a specific role and wants the résumé
+  tailored. career-consult is upstream of that: prep for the *conversation*.
+- **consult-project-specialist / consult-intake** — track SALES / advisory
+  engagements as CRM deals + project folders. A career-coaching client is **not** a
+  CRM deal; their record is the prep Doc in the 職涯諮詢 folder, nothing in Supabase.
+
+## Fixed facts (don't re-derive these)
+
+- **Google account** for all Gmail / Drive / Docs tools: `peter_tu@zynkr.ai`
+- **GROW template** (`[1] 履歷、職涯諮詢模板`, read its **Career development** tab
+  for the canonical question set): `1FLERQy5pAVly0s9T9nmTVmt0wT-t1GheGdMV8vQBYIk`
+- **職涯諮詢 working folder** (where the new prep Doc is filed): `1tkcJeV8silMmCZgNoOz0-SYXsEIQX2Sd`
+- **Closed-case archive** (past examples + the running case-number sequence): `11m4Ysbq7huzA6suva7UoLHmmDVOwtaW6`
+- **Tracking sheet** (`職涯諮詢追蹤總表`, optional log — see Step 7): `1bBcfxgMR8sZjqQcTwWhPEG4A4KzijL1rFHN0sAB2lcI`
+- Case numbering is one global running sequence — `[N]` = (highest `[N]` across
+  the closed-case archive **and** the working folder) + 1.
+
+A bundled copy of the prep skeleton lives in `references/prep-doc-template.md` —
+it shows the exact format (section dividers, markers, the four extras). Read it
+before drafting; fall back to it if the live template can't be read.
+
+---
+
+## Workflow
+
+### 1 · Acquire the booking + the client's materials
+
+The booking can arrive a few ways — a forwarded appointment email, a calendar
+subject line ("職涯、履歷付費諮詢 (Name)"), a Gmail thread, or just a name. Whatever
+you're given, gather these by searching Gmail (`mcp__google-workspace__search_gmail_messages`
+then `get_gmail_messages_content_batch`):
+
+- **The appointment booking** — gives the client name, email, LinkedIn/résumé
+  links, the consult item (職涯諮詢 / 履歷健檢 / 模擬面試), the one-line topic, the
+  date/time (note the timezone — bookings often show CEST/Amsterdam *and* GMT+8),
+  the Meet link, and the fee.
+- **The client's pre-consult reply** — their answers to Peter's four standard
+  questions (current company / title / years; LinkedIn; work history; target
+  industries-companies-roles) and, most valuably, **their own list of questions**.
+  This is the richest source — quote it.
+- **The CV** — usually a PDF attachment. Download it
+  (`get_gmail_attachment_content`) and read it (the Read tool renders PDFs). The
+  CV is where you mine Reality/Options answers the client didn't spell out.
+
+If the client hasn't sent materials yet, say so and offer to draft the prep from
+the booking alone (background will be thin) — don't invent a background.
+
+> **Note on the Calendar API:** the Calendar MCP may be disabled on the GCP
+> project. That's fine — the booking details all live in the Gmail thread, which
+> is the source of truth here. Don't block on Calendar.
+
+### 2 · Read the GROW question set
+
+Read the **Career development** tab of the template Doc
+(`get_doc_content(document_id="1FLERQy5pAVly0s9T9nmTVmt0wT-t1GheGdMV8vQBYIk")`)
+so the questions stay in sync with whatever Peter has edited. The GROW sections
+are: **找到標竿 (Goal) · 盤點現狀 (Reality) · 找到選擇 (Options) · 判斷時間和行動
+(Will) · 故事 (Story) · 總結 (Summary)** + an Options scoring matrix.
+`references/prep-doc-template.md` carries the full question list and is the
+fallback if the live read fails.
+
+### 3 · Prefill the GROW questions
+
+This is the core of the value. For each question, write the client's answer
+**from their own materials**:
+
+- **Quote what they answered.** Their email maps cleanly: target industries /
+  companies / roles → Goal; current role + history → Reality; their listed
+  questions → wherever they belong.
+- **Infer the rest from the CV**, and mark every inferred line `〔推測，需確認〕`.
+  The marker is what makes the doc trustworthy — Peter instantly sees what's
+  grounded versus what to confirm. Where neither email nor CV says anything,
+  write `未提供，現場確認` rather than guessing.
+- **Leave Summary and the scoring matrix blank** — those are filled live / after.
+
+Why prefill at all (rather than hand Peter a blank intake): the client already
+answered most of this in their email. Re-typing it into the framework is exactly
+the "consultant reads the file beforehand" work that makes a paid hour feel
+worth it — and it surfaces the gaps and contradictions while there's still time
+to plan around them.
+
+### 4 · Add the four prep extras
+
+These turn an intake into a briefing. See the template for placement.
+
+1. **⚠️ 開場必確認 (opener checklist)** — the 1–3 facts that swing every other
+   answer, to confirm in the first five minutes. For an **overseas move this is
+   almost always work authorization / visa status** (EU rights? partner visa?
+   30% ruling? needs sponsorship?) — positioning advice flips entirely on it.
+   Also flag material **inconsistencies** (e.g. "7 years" in the email vs "10+"
+   on the CV) so Peter can reconcile the client's pitch.
+2. **Client questions regrouped under GROW** — list their own questions verbatim
+   with their numbers, clustered (定位/品牌 · 市場適配 · 履歷/補強 · 路徑/策略).
+   Peter can then run the session by theme instead of ping-ponging.
+3. **CV health-check (consultant-side)** — 5–8 concrete, kindly-phrased notes:
+   header vs content honesty, density, repeated metrics, localization, the
+   years-of-experience inconsistency, the clearest skill gap. Only expand this
+   when the consult item includes 履歷健檢 or the client asked about their CV.
+4. **Suggested 60-minute agenda** — a time-boxed flow that front-loads the
+   highest-value block (usually positioning).
+
+### 5 · Number the case
+
+`[N]` is one global running sequence. List **both** folders once and take the max
+`[N]` across them, then +1:
+
+```
+mcp__google-workspace__list_drive_items(user_google_email="peter_tu@zynkr.ai", folder_id="11m4Ysbq7huzA6suva7UoLHmmDVOwtaW6")  # closed-case archive
+mcp__google-workspace__list_drive_items(user_google_email="peter_tu@zynkr.ai", folder_id="1tkcJeV8silMmCZgNoOz0-SYXsEIQX2Sd")  # working folder (in-flight cases)
+```
+
+Doc name: **`[N] {Client} 職涯諮詢`** (e.g. `[80] Mei Lin 職涯諮詢`). If the client
+goes by an English + Chinese name, use the form they signed with.
+
+### 6 · Create the Doc and file it
+
+Create with the filled body, then move it into the working folder (creating a Doc
+directly into a folder is unreliable; create-then-move is the robust path):
+
+```
+## 1. create (lands in My Drive root)
+mcp__google-workspace__create_doc(user_google_email="peter_tu@zynkr.ai", title="[N] {Client} 職涯諮詢", content="<filled template>")
+## 2. move into the 職涯諮詢 folder (capture the doc id from step 1)
+mcp__google-workspace__update_drive_file(user_google_email="peter_tu@zynkr.ai", file_id="<doc id>", add_parents="1tkcJeV8silMmCZgNoOz0-SYXsEIQX2Sd", remove_parents="root")
+```
+
+### 7 · Report (and offer the optional log)
+
+Show Peter a compact summary: the case name + link, what was prefilled vs what's
+flagged 〔推測，需確認〕, and the opener checklist (so the single most important
+thing — e.g. "confirm visa first" — is visible without opening the doc).
+
+The `職涯諮詢追蹤總表` row is **optional and off by default** — it's a state change,
+so ask before appending. If Peter says yes, append a row
+(`客戶姓名 · 諮詢日期 · 諮詢時間 · Email · 背景來源`) via the Sheets tools.
+
+---
+
+## Worked example (illustrative — fictional client)
+
+> Booking: "職涯、履歷付費諮詢 (Mei Lin)", a Taiwan-based product manager at a
+> fictional firm, exploring roles in Germany, CV attached, email lists 9
+> questions. Contact: `inquirer@example.com`.
+
+A good prep Doc for Mei Lin would:
+- Put her target German tech/auto companies + PM roles under **Goal**, her current
+  PM scope + shipped-feature metrics under **Reality** (quoting the CV), and her 9
+  questions regrouped under the GROW themes.
+- Open the checklist with **"confirm German work authorization / Blue Card
+  eligibility"** — because whether she needs sponsorship reshapes every
+  competitiveness answer — plus any email-vs-CV seniority mismatch.
+- Mark anything not in her materials `〔推測，需確認〕` (e.g. salary expectations,
+  role models) rather than inventing them.
+- Add a CV health-check only because her item includes 履歷健檢, and close with a
+  60-minute agenda that front-loads positioning.
+
+The point of the example: prefill from real material, **flag every inference**,
+and lead with the one fact that changes the advice.
+
+## A note on PII
+
+The prep Doc contains the real client's name, email and CV — that's correct;
+it's Peter's private working doc in his own Drive, the same data he'd read off
+the email. No anonymization happens at runtime. (Only this skill's own
+documentation uses a fictional client.)

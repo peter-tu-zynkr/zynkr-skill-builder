@@ -1,0 +1,23 @@
+{
+  "skill_name": "career-consult",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've got a paid career consult coming up — the booking is in my inbox, subject line something like '職涯、履歷付費諮詢 (Mei Lin)'. She replied with her background and a CV attached. Can you prep something ahead so I can walk in ready?",
+      "expected_output": "Reads the Gmail booking + the client's pre-consult reply + the attached CV, prefills the GROW-model Career development questions from her materials (marking inferences with 〔推測，需確認〕), adds the opener checklist / regrouped questions / CV health-check / 60-min agenda, numbers the case [N], creates the Doc and files it in the 職涯諮詢 working folder, and reports the link + opener.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "幫我準備等等那場職涯諮詢，客戶叫 Mei Lin，她想去德國找 PM 的工作，履歷我等等貼給你或在信裡。",
+      "expected_output": "Finds the client's booking + materials in Gmail, builds the prefilled GROW prep Doc, leads the opener checklist with German work-authorization/visa (since it's an overseas move), files the Doc in the 職涯諮詢 folder, and reports back in zh-TW.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "New career-consult client booked for Friday. Only thing I have is her name (Mei Lin) and that she's exploring overseas roles — she hasn't sent her CV or answered the prep questions yet. Set up the prep doc anyway.",
+      "expected_output": "Recognizes the client materials are missing, says so, and offers to draft the prep Doc from the booking alone with a thin background — without fabricating CV details — rather than inventing answers; still lays down the GROW skeleton + opener checklist (lead with visa) for Peter to fill live.",
+      "files": []
+    }
+  ]
+}
