@@ -47,7 +47,7 @@ slide-pptx skill  → renders into a .pptx
 
 **What it does NOT produce**: I do **not** lay out the narrative arc, split pages, choose layouts, or render the `.pptx` myself. I am a **thin orchestration layer** — detect intent, converge context, assemble the ▸ Brief, and drive the three stages and the slide-pptx skill in order (see ## Limitations). Each stage's professional judgment is still made by that stage itself.
 
-> Whether the user fires me directly by shouting "make a deck" or gets routed in via `/zynkr`, the behavior is identical — both entry points run the same intake → ▸ Brief → relay.
+> Whether the user fires me directly by shouting "make a deck" or gets routed in via `/zynkr-skills`, the behavior is identical — both entry points run the same intake → ▸ Brief → relay.
 
 ---
 

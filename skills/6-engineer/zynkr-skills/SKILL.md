@@ -1,9 +1,9 @@
 ---
-name: zynkr
+name: zynkr-skills
 sheetId: "6.02"
-description: "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr rather than asking the user to remember the right slash command. Also fire on deck / 簡報 requests — 'make me a deck', '幫我做簡報', '做投影片', 'pitch deck', 'deep dive 簡報', 'all-hands 簡報', '把這份資料做成簡報' — and route them to /zynkr-slide (the slide-relay orchestrator)."
+description: "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr-skills', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr-skills rather than asking the user to remember the right slash command. Also fire on deck / 簡報 requests — 'make me a deck', '幫我做簡報', '做投影片', 'pitch deck', 'deep dive 簡報', 'all-hands 簡報', '把這份資料做成簡報' — and route them to /zynkr-slide (the slide-relay orchestrator)."
 category: engineer
-project: zynkr
+project: zynkr-skills
 platform: claude
 status: WIP
 author: Peter Tu
@@ -13,15 +13,15 @@ output: "Either: (a) an auto-invocation of the right Zynkr sub-skill (most commo
 synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "content-newsletter-draft", "training-lecture-transcript", "sales-specialist", "cv-customizer", "zynkr-support", "content-governance", "zynkr-content-writer", "training-srt-optimizer", "zynkr-slide"]
 ---
 
-# Zynkr
+# Zynkr Skills
 
 ```bash
-npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zynkr
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zynkr-skills
 ```
 
 The **front-door router** for everything Peter drops into the assistant. Take any input — a URL, a path, a slug, a half-formed idea, a "where am I with X?" question — figure out which Zynkr capability it belongs to, read the relevant state, and route. This is Zynkr's mission expressed as a skill: *gather knowledge, turn it into a capability, add it to the knowledge base* — applied recursively to the assistant itself.
 
-> **Where this fits:** `/zynkr` sits **above** the canonical skill-authoring chain (`/skill-sourcer` → `/skill-triager` → `/skill-creator` → `/skill-publish`) and beside the content skills (`/content-newsletter-draft`, `/sales-specialist`, `/training-lecture-transcript`, etc.). It does not replace any of them. Power users still call them directly. `/zynkr` is the catch-all for unstructured input.
+> **Where this fits:** `/zynkr-skills` sits **above** the canonical skill-authoring chain (`/skill-sourcer` → `/skill-triager` → `/skill-creator` → `/skill-publish`) and beside the content skills (`/content-newsletter-draft`, `/sales-specialist`, `/training-lecture-transcript`, etc.). It does not replace any of them. Power users still call them directly. `/zynkr-skills` is the catch-all for unstructured input.
 
 ---
 
@@ -182,7 +182,7 @@ Default to AskUserQuestion when the options are discrete — it surfaces choices
 
 The closer in the canonical chain is `/skill-triager confirm-ship`, which runs **only** at the tail of `/skill-sourcer → /skill-triager → /skill-creator → /skill-qa → /skill-publish`. Any skill that reaches the live marketplace by another path — a direct repo edit, a bulk renumber / rename / move migration, or hand-authoring straight into `zynkr-skill-builder/skills/` — never triggers it, so its proposal issue and Project card stay open forever. This sweep is the safety net: it reconciles **what is actually live** against **what is still open** and closes the gap.
 
-Fire on: "reconcile pipeline", "close shipped", "did anything ship without closing?", "what's deployed but still open?", "/zynkr reconcile", or proactively after any bulk deploy that bypassed `/skill-publish`.
+Fire on: "reconcile pipeline", "close shipped", "did anything ship without closing?", "what's deployed but still open?", "/zynkr-skills reconcile", or proactively after any bulk deploy that bypassed `/skill-publish`.
 
 **Step A — gather both sides (parallel Bash calls):**
 1. **Live skills** — `curl -sL https://www.zynkr.ai/api/skills` and collect every `slug` (or, when run inside the repo, the `project` of every record in `generated/skills-detail.json`).
@@ -193,7 +193,7 @@ Fire on: "reconcile pipeline", "close shipped", "did anything ship without closi
 
 **Step C — present, then close as a batch.** Render the candidates as a table (`#`, slug, live id, current label) and take **one** confirmation for the whole batch. Then for each:
 - `gh issue edit <n> --repo peter-tu-zynkr/zynkr-skill-idea --add-label shipped --remove-label triage-ready --remove-label building` (ignore "label not found").
-- `gh issue close <n> --repo peter-tu-zynkr/zynkr-skill-idea --reason completed --comment "✅ Shipped & reconciled — live as \`<name>\` (id \`<id>\`, install \`zynkr.ai/s/<id>.md\`). Closed by \`/zynkr\` reconcile sweep."`
+- `gh issue close <n> --repo peter-tu-zynkr/zynkr-skill-idea --reason completed --comment "✅ Shipped & reconciled — live as \`<name>\` (id \`<id>\`, install \`zynkr.ai/s/<id>.md\`). Closed by \`/zynkr-skills\` reconcile sweep."`
 - If the issue has a board card, flip Pipeline Status to `shipped`:
   ```bash
   gh project item-edit --id <ITEM_ID> \
@@ -209,10 +209,10 @@ Fire on: "reconcile pipeline", "close shipped", "did anything ship without closi
 
 ## Reuse, don't reinvent
 
-`/zynkr` is a thin coordination layer. It does **not** re-implement the logic in any sub-skill. Specifically:
+`/zynkr-skills` is a thin coordination layer. It does **not** re-implement the logic in any sub-skill. Specifically:
 
 - For state-aware routing patterns, see `../skill-triager/SKILL.md` (Step 2 "Detect the intake source" + Step 3 Option A/D switch) and `../skill-publish/SKILL.md` (Step 1 mode detection — continuation vs fresh-intake).
-- For dedup / classify subagents, those are owned by `/skill-sourcer` (`../skill-sourcer/agents/{classifier,deduplicator,proposer}.md`). If `/zynkr` needs classification, call `/skill-sourcer` and let it run those agents.
+- For dedup / classify subagents, those are owned by `/skill-sourcer` (`../skill-sourcer/agents/{classifier,deduplicator,proposer}.md`). If `/zynkr-skills` needs classification, call `/skill-sourcer` and let it run those agents.
 - For GitHub Project field IDs (option IDs for `Pipeline Status`, `Keep`, etc.), see `../skill-triager/SKILL.md` Option D section. Don't re-derive — read the documented IDs.
 
 ---
@@ -223,8 +223,8 @@ The plan deliberately leaves these out of v1:
 
 - **Broad drift / health checks** — orphan PRs, mismatched categories, stale branches. (The **Reconcile sweep** above now covers the specific “shipped but the issue is still open” drift; wider health-checking is still a separate concern.)
 - **Fully automatic close-on-ship** — having every `ingest-skills.yml` run close the matching proposal with no human in the loop. The Reconcile sweep is the on-demand version; the hands-off CI version needs a cross-repo PAT secret and lives in the builder repo's workflows, not in this skill.
-- **Scheduled digests** — weekly "here's what's stuck" reports. Use `/loop /zynkr "what's in my queue?"` if you want that, no need to bake it in.
-- **Replacing direct invocation of the sub-skills** — they remain first-class entry points. `/zynkr` is one of several front doors, not the only one.
+- **Scheduled digests** — weekly "here's what's stuck" reports. Use `/loop /zynkr-skills "what's in my queue?"` if you want that, no need to bake it in.
+- **Replacing direct invocation of the sub-skills** — they remain first-class entry points. `/zynkr-skills` is one of several front doors, not the only one.
 
 ---
 

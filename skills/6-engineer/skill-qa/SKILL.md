@@ -1,7 +1,7 @@
 ---
 name: skill-qa
 sheetId: "6.09"
-description: "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'."
+description: "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr-skills routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'."
 category: engineer
 project: skill-qa
 platform: claude
@@ -11,7 +11,7 @@ disable-model-invocation: true
 input: "A target SKILL.md: a file path, a skill folder, a skill/<slug> branch, or a bare slug to resolve under skills/**."
 process: "Locate target → run validate-skill.ts --tier=all --json → render a tiered report → offer HITL auto-fixes for mechanical findings → emit PASS (0 errors) / FAIL verdict and hand off to /skill-publish."
 output: "A QA report (✅/⚠️/❌ per check with file:line + fix), a PASS/FAIL verdict gated on ERROR-tier checks, and optional confirmed auto-fixes applied to the working tree."
-synergy: ["skill-publish", "skill-triager", "zynkr"]
+synergy: ["skill-publish", "skill-triager", "zynkr-skills"]
 ---
 
 # skill-qa
@@ -20,7 +20,7 @@ synergy: ["skill-publish", "skill-triager", "zynkr"]
 npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill skill-qa
 ```
 
-The **quality tollgate** of the skill pipeline. Run it on a finished `SKILL.md` after `/skill-creator` and before `/skill-publish`, or any time you want to health-check a skill — `/zynkr` routes "qa `<slug>`" / 「健檢」 here. It does not author or publish; it inspects, reports, and (with your OK) fixes mechanical issues, then returns a clear PASS/FAIL.
+The **quality tollgate** of the skill pipeline. Run it on a finished `SKILL.md` after `/skill-creator` and before `/skill-publish`, or any time you want to health-check a skill — `/zynkr-skills` routes "qa `<slug>`" / 「健檢」 here. It does not author or publish; it inspects, reports, and (with your OK) fixes mechanical issues, then returns a clear PASS/FAIL.
 
 QA is a thin wrapper over one engine — `scripts/validate-skill.ts`. Never re-implement a check here: that script is the single source of truth CI also runs, so a local PASS means CI's QA check will pass too.
 
@@ -68,7 +68,7 @@ Never auto-fix prose checks (`body.summary_paragraph`, `attribution.case_c_secti
 
 ## Step 5 — Verdict & handoff
 
-- **PASS** (0 ERROR): say so, note the WARN count, and point to `/skill-publish`. If `/zynkr` chained you here, return a PASS so it can continue to publish.
+- **PASS** (0 ERROR): say so, note the WARN count, and point to `/skill-publish`. If `/zynkr-skills` chained you here, return a PASS so it can continue to publish.
 - **FAIL** (≥1 ERROR): list the blocking ERRORs and stop. Tell the user to fix and re-run `/skill-qa`. Never publish on a FAIL.
 
 QA is a **pre-ship** gate. The live-download check (that `zynkr.ai/s/<id>.md` resolves) runs **post-ship** in `/skill-triager` Option D — `/skill-qa` only emits an INFO pointer to it.

@@ -4,7 +4,7 @@
 
 ```
                     ┌────────────────────────────────────────────────────┐
-                    │  /zynkr  ── front-door router (Touchpoint 0)       │
+                    │  /zynkr-skills  ── front-door router (Touchpoint 0)│
                     │  classifies any input + state, then dispatches:    │
                     └─────────────────────┬──────────────────────────────┘
                                           ▼
@@ -33,7 +33,7 @@
                                                      raw GitHub fallback)
 ```
 
-`/zynkr` is a routing layer, not a replacement. It detects input shape + pipeline state and either auto-invokes the right sub-skill (high confidence) or asks one clarifying question (ambiguous). See `process.md` "Touchpoint 0" for the routing table.
+`/zynkr-skills` is a routing layer, not a replacement. It detects input shape + pipeline state and either auto-invokes the right sub-skill (high confidence) or asks one clarifying question (ambiguous). See `process.md` "Touchpoint 0" for the routing table.
 
 ### The chain in one sentence
 
@@ -65,14 +65,14 @@ The pipeline survives any single skip — what's lost is the specific value-add 
 
 ---
 
-## Gate 0 — Front door (`/zynkr`)
+## Gate 0 — Front door (`/zynkr-skills`)
 
-**Tool:** `/zynkr` in Claude Code  
+**Tool:** `/zynkr-skills` in Claude Code  
 **Purpose:** route any input to the right sub-skill without making the user remember the routing rules.
 
-`/zynkr` is the one-stop entry point for unstructured input. It classifies what the user dropped in, looks up state across four signals (GitHub Project, issue labels, on-disk SKILL.md, live `/api/skills`), and either auto-invokes the right sub-skill via the **Skill** tool or asks one targeted clarifying question. It does **not** replace direct invocation of `/skill-sourcer`, `/skill-triager`, etc. — power users still call them directly. `/zynkr` is the catch-all for everyone else.
+`/zynkr-skills` is the one-stop entry point for unstructured input. It classifies what the user dropped in, looks up state across four signals (GitHub Project, issue labels, on-disk SKILL.md, live `/api/skills`), and either auto-invokes the right sub-skill via the **Skill** tool or asks one targeted clarifying question. It does **not** replace direct invocation of `/skill-sourcer`, `/skill-triager`, etc. — power users still call them directly. `/zynkr-skills` is the catch-all for everyone else.
 
-Lives at `skills/6-engineer/zynkr/SKILL.md`. See `process.md` Touchpoint 0 for the full routing table and the "when to skip `/zynkr`" guidance.
+Lives at `skills/6-engineer/zynkr-skills/SKILL.md`. See `process.md` Touchpoint 0 for the full routing table and the "when to skip `/zynkr-skills`" guidance.
 
 ## Gate 1 — Idea capture (`/skill-sourcer`)
 
