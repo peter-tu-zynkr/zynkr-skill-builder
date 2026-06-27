@@ -1,5 +1,5 @@
 ---
-name: outreach-responder
+name: sales-outbound
 description: >-
   Turn a pasted outreach conversation into a tracked lead AND a ready-to-send
   reply. Give it a copied DM / chat thread (Threads, IG, LINE, FB Messenger,
@@ -11,7 +11,7 @@ description: >-
   the agreed next step); (2) drafts the outbound reply as a Gmail DRAFT in
   Peter's inbox (never sends), in the same language as the conversation and in
   Peter's voice, reflecting whatever was agreed (a demo, a call, sending info).
-  Trigger on /outreach-responder or when Peter pastes a DM / outreach exchange
+  Trigger on /sales-outbound or when Peter pastes a DM / outreach exchange
   and says "draft a reply", "draft an outbound mail", "回這個", "幫我擬回覆",
   "把這個 lead 建進 CRM 並擬信", "log this lead and draft the email", "turn this
   DM into a draft", or otherwise hands over a back-and-forth where someone agreed
@@ -22,7 +22,7 @@ description: >-
   one takes ONE short outreach/DM conversation and produces a lead record + a
   drafted reply, no Drive folder, no meeting parsing.
 category: sales-consultant
-project: outreach-responder
+project: sales-outbound
 platform: claude
 status: Done
 author: Peter Tu
@@ -33,10 +33,10 @@ output: "A CRM lead (company + contact + deal + note + task) in the Zynkr platfo
 synergy: []
 ---
 
-# Outreach Responder
+# Sales Outbound
 
 ```bash
-npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill outreach-responder
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sales-outbound
 ```
 
 Peter does a lot of outbound and inbound on social (Threads, IG, LINE, FB, email).
@@ -68,7 +68,7 @@ sending) and the CRM write is one atomic statement.
 - **consult-project-specialist** — takes ONE sales/consulting **meeting transcript**
   and documents it as a project: Weekly Update + numbered Drive folder + kickoff
   Doc + deal. Heavy. Use it after a real meeting.
-- **outreach-responder** (this one) — takes ONE short **outreach/DM conversation**
+- **sales-outbound** (this one) — takes ONE short **outreach/DM conversation**
   (pre-meeting) and produces a lead record + a drafted reply. No Drive folder, no
   meeting parsing, no Weekly Update.
 

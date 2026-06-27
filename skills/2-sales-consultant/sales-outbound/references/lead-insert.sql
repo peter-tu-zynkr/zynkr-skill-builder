@@ -1,4 +1,4 @@
--- outreach-responder · lead-insert.sql
+-- sales-outbound · lead-insert.sql
 -- Atomic: resolve owner+workspace+pipeline → find-or-create company → find-or-create
 -- contact (by email) → new deal → conversation note + follow-up task. Returns the ids
 -- and whether the company/contact already existed.
