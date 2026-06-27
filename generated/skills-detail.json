@@ -1258,26 +1258,26 @@
   "2.09": {
     "id": "2.09",
     "sheet_id": "2.09",
-    "slug": "outreach-responder",
-    "name": "outreach-responder",
+    "slug": "sales-outbound",
+    "name": "sales-outbound",
     "summary": "Turn a pasted outreach conversation into a tracked lead AND a ready-to-send reply.",
     "category": "sales-consultant",
-    "project": "outreach-responder",
+    "project": "sales-outbound",
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
     "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
-    "source_path": "skills/2-sales-consultant/outreach-responder/SKILL.md",
-    "install_command": "curl -sL zynkr.ai/s/2.09.md -o ~/.claude/skills/outreach-responder.md",
+    "source_path": "skills/2-sales-consultant/sales-outbound/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.09.md -o ~/.claude/skills/sales-outbound.md",
     "tags": [
-      "outreach-responder",
+      "sales-outbound",
       "sales-consultant",
       "claude",
       "skill"
     ],
     "updated_at": "2026-06-27",
     "first_seen": "2026-06-27",
-    "description": "Turn a pasted outreach conversation into a tracked lead AND a ready-to-send reply. Give it a copied DM / chat thread (Threads, IG, LINE, FB Messenger, WhatsApp, email — wherever a prospect showed interest), optionally with the person's profile link, and it does two things in one pass: (1) collects who they are — parsing the thread and enriching from any social/profile URL — and writes the client context into the Zynkr platform CRM (find-or-create company + contact, a new deal, a verbatim conversation note, and a follow-up task for the agreed next step); (2) drafts the outbound reply as a Gmail DRAFT in Peter's inbox (never sends), in the same language as the conversation and in Peter's voice, reflecting whatever was agreed (a demo, a call, sending info). Trigger on /outreach-responder or when Peter pastes a DM / outreach exchange and says \"draft a reply\", \"draft an outbound mail\", \"回這個\", \"幫我擬回覆\", \"把這個 lead 建進 CRM 並擬信\", \"log this lead and draft the email\", \"turn this DM into a draft\", or otherwise hands over a back-and-forth where someone agreed to a demo / call / next step and wants both the CRM record and the reply prepared. Distinct from consult-intake (a weekly BATCH sweep of inbound website consult EMAILS) and consult-project-specialist (documents ONE sales/consulting MEETING transcript into a project + Drive folder + deal): this one takes ONE short outreach/DM conversation and produces a lead record + a drafted reply, no Drive folder, no meeting parsing.",
+    "description": "Turn a pasted outreach conversation into a tracked lead AND a ready-to-send reply. Give it a copied DM / chat thread (Threads, IG, LINE, FB Messenger, WhatsApp, email — wherever a prospect showed interest), optionally with the person's profile link, and it does two things in one pass: (1) collects who they are — parsing the thread and enriching from any social/profile URL — and writes the client context into the Zynkr platform CRM (find-or-create company + contact, a new deal, a verbatim conversation note, and a follow-up task for the agreed next step); (2) drafts the outbound reply as a Gmail DRAFT in Peter's inbox (never sends), in the same language as the conversation and in Peter's voice, reflecting whatever was agreed (a demo, a call, sending info). Trigger on /sales-outbound or when Peter pastes a DM / outreach exchange and says \"draft a reply\", \"draft an outbound mail\", \"回這個\", \"幫我擬回覆\", \"把這個 lead 建進 CRM 並擬信\", \"log this lead and draft the email\", \"turn this DM into a draft\", or otherwise hands over a back-and-forth where someone agreed to a demo / call / next step and wants both the CRM record and the reply prepared. Distinct from consult-intake (a weekly BATCH sweep of inbound website consult EMAILS) and consult-project-specialist (documents ONE sales/consulting MEETING transcript into a project + Drive folder + deal): this one takes ONE short outreach/DM conversation and produces a lead record + a drafted reply, no Drive folder, no meeting parsing.",
     "input": "A pasted outreach / DM conversation (any channel), optionally the counterparty's profile URL and the email address they gave.",
     "process": "Parse the thread → enrich from any profile link → write the client context into the CRM (find-or-create company + contact, new deal, conversation note, follow-up task) → draft the outbound reply as a Gmail draft → report.",
     "output": "A CRM lead (company + contact + deal + note + task) in the Zynkr platform, and a ready-to-send Gmail draft of the reply in Peter's inbox.",
@@ -1285,7 +1285,7 @@
     "synergy": [
       "2.09"
     ],
-    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/outreach-responder/SKILL.md"
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/sales-outbound/SKILL.md"
   },
   "3.01": {
     "id": "3.01",
