@@ -36,7 +36,7 @@ npx tsx scripts/build-taxonomy-tree.ts                               # regenerat
 
 ## SDD binding (fleet rule — full text: ../SDD.md from repo root, i.e. 6.0 tech/SDD.md)
 
-This repo follows Zynkr SDD. Repo code: **SKB**. Tracker = `to-do.md` · Record = `docs/CHANGELOG.md` (both created 2026-07-02).
+This repo follows Zynkr SDD. Repo code: **SKB**. Tracker = `to-do.md` (**local-only by design** — `.gitignore` keeps roadmap/backlog off the public surface; it lives in Peter's checkout, alongside the legacy local `plan.md` progress log) · Record = `docs/CHANGELOG.md` (public, in-repo, created 2026-07-02).
 
 - Size gates: schema/secret/pipeline-workflow/cross-repo ⇒ L (spec in `docs/specs/` + plan mode first).
 - DoD: S→D1 · M→D2 (`/verify`: one real install-and-trigger of the skill + `/code-review`) · workflow/secret/webhook changes→D3.
