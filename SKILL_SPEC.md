@@ -6,6 +6,8 @@
 
 This is the canonical authoring contract. If you're scaffolding, retrofitting, or reviewing a SKILL.md, the rules below are the bar. Anything not listed here is up to the author.
 
+> **Jurisdiction (2026-07-02):** this doc is canonical for the *authoring contract* (what a SKILL.md must contain); `architecture.md` is canonical for *pipeline mechanics* (workflows, ingest, marketplace sync). When the two disagree on authoring rules, this doc wins; on pipeline behavior, architecture.md wins — and whichever was wrong gets fixed the same day (SDD §0).
+
 > **Reference standard:** the [skills.sh](https://skills.sh) format (e.g. [skill-creator](https://skills.sh/anthropics/skills/skill-creator)) — install snippet at the top, a one-paragraph summary, then the body. Zynkr extends that pattern with stricter frontmatter and explicit attribution.
 
 ---
@@ -71,6 +73,18 @@ Frontmatter is YAML between two `---` fences at the very top of the file. The sc
 | `original_author` | string | Author handle or name as published upstream. |
 
 > **Validator note:** `original_source_url` and `original_author` are enforced by `scripts/validate-skill.ts` and `scripts/ingest.ts` as of 2026-05-15. The rule is **all-or-nothing**: if any of `upstream_repo` / `original_source_url` / `original_author` is set, all three must be set.
+
+### `sheetId` — the marketplace content id (required in practice) *(documented 2026-07-02)*
+
+| Field | Type | Rule |
+|---|---|---|
+| `sheetId` | string | Format `N.NN` (category number `.` two-digit serial, e.g. `2.06`). Schema-optional, **required in practice** for every marketplace skill: the authored frontmatter `sheetId` IS the canonical content id (`ingest.ts` precedence-0; FIFO assignment applies only to sheetId-less stubs). |
+
+Allocation & gotchas (policy source: `catalog/sheet-map.json` → `_meta.id_policy`):
+
+- **Claim the next FREE id in your category — and count agent files too.** The id namespace maps to the "[@] AI assistant index" Sheet where sub-agents occupy rows; grep the whole `skills/` tree for `sheetId:` in your category before picking.
+- **Duplicates are NOT caught by the PR check.** `qa.yml` runs `validate-skill.ts`, which does not inspect `sheetId`; malformed/duplicate ids only throw inside `ingest.ts` — i.e. AFTER merge, in the push-time ingest workflow. Until spec `SKB-001` adds a cross-file catalog check, validate the whole tree (or dry-run ingest) before pushing a new id.
+- Renumbered/renamed ids redirect via `generated/id-redirects.json`; never reuse a retired id.
 
 ### Optional fields
 

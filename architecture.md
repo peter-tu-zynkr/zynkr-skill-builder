@@ -125,6 +125,8 @@ After the PR merges and `ingest-skills.yml` runs, `/skill-triager` Option D runs
 
 **Repo:** [`zynkr-skill-builder`](https://github.com/peter-tu-zynkr/zynkr-skill-builder)
 
+> **Jurisdiction (2026-07-02):** this doc is canonical for *pipeline mechanics*; `SKILL_SPEC.md` is canonical for the *authoring contract*. When they disagree on authoring rules (frontmatter fields, attribution), SKILL_SPEC.md wins; on pipeline behavior, this doc wins — fix the wrong one the same day (SDD §0).
+
 ### Folder structure
 
 ```
