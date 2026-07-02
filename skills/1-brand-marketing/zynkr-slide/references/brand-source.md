@@ -19,7 +19,7 @@ BRAND_GUIDE = <location of your brand guide>
 
 - **Local file**: use Read to load your brand guide (including the Voice & Tone / Method / Visual / Messaging sections).
 - **Google Drive**: use the `google-workspace` MCP to search for your brand guide by name.
-- **Zynkr internal default**: the brand guide file is named `Zynkr-Brand-Guide.md` (located in the brand folder) and contains the narrative method, voice formulas, signature sentence patterns, word-choice preferences, color roles, type scale, imagery rules, and logo; load it via local Read or Drive search.
+- **Zynkr internal default**: the brand guide file is named `Zynkr-Brand-Guide.md` (located in the brand folder) and contains the narrative method, voice formulas, signature sentence patterns, word-choice preferences, color roles, type scale, imagery rules, and logo; load it via local Read or Drive search. Color VALUES additionally come from the token manifest (`https://zynkr.ai/data/tokens.json`, `TOKENS_VERSION`-stamped; SDD §4) — the guide gives roles and usage, the manifest gives the actual hex; relay 3 (slide-visual-selector) applies this rule at load time.
 
 **When not found / not configured** → record the ▸ Brief's "Apply brand" as "No, neutral default", and tell the user during intake that "the neutral default is currently in use; no brand is applied".
 

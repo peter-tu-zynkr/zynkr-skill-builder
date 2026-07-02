@@ -29,3 +29,18 @@ Third fleet repo bound to `6.0 tech/SDD.md`:
 (`validate-skill.ts` — zero sheetId references; `ingest.ts` L68 optional-with-regex,
 L619–630 precedence-0 + malformed/duplicate throws) · docs-only change, no pipeline
 surface touched — `qa.yml`/`ingest-skills.yml` do not fire (no `skills/**` paths).
+
+## 2026-07-02 — slide relay: token manifest named as the color-value source
+
+Peter designated the `/zynkr-slide` relay the fleet's applied-rendering exemplar
+(recorded in SDD §4 + the Brand Guide status block). Closed the one value-drift
+seam: both brand-source configs (`zynkr-slide` + `slide-visual-selector`) now say
+color VALUES come from `zynkr.ai/data/tokens.json` (`TOKENS_VERSION`-stamped)
+while `Zynkr-Brand-Guide.md` supplies roles/usage rules — so rendered decks stay
+in lockstep with canonical tokens even when the guide lags styles.css by design.
+Local zh-TW runtime copies in `~/.claude/skills/` updated in the same session
+(edit-BOTH rule).
+
+**Verification**: S-sized docs change · references/*.md only (no SKILL.md → PR-QA
+n/a) · ingest backstop expected green on push (re-emits content/, no slug/sheetId
+changes).

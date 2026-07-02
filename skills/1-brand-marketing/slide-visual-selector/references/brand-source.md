@@ -14,7 +14,7 @@ BRAND_GUIDE = <your brand guide location>
 
 - **Local file**: use Read to read your brand guide (Markdown / PDF / token file).
 - **Google Drive**: use the `google-workspace` MCP to search for your brand guide by name, then read its contents.
-- **Zynkr internal default**: the brand guide filename is `Zynkr-Brand-Guide.md` (located in the brand folder), containing the color system, type scale, image rules, and logo assets; load it via local Read or Drive search.
+- **Zynkr internal default**: the brand guide filename is `Zynkr-Brand-Guide.md` (located in the brand folder), containing the color system, type scale, image rules, and logo assets; load it via local Read or Drive search. **Color VALUES come from the token manifest**: `https://zynkr.ai/data/tokens.json` (`TOKENS_VERSION`-stamped; per the SDD §4 arrow of truth, styles.css values win over any hex table in the guide) — the guide supplies the *roles and usage rules* (which color plays surface/highlight/decision and each one's restraint rule), the manifest supplies the actual hex.
 
 **When not found / not configured** → fall back to the "neutral fallback" (see §4), and clearly tell the user "Currently using neutral visual defaults; no brand applied."
 
