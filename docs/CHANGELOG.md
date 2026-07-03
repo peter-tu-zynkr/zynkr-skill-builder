@@ -44,3 +44,29 @@ Local zh-TW runtime copies in `~/.claude/skills/` updated in the same session
 **Verification**: S-sized docs change · references/*.md only (no SKILL.md → PR-QA
 n/a) · ingest backstop expected green on push (re-emits content/, no slug/sheetId
 changes).
+
+## 2026-07-03 — new skill: sales-follow-up (post-demo conversion follow-up)
+
+`sales-follow-up` (sheetId `2.10`, category `2-sales-consultant`) — the post-demo
+counterpart to `sales-outbound`. From one completed demo transcript it (1) drafts a
+threaded pre-sales follow-up as a Gmail DRAFT in Peter's voice — leading with the
+prospect's own pain points, mapping each to the matching `zynkr.ai/ai-platform`
+capability, converting toward adoption; and (2) light-syncs the EXISTING CRM deal —
+logs the demo as a `note`, refreshes the deal summary, nudges the stage only if
+earned, closes the stale scheduling task, and books the agreed follow-up task.
+Bundles `references/demo-note.sql` (the single raw-SQL write, since the Zynkr MCP has
+no create-note tool; author/contact/company resolved live from the deal). Captured
+from a real run (超哥 / 行銷超哥 Chao.Marketing demo). Installed to the
+`~/.claude/skills/` runtime in the same session (edit-BOTH rule) so `/sales-follow-up`
+is invocable immediately.
+
+Deliberately does NOT log the follow-up email as an activity — the Gmail→CRM sync
+captures it on send; logging here would duplicate the row (same rule as
+`sales-outbound`).
+
+**Verification**: M-sized skill-content add · `validate-skill.ts --tier=all` → 0
+errors, 0 warnings (IPO frontmatter tightened under truncation caps) · `ingest.ts`
+dry-run exit 0, sheetId `2.10` confirmed free (no duplicate throw) · `qa.yml` fires on
+the new `skills/**/SKILL.md` in the PR (D0/D1 mechanical) · local install verified
+(skill appears in the session's available-skills list) · live-trigger (D2 `/verify`)
+deferred to Peter's first real use per build-and-review scope.
