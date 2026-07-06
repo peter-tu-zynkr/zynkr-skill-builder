@@ -1,0 +1,94 @@
+---
+name: training-srt-transcriber
+sheetId: "4.11"
+description: "Turn an audio/video file (.m4a/.mp3/.wav/.mp4…) into a timestamped .srt using local Whisper. Two modes: transcribe (fresh speech-to-text with audio-accurate timestamps) or retime (keep an existing transcript's exact wording and re-derive every timestamp from the audio via forced alignment). Use when the user says 'turn this m4a into an srt', 'transcribe this audio to subtitles', '把這段錄音轉成字幕', '幫我做 srt', 'the srt wording is right but the timing is wrong, realign it', or hands over an audio file wanting subtitles. This is the FIRST step before training-srt-optimizer — it produces the raw-STT .srt; the optimizer then cleans the text. It does NOT edit/clean subtitle wording (that is training-srt-optimizer) and does NOT summarize into a recap (that is training-lecture-recap)."
+category: training
+project: training-srt-transcriber
+platform: multi
+status: Done
+author: Peter Tu
+input: "One audio or video file (e.g. .m4a). Optional: an existing reference .srt/.txt when re-timing known wording."
+process: "Bootstrap a local Whisper venv (stable-ts + torch) -> transcribe the audio OR force-align a supplied transcript -> emit a segment-level .srt -> validate timing"
+output: "A timestamped .srt with audio-accurate cue timing, ready to hand to training-srt-optimizer for zh-TW cleanup"
+synergy: ["training-srt-optimizer", "training-lecture-recap"]
+---
+
+# Training SRT Transcriber
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill training-srt-transcriber
+```
+
+Turn an audio file into a timestamped `.srt`. It runs Whisper **locally** (via `stable-ts`) so it needs no API key and works offline. Use it when you have a recording (a lecture, an interview, a product demo `.m4a`) and want subtitles with timestamps that actually land on the spoken words. It has two modes: **transcribe** a recording from scratch, or — when you already have the correct words but the timing is broken — **retime** by force-aligning those exact words back onto the audio. It is the upstream half of the subtitle pipeline: it produces the raw STT `.srt`, then [`training-srt-optimizer`](../training-srt-optimizer/SKILL.md) minimally cleans the wording into readable Traditional Chinese.
+
+---
+
+## When to use which mode
+
+- **transcribe** — you have audio and no transcript (or the existing transcript is not worth keeping). Fresh Whisper STT; timestamps come from the audio.
+- **retime** — you have a transcript whose *wording* is correct but whose *timestamps* are wrong (e.g. an `.srt` re-used from a different take, or with placeholder/round-number times). Keeps every word, re-derives every timestamp by forced alignment.
+
+## Step 1 — Provision the local Whisper engine (one-time)
+
+The script self-bootstraps a dedicated virtualenv (`stable-ts` + `torch`, ~2GB) on first use, so this step is optional — but run it explicitly the first time so the install cost is visible and separate from the transcription run:
+
+```bash
+python3 scripts/transcribe_srt.py setup
+```
+
+The venv defaults to `~/.cache/zynkr-srt-transcriber/venv` (override with the `SRT_VENV` env var). The Whisper model weights are cached under `~/.cache/whisper` on first transcription.
+
+Requires `ffmpeg` on PATH (Whisper decodes audio through it) and either `uv` or a Python 3.12 interpreter to build the venv.
+
+## Step 2 — Produce the SRT
+
+**Transcribe from scratch:**
+
+```bash
+python3 scripts/transcribe_srt.py transcribe "input.m4a" --out "output.srt" --lang zh
+```
+
+**Or re-time a transcript whose wording is right but timing is wrong** (reference may be an `.srt` — its timestamps are ignored, only the wording is used — or a `.txt` with one cue per line):
+
+```bash
+python3 scripts/transcribe_srt.py retime "input.m4a" "reference.srt" --out "output.srt" --lang zh
+```
+
+Defaults: `--model medium`, `--lang zh`, `--device cpu`. Bump to `--model large-v3` for maximum fidelity on hard audio (slower); switch `--device mps` on Apple Silicon or `--device cuda` on an NVIDIA box to speed things up.
+
+## Step 3 — Validate the timing
+
+```bash
+python3 scripts/transcribe_srt.py validate "output.srt" --audio "input.m4a"
+```
+
+Checks that cues are monotonic, non-overlapping, non-negative in duration, and never run past the audio's real length (read via `ffprobe`). Fix or re-run before shipping if it reports errors.
+
+## Step 4 — Hand off to the optimizer
+
+The output is deliberately *raw* STT — accurate timing, unpolished wording. Pass it straight to `training-srt-optimizer` to minimally clean the text into subtitle-friendly Traditional Chinese while preserving these timestamps:
+
+```
+Use $training-srt-optimizer on output.srt
+```
+
+## Inputs
+
+- **audio** — any audio/video ffmpeg can decode (`.m4a`, `.mp3`, `.wav`, `.mp4`, …).
+- **reference** *(retime only)* — an `.srt` (wording used, timing discarded) or a `.txt` (one cue per line).
+
+## Outputs
+
+- A segment-level `.srt` with audio-accurate cue timing, indexed from 1, ready for `training-srt-optimizer`.
+
+## Configuration
+
+- `SRT_VENV` — override the managed venv location (default `~/.cache/zynkr-srt-transcriber/venv`).
+- See `./references/transcription_notes.md` for model-size trade-offs, device notes, and the dependency-pin rationale.
+
+## Limitations
+
+- **Not a text cleaner.** It preserves whatever Whisper heard (transcribe) or whatever you supplied (retime); it does not remove filler or fix STT wording — that is `training-srt-optimizer`.
+- **retime assumes the words match the audio.** If the reference transcript diverges substantially from what is actually spoken, alignment can drift where they differ. Spot-check the result.
+- **Local compute.** A ~11-minute clip on `medium`/CPU aligns in roughly 7 minutes; large models and long files are slower. Use `--device mps`/`cuda` to accelerate.
+- Language defaults to `zh`; pass `--lang` for other languages.

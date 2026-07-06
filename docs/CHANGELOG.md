@@ -70,3 +70,31 @@ dry-run exit 0, sheetId `2.10` confirmed free (no duplicate throw) · `qa.yml` f
 the new `skills/**/SKILL.md` in the PR (D0/D1 mechanical) · local install verified
 (skill appears in the session's available-skills list) · live-trigger (D2 `/verify`)
 deferred to Peter's first real use per build-and-review scope.
+
+## 2026-07-06 — new skill: training-srt-transcriber (audio → SRT, the step before the optimizer)
+
+`training-srt-transcriber` (sheetId `4.11`, category `4-training`) — the missing
+UPSTREAM half of the subtitle pipeline. `training-srt-optimizer` starts from "a .srt
+of raw STT output" but nothing produced that from audio; this skill does. Local
+Whisper (`stable-ts` + `torch`, no API key, offline) with two modes: **transcribe**
+(fresh STT, timestamps from the audio) and **retime** (keep an existing transcript's
+exact wording, re-derive every timestamp by forced alignment — the fix for "the SRT
+says the right things but the times are wrong"). Ships `scripts/transcribe_srt.py`
+(`setup`/`transcribe`/`retime`/`validate`) which self-bootstraps a dedicated py3.12
+venv on first run (override via `SRT_VENV`), plus `references/transcription_notes.md`
+(model/device trade-offs + the numba/llvmlite dependency-pin rationale that keeps a
+bare `stable-ts` install off the Python-3.14-incompatible numba 0.53). Built out of a
+real task — re-timing a `Zynkr demo` product-demo `.m4a`. Hands off to
+`$training-srt-optimizer` for the zh-TW text cleanup; it deliberately does NOT clean
+wording itself. Installed to the `~/.claude/skills/` runtime in the same session
+(edit-BOTH rule) so `/training-srt-transcriber` is invocable immediately.
+
+**Verification** (D2): M-sized skill-content add · `validate-skill.ts` → 0 errors, 0
+warnings · `ingest.ts` dry-run exit 0, `✓ 4.11 training-srt-transcriber` (sheetId free,
+no duplicate throw) · engine live-triggered end-to-end on the real demo audio —
+`transcribe` (28s clip → 6 cues, validated OK), `retime` (5-line reference → 5 cues,
+exact wording, timing matches the full-length run, validated OK), `validate` (full
+187-cue SRT → OK); full-length `retime` of the 10:57 demo produced a 187-cue SRT whose
+timestamps were spot-checked at 6 points across the timeline against independent
+re-transcription · `qa.yml` fires on the new `skills/**/SKILL.md` on push (D0/D1
+mechanical).

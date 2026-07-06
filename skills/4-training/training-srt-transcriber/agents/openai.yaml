@@ -1,0 +1,4 @@
+interface:
+  display_name: "SRT Transcriber"
+  short_description: "Turn an audio file into a timestamped .srt (transcribe, or re-time a known transcript)"
+  default_prompt: "Use $training-srt-transcriber to turn this audio file into a timestamped .srt. If I also give you a transcript whose wording is correct but whose timing is wrong, keep the wording and re-derive the timestamps from the audio by forced alignment. Produce raw STT — do not clean the wording; that is for training-srt-optimizer."
