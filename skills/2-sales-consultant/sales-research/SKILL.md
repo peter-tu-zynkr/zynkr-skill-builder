@@ -1,0 +1,216 @@
+---
+name: sales-research
+description: >-
+  Runs AI background research on a company (and optionally a contact) in the
+  Zynkr platform CRM and writes a concise, sales-context zh-TW brief into the
+  company's 備註/description field. This is a Claude Code stand-in for the
+  platform's own "AI 背景研究" button (app/lib/ai/research.ts) — that feature
+  only exists in the platform.zynkr.ai web UI and is NOT exposed through the
+  connected `zynkr` MCP server, which only offers CRUD tools (create_company,
+  create_contact, update_company, etc.), so there is no MCP call to trigger it
+  directly. This skill closes that gap by doing the same job — targeted web
+  research (what the company does, industry, size/HQ, notable facts, and why
+  they might need Zynkr) — then writing the result back via update_company /
+  create_company. Trigger EAGERLY whenever Peter says "trigger company
+  research", "research this company", "研究這間公司", "查一下這間公司背景",
+  "幫我查一下[公司名]", "look into [company]", "跑一下背景研究", or asks to
+  research/enrich/look up a company or contact that is or is about to be in
+  the Zynkr CRM — even if he only names the company and doesn't spell out
+  "research." Also fire immediately after a company/contact gets created in
+  this conversation if he asks for research on it in the same breath (e.g.
+  "create a company for X, also trigger company research"). Do NOT fire
+  automatically after every company/contact creation on your own initiative —
+  only when asked, in this call or the next.
+category: sales-consultant
+project: sales-research
+platform: claude
+status: Done
+author: Peter Tu
+sheetId: "2.11"
+input: "A company name/domain (and optionally a contact name), or an existing Zynkr CRM company_id / contact_id."
+process: "Resolve the CRM company record → web research (what they do, size/HQ, facts, sales-fit angle) → dated zh-TW brief flagged unverified → append into description (read-merge-write) → optional task note for a named contact → report."
+output: "The company's 備註/description field updated with a dated AI-research brief, plus an optional note-style task on a named contact — never overwriting prior content."
+synergy: []
+---
+
+# Sales Research
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sales-research
+```
+
+Given a company (and optionally a contact) in the Zynkr CRM, this skill runs targeted
+web research on it — what it does, size/HQ, notable facts, and a sales-fit angle for
+Zynkr's own products/services — and writes a concise, dated, zh-TW brief into that
+company's 備註 (description) field, flagged as AI-researched and unverified. Trigger it
+whenever Peter asks to research, look into, or check the background of a company or
+contact tied to the CRM.
+
+## Why this exists
+
+Zynkr's own AI platform (`platform.zynkr.ai`) already has an "AI 背景研究" feature —
+a button on the company/contact/deal detail page that runs a Claude tool-use loop
+(`app/lib/ai/research.ts`, `generateBrief`: up to 8 web searches, `RESEARCH_MODEL`)
+and saves a zh-TW markdown brief as a CRM note. It's genuinely good, but it's
+**web-UI only** — the connected `zynkr` MCP server (`mcp__zynkr__*`) exposes only
+CRUD tools (create/get/update/list for companies, contacts, deals, tasks, quotes,
+KB) and has no research/enrichment tool to call from here. So from Claude Code
+there's no way to press that button.
+
+This skill is the workaround: it reproduces the *outcome* (a useful, sales-angled
+background brief landing in the CRM) using tools Claude Code already has —
+`WebSearch` / `WebFetch` for the research, `mcp__zynkr__*` for the CRM write —
+without needing the platform's internal research route. Because it's a rebuild,
+not the same audited pipeline, **always label the output as AI-researched and
+unverified** — exactly the posture the platform's own feature takes (an aid to
+the salesperson, not a source of truth).
+
+## How this differs from its neighbours
+
+- **sales-outbound** — enriches a contact from a *profile URL the prospect
+  handed over* (LinkedIn/IG/Threads bio) as one step inside logging a whole DM
+  conversation as a lead. It doesn't do open-ended company research.
+- **consult-intake** — a weekly batch sweep of inbound consulting-inquiry
+  emails into deals; doesn't research anything.
+- **sales-research** (this one) — takes a company (± contact) already in, or
+  about to enter, the CRM and does dedicated background research on it, on
+  demand, independent of any particular conversation thread.
+
+If the research turns up that this is a live consulting/demo lead worth a
+human follow-up, say so in the report — but don't create deals or tasks beyond
+what's described below; that's the calling skill's (or Peter's) job.
+
+---
+
+## Workflow
+
+### 1 · Resolve the CRM company record
+
+You need a `company_id` before you can write anything. Figure out which case
+you're in:
+
+- **Given an id directly** (e.g. from earlier in the conversation) → skip to
+  step 2, no lookup needed.
+- **Given a name/domain, record likely exists** → `mcp__zynkr__list_companies`
+  and match by name/domain (case-insensitive, tolerate spacing/casing
+  differences). Found → use that id.
+- **No match, or Peter is asking you to create the company right now** →
+  do the research first (step 2), then `mcp__zynkr__create_company` with the
+  brief already embedded in `description` from the start — that's one write
+  instead of create-then-append. Preview (`confirm` omitted/false), show
+  Peter what would be created, then re-call with `confirm: true`.
+- **Owner** — default to Peter (`mcp__zynkr__whoami` → `owner_id`) unless told
+  otherwise.
+
+A contact may be named alongside the company (e.g. "research this company for
+Christina at JMP"). If so, resolve or note the `contact_id` too — you'll use
+it in step 5.
+
+### 2 · Do the research
+
+Aim for a handful of targeted searches, not an open-ended crawl — this mirrors
+the platform's own cap (max 8 web searches per brief):
+
+1. `WebSearch` the company name (+ domain if known) to find what they do,
+   industry, rough size, HQ/location, and any notable recent facts (funding,
+   news, leadership).
+2. If an official site/About page turns up, `WebFetch` it for anything the
+   search snippet didn't cover.
+3. If a contact was named, one more search on their name + company for
+   role/background — skip if nothing surfaces, don't guess.
+4. Think about the **sales-fit angle**: given what Zynkr sells (an AI platform
+   with CRM/knowledge-base/automation features, plus AI-adoption consulting
+   and training), why might *this* company plausibly be interested? Ground
+   this in what the research actually surfaced (e.g. "manages a lot of manual
+   CRM upkeep," "recently scaling a sales team," "reliant on spreadsheet
+   workflows") — don't invent a pain point that wasn't evidenced.
+
+If the research comes up thin (obscure company, no useful web presence), say
+so plainly in the brief rather than padding it with generic filler.
+
+### 3 · Structure the brief
+
+Write in zh-TW, matching the platform's own tone — compact, sales-oriented,
+not a Wikipedia dump. Use this shape:
+
+```markdown
+### 🔍 AI 背景研究 — <YYYY-MM-DD>
+**公司概況：** 一兩句話：做什麼、產業、規模／總部
+**值得注意：** 任何近況、資金、新聞（沒有就省略這行）
+**銷售脈絡：** 為什麼可能對 Zynkr 感興趣的推論——扣緊研究中實際發現的線索
+**聯絡人備註：** <僅在有指定聯絡人時才寫> 角色／背景
+⚠️ AI 自動研究，未經人工查證 — 使用前請自行確認
+```
+
+Keep it to a short paragraph or two per section — this goes into a CRM notes
+field someone will skim, not a report.
+
+### 4 · Write it into the company record — append, never clobber
+
+The company's `description` field is a shared notes area (address details,
+prior context, etc. may already be there from earlier work). **Always
+read-merge-write:**
+
+- Existing company: `mcp__zynkr__get_company(id)` → take its current
+  `description` → append the new brief below it (separated by a blank line) →
+  `mcp__zynkr__update_company(id, description=<merged text>)`, preview then
+  `confirm: true`.
+- Brand-new company (step 1's create-now case): just set `description` to the
+  brief directly in `create_company` — nothing to merge yet.
+
+Never pass other fields you're not intentionally changing — `update_company`
+only touches what you pass, so a bare `id` + `description` call leaves
+everything else (address, tax_id, owner, etc.) untouched.
+
+### 5 · Contact-level note (only if a contact was named)
+
+Contacts have no `description`/notes field in this MCP — the closest
+equivalent is a task. File one via `mcp__zynkr__create_task`:
+
+- `contact_id`: the resolved contact
+- `subject`: `AI 背景研究 — <contact name> · <YYYY-MM-DD>`
+- `body`: the "聯絡人備註" portion of the brief (plus a one-line pointer back
+  to the company record's fuller brief)
+- Leave `due_at` unset — this is a record, not an actionable to-do.
+- Preview, then `confirm: true`.
+
+### 6 · Report
+
+Tell Peter what you found and where it landed — a short summary of the brief
+plus which record(s) got updated, e.g.:
+
+```
+研究完成並寫入 CRM 備註：
+
+**JMP**（公司 id ...）
+- 產業：統計/資料視覺化軟體，SAS 子公司
+- 銷售脈絡：CRM 管理耗時 → 可能對 Zynkr AI 平台的 CRM 自動化功能感興趣
+- 已附加到公司 description（保留原有內容）
+
+⚠️ AI 自動研究，未經查證，回覆客戶前請自行確認關鍵事實
+```
+
+If the CRM write actually failed or you had to skip something (e.g. couldn't
+resolve a company_id), say that plainly instead of reporting success.
+
+---
+
+## Things to be careful about
+
+- **This is a workaround, not the platform's audited pipeline.** Always
+  include the ⚠️ unverified disclaimer in what you write to the CRM — don't
+  let a confident-sounding brief get mistaken for a vetted fact.
+- **Never fabricate.** If web research doesn't surface something (size,
+  funding, a contact's role), leave it out rather than guessing.
+- **Never overwrite existing `description` content.** Read before you write,
+  every time — this field may hold address/notes from other workflows.
+- **Preview-then-confirm on every CRM write** (`create_company`,
+  `update_company`, `create_task` all require `confirm: true` to actually
+  apply) — show Peter the preview first if this is a new company being
+  created, since that's a bigger commitment than appending a note.
+- **Don't create deals, contacts, or companies you weren't asked to create.**
+  If the company/contact doesn't exist and Peter only asked for "research,"
+  ask whether he wants it created too rather than assuming.
+- **Scope stays research + write-back.** If the findings suggest a real sales
+  or consulting opportunity, flag it in the report — don't spin up a deal or
+  hand off to another skill unprompted.
