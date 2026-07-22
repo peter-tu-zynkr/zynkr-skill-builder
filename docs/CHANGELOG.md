@@ -127,3 +127,26 @@ all four deliverables (I→P→O table, dependency map, friction log dropping a 
 copy step, re-sequence decision log with one payoff-justified move) · `qa.yml` PASS on
 PR #29 · `ingest-skills.yml` fires on the new `skills/**` on merge to main (the real
 ingest run is the definitive no-duplicate + live-on-marketplace proof).
+
+## 2026-07-22 — fix: unbreak ingest pipeline (zynkr-support malformed frontmatter + PII)
+
+`ingest-skills.yml` had been failing on every push to main since **2026-07-15** — the
+`zynkr-support` (3.01) KB re-anchor commit left its `description` as an unquoted YAML
+scalar containing `: ` and double-quoted trigger phrases, which crashed `gray-matter`
+(`incomplete explicit mapping pair`) before ingest could emit `generated/` or POST the
+marketplace sync webhook. Net effect: the marketplace **silently stopped updating for a
+week** — nothing pushed after 2026-07-15 actually went live (including, at first, the
+`operations-flow-optimization` merge above). Surfaced when that merge's ingest run
+failed on the pre-existing bad file, not on the new skill (`✓ 3.14` ingested fine).
+
+Fixed by wrapping the description in double quotes + converting the inner trigger
+phrases to single quotes (house style). Once the file could finally be parsed,
+`validate-skill.ts` surfaced a second pre-existing ERROR — a real gmail address in a
+website-form example (`pii.personal_email`) that would have re-blocked the backstop's
+validate step — replaced with an `example.com` placeholder.
+
+**Verification**: whole-tree `gray-matter` scan → 170/170 frontmatter parse OK (was 1
+failure) · `validate-skill.ts` on zynkr-support → 0 errors (3 pre-existing WARNs left
+as non-blocking follow-ups: missing install snippet, `input`/`process` over the ingest
+truncation length) · the `ingest-skills.yml` run on this merge is the proof the pipeline
+completes again and republishes the whole 2026-07-15→now backlog to the marketplace.
