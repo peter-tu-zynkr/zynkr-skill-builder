@@ -98,3 +98,32 @@ exact wording, timing matches the full-length run, validated OK), `validate` (fu
 timestamps were spot-checked at 6 points across the timeline against independent
 re-transcription · `qa.yml` fires on the new `skills/**/SKILL.md` on push (D0/D1
 mechanical).
+
+## 2026-07-22 — new skill: operations-flow-optimization (§5.3.2 ideal-flow ordering)
+
+`operations-flow-optimization` (sheetId `3.14`, category `3-operations`) — the lean
+"ideal flow ordering" pass from Ch5 §5.3.2 that streamlines a process *before*
+re-architecture: I→P→O validation · dependency mapping · friction elimination
+(duplicative / loop / missing) · disciplined re-sequencing gated by a payoff test
+(less rework / lower risk / higher throughput) plus the "what breaks if this step
+moves?" test. Enforces the one law **"eliminate before you automate."** Fills the gap
+where `operations-transformation` jumped SIPOC → four-quadrant → FE/BE/DB with no
+streamlining stage — that logic previously existed only as a buried 5-bullet checklist
+inside the `operations-process-redesign` agent (never surfaced, not reusable, missing
+the friction taxonomy and the whole re-sequence discipline). Ships two references:
+`sequencing-heuristics.md` (the full re-order playbook — heuristics, payoff gate,
+"what breaks?" test, decision-log format) and `worked-example.md` (event-roster
+reconciliation end-to-end, the companion case to training workshop 4.6 流程重構工作坊,
+PII-safe placeholders). Non-destructive wiring: added to `operations-transformation`
+synergy + an optional Stage 1.5 pointer between SIPOC and automation diagnosis, and
+named the canonical owner of the flow-streamlining checklist in the redesign agent.
+Intake: `zynkr-skill-idea#111` · built via draft PR #29.
+
+**Verification** (D2): M-sized skill-content add · `validate-skill.ts --tier=all` →
+0 errors, 0 warnings · sheetId `3.14` grep-confirmed unique tree-wide (the exact
+condition `ingest.ts`'s duplicate-throw guards; SKB-001 cross-file gap checked by hand)
+· method dogfooded on a fresh unseen process ("weekly social scheduling") — reproduced
+all four deliverables (I→P→O table, dependency map, friction log dropping a no-value
+copy step, re-sequence decision log with one payoff-justified move) · `qa.yml` PASS on
+PR #29 · `ingest-skills.yml` fires on the new `skills/**` on merge to main (the real
+ingest run is the definitive no-duplicate + live-on-marketplace proof).

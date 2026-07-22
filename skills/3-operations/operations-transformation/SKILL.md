@@ -14,6 +14,7 @@ synergy:
   - "2.14"
   - "2.15"
   - "2.16"
+  - "operations-flow-optimization"
 ---
 
 # Operations Transformation
@@ -60,6 +61,8 @@ Ask:
 ```
 Does this SIPOC map look right? (Yes / Adjust)
 ```
+
+> **Optional Stage 1.5 — streamline before you diagnose.** Before scoring automation, it usually pays to clean and re-order the flow itself: validate I→P→O on every step, map dependencies, and eliminate friction (duplicative / looping / missing steps). Invoke `operations-flow-optimization` on `SIPOC_TABLE` to produce a streamlined "ideal flow" spine, then feed that spine into Stage 2. The principle: **eliminate before you automate** — don't spend Stage 2/3 automating steps a lean pass would have deleted.
 
 ---
 
