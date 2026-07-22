@@ -5,7 +5,7 @@ description: "Streamline and re-sequence a business process into a clean 'ideal 
 category: operations
 project: operations-flow-optimization
 platform: claude
-status: WIP
+status: Done
 author: Peter Tu
 input: "An as-is process or step list (ideally a SIPOC map), plus the outcome the process must deliver"
 process: "I→P→O validation → dependency mapping → friction elimination → disciplined re-sequencing (with a payoff test) → streamlined to-be spine + decision log"
