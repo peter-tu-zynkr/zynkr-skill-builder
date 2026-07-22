@@ -106,3 +106,5 @@ Before actually building any solution, work with the client to draw a detailed p
    - Any unnecessary loops back to previous steps?
 3. Use frequency × objective-to-subjective four-quadrant approach to determine order
 4. Reference SIPOC: explain Input → Throughput → Output basic concepts
+
+> **Canonical owner of "is the flow streamlined and correctly ordered?"** — the quick checklist in step 2 above is a summary. The full method (I→P→O validation · dependency mapping · friction elimination · the disciplined re-sequencing playbook with its payoff gate and "what breaks if this moves?" test) lives in the standalone **`operations-flow-optimization`** skill. Ideally that pass runs *before* this redesign agent, so the steps handed here are already lean and well-ordered — this agent then focuses on sub-task breakdown, layer assignment, and tooling.
