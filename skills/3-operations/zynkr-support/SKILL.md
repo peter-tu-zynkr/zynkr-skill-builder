@@ -1,7 +1,7 @@
 ---
 name: zynkr-support
 sheetId: "3.01"
-description: The READ half of Peter's support loop (formerly support-reply-drafter). Parses Peter's Gmail support + inbound-sales queues, detects unreplied inquiries, identifies each inquirer's intent, and matches it against the **Zynkr platform 知識庫** (platform.zynkr.ai/kb — the single source of truth since 2026-07-15, accessed via the `zynkr` MCP server's search_kb / get_kb_article) to draft a safe reply on the thread. Drafts match the inbound language (zh-TW or EN). When the KB has no confident answer it does NOT guess — it leaves a holding reply with an inline `[[NEEDS PETER: ...]]` block flagging exactly what's missing and notifies Peter. Once Peter supplies the real answer, this skill hands the resolved thread off to /zynkr-kms, which writes it into the platform KB so the next identical question resolves automatically. Trigger whenever Peter says "/zynkr-support", "draft support replies", "process support inbox", "回覆 support 信箱", "清 support queue", "幫我回 support 信", "回覆 inbound sales", "清 sales inbox", "處理詢價信", or otherwise asks to handle the support / inbound-sales inbox.
+description: "The READ half of Peter's support loop (formerly support-reply-drafter). Parses Peter's Gmail support + inbound-sales queues, detects unreplied inquiries, identifies each inquirer's intent, and matches it against the **Zynkr platform 知識庫** (platform.zynkr.ai/kb — the single source of truth since 2026-07-15, accessed via the `zynkr` MCP server's search_kb / get_kb_article) to draft a safe reply on the thread. Drafts match the inbound language (zh-TW or EN). When the KB has no confident answer it does NOT guess — it leaves a holding reply with an inline `[[NEEDS PETER: ...]]` block flagging exactly what's missing and notifies Peter. Once Peter supplies the real answer, this skill hands the resolved thread off to /zynkr-kms, which writes it into the platform KB so the next identical question resolves automatically. Trigger whenever Peter says '/zynkr-support', 'draft support replies', 'process support inbox', '回覆 support 信箱', '清 support queue', '幫我回 support 信', '回覆 inbound sales', '清 sales inbox', '處理詢價信', or otherwise asks to handle the support / inbound-sales inbox."
 category: operations
 project: zynkr-support
 platform: claude
@@ -134,8 +134,8 @@ notification to Peter's own inbox. Body looks like:
 
 ```
 New discovery call inquiry
-Name: 王俊文
-Email: dwyanekobe@gmail.com
+Name: 王小明
+Email: inquirer@example.com
 Company: ...
 Interest: 團隊訓練
 Source page: consult
