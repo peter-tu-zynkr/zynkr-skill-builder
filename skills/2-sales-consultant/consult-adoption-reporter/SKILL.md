@@ -13,9 +13,11 @@ description: >-
   assistant being used", or otherwise asks whether a consulting client is
   actually using what we delivered — fire eagerly even without the word
   "adoption". Distinct from project-status-update (the INTERNAL tracker-Sheet
-  weekly for a course/project — no client telemetry) and from consult-uat-writer
+  weekly for a course/project — no client telemetry), from consult-uat-writer
   (proves the delivery WORKS once, at handoff; THIS skill measures whether the
-  client keeps USING it after go-live).
+  client keeps USING it after go-live), and from consult-status-report (the
+  client-facing weekly EMAIL — it can embed this skill's usage block, but the
+  telemetry analysis happens here).
 category: sales-consultant
 project: consult-adoption-reporter
 platform: claude
@@ -26,6 +28,7 @@ process: "Resolve client → map to workspace/users via adoption-config.md (fall
 output: "An adoption report Doc (metrics, weekly trend, per-user detail, risks and nudges, data-coverage caveats) linked on the CRM deal, plus an optional Gmail draft"
 synergy:
   - "consult-uat-writer"
+  - "consult-status-report"
   - "project-status-update"
 ---
 

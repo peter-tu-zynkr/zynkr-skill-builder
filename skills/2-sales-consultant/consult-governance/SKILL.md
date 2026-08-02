@@ -1,0 +1,266 @@
+---
+name: consult-governance
+sheetId: "2.45"
+description: >-
+  The weekly hygiene sweep across the WHOLE consulting portfolio — inventory
+  every numbered [N] engagement folder under the consult Drive parent AND every
+  open consult deal in the CRM, diff the two against six invariants
+  (deal↔folder backlink, kickoff-doc presence, session-note recency, [N]
+  numbering continuity, activity pulse, artifact chain), and emit a zh-TW
+  ready-to-apply changelist in the chat. Strictly READ-ONLY — it proposes
+  fixes named to the owning skill but never applies one: no Doc creation, no
+  folder moves, no CRM writes, not even a deal-note append. Trigger on
+  /consult-governance or when Peter says "顧問案健檢", "檢查顧問專案",
+  "顧問 portfolio 盤點", "案子有沒有漏", "consult drift check", "audit the
+  engagement folders", or "portfolio hygiene sweep". Distinct from
+  admin-governance (local _INDEX.md ↔ Drive KNOWLEDGE governance — a different
+  universe), from consult-status-report (ONE engagement, client-facing, writes
+  a Gmail draft; this is ALL engagements, internal, writes nothing), and from
+  consult-intake / consult-project-specialist (they OWN the fixes this report
+  proposes — folder creation, numbering, backlinks).
+category: sales-consultant
+project: consult-governance
+platform: claude
+status: Done
+author: Peter Tu
+input: "Optional: look-back windows (notes-recency days, activity-pulse days), or a single company to spot-check; defaults 21 / 14, whole portfolio"
+process: "Inventory [N] folders under the consult Drive parent → inventory open deals + activity (read-only CRM) → cross-check the six invariants (backlink, kickoff, notes recency, numbering, activity pulse, artifact chain) → findings + 建議動作 per case → summary + 本次未檢查"
+output: "A zh-TW portfolio hygiene report in the chat — findings per engagement with owning-skill fix pointers, a summary table, and an explicit not-checked list; nothing written anywhere"
+synergy:
+  - "consult-intake"
+  - "consult-project-specialist"
+  - "consult-status-report"
+  - "admin-governance"
+---
+
+# Consult Governance
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill consult-governance
+```
+
+Every consulting engagement leaves a paper trail in two places — a numbered
+`[N]` folder in Drive and a deal in the CRM — and the whole 2.x suite assumes
+the two stay in lockstep. They drift anyway: a backlink never written, a
+`[Notes]` doc that stopped three weeks ago, a build-stage deal with no `[PRD]`.
+This skill is the weekly sweep that catches the drift: it inventories both
+sides of the whole portfolio, diffs them against six invariants, and emits a
+zh-TW changelist where every finding names the exact fix and the skill that
+owns it.
+
+It is deliberately **read-only** — the report lives in the chat reply and
+nowhere else. It never creates a Doc, never renames a folder, never touches a
+deal, not even to append a note. A sweep that can write needs babysitting; a
+sweep that only reports can run every Monday without fear.
+
+## How this differs from its neighbours
+
+- **admin-governance** — the pattern source, but a different universe: it
+  reconciles local `_INDEX.md` files against Drive KNOWLEDGE folders (LOB
+  docs). This skill reconciles the consulting *engagement* portfolio — CRM
+  deals ↔ `[N]` project folders.
+- **consult-status-report** — ONE engagement, client-facing, produces a Gmail
+  draft. This skill is ALL engagements, internal-only, and writes nothing.
+- **consult-intake / consult-project-specialist** — they OWN the fixes this
+  report proposes: folder creation, `[N]` numbering, deal backlinks. This
+  skill points at them; it never does their job.
+
+## Fixed facts (don't re-derive these)
+
+- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
+- **Google account** for all Drive/Docs tools: `peter_tu@zynkr.ai`
+- **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where the numbered `[N]` folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
+- **CRM deal URL** for report lines: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- The usual `auth.uid()`-is-NULL warning for Supabase MCP writes is moot here
+  by design — this skill issues **SELECTs only**, never a write of any kind.
+
+## Hard rules
+
+1. **Read-only, absolutely.** No Doc creation, no folder moves or renames, no
+   CRM writes — not even a deal-note append. The report exists only in the
+   chat reply.
+2. **A missing folder is a finding, never a task.** The 2.x resolution rule
+   (no `[N]` folder ⇒ STOP and route to /consult-intake or
+   /consult-project-specialist) applies here as a *report line*, not an
+   action — this skill never creates a folder under any circumstances.
+3. **Every finding carries a 建議動作** naming the owning skill (or the exact
+   one-line manual edit). A problem without a routed fix is not a finding,
+   it's noise.
+4. **Honesty over completeness.** Anything skipped — unparseable folder
+   names, deals that can't be classified as consult work — is listed under
+   本次未檢查, never silently dropped.
+
+## What this skill explicitly does not do
+
+- Does **not** fix anything. /consult-intake owns folders, numbering and
+  backlinks; /consult-project-specialist owns meeting-born engagements;
+  /consult-brd-writer and /consult-uat-writer own the artifact chain;
+  /consult-session-notes owns `[Notes]`.
+- Does **not** write to the CRM — no note appends, no stage moves, no tasks.
+- Does **not** create, move, rename, or trash anything in Drive.
+- Does **not** read Doc *contents* — it audits existence, titles, and
+  `modifiedTime` only. An empty `[BRD]` with the right title passes I6.
+- Does **not** email anyone. (If a finding ever turns into client-facing
+  mail, that runs through the owning skill's Gmail-DRAFT rule — never sent.)
+
+---
+
+## Workflow
+
+### 1 · Resolve scope
+
+Defaults: whole portfolio · notes-recency window **21 days** · activity-pulse
+window **14 days**. Peter may override either window or name a single company
+to spot-check.
+
+Single-company mode uses the standard resolution: deal via
+`mcp__zynkr__get_deal` / `list_deals` (fallback read-only SQL on `crm_deals`),
+folder via the `專案資料夾：<url>` backlink in the deal notes. If either half
+is missing, that IS the finding (I1) — report it and check whatever half
+exists; per hard rule 2, never create anything.
+
+Compute both cutoffs as dates up front and print them in the report header.
+
+### 2 · Inventory Drive
+
+List the parent: `mcp__google-workspace__list_drive_items(user_google_email=
+"peter_tu@zynkr.ai", folder_id="1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t",
+page_size=100)`. Parse every folder name against the `[N] Company（project）`
+convention, capturing number · company · project. Names that don't parse go
+to 本次未檢查 (and raise an I4 finding).
+
+Then list *each* `[N]` folder the same way to capture its contents: the
+kickoff/context doc, and any `[Notes]` / `[BRD]` / `[PRD]` / `[UAT]` docs with
+their `modifiedTime`. This per-folder pass feeds I2, I3 and I6.
+
+### 3 · Inventory the CRM (read-only)
+
+Prefer `mcp__zynkr__list_deals` + `mcp__zynkr__list_deal_stages` (to map stage
+slugs) when the zynkr MCP is connected; fallback via
+`mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`:
+
+```sql
+SELECT id, name, stage, notes, updated_at
+FROM crm_deals
+WHERE stage NOT IN ('won', 'lost');  -- confirm actual slugs via list_deal_stages first
+```
+
+For the activity pulse, take the newest of `updated_at` and any linked
+activity rows (probe the activities table with a `LIMIT 1` SELECT first — see
+I5 in the checklist). No writes happen anywhere in this skill, so the usual
+explicit-ids/auth.uid() ritual does not apply.
+
+**Classifying "consult deals":** a deal counts as consult work if its notes
+carry a `專案資料夾` backlink OR its company matches a `[N]` folder by name.
+Open deals matching neither may be pure sales pipeline — they go to
+本次未檢查 ("無法判別是否顧問案"), not into the findings.
+
+### 4 · Cross-check the six invariants
+
+Run every engagement through `./references/hygiene-checklist.md` — that file
+is the contract for what each invariant checks, which tool + field answers it,
+and the exact 問題 → 建議動作 line format. In one breath:
+
+| ID | Invariant | Window |
+|----|-----------|--------|
+| I1 | deal ↔ folder backlink resolves, 1:1 both ways | — |
+| I2 | kickoff/context Doc present in every `[N]` folder | — |
+| I3 | past-discovery engagements have a fresh `[Notes]` | 21d |
+| I4 | `[N]` numbering: no gaps, no duplicates, names conform | — |
+| I5 | open deals show CRM activity (else 停滯) | 14d |
+| I6 | stage ⇒ artifact: proposal→[BRD] · build→[PRD] · UAT→[UAT] | — |
+
+### 5 · Emit the report
+
+zh-TW, findings-only: one section per engagement **with** findings; quiet
+engagements roll into a single ✅ count line. Shape:
+
+```
+顧問案健檢 — 2026-08-03（回溯 21 / 14 天）
+
+## [4] 宏宇精密（報價流程自動化）— 2 項發現
+- I3 · 問題：最後一份 [Notes] 停在 2026-07-05，已超過 21 天
+  建議動作：跑 /consult-session-notes 補紀錄（最後一份停在 2026-07-05）
+- I6 · 問題：deal 在 build 階段（https://zynkr-crm.vercel.app/deals/…），資料夾內沒有 [PRD]
+  建議動作：跑 /consult-brd-writer（PRD 模式）產出 [PRD]
+
+## [7] 王小明工作室（未命名）— 1 項發現
+- I1 · 問題：deal notes 缺 專案資料夾 backlink（資料夾以公司名對到 [7]）
+  建議動作：deal notes 補上 專案資料夾：<folder url>（照 /consult-intake 的 backlink 格式；本技能不寫入）
+
+✅ 其餘 5 個 engagement 乾淨（[1] [2] [3] [5] [6]）
+
+| 統計 | 數量 |
+|------|------|
+| 掃描 engagement | 7 |
+| 乾淨 | 5 |
+| 發現（依 invariant）| I1×1 · I2×0 · I3×1 · I4×0 · I5×0 · I6×1 |
+
+本次未檢查：
+- 資料夾「舊案歸檔」：無 [N] 編號，內容無法歸屬（另列 I4 發現）
+- deal「詢價（無公司）」：無公司也無資料夾對應，無法判別是否顧問案
+```
+
+Every finding line quotes its evidence (the stale date, the missing title,
+the deal URL); every 建議動作 names the owning skill. Findings sort by
+engagement number; within an engagement, by invariant ID.
+
+### 6 · Close with 本次未檢查
+
+The report is not done until the honesty list is written — even when empty
+("本次未檢查：無"). Include: unparseable folder names, unclassifiable deals,
+any I5 degradation (activities table not found → pulse ran on `updated_at`
+only), and any listing call that errored mid-sweep. An audit that silently
+skips is worse than no audit.
+
+---
+
+## Why it's built this way
+
+- **Report-only, borrowed from admin-governance.** A weekly ritual must be
+  safe to fire without review; the moment a sweep can write, every run needs
+  babysitting and the ritual dies. Proposing beats fixing.
+- **Fixes route to owning skills.** consult-intake owns numbering and
+  backlinks; brd-writer owns the artifact chain. One fix implementation per
+  artifact means the fix logic can't fork — this report is a dispatcher, not
+  a second implementation.
+- **Findings-only sections + a ✅ roll-up.** At portfolio scale most
+  engagements are clean most weeks; admin-governance's "Clean ✓" discipline
+  keeps the signal-to-noise high enough that Peter actually reads it.
+- **The checklist lives in a reference file.** The six invariants are a
+  contract (tool + field + fix-line format); keeping them out of the workflow
+  prose means they can tighten without the workflow churning.
+
+## Inference defaults (Peter overrides by just saying so)
+
+- **Windows** → 21 days (notes recency) · 14 days (activity pulse).
+- **Scope** → whole portfolio; single-company only when a company is named.
+- **"Open deal"** → any stage that isn't closed-won/closed-lost per
+  `list_deal_stages` (confirm the actual slugs at run time).
+- **"Past discovery" (I3 applies)** → stage at or past proposal.
+- **Report language** → zh-TW body; invariant IDs stay English (I1–I6).
+- **Sort order** → by engagement number, then invariant ID.
+
+## Provenance
+
+Pattern-borrowed from `admin-governance` (3.05) — structure only, no copied
+content; no drift exposure.
+
+## Reference files
+
+- `./references/hygiene-checklist.md` — the six invariant definitions: what
+  each checks, the tool + field that answers it, violation shapes, and the
+  exact 問題 → 建議動作 line format the report must use.
+
+## Limitations
+
+- Proposes only — someone (or the owning skill) still has to run the fixes;
+  next week's sweep is the verification that they happened.
+- Consult-deal classification is heuristic (backlink or folder-name match);
+  ambiguous deals land in 本次未檢查, not in the findings.
+- Audits titles and `modifiedTime`, never contents — an empty `[BRD]` passes
+  I6, and a kickoff doc renamed away from its convention reads as missing.
+- Activity pulse only sees what the CRM recorded — un-logged calls and
+  offline work show up as 停滯 (the I5 fix line says how to correct that).
+- Point-in-time snapshot; it keeps no history and computes no week-over-week
+  trend.
