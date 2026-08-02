@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 165652,
+    "githubStars": 165656,
     "githubForks": 19697
   },
   {
@@ -1645,10 +1645,10 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Streamline and re-sequence a business process into a clean 'ideal flow' BEFORE it gets re-architected or automated. Runs a lean optimization pass: validate Input→Process→Output on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), then apply disciplined re-sequencing only where it buys less rework, lower risk, or higher throughput. Use it whenever a process feels bloated, out of order, or 不順暢 — when someone says '幫我把流程理順', '這流程可以更精簡嗎', 'streamline this workflow', 'is my process in the right order', or right after a SIPOC / as-is map and before FE/BE/DB architecture or Lucid. Enforces 'eliminate before you automate.' Does NOT do automation-feasibility scoring or FE/BE/DB layer assignment — hand off to operations-transformation for that.",
-    "input": "An as-is process or step list (ideally a SIPOC map), plus the outcome the process must deliver",
+    "description": "Streamline and re-sequence a business process into a clean 'ideal flow' before it gets built or automated. Canonical slot (course Ch5 §5.5.2): run it right AFTER the as-is→to-be redesign re-chains the flow — polishing the redesigned ordering — though it also works standalone on any messy as-is map. Runs a lean optimization pass: validate Input→Process→Output on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), then apply disciplined re-sequencing only where it buys less rework, lower risk, or higher throughput. Use it whenever a process feels bloated, out of order, or 不順暢 — when someone says '幫我把流程理順', '這流程可以更精簡嗎', 'streamline this workflow', 'is my process in the right order', or right after FE/BE/DB redesign (operations-transformation Stage 3) and before drawing on Lucid. Enforces 'eliminate before you automate.' Does NOT do automation-feasibility scoring or FE/BE/DB layer assignment — hand off to operations-transformation for that.",
+    "input": "A process step list — ideally the redesigned to-be flow (operations-transformation Stage 3 blueprint), or a SIPOC / as-is map — plus the outcome the process must deliver",
     "process": "I→P→O validation → dependency mapping → friction elimination → disciplined re-sequencing (with a payoff test) → streamlined to-be spine + decision log",
-    "output": "A streamlined 'ideal flow' spine (Before/After), a dependency map, a friction log, and a re-sequence decision log — ready for FE/BE/DB architecture or Lucid",
+    "output": "A streamlined 'ideal flow' spine (Before/After), a dependency map, a friction log, and a re-sequence decision log — ready for Lucid or the build",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -2178,8 +2178,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 27778,
-    "githubForks": 2347
+    "githubStars": 27781,
+    "githubForks": 2348
   },
   {
     "id": "6.02",
@@ -2488,8 +2488,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 39717,
-    "githubForks": 2595
+    "githubStars": 39720,
+    "githubForks": 2596
   },
   {
     "id": "7.01",
