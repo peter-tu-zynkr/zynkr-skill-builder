@@ -11,8 +11,8 @@ input: "A consulting client (founder, department head, or senior manager) ready 
 process: "Stage 1 pain-point discovery with 5D problem exploration, then Stage 2 vision/strategy/product/organization exploration; one question at a time"
 output: "Structured Needs Definition Summary and Strategic Discovery Summary, ready for downstream process mapping or pain-point validation"
 synergy:
-  - "2.11"
-  - "2.12"
+  - "sales-research"
+  - "consult-project-specialist"
 ---
 
 # Consulting Discovery

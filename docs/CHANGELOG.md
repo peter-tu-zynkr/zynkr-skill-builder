@@ -150,3 +150,23 @@ failure) · `validate-skill.ts` on zynkr-support → 0 errors (3 pre-existing WA
 as non-blocking follow-ups: missing install snippet, `input`/`process` over the ingest
 truncation length) · the `ingest-skills.yml` run on this merge is the proof the pipeline
 completes again and republishes the whole 2026-07-15→now backlog to the marketplace.
+
+## 2026-08-03 — SKB-002 Wave 0: consult skill batch opened + consult-discovery synergy fix
+
+Opened spec `docs/specs/SKB-002-consult-skill-batch.md` (Active, L/D2): the consulting
+product line — 5 net-new gap skills (consult-brd-writer 2.12 · consult-shadowing-scheduler
+2.13 · consult-uat-writer 2.14 · consult-adoption-reporter 2.15 · consult-bug-ticket 2.16)
+plus 8 consult-* lift-and-shift adaptations (2.38–2.45) of existing training-*/admin-*/
+product-*/content skills, per the 2026-07-29 Consultant Flow × Skill Portfolio Assessment
+and Lucid workflow v2. Originals untouched; hard sheetId partition (gap builds 2.12–2.16,
+buffer 2.17–2.20, forks 2.38–2.45; retired band 2.21–2.37 skipped).
+
+Also fixed `consult-discovery` (2.06) frontmatter: `synergy: ["2.11","2.12"]` — the
+tree's only sheetId-style synergy, stale since the id-regime change (2.11 now means
+sales-research; 2.12 was unassigned and is claimed by this batch) — replaced with real
+slugs `["sales-research", "consult-project-specialist"]` per SKILL_SPEC §1.
+
+**Verification** (Wave 0 = canary for the batch runbook): `validate-skill.ts --tier=all`
+on consult-discovery → no synergy WARN · local `ingest.ts` dry-run exit 0 (artifacts
+restored, not committed) · this push's `ingest-skills.yml` run green = the wiring proof
+that the runbook holds before 13 new skills ride it.
