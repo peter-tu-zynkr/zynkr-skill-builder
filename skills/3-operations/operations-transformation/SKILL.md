@@ -62,7 +62,7 @@ Ask:
 Does this SIPOC map look right? (Yes / Adjust)
 ```
 
-> **Optional Stage 1.5 — streamline before you diagnose.** Before scoring automation, it usually pays to clean and re-order the flow itself: validate I→P→O on every step, map dependencies, and eliminate friction (duplicative / looping / missing steps). Invoke `operations-flow-optimization` on `SIPOC_TABLE` to produce a streamlined "ideal flow" spine, then feed that spine into Stage 2. The principle: **eliminate before you automate** — don't spend Stage 2/3 automating steps a lean pass would have deleted.
+> **Optional Stage 1.5 — quick lean pass on a tangled as-is.** If `SIPOC_TABLE` is too messy to diagnose (duplicated steps, unclear loops), you may invoke `operations-flow-optimization` here for a quick cleanup before Stage 2. The canonical ordering pass, however, runs AFTER Stage 3 — see Stage 3.5 below (course Ch5 §5.5.2: assess first, redesign, then optimize the ordering of the re-chained flow).
 
 ---
 
@@ -112,6 +112,8 @@ After each step, ask:
 ```
 Would you like to redesign the next diagnosed step? (Yes / Skip / Stop)
 ```
+
+> **Optional Stage 3.5 — streamline the redesigned flow (course Ch5 §5.5.2).** Once Stage 3 has re-chained the steps, run the lean ordering pass on the redesigned flow before building anything: validate I→P→O on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), and re-sequence only where it buys less rework, lower risk, or higher throughput. Invoke `operations-flow-optimization` on the Stage 3 blueprint to produce the final "ideal flow" spine for the MVP build. The principle: **eliminate before you automate** — don't build steps a lean pass would have deleted.
 
 ---
 

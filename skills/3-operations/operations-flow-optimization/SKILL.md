@@ -1,15 +1,15 @@
 ---
 name: operations-flow-optimization
 sheetId: "3.14"
-description: "Streamline and re-sequence a business process into a clean 'ideal flow' BEFORE it gets re-architected or automated. Runs a lean optimization pass: validate Input→Process→Output on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), then apply disciplined re-sequencing only where it buys less rework, lower risk, or higher throughput. Use it whenever a process feels bloated, out of order, or 不順暢 — when someone says '幫我把流程理順', '這流程可以更精簡嗎', 'streamline this workflow', 'is my process in the right order', or right after a SIPOC / as-is map and before FE/BE/DB architecture or Lucid. Enforces 'eliminate before you automate.' Does NOT do automation-feasibility scoring or FE/BE/DB layer assignment — hand off to operations-transformation for that."
+description: "Streamline and re-sequence a business process into a clean 'ideal flow' before it gets built or automated. Canonical slot (course Ch5 §5.5.2): run it right AFTER the as-is→to-be redesign re-chains the flow — polishing the redesigned ordering — though it also works standalone on any messy as-is map. Runs a lean optimization pass: validate Input→Process→Output on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), then apply disciplined re-sequencing only where it buys less rework, lower risk, or higher throughput. Use it whenever a process feels bloated, out of order, or 不順暢 — when someone says '幫我把流程理順', '這流程可以更精簡嗎', 'streamline this workflow', 'is my process in the right order', or right after FE/BE/DB redesign (operations-transformation Stage 3) and before drawing on Lucid. Enforces 'eliminate before you automate.' Does NOT do automation-feasibility scoring or FE/BE/DB layer assignment — hand off to operations-transformation for that."
 category: operations
 project: operations-flow-optimization
 platform: claude
 status: Done
 author: Peter Tu
-input: "An as-is process or step list (ideally a SIPOC map), plus the outcome the process must deliver"
+input: "A process step list — ideally the redesigned to-be flow (operations-transformation Stage 3 blueprint), or a SIPOC / as-is map — plus the outcome the process must deliver"
 process: "I→P→O validation → dependency mapping → friction elimination → disciplined re-sequencing (with a payoff test) → streamlined to-be spine + decision log"
-output: "A streamlined 'ideal flow' spine (Before/After), a dependency map, a friction log, and a re-sequence decision log — ready for FE/BE/DB architecture or Lucid"
+output: "A streamlined 'ideal flow' spine (Before/After), a dependency map, a friction log, and a re-sequence decision log — ready for Lucid or the build"
 synergy:
   - "operations-transformation"
   - "product-flow-design"
@@ -22,7 +22,7 @@ synergy:
 npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill operations-flow-optimization
 ```
 
-Take a messy, human-grown business process and turn it into a clean **"ideal flow"** — I→P→O-valid on every step, dependency-ordered, and stripped of friction — *before* anyone re-architects or automates it. This is the lean-optimization pass that most teams skip: they jump straight from "here's our current process" to "let's automate it," and end up **automating waste**. This skill makes you earn a streamlined flow first. Use it right after a SIPOC / as-is map and right before FE/BE/DB architecture (`operations-transformation`) or drawing on Lucid (`product-flow-design`). It is deliberately *conservative about re-ordering* — it changes sequence only when the change pays for itself.
+Take a messy, human-grown business process and turn it into a clean **"ideal flow"** — I→P→O-valid on every step, dependency-ordered, and stripped of friction — *before* anyone builds or automates it. This is the lean-optimization pass that most teams skip: they jump straight from "here's our design" to "let's automate it," and end up **automating waste**. This skill makes you earn a streamlined flow first. Its canonical slot (course Ch5 §5.5.2, "Redesign the Flow") is right **after** the as-is→to-be transformation pass has re-chained the steps (`operations-transformation` Stage 3) and right before drawing on Lucid (`product-flow-design`) or building — though it also runs standalone on a raw SIPOC / as-is map whenever a flow feels tangled. It is deliberately *conservative about re-ordering* — it changes sequence only when the change pays for itself.
 
 The one law it enforces: **eliminate before you automate. Anchor the spine to I→P→O and dependencies; only then, rarely, re-sequence — and only for less rework, lower risk, or higher throughput.**
 
@@ -32,7 +32,7 @@ The one law it enforces: **eliminate before you automate. Anchor the spine to I�
 
 Ask the user for (accept whatever they have; don't block on all three):
 
-1. **The process, as steps** — a list of the steps as they happen *today*, in current order. A SIPOC map from `operations-transformation` Stage 1 is the ideal input; a rough bullet list is fine too.
+1. **The process, as steps** — a list of the steps in their current order. The redesigned to-be flow from `operations-transformation` Stage 3 is the ideal input (the canonical Ch5 §5.5.2 slot); a SIPOC map from Stage 1 or a rough bullet list is fine too.
 2. **The outcome** — what the process must reliably produce when it's done (`乾淨的追蹤名單`, `approved + notified`, `月結報表`). This is the anchor everything gets tested against.
 3. **Known pain** — anything that already feels slow, repeated, error-prone, or out of order.
 
@@ -118,11 +118,11 @@ Compile the deliverable:
 3. **Friction log** — what was eliminated and why (Step 4).
 4. **Re-sequence decision log** (Step 5).
 
-Then point at the next stage explicitly — this skill deliberately stops before architecture:
+Then point at the next stage explicitly — this skill deliberately stops before diagramming and building:
 
 ```
 Next steps:
-1. Assess automation feasibility + assign FE/BE/DB layers → operations-transformation (Stage 2–3)
+1. If you ran this on a raw as-is map: assess automation feasibility + assign FE/BE/DB layers → operations-transformation (Stage 2–3), then re-run this pass on the redesigned flow (course Ch5 §5.5.2)
 2. Draw the streamlined spine as a Lucid swimlane (shape = semantics, color = ownership, V1–V13 lint) → product-flow-design
 3. Iterate — re-run this pass after the process changes
 ```
