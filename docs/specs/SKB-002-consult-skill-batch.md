@@ -1,6 +1,7 @@
 # SKB-002 — Consult skill batch: 5 gap builds + 8 lift-and-shift forks
 
-- **Status:** Active
+- **Status:** Shipped 2026-08-03 (content + go-live complete; per-skill live-trigger
+  evidence accrues as engagements exercise the skills — dated waivers in the record)
 - **Size / DoD:** L / D2 (no auth/cron/secret/migration → not D3; L per SDD §2.1 "new
   module/subsystem" — this is a 13-skill product line)
 - **Created:** 2026-08-03 · **Repo(s):** zynkr-skill-builder
@@ -95,12 +96,12 @@ that claims new ids (artifacts restored, never hand-committed).
 | fork | source | forked @ | divergence policy |
 |---|---|---|---|
 | consult-transcriber | training-srt-transcriber + training-srt-optimizer | delegation (no copy) | mechanics live upstream; wrapper only breaks if base CLI contract changes |
-| consult-session-notes | project-note-specialist (3.08) | Wave 3 SHA | source frozen; diverges by design (+ledger, +filing) |
-| consult-solution-planning | product-planning (5.02, MrPM-Stanley) | Wave 3 SHA | derivative; upstream README changes reviewed opportunistically |
+| consult-session-notes | project-note-specialist (3.08) | b6bfb04c | source frozen; diverges by design (+ledger, +filing) |
+| consult-solution-planning | product-planning (5.02, MrPM-Stanley) | b6bfb04c | derivative; upstream README changes reviewed opportunistically |
 | consult-flow-design | product-flow-design (5.03) | delegation (no copy) | conventions single-sourced upstream |
 | consult-launch-comms | content-newsletter-draft (pattern only) | — | pattern borrow, no drift exposure |
-| consult-info-session | guest-lecturer-program + training-lecture-recap | Wave 4 SHA | checklist/recap slimmed; diverges by design |
-| consult-status-report | project-status-update (3.09) | Wave 4 SHA | renderer script copied; re-sync if upstream renderer changes |
+| consult-info-session | guest-lecturer-program + training-lecture-recap | e35a1f57 | checklist/recap slimmed; diverges by design |
+| consult-status-report | project-status-update (3.09) | e35a1f57 | renderer script copied; re-sync if upstream renderer changes |
 | consult-governance | admin-governance (pattern only) | — | pattern borrow, no drift exposure |
 
 ## Out of scope
@@ -120,8 +121,10 @@ that claims new ids (artifacts restored, never hand-committed).
 - [x] SKB-002.2 Wave 2: consult-uat-writer + consult-adoption-reporter + consult-bug-ticket
 - [x] SKB-002.3 Wave 3: forks A (transcriber, session-notes, solution-planning, flow-design)
 - [x] SKB-002.4 Wave 4: forks B (launch-comms, info-session, status-report, governance)
-- [ ] SKB-002.5 Close-out: evidence sweep (AC-4 curl) · launchd check recorded ·
-      personally-used installs · spec → Shipped
+- [x] SKB-002.5 Close-out: evidence sweep (AC-4 curl — 13/13 HTTP 200 + 13/13 mirror
+      rows, 2026-08-03) · launchd check recorded (project-status-weekly plist is
+      .disabled; active weekly-insights job unrelated — no collision) · 7
+      personally-used installs to ~/.claude/skills · spec → Shipped
 
 ## Verification plan
 

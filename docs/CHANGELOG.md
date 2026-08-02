@@ -275,3 +275,31 @@ on the deal.
 0 warnings on all four · local `ingest.ts` dry-run → `✓ 2.38–2.41`, 106 ingested, no
 duplicates (artifacts cleaned, not committed) · originals byte-identical (diff scope =
 new folders + docs only) · this push's `ingest-skills.yml` run = go-live proof.
+
+## 2026-08-03 — SKB-002 close-out: consult product line SHIPPED (13 skills, 2.12–2.16 + 2.38–2.45)
+
+Batch complete in five direct-to-main waves (60ea7ba8 · 0d23f5b8 · b6bfb04c · e35a1f57 ·
+f1629ecc), every wave's `ingest-skills.yml` run green — zero pipeline failures across
+the batch despite claiming 13 new sheetIds under the still-open SKB-001 gap (the
+mandated local ingest dry-runs did their job).
+
+**Verification (D2 evidence):**
+- AC-4 sweep 2026-08-03: all 13 `zynkr.ai/s/<id>.md` → HTTP 200; all 13 rows present
+  in the Supabase `skills` mirror (synced same-day).
+- Installs: the 7 personally-used skills (brd-writer, shadowing-scheduler, uat-writer,
+  bug-ticket, transcriber, session-notes, status-report) installed to `~/.claude/skills`
+  via `npx skills add`; trigger contracts confirmed registered in a live session.
+- launchd check (observe-only): `com.zynkr.project-status-weekly.plist` is `.disabled`;
+  the active `com.zynkr.weekly-insights` job runs an unrelated pipeline — no
+  trigger-collision risk for consult-status-report today; its BOUNDARY guard covers
+  the case where the job is re-enabled.
+- Dated waiver (2026-08-03): full live-trigger runs (a real BRD from a real
+  engagement transcript, a real shadowing booking, a real bug→issue) await the next
+  live engagement artifacts — to be recorded here as they happen. The scheduler's
+  first real booking and bug-ticket's first real `gh issue create` double as their
+  wiring proofs.
+
+**P2 follow-ups (roadmapped, not built):** consult comms template Docs pack ·
+consult-intake trigger-on-arrival mode · consult-intake no-go close-out mode ·
+originals synergy backlinks (S) · SKB-001 itself — this batch's five manual dry-runs
+are the standing argument for finally shipping it.
