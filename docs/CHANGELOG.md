@@ -236,3 +236,42 @@ contract cross-checked against the shipped `prd-spec-template.md` (zero drift) �
 this push's `ingest-skills.yml` run = go-live proof · install-and-trigger evidence
 at Wave 5 close-out. Note: adoption-reporter's synergy gains "consult-status-report"
 in Wave 4 when that skill exists.
+
+## 2026-08-03 — SKB-002 Wave 3: consult lift-and-shift forks A (2.38–2.41)
+
+Four consult-* adaptations of existing skills, all `2-sales-consultant/`, originals
+untouched (fork provenance tracked per-skill via `## Provenance` @ b6bfb04c + the
+SKB-002 fork registry):
+
+**consult-transcriber (2.38)** — delegation wrapper chaining `training-srt-transcriber`
+(4.11) + `training-srt-optimizer` (4.10): engagement/phase resolution → delegated
+Whisper transcription + zh-TW cleanup (the optimizer's training-folder upload
+explicitly skipped) → `[N] {{COMPANY}}_{{PHASE}}_逐字稿_{{DATE}}.srt` filed into the
+engagement folder (shadowing recordings into the `Shadowing — YYYY-MM-DD` subfolder,
+the consult-shadowing-scheduler seam) → CRM note → hand off to consult-session-notes.
+Zero mechanics copied; hard-stop with install pointers when the base skills are absent.
+
+**consult-session-notes (2.39)** — full fork of `project-note-specialist` (3.08, ≡
+admin-meeting-note 3.04): the four-section session summary (Summary Update · Progress ·
+Blockers · What's Next, format preserved verbatim incl. the no-fabrication rule) plus
+the consult-specific 痛點 ledger (痛點 · 現況流程 · 影響 · 頻率 · 來源 — the
+consult-brd-writer feed), filed as a `[Notes]` Doc in the existing `[N]` folder with a
+CRM note. Never creates deals or folders.
+
+**consult-solution-planning (2.40)** — Case C derivative of `product-planning` (5.02):
+operationalizes MrPM-Stanley's 產品企劃力 framework as a real 8-step pipeline (persona
+→ operator journey → pains ranked 影響範圍×強度×頻率 with concrete 1–5 rubrics and
+score bands in `references/planning-framework.md` → opportunity selection → MVP scope +
+success metrics, one confirmed section at a time) → `[Plan]` Doc + CRM note + a BRD
+handoff block. Full attribution trio + `## Attribution` section (validator-checked).
+
+**consult-flow-design (2.41)** — delegation wrapper over `product-flow-design` (5.03):
+paired as-is / to-be chart discipline (never a to-be without the as-is beside it),
+narratives assembled from the engagement's [Notes]/[Plan]/[BRD] docs and confirmed
+before drawing, all Lucid mechanics + V1–V13 lint delegated, both chart URLs recorded
+on the deal.
+
+**Verification** (D2, SKB-002 AC-3): `validate-skill.ts --tier=all` → 0 errors /
+0 warnings on all four · local `ingest.ts` dry-run → `✓ 2.38–2.41`, 106 ingested, no
+duplicates (artifacts cleaned, not committed) · originals byte-identical (diff scope =
+new folders + docs only) · this push's `ingest-skills.yml` run = go-live proof.

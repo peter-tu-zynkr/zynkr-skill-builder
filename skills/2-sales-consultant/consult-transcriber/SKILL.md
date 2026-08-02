@@ -1,0 +1,280 @@
+---
+name: consult-transcriber
+sheetId: "2.38"
+description: >-
+  Turn a consulting engagement recording — a discovery call or an on-site
+  shadowing session — into a clean zh-TW transcript filed straight into the
+  client's numbered [N] Drive project folder and linked on the CRM deal. A thin
+  delegation wrapper: it invokes the installed training-srt-transcriber (local
+  Whisper → timestamped .srt; transcribe or retime mode) and
+  training-srt-optimizer (minimal-edit zh-TW cleanup) for ALL
+  transcription/cleanup mechanics, adding only engagement context, filing, and
+  CRM linkage. Fire eagerly on /consult-transcriber or whenever a
+  CLIENT/engagement recording needs a transcript — "把這通訪談錄音轉成逐字稿",
+  "處理 shadowing 錄音", "客戶錄音轉逐字稿", "整理客戶訪談錄音", "transcribe
+  this client call", "process the shadowing recording", "transcript for the
+  engagement". Distinct from training-srt-transcriber /
+  training-srt-optimizer used directly (they produce raw/clean .srt for the
+  TRAINING business and file into the training Drive folder — no engagement
+  context, no CRM; use them for course/livestream material) and from
+  consult-session-notes (downstream — structures the TRANSCRIPT this skill
+  produces into a session summary + pain-point ledger).
+category: sales-consultant
+project: consult-transcriber
+platform: claude
+status: Done
+author: Peter Tu
+input: "One recording of an engagement session (discovery call or shadowing), the engagement (deal URL / company), and the phase; optional: an existing transcript for retime mode"
+process: "Resolve engagement + phase → check base skills installed → /training-srt-transcriber for speech-to-text → /training-srt-optimizer for zh-TW cleanup (skip its training upload) → rename + file into the [N] folder → CRM note → hand off to consult-session-notes"
+output: "A clean zh-TW transcript (.srt, optional Doc rendering) filed in the engagement's [N] folder (shadowing subfolder when applicable) and linked on the CRM deal"
+synergy:
+  - "training-srt-transcriber"
+  - "training-srt-optimizer"
+  - "consult-session-notes"
+  - "consult-shadowing-scheduler"
+---
+
+# Consult Transcriber
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill consult-transcriber
+```
+
+Every engagement session — a discovery call, an on-site shadowing morning —
+produces a recording, and the recording is worthless until it's a transcript in
+the right place. This skill takes one recording and delivers a clean zh-TW
+transcript **filed into the engagement's numbered `[N]` Drive folder** (the
+shadowing subfolder when it's a shadowing session) **and linked on the CRM
+deal**, so the downstream consult skills can find it without archaeology.
+
+It is deliberately **thin**: the transcription and cleanup mechanics live
+entirely in two installed base skills — `training-srt-transcriber` (local
+Whisper → timestamped `.srt`) and `training-srt-optimizer` (minimal-edit zh-TW
+cleanup). This wrapper only adds what those skills don't know: which
+engagement, which phase, which folder, and the CRM breadcrumb.
+
+## How this differs from its neighbours
+
+- **training-srt-transcriber / training-srt-optimizer** — the base skills this
+  wrapper delegates to. Used directly, they serve the TRAINING business: raw or
+  cleaned `.srt` filed into the training Drive folder, no engagement context,
+  no CRM. Use them directly for course / livestream material; use THIS skill
+  when the recording belongs to a client engagement.
+- **consult-session-notes** — downstream: structures the TRANSCRIPT this skill
+  produces into a session summary + pain-point ledger. This skill ends where
+  that one begins.
+- **consult-shadowing-scheduler** — upstream for shadowing: it books the
+  session and creates the `Shadowing — YYYY-MM-DD` subfolder this skill files
+  shadowing transcripts into.
+
+## Fixed facts (don't re-derive these)
+
+- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
+- **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
+- **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, home of the numbered `[N]` folders): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t` — orientation only; this skill never creates anything directly in it
+- **CRM deal URL** for the report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- Over the Supabase MCP, `auth.uid()` is **NULL** — any SQL write carries explicit ids; never rely on defaults that read the session user.
+
+## Hard rules
+
+1. **Delegate, never duplicate.** All Whisper/cleanup mechanics run by INVOKING
+   the installed base skills by name. Never reach into their files via relative
+   parent paths (a standalone install has no siblings), never re-implement
+   their steps here. If a base skill is missing, STOP (step 2) — don't improvise.
+2. **Never create the `[N]` folder.** No folder → STOP and route to
+   /consult-intake or /consult-project-specialist. The ONE folder this skill
+   may create is a genuinely-absent `Shadowing — YYYY-MM-DD` subfolder (step 1).
+3. **Override the optimizer's delivery.** training-srt-optimizer's own final
+   step uploads to the TRAINING business's Drive folder — that upload is
+   skipped; this skill files the output itself (step 5).
+4. **Client-facing email is ALWAYS a Gmail draft** — if Peter asks to send the
+   transcript to the client, `mcp__google-workspace__draft_gmail_message` only.
+   Never send.
+
+---
+
+## Workflow
+
+### 1 · Resolve the engagement, the phase, and the target folder
+
+**Deal** — from a `…/deals/{id}` URL or a company name. Preferred:
+`mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`. Fallback via
+`mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`:
+
+```sql
+SELECT id, name, stage, notes FROM crm_deals
+WHERE id = '<deal uuid>' OR name ILIKE '%<company>%'
+ORDER BY created_at DESC;   -- confirm with Peter if >1 match
+```
+
+**Folder** — the deal's `notes` carry a `專案資料夾：<url>` backlink (written by
+consult-intake / consult-project-specialist); extract the `[N]` folder id. If
+the line is missing, list the parent (`mcp__google-workspace__list_drive_items`,
+folder_id `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`) and match `[N] Company（…）` by
+name. **No folder at all → STOP** and point at /consult-intake (inbound lead)
+or /consult-project-specialist (meeting debrief) — hard rule 2.
+
+**Phase** — discovery call (訪談) or shadowing? Infer from what Peter said and
+the recording's filename/date; ask one question if genuinely ambiguous.
+
+- **Shadowing** → the target is the `[N]` folder's **`Shadowing — YYYY-MM-DD`**
+  subfolder (created by consult-shadowing-scheduler when the session was
+  booked). Find it via `list_drive_items` on the `[N]` folder, matching the
+  session date. Only if it's genuinely absent (e.g. the session was booked by
+  hand), create it — `mcp__google-workspace__create_drive_file` with
+  `mime_type="application/vnd.google-apps.folder"` inside the `[N]` folder.
+  That is the one folder this skill may create.
+- **Discovery call** → the target is the `[N]` folder root.
+
+### 2 · PRECONDITION — are both base skills installed?
+
+Check that `/training-srt-transcriber` and `/training-srt-optimizer` are
+available as installed skills in this environment. If either is missing,
+**STOP** and print its install snippet for Peter to run — the same one-line
+install command as this skill's own snippet at the top of this file, with the
+`--skill` argument swapped to `training-srt-transcriber` or
+`training-srt-optimizer`. Never inline the missing skill's mechanics instead
+(hard rule 1).
+
+### 3 · Delegate transcription → raw .srt
+
+Run **/training-srt-transcriber** on the recording:
+
+- **transcribe mode** (default) — fresh local-Whisper speech-to-text with
+  audio-accurate timestamps.
+- **retime mode** — only when a wording-correct transcript already exists
+  (e.g. the client supplied minutes, or a prior STT pass was hand-corrected)
+  and just needs timestamps re-derived from the audio.
+
+Everything about venvs, models, devices, and timing validation is that skill's
+business — follow its steps as written, including its own validate pass. The
+deliverable of this step is its raw `.srt`.
+
+### 4 · Delegate cleanup → clean zh-TW .srt (delivery overridden)
+
+Run **/training-srt-optimizer** on the raw `.srt` for the minimal-edit zh-TW
+pass (filler removal, obvious STT fixes, cue timing preserved) — its rules and
+worksheet flow apply as written, **except its final Delivery step: skip the
+upload to its default Drive folder** (that folder belongs to the training
+business, not this engagement). Keep the validated `.optimized.srt` local; this
+skill files it in step 5 — hard rule 3.
+
+### 5 · File the transcript into the target folder
+
+Rename the validated file to:
+
+```
+[N] {{COMPANY}}_{{PHASE}}_逐字稿_{{YYYY-MM-DD}}.srt      # PHASE = 訪談 | shadowing
+```
+
+(`[N]` = the engagement's folder number; date = the session date, not today.)
+Then upload into the step-1 target folder:
+
+```
+mcp__google-workspace__create_drive_file(
+  user_google_email = "peter_tu@zynkr.ai",
+  file_name = "[4] 宏宇精密_shadowing_逐字稿_2026-08-12.srt",
+  folder_id = "<target folder id from step 1>",
+  mime_type = "application/x-subrip",
+  content   = "<the validated .srt text>"
+)
+```
+
+Then **offer, don't auto**: "要不要順便產一份 Google Doc 版逐字稿（客戶端好讀）？"
+On yes, create a Doc from the transcript text (cue text in order, timestamps as
+light section markers) via `mcp__google-workspace__create_doc`, then move it
+into the same target folder with `mcp__google-workspace__update_drive_file`
+(`add_parents = "<target folder id>"`) — creating directly in a folder via
+`create_drive_file` returns HTTP 400 for Docs.
+
+### 6 · CRM note — link the 逐字稿 on the deal
+
+Preferred: `mcp__zynkr__update_deal`, appending to the existing notes (read
+first, append, write back — never overwrite):
+
+```
+逐字稿（{{PHASE}} {{YYYY-MM-DD}}）：<transcript file url>
+```
+
+SQL fallback via `mcp__supabase__execute_sql`:
+
+```sql
+UPDATE crm_deals
+SET notes = notes || E'\n\n逐字稿（shadowing 2026-08-12）：<file url>'
+WHERE id = '<deal_id>';
+```
+
+Escape single quotes by doubling them (`O'Brien` → `O''Brien`).
+
+### 7 · Report + handoff
+
+```
+逐字稿已歸檔：宏宇精密 — shadowing 2026-08-12
+
+| 產出 | 內容 |
+|------|------|
+| 逐字稿 | [4] 宏宇精密_shadowing_逐字稿_2026-08-12.srt（<file url>）|
+| 位置 | [4] 宏宇精密（報價流程自動化）/ Shadowing — 2026-08-12 |
+| Doc 版 | 未產出（step 5 詢問，Peter 未要求）|
+| CRM | <deal url> — notes 已附逐字稿連結 |
+| 下一步 | /consult-session-notes — 整理成 session summary + pain-point ledger |
+```
+
+Always end by pointing at **/consult-session-notes** — the transcript is an
+intermediate artifact; the session summary + pain-point ledger is what the
+engagement actually runs on.
+
+---
+
+## Why it's built this way
+
+- **A wrapper, not a fork.** Whisper bootstrapping and zh-TW cue-editing
+  discipline already live in the training pair and evolve there. Copying their
+  mechanics here would mean two drifting copies; delegating by invocation means
+  this skill inherits every base-skill fix for free.
+- **The delivery override is the whole point of wrapping.** The base pair is
+  tuned for the training business, ending with an upload to the training Drive
+  folder. An engagement transcript in that folder is effectively lost. The one
+  behavior this wrapper changes is WHERE the output lands.
+- **Filing goes to the seam the suite already uses.** consult-shadowing-scheduler
+  creates `Shadowing — YYYY-MM-DD` precisely so the session's transcript has a
+  known home; consult-session-notes and consult-brd-writer read from there.
+  Discovery calls land in the `[N]` root because they predate any subfolder.
+- **STOP on a missing base skill.** Silently re-implementing transcription
+  when the base skill is absent would fork the mechanics and hide the install
+  gap. A hard stop with the install snippet is cheaper than a divergent copy.
+
+## Inference defaults (Peter overrides by just saying so)
+
+- **Mode** → transcribe; retime only when a wording-correct transcript is
+  supplied alongside the audio.
+- **Phase** → shadowing if the `[N]` folder has a `Shadowing — YYYY-MM-DD`
+  subfolder matching the recording's date; otherwise ask.
+- **Language** → zh (the base transcriber's default); pass through Peter's
+  override for other languages.
+- **Doc rendering** → OFF; offered in step 5, produced only on a yes.
+- **Filename date** → the session date (from the subfolder name or the
+  recording metadata), not the run date.
+
+## Provenance
+
+Wraps `training-srt-transcriber` (4.11) and `training-srt-optimizer` (4.10) by
+delegation @ b6bfb04c (2026-08-03) — no mechanics copied; breaks only if the
+base skills' invocation contracts change.
+
+## Reference files
+
+- None ship with this skill — a delegation wrapper carries no mechanics. The
+  transcription notes and zh-TW subtitle rules live in the two base skills'
+  own `references/` folders and are consulted by those skills when invoked.
+
+## Limitations
+
+- Requires both base skills installed — it stops (by design) rather than
+  transcribe on its own; transcription quality, speed, and language support
+  are exactly the base pair's.
+- Requires a deal whose notes carry the 專案資料夾 backlink; it never creates
+  the `[N]` folder (only a missing `Shadowing — YYYY-MM-DD` subfolder).
+- One recording per run — a multi-session batch is multiple runs.
+- It files and links the transcript but does not interpret it: no summary, no
+  pain points, no requirements (that's /consult-session-notes onward).

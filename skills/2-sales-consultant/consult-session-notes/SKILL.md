@@ -1,0 +1,280 @@
+---
+name: consult-session-notes
+sheetId: "2.39"
+description: >-
+  Turn a consulting-session transcript or messy notes — a discovery call or a
+  shadowing observation — into the four-section session summary (Summary Update ·
+  Progress · Blockers · What's Next) PLUS a 痛點 ledger (one row per pain actually
+  voiced or observed), filed as a [Notes] Google Doc into the engagement's EXISTING
+  numbered [N] Drive folder with a note on the CRM deal; the ledger is the raw
+  material /consult-brd-writer consumes. Trigger on /consult-session-notes or when
+  Peter says "整理這次客戶訪談筆記", "整理 shadowing 紀錄", "把逐字稿變成會議摘要",
+  "整理客戶會議筆記", "structure this client session", "tidy the shadowing notes",
+  "session summary for the client project" — fire eagerly whenever session material
+  belongs to a CLIENT engagement. Distinct from project-note-specialist (the
+  generic source skill — ONLY tidies text, files nothing, touches no CRM; for
+  non-engagement notes), consult-project-specialist (creates a NEW deal + folder
+  from a sales meeting; THIS skill updates an EXISTING engagement, never creates
+  either), consult-transcriber (upstream — produces the transcript this skill
+  structures), and consult-brd-writer (downstream — consumes the ledger).
+category: sales-consultant
+project: consult-session-notes
+platform: claude
+status: Done
+author: Peter Tu
+input: "A consulting-session transcript or messy notes (pasted text, a Google Doc link, or the transcript consult-transcriber just filed) + the engagement (deal URL / company name)"
+process: "Collect input + resolve the engagement → structure the four-section session summary → extract the 痛點 ledger → create the [Notes] Doc in the [N] folder → CRM note on the deal → hand the ledger to consult-brd-writer"
+output: "A filed [Notes] session-summary Doc (four sections + 痛點 ledger) in the engagement folder, linked on the CRM deal"
+synergy:
+  - "consult-transcriber"
+  - "consult-project-specialist"
+  - "consult-brd-writer"
+  - "project-note-specialist"
+---
+
+# Consult Session Notes
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill consult-session-notes
+```
+
+Source: forked from `project-note-specialist` (3.08) — itself the standalone
+promotion of the admin-meeting-note agent (sheetId 3.04), original prompt in [this
+Google Doc](https://docs.google.com/document/d/1oW7enyJtGfUeRlnl63pxhjJ89dMZQzHlBEOeap7039c/edit).
+
+A consulting session — a discovery 訪談, a shadowing observation, a working 會議 —
+leaves two things worth keeping: what happened, and what hurts. This skill turns
+the raw transcript or messy notes into both: the four-section session summary the
+source skill defines (**Summary Update · Progress · Blockers · What's Next**), plus
+a **痛點 ledger** — one table row per pain the client actually voiced or Peter
+actually observed — filed together as one `[Notes]` Google Doc in the engagement's
+existing numbered `[N]` Drive folder, with a note on the CRM deal. The ledger is
+the consult-specific addition and the point of the fork: its rows are the raw
+material /consult-brd-writer turns into `R-n` requirements, so every row carries
+its source — who said it, or which transcript section.
+
+## How this differs from its neighbours
+
+- **project-note-specialist** — the generic source skill. ONLY tidies text into
+  the four sections: files nothing, touches no CRM. For non-engagement notes.
+- **consult-project-specialist** — creates a NEW deal + `[N]` folder from a
+  sales meeting. THIS skill updates an EXISTING engagement, never creates either.
+- **consult-transcriber** — upstream: produces the transcript this skill structures.
+- **consult-brd-writer** — downstream: consumes the 痛點 ledger (and the rest
+  of the discovery pile) to write the BRD/PRD.
+
+## Fixed facts (don't re-derive these)
+
+- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
+- **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
+- **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
+- **CRM deal URL** for the report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- Over the Supabase MCP, `auth.uid()` is **NULL** — any SQL fallback write
+  carries explicit ids; never rely on defaults that read the session user.
+
+## Hard rules
+
+1. **Never create a folder or a deal.** No `[N]` folder → STOP and point at
+   /consult-intake (inbound lead) or /consult-project-specialist (meeting
+   debrief). One numbered workspace per engagement is the 2.x invariant.
+2. **Never invent a pain.** Ledger rows come only from pains actually voiced or
+   observed in this session's material; a thin session yields a short ledger.
+3. **Empty summary sections say 「本次無相關內容」** — the per-session adaptation
+   of the source skill's "No updates this week" rule. Never pad.
+4. **Client-facing email is ALWAYS a Gmail draft** — if Peter asks to send the
+   summary out, `mcp__google-workspace__draft_gmail_message`. Never send.
+
+---
+
+## Workflow
+
+### 1 · Collect the input and resolve the engagement
+
+The session material arrives three ways: **pasted text** (use directly); **a
+Google Doc link** — read with
+`mcp__google-workspace__get_doc_content(user_google_email="peter_tu@zynkr.ai", document_id="<id>")`;
+or **a handoff from consult-transcriber** — the transcript Doc it just filed
+(already in context); read it the same way.
+
+Then resolve the engagement (the standard 2.x pattern):
+
+- **Deal** — from a `…/deals/{id}` URL, or by company name. Prefer
+  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`; fallback SQL via
+  `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`:
+  `SELECT id, name, notes, stage FROM crm_deals WHERE name ILIKE '%<company>%' ORDER BY created_at DESC;`
+- **Folder** — the deal's `notes` carry a `專案資料夾：<url>` backlink (written
+  by consult-intake / consult-project-specialist); extract the folder id. If
+  missing, list the parent (`mcp__google-workspace__list_drive_items`,
+  folder_id `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`) and match `[N] Company（…）`.
+- **No folder at all** → STOP (hard rule 1).
+
+Classify **SESSION_TYPE** from the material: interviewer-and-client Q&A → `訪談`;
+narrated observation of someone working → `shadowing`; anything else → `會議`.
+Infer; ask only if genuinely ambiguous.
+
+### 2 · Structure the four-section summary
+
+Preserve the source skill's format faithfully — same sections, order, labels:
+
+```
+{{COMPANY}} — {{SESSION_TYPE}} {{YYYY-MM-DD}}
+
+1. Summary Update      — a concise overview of this session's key activities or themes
+2. Progress            — specific actions completed, decisions made, facts confirmed
+3. Blockers / challenges — issues or delays surfaced, with root causes or dependencies
+4. What's Next         — planned actions, decisions needed, priorities agreed in-session
+```
+
+(In the real output each label sits on its own line, content beneath it — the worked example below shows the exact rendered shape.)
+
+Rules carried over from the source, unchanged in spirit: reorganize scattered
+ideas into clear bullets or short paragraphs; if input is unclear, infer context
+logically but do NOT fabricate; professional but conversational tone, written for
+internal stakeholders; a category with no data gets 「本次無相關內容」 (hard rule 3).
+
+### 3 · Extract the 痛點 ledger
+
+The fork's addition — a table under the four sections, one row per pain:
+
+```
+## 痛點 Ledger
+
+| 痛點 | 現況流程（as-is 片段） | 影響（時間/錯誤/成本） | 頻率 | 來源（誰說的／哪段逐字稿） |
+|------|----------------------|----------------------|------|--------------------------|
+```
+
+- Only pains actually voiced or observed (hard rule 2).
+- **影響** — quantify only with numbers the client gave (minutes, error counts,
+  NT$); otherwise describe qualitatively. Never estimate on their behalf.
+- **來源** — a named person and/or transcript section reference, so
+  consult-brd-writer can tag the `R-n` requirement it becomes.
+
+### 4 · Create and file the `[Notes]` Doc
+
+Title: `[Notes] {{COMPANY}} — {{SESSION_TYPE}} {{YYYY-MM-DD}}`. Content: the
+step-2 summary + the step-3 ledger. Create via the reliable two-step (creating
+a Doc directly in a folder via `create_drive_file` returns HTTP 400):
+
+```
+## 1. create the doc (lands in My Drive root)
+mcp__google-workspace__create_doc(user_google_email="peter_tu@zynkr.ai",
+  title="[Notes] {{COMPANY}} — {{SESSION_TYPE}} {{YYYY-MM-DD}}", content="<summary + ledger>")
+## 2. move it into the engagement folder
+mcp__google-workspace__update_drive_file(user_google_email="peter_tu@zynkr.ai",
+  file_id="<doc id from step 1>", add_parents="<target folder id>")
+```
+
+Target folder: for `shadowing` sessions, look inside the `[N]` folder for a
+`Shadowing — YYYY-MM-DD` subfolder (via `list_drive_items`) and file there when
+it exists; otherwise — and for all other session types — the `[N]` folder
+itself. Never create the subfolder.
+
+### 5 · CRM note on the deal
+
+Append to the deal's notes — `mcp__zynkr__update_deal` preferred; SQL fallback:
+
+```sql
+UPDATE crm_deals
+SET notes = notes || E'\n\n會議紀錄：[Notes] {{COMPANY}} — {{SESSION_TYPE}} {{YYYY-MM-DD}}\n<doc url>'
+WHERE id = '<deal_id>';
+```
+
+via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`.
+Escape single quotes by doubling them (`O'Brien` → `O''Brien`).
+
+### 6 · Report and hand off
+
+A compact artifact table, then the headline:
+
+```
+本次 session 已歸檔：宏宇精密 — 訪談 2026-08-03
+
+| 產出 | 內容 |
+|------|------|
+| 文件 | [Notes] 宏宇精密 — 訪談 2026-08-03（<doc url>）|
+| 資料夾 | [4] 宏宇精密（報價流程自動化）|
+| CRM | <deal url> — notes 已附文件連結 |
+| 痛點 | 2 筆（皆含來源標註）· ledger 可直接餵給 /consult-brd-writer |
+```
+
+## Worked example
+
+Input fragment (a 宏宇精密 discovery call):
+
+```
+（訪談片段 1）王小明（業務主管）：報價都是我自己用 Excel 拉的，一張大概要
+四十分鐘，有時候型號打錯客戶就直接退回來……上週就退了兩張。對了，下週我們
+會把新的價格表定下來，到時候要再對一次。喔還有，倉庫出貨單還是手抄的，
+月底對帳都要花一個下午。
+```
+
+The four sections:
+
+```
+宏宇精密 — 訪談 2026-08-03
+
+1. Summary Update
+報價與出貨兩條流程皆為手動作業，錯誤與月底對帳成本是主要痛點；新價格表下週定案。
+
+2. Progress
+- 完成報價流程訪談：確認現況為 Excel 手動拉單，單張約 40 分鐘；新價格表下週定案
+
+3. Blockers / challenges
+- 報價型號手動輸入易錯，上週兩張報價單遭客戶退回
+- 出貨單仍為手抄，月底對帳需耗費一個下午
+
+4. What's Next
+- 新價格表定案後重新核對報價基準；評估兩條流程自動化的優先順序
+```
+
+The ledger (2 rows — exactly what the session supported, no more):
+
+| 痛點 | 現況流程（as-is 片段） | 影響（時間/錯誤/成本） | 頻率 | 來源（誰說的／哪段逐字稿） |
+|------|----------------------|----------------------|------|--------------------------|
+| 報價單手動製作、型號易打錯 | 業務以 Excel 手動拉報價單 | 每張約 40 分鐘；上週 2 張因型號錯誤遭退回 | 每張報價 | 王小明（業務主管）· 訪談片段 1 |
+| 出貨單手抄、月底對帳耗時 | 倉庫手寫出貨單，月底人工對帳 | 每月對帳約半個下午 | 每月 | 王小明轉述倉庫現況 · 訪談片段 1 |
+
+## Why it's built this way
+
+- **A full fork, not a delegation wrapper.** The source's entire mechanics are a
+  ~20-line output format; wrapping would put half of every run (filing, ledger,
+  CRM) behind another skill's contract for no saving. The format is copied once,
+  kept faithful — labels unchanged, because Peter and downstream readers already
+  parse that shape from every project-note-specialist output.
+- **Ledger and summary share one Doc** so consult-brd-writer reads a single
+  artifact per session, and the summary gives every ledger row its context.
+- **Pains are never invented** because a fabricated ledger row becomes a
+  fabricated `R-n` requirement a client is later asked to sign off.
+- **The folder is resolved, never created** — the same 2.x invariant as every
+  sibling: a second folder for the same client would fork the record.
+
+## Inference defaults (Peter overrides by just saying so)
+
+- **SESSION_TYPE** → inferred per step 1 (訪談 / shadowing / 會議).
+- **Session date** → the date stated in the material; fallback today.
+- **Doc language** → zh-TW body; the source skill's English section labels kept.
+- **Empty sections** → 「本次無相關內容」.
+- **Shadowing subfolder** → used when it exists, never created.
+- **Deal stage** → untouched; this skill only appends a note.
+
+## Provenance
+
+Forked from `project-note-specialist` (3.08) @ b6bfb04c (2026-08-03) — consult
+adaptation; diverges by design. The source is itself the standalone promotion of
+the admin-meeting-note agent (sheetId 3.04).
+Re-sync check: `git log --oneline b6bfb04c..origin/main -- skills/3-operations/project-note-specialist/`
+→ review hits → port or waive with a dated line here.
+
+## Reference files
+
+None — the summary template and the 痛點 ledger table live inline in this file
+(steps 2–3), so a standalone marketplace install is self-contained by design.
+
+## Limitations
+
+- One session per run; a multi-session digest = multiple runs, one Doc each.
+- The ledger is only as good as the session — it never backfills pains from
+  memory, other deals, or industry priors (hard rule 2).
+- Requires an existing engagement; it will not bootstrap a deal or folder.
+- It does not transcribe audio (consult-transcriber, upstream) and does not
+  write requirements (consult-brd-writer, downstream).

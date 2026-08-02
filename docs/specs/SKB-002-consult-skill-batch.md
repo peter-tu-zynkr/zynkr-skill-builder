@@ -118,7 +118,7 @@ that claims new ids (artifacts restored, never hand-committed).
       ingest run green on 60ea7ba8, 2026-08-03)
 - [x] SKB-002.1 Wave 1: consult-brd-writer + consult-shadowing-scheduler (P0)
 - [x] SKB-002.2 Wave 2: consult-uat-writer + consult-adoption-reporter + consult-bug-ticket
-- [ ] SKB-002.3 Wave 3: forks A (transcriber, session-notes, solution-planning, flow-design)
+- [x] SKB-002.3 Wave 3: forks A (transcriber, session-notes, solution-planning, flow-design)
 - [ ] SKB-002.4 Wave 4: forks B (launch-comms, info-session, status-report, governance)
 - [ ] SKB-002.5 Close-out: evidence sweep (AC-4 curl) · launchd check recorded ·
       personally-used installs · spec → Shipped
