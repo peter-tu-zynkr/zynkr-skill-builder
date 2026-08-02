@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 165785,
+    "githubStars": 165786,
     "githubForks": 19723
   },
   {
@@ -1396,6 +1396,127 @@
     "firstSeen": "2026-08-02",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/consult-bug-ticket/SKILL.md"
+  },
+  {
+    "id": "2.38",
+    "name": "consult-transcriber",
+    "category": "sales-consultant",
+    "project": "consult-transcriber",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a consulting engagement recording — a discovery call or an on-site shadowing session — into a clean zh-TW transcript filed straight into the client's numbered [N] Drive project folder and linked on the CRM deal. A thin delegation wrapper: it invokes the installed training-srt-transcriber (local Whisper → timestamped .srt; transcribe or retime mode) and training-srt-optimizer (minimal-edit zh-TW cleanup) for ALL transcription/cleanup mechanics, adding only engagement context, filing, and CRM linkage. Fire eagerly on /consult-transcriber or whenever a CLIENT/engagement recording needs a transcript — \"把這通訪談錄音轉成逐字稿\", \"處理 shadowing 錄音\", \"客戶錄音轉逐字稿\", \"整理客戶訪談錄音\", \"transcribe this client call\", \"process the shadowing recording\", \"transcript for the engagement\". Distinct from training-srt-transcriber / training-srt-optimizer used directly (they produce raw/clean .srt for the TRAINING business and file into the training Drive folder — no engagement context, no CRM; use them for course/livestream material) and from consult-session-notes (downstream — structures the TRANSCRIPT this skill produces into a session summary + pain-point ledger).",
+    "input": "One recording of an engagement session (discovery call or shadowing), the engagement (deal URL / company), and the phase; optional: an existing transcript for retime mode",
+    "process": "Resolve engagement + phase → check base skills installed → /training-srt-transcriber for speech-to-text → /training-srt-optimizer for zh-TW cleanup (skip its training upload) → rename + file into the [N] folder → CRM note → hand off to consult-session-notes",
+    "output": "A clean zh-TW transcript (.srt, optional Doc rendering) filed in the engagement's [N] folder (shadowing subfolder when applicable) and linked on the CRM deal",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.38",
+    "sheetId": "2.38",
+    "kind": "skill",
+    "synergy": [
+      "2.38"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.38.md -o ~/.claude/skills/consult-transcriber.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-transcriber/SKILL.md"
+  },
+  {
+    "id": "2.39",
+    "name": "consult-session-notes",
+    "category": "sales-consultant",
+    "project": "consult-session-notes",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a consulting-session transcript or messy notes — a discovery call or a shadowing observation — into the four-section session summary (Summary Update · Progress · Blockers · What's Next) PLUS a 痛點 ledger (one row per pain actually voiced or observed), filed as a [Notes] Google Doc into the engagement's EXISTING numbered [N] Drive folder with a note on the CRM deal; the ledger is the raw material /consult-brd-writer consumes. Trigger on /consult-session-notes or when Peter says \"整理這次客戶訪談筆記\", \"整理 shadowing 紀錄\", \"把逐字稿變成會議摘要\", \"整理客戶會議筆記\", \"structure this client session\", \"tidy the shadowing notes\", \"session summary for the client project\" — fire eagerly whenever session material belongs to a CLIENT engagement. Distinct from project-note-specialist (the generic source skill — ONLY tidies text, files nothing, touches no CRM; for non-engagement notes), consult-project-specialist (creates a NEW deal + folder from a sales meeting; THIS skill updates an EXISTING engagement, never creates either), consult-transcriber (upstream — produces the transcript this skill structures), and consult-brd-writer (downstream — consumes the ledger).",
+    "input": "A consulting-session transcript or messy notes (pasted text, a Google Doc link, or the transcript consult-transcriber just filed) + the engagement (deal URL / company name)",
+    "process": "Collect input + resolve the engagement → structure the four-section session summary → extract the 痛點 ledger → create the [Notes] Doc in the [N] folder → CRM note on the deal → hand the ledger to consult-brd-writer",
+    "output": "A filed [Notes] session-summary Doc (four sections + 痛點 ledger) in the engagement folder, linked on the CRM deal",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.39",
+    "sheetId": "2.39",
+    "kind": "skill",
+    "synergy": [
+      "2.39"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.39.md -o ~/.claude/skills/consult-session-notes.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-session-notes/SKILL.md"
+  },
+  {
+    "id": "2.40",
+    "name": "consult-solution-planning",
+    "category": "sales-consultant",
+    "project": "consult-solution-planning",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu (derivative of MrPM-Stanley)",
+    "description": "Turn an engagement's discovery outputs — consult-discovery summaries, consult-session-notes 痛點 ledgers, the client's stated goals — into a structured solution plan: persona, operator journey, pains ranked by 影響範圍 size × 強度 intensity × 頻率 frequency, selected opportunities, MVP scope, and success metrics — filed as a \"[Plan]\" Google Doc in the client's numbered [N] Drive folder and ending in an explicit handoff block for /consult-brd-writer. Operationalizes MrPM-Stanley's 產品企劃力 product-planning framework for consulting engagements. Trigger on /consult-solution-planning or when Peter says \"幫客戶做需求規劃\", \"把痛點整理成方案規劃\", \"方案企劃\", \"規劃 MVP 範圍\", \"plan the client solution\", \"turn the pains into a plan\", or \"solution planning for this engagement\". Distinct from product-planning (the generic mirror — raw product idea in, no engagement context, no filing; use it outside engagements), from consult-discovery / consult-session-notes (upstream producers of this skill's inputs), and from consult-brd-writer (downstream — formalizes THIS skill's plan into the client-grade BRD/PRD).",
+    "input": "An engagement's discovery artifacts — consult-discovery summaries, consult-session-notes 痛點 ledgers — or a raw idea, plus the client (deal URL / company name)",
+    "process": "Collect inputs + resolve the engagement → persona → journey → rank pains by size × intensity × frequency → select opportunities → MVP scope + metrics (one confirmed section at a time) → file the [Plan] Doc + CRM note → hand off to consult-brd-writer",
+    "output": "A [Plan] solution-plan Google Doc (persona, journey, ranked pains, MVP scope, success metrics) in the engagement folder, linked on the deal, ending in a BRD handoff block",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.40",
+    "sheetId": "2.40",
+    "kind": "skill",
+    "synergy": [
+      "2.40"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.40.md -o ~/.claude/skills/consult-solution-planning.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-solution-planning/SKILL.md",
+    "upstreamRepo": "https://github.com/MrPM-Stanley/product-planning-skill",
+    "originalSourceUrl": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
+    "originalAuthor": "MrPM-Stanley",
+    "githubStars": 41,
+    "githubForks": 10
+  },
+  {
+    "id": "2.41",
+    "name": "consult-flow-design",
+    "category": "sales-consultant",
+    "project": "consult-flow-design",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Visualize a consulting engagement's operations on Lucid as a paired AS-IS / TO-BE process chart set — drawn from the engagement's own documents (session notes, 痛點 ledgers, [Plan] docs, BRD) and recorded back on the CRM deal. ALL drawing, editing, and lint mechanics are delegated to the installed product-flow-design skill; this wrapper adds engagement resolution, the as-is/to-be pairing discipline, chart naming, and CRM linkage. Trigger on /consult-flow-design or when Peter says \"畫客戶的 as-is/to-be 流程\", \"客戶流程圖\", \"幫這個案子畫流程\", \"把客戶流程視覺化\", \"map the client's operations on Lucid\", \"visualize the engagement workflow\", or \"draw the as-is and to-be for this client\". Distinct from product-flow-design (the generic Lucid specialist — any chart, no engagement context; a pasted Lucid URL with no client context still routes THERE), from consult-solution-planning (produces the [Plan] narrative this skill draws), and from operations-flow-optimization / operations-transformation (they design the flow's CONTENT; this skill only visualizes what the engagement documents already say).",
+    "input": "The engagement (deal URL / company name) — source docs are gathered from its [N] folder; optionally an existing Lucid URL to update",
+    "process": "Resolve engagement + gather [Notes]/[Plan]/[BRD] docs → check product-flow-design installed → assemble as-is and to-be narratives (confirm) → delegate drawing + V1–V13 lint per chart → append both Lucid URLs to the deal notes → report",
+    "output": "A paired [N] {{COMPANY}} — as-is / — to-be Lucid chart set drawn to the FE/BE/DB convention, lint-clean, with both URLs recorded on the CRM deal",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.41",
+    "sheetId": "2.41",
+    "kind": "skill",
+    "synergy": [
+      "2.41"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.41.md -o ~/.claude/skills/consult-flow-design.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-flow-design/SKILL.md"
   },
   {
     "id": "3.01",
@@ -2323,7 +2444,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 27840,
+    "githubStars": 27841,
     "githubForks": 2347
   },
   {
