@@ -114,8 +114,9 @@ that claims new ids (artifacts restored, never hand-committed).
 
 ## Tasks
 
-- [ ] SKB-002.0 Wave 0: spec Active + consult-discovery synergy fix (canary push)
-- [ ] SKB-002.1 Wave 1: consult-brd-writer + consult-shadowing-scheduler (P0)
+- [x] SKB-002.0 Wave 0: spec Active + consult-discovery synergy fix (canary push —
+      ingest run green on 60ea7ba8, 2026-08-03)
+- [x] SKB-002.1 Wave 1: consult-brd-writer + consult-shadowing-scheduler (P0)
 - [ ] SKB-002.2 Wave 2: consult-uat-writer + consult-adoption-reporter + consult-bug-ticket
 - [ ] SKB-002.3 Wave 3: forks A (transcriber, session-notes, solution-planning, flow-design)
 - [ ] SKB-002.4 Wave 4: forks B (launch-comms, info-session, status-report, governance)

@@ -170,3 +170,31 @@ slugs `["sales-research", "consult-project-specialist"]` per SKILL_SPEC §1.
 on consult-discovery → no synergy WARN · local `ingest.ts` dry-run exit 0 (artifacts
 restored, not committed) · this push's `ingest-skills.yml` run green = the wiring proof
 that the runbook holds before 13 new skills ride it.
+
+## 2026-08-03 — SKB-002 Wave 1: consult-brd-writer (2.12) + consult-shadowing-scheduler (2.13)
+
+The two P0 gap skills from the consultant-flow assessment, both `2-sales-consultant/`:
+
+**consult-brd-writer (2.12)** — turns discovery summaries / shadowing transcripts +
+the CRM deal into a client-grade requirements Doc in the client's numbered `[N]`
+folder, backlinked to the deal. BRD mode (zh-TW business-facing, template
+`references/brd-template.md`) and PRD mode (SDD-conformant spec: per-client spec ID
+`<CLIENTSLUG>-NNN` discovered by scanning the folder's `[PRD]` titles, EARS-lite
+AC-n + *Verify:* lines, D0–D3 rung; template `references/prd-spec-template.md`
+carries the parse contract consult-uat-writer consumes). Outline approval gate
+before any prose; hard STOP instead of creating a competing folder; ships its own
+`deal-insert.sql` copy so the marketplace install is self-contained.
+
+**consult-shadowing-scheduler (2.13)** — closes the highest-friction manual loop in
+Phase 3: deal → `[N]` folder from the 專案資料夾 backlink → query_freebusy →
+3–5 candidate slots (Asia/Taipei, 09:30–17:30, next 10 business days, 2h; long-meeting
+adjacency avoided) → slot-confirm gate (external calendar attendee default NO) →
+calendar hold + `Shadowing — YYYY-MM-DD` subfolder + client logistics Gmail DRAFT
+(never sent) + idempotent CRM task + deal-notes backlink.
+
+**Verification** (D2, SKB-002 AC-1): `validate-skill.ts --tier=all` → 0 errors each
+(one expected WARN: brd-writer's synergy forward-references consult-uat-writer, which
+lands in Wave 2 today) · local `ingest.ts` dry-run → `✓ 2.12` `✓ 2.13`, 99 ingested,
+no duplicate ids (artifacts removed, not committed) · this push's `ingest-skills.yml`
+run + `zynkr.ai/api/skills` serving both ids = the go-live proof · real
+install-and-trigger evidence lands at batch close-out (Wave 5).
