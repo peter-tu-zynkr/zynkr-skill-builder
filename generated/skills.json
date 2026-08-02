@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 165781,
+    "githubStars": 165785,
     "githubForks": 19723
   },
   {
@@ -1309,6 +1309,93 @@
     "firstSeen": "2026-08-02",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/consult-shadowing-scheduler/SKILL.md"
+  },
+  {
+    "id": "2.14",
+    "name": "consult-uat-writer",
+    "category": "sales-consultant",
+    "project": "consult-uat-writer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a consulting engagement's PRD (the SDD-shaped spec Doc written by consult-brd-writer) plus the deployed assistant's facts into a client-facing zh-TW UAT testing guide — a Google Doc in the client's numbered [N] Drive folder with a scenario table (one client-runnable scenario per AC), pass/fail checkboxes, bug-report instructions, and a sign-off block — plus a CRM task so the acceptance round is tracked. Trigger on /consult-uat-writer or when Peter says \"寫 UAT 指南\", \"產驗收測試文件\", \"幫客戶寫測試指引\", \"驗收清單\", \"write the UAT guide\", \"make the acceptance test doc\", \"testing guide for the client\", or hands over a PRD wanting the client to run acceptance — fire eagerly even if he never says the letters \"UAT\". Distinct from consult-brd-writer (WRITES the PRD this skill consumes — route there when the spec itself is missing or malformed) and from consult-bug-ticket (handles the bug mails the UAT round produces — this skill's 問題回報方式 section is exactly what shapes those mails).",
+    "input": "A client’s description of an inefficient or unclear business process",
+    "process": "Guide structured questioning to map end-to-end steps, identify suppliers and customers, and infer standard inputs/outputs",
+    "output": "A clear, reviewable process map presented as a structured table for improvement planning",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.14",
+    "sheetId": "2.14",
+    "kind": "skill",
+    "synergy": [
+      "2.14"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.14.md -o ~/.claude/skills/consult-uat-writer.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-uat-writer/SKILL.md"
+  },
+  {
+    "id": "2.15",
+    "name": "consult-adoption-reporter",
+    "category": "sales-consultant",
+    "project": "consult-adoption-reporter",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Pull a consulting client's AI-assistant usage out of platform telemetry (crm_ai_usage, READ-ONLY), compute adoption metrics — WAU, actions per user per week, week-over-week trend, top features, at-risk users — and render a zh-TW \"[Adoption] {{COMPANY}} — YYYY-MM\" report Doc into the client's [N] Drive folder, backlinked to the CRM deal, plus an optional ask-only Gmail draft. Trigger on /consult-adoption-reporter or when Peter says \"客戶用量報告\", \"採用率追蹤\", \"這個客戶有沒有在用\", \"使用狀況分析\", \"adoption report for <client>\", \"pull usage for this client\", \"how is the assistant being used\", or otherwise asks whether a consulting client is actually using what we delivered — fire eagerly even without the word \"adoption\". Distinct from project-status-update (the INTERNAL tracker-Sheet weekly for a course/project — no client telemetry) and from consult-uat-writer (proves the delivery WORKS once, at handoff; THIS skill measures whether the client keeps USING it after go-live).",
+    "input": "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).",
+    "process": "Diagnose automation suitability, assess ROI, classify tasks, and recommend appropriate technologies with concise rationale.",
+    "output": "A structured evaluation table, transformation recommendations, and a handoff prompt for solution design.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.15",
+    "sheetId": "2.15",
+    "kind": "skill",
+    "synergy": [
+      "2.15"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.15.md -o ~/.claude/skills/consult-adoption-reporter.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-adoption-reporter/SKILL.md"
+  },
+  {
+    "id": "2.16",
+    "name": "consult-bug-ticket",
+    "category": "sales-consultant",
+    "project": "consult-bug-ticket",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a client bug report — a Gmail thread, a forwarded mail, or pasted text — into tracked work in one pass: a well-formed GitHub issue in the right repo (routed via a local bug-routing-config.md), a CRM follow-up task on the client's deal, and a threaded acknowledgment reply left as a Gmail DRAFT (never sent). Trigger on /consult-bug-ticket or when Peter says \"開 bug 單\", \"把這封信開成 issue\", \"回報這個 bug\", \"客戶回報問題\", \"file this bug\", \"turn this bug mail into a ticket\", \"log this defect and reply\", or hands over a client mail describing something broken and wants it tracked — fire eagerly even when he never says the word \"bug\". Distinct from zynkr-support (drafts KB-based ANSWERS to product questions; when a support mail turns out to be a DEFECT in a delivered assistant or product, THIS skill is the write-side that takes over), from skill-sourcer (files skill IDEAS as proposals, not defects), and from consult-uat-writer (upstream of this one: its UAT guide's 問題回報方式 section shapes the very mails this skill parses).",
+    "input": "Diagnosed process steps with automation readiness scores",
+    "process": "Redesign each step into structured, automation-ready workflows with task breakdowns, system layer mapping, and tool suggestions",
+    "output": "Builder-ready tables with sub-tasks, flow type, MVP stack, and a summary for digital transformation execution",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.16",
+    "sheetId": "2.16",
+    "kind": "skill",
+    "synergy": [
+      "2.16"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.16.md -o ~/.claude/skills/consult-bug-ticket.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-bug-ticket/SKILL.md"
   },
   {
     "id": "3.01",
@@ -2236,7 +2323,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 27835,
+    "githubStars": 27840,
     "githubForks": 2347
   },
   {
@@ -2546,7 +2633,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 39757,
+    "githubStars": 39758,
     "githubForks": 2602
   },
   {
