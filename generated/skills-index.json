@@ -621,7 +621,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 165779,
+    "github_stars": 165781,
     "github_forks": 19723,
     "first_seen": "2026-06-03"
   },
@@ -920,6 +920,52 @@
     ],
     "updated_at": "2026-08-02",
     "first_seen": "2026-07-08"
+  },
+  {
+    "id": "2.12",
+    "sheet_id": "2.12",
+    "slug": "consult-brd-writer",
+    "name": "consult-brd-writer",
+    "summary": "Turn a consulting engagement's raw discovery material — consult-discovery summaries, shadowing transcripts / recording notes, process findings — into a client-grade requirements document as a Google Doc in the client's n",
+    "category": "sales-consultant",
+    "project": "consult-brd-writer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consult-brd-writer/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.12.md -o ~/.claude/skills/consult-brd-writer.md",
+    "tags": [
+      "consult-brd-writer",
+      "sales-consultant",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-02",
+    "first_seen": "2026-08-02"
+  },
+  {
+    "id": "2.13",
+    "sheet_id": "2.13",
+    "slug": "consult-shadowing-scheduler",
+    "name": "consult-shadowing-scheduler",
+    "summary": "Close the shadowing-scheduling admin loop for a consulting deal in one pass: read the CRM deal, resolve the client's existing [N] Drive project folder from the deal notes, check Peter's calendar free/busy, propose 3–5 ca",
+    "category": "sales-consultant",
+    "project": "consult-shadowing-scheduler",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/consult-shadowing-scheduler/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.13.md -o ~/.claude/skills/consult-shadowing-scheduler.md",
+    "tags": [
+      "consult-shadowing-scheduler",
+      "sales-consultant",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-02",
+    "first_seen": "2026-08-02"
   },
   {
     "id": "3.01",
@@ -1608,7 +1654,7 @@
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 27834,
+    "github_stars": 27835,
     "github_forks": 2347,
     "first_seen": "2026-06-09"
   },

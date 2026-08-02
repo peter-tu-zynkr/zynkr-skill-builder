@@ -839,7 +839,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 165779,
+    "githubStars": 165781,
     "githubForks": 19723
   },
   {
@@ -1251,6 +1251,64 @@
     "firstSeen": "2026-07-08",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "2-sales-consultant/sales-research/SKILL.md"
+  },
+  {
+    "id": "2.12",
+    "name": "consult-brd-writer",
+    "category": "sales-consultant",
+    "project": "consult-brd-writer",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn a consulting engagement's raw discovery material — consult-discovery summaries, shadowing transcripts / recording notes, process findings — into a client-grade requirements document as a Google Doc in the client's numbered [N] Drive project folder, backlinked to the CRM deal. Two modes: BRD (default — business-facing, zh-TW) and PRD (an SDD-conformant buildable spec with a per-client spec ID, EARS-lite ACs and Verify lines). Trigger on /consult-brd-writer or when Peter says \"幫我寫 BRD\", \"把訪談整理成需求文件\", \"寫 PRD\", \"把 shadowing 筆記變成 spec\", \"draft the BRD\", \"write the PRD for this client\", \"make this buildable\", or hands over discovery notes or a transcript wanting a requirements document out of it — fire eagerly even if he never says the letters \"BRD\". Distinct from consult-discovery (CONDUCTS the interviews; this skill consumes their output), from consult-project-specialist (logs ONE meeting as a project + deal, writes no requirements doc), and from consult-uat-writer (runs downstream, consuming THIS skill's PRD to produce UAT scripts).",
+    "input": "Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.",
+    "process": "Guided, structured conversation—one question at a time—to uncover long-term goals, value propositions, and operational realities.",
+    "output": "Concise strategic discovery summary to support downstream process mapping or pain point validation.",
+    "ipoProvenance": {
+      "input": "csv",
+      "process": "csv",
+      "output": "csv"
+    },
+    "legacyIpoId": "2.12",
+    "sheetId": "2.12",
+    "kind": "skill",
+    "synergy": [
+      "2.12"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.12.md -o ~/.claude/skills/consult-brd-writer.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-brd-writer/SKILL.md"
+  },
+  {
+    "id": "2.13",
+    "name": "consult-shadowing-scheduler",
+    "category": "sales-consultant",
+    "project": "consult-shadowing-scheduler",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Close the shadowing-scheduling admin loop for a consulting deal in one pass: read the CRM deal, resolve the client's existing [N] Drive project folder from the deal notes, check Peter's calendar free/busy, propose 3–5 candidate slots, and on Peter's confirm lay down the whole kit — a calendar hold, a \"Shadowing — YYYY-MM-DD\" subfolder inside the project folder, a client logistics Gmail DRAFT (never sent), a CRM follow-up task, and a deal-notes backlink. Trigger EAGERLY on /consult-shadowing-scheduler or whenever Peter says \"排 shadowing 時間\", \"約跟拍\", \"安排現場觀察\", \"幫我跟 <client> 約 shadowing\", \"schedule the shadowing\", \"book the shadowing session\", \"find time to shadow the client\", or otherwise wants an on-site observation session scheduled for a consulting engagement — even if he only names the company. Distinct from consult-intake and consult-project-specialist (they CREATE the project folder and the deal — this skill REUSES those artifacts and never creates a new top-level folder or a new deal). Distinct from consult-brd-writer (which consumes the shadowing transcript AFTER the session happens — this skill only gets the session onto the calendar and preps the client).",
+    "input": "A CRM deal (URL or company name), optionally a preferred date window and session duration",
+    "process": "get_deal → resolve the client's [N] Drive folder from deal notes → query_freebusy on Peter's calendar → slot-confirm gate → create the calendar hold + shadowing subfolder + logistics Gmail draft + CRM task → backlink + report",
+    "output": "A confirmed calendar hold, a shadowing subfolder in the client's project folder, a client-ready logistics mail draft (never auto-sent), and a CRM task — all linked on the deal",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "2.13",
+    "sheetId": "2.13",
+    "kind": "skill",
+    "synergy": [
+      "2.13"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/2.13.md -o ~/.claude/skills/consult-shadowing-scheduler.md",
+    "updatedAt": "2026-08-02",
+    "firstSeen": "2026-08-02",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "2-sales-consultant/consult-shadowing-scheduler/SKILL.md"
   },
   {
     "id": "3.01",
@@ -2178,7 +2236,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 27834,
+    "githubStars": 27835,
     "githubForks": 2347
   },
   {
