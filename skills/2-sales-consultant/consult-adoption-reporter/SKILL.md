@@ -1,0 +1,289 @@
+---
+name: consult-adoption-reporter
+sheetId: "2.15"
+description: >-
+  Pull a consulting client's AI-assistant usage out of platform telemetry
+  (crm_ai_usage, READ-ONLY), compute adoption metrics — WAU, actions per user
+  per week, week-over-week trend, top features, at-risk users — and render a
+  zh-TW "[Adoption] {{COMPANY}} — YYYY-MM" report Doc into the client's [N]
+  Drive folder, backlinked to the CRM deal, plus an optional ask-only Gmail
+  draft. Trigger on /consult-adoption-reporter or when Peter
+  says "客戶用量報告", "採用率追蹤", "這個客戶有沒有在用", "使用狀況分析",
+  "adoption report for <client>", "pull usage for this client", "how is the
+  assistant being used", or otherwise asks whether a consulting client is
+  actually using what we delivered — fire eagerly even without the word
+  "adoption". Distinct from project-status-update (the INTERNAL tracker-Sheet
+  weekly for a course/project — no client telemetry) and from consult-uat-writer
+  (proves the delivery WORKS once, at handoff; THIS skill measures whether the
+  client keeps USING it after go-live).
+category: sales-consultant
+project: consult-adoption-reporter
+platform: claude
+status: Done
+author: Peter Tu
+input: "A client (deal URL or company name) + a reporting window (default: last 4 weeks vs the 4 before)"
+process: "Resolve client → map to workspace/users via adoption-config.md (fallback: deal contact emails) → introspect + read-only SELECTs on crm_ai_usage → compute adoption metrics + trends → render the Doc into the [N] folder + backlink the deal → optional draft email"
+output: "An adoption report Doc (metrics, weekly trend, per-user detail, risks and nudges, data-coverage caveats) linked on the CRM deal, plus an optional Gmail draft"
+synergy:
+  - "consult-uat-writer"
+  - "project-status-update"
+---
+
+# Consult Adoption Reporter
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill consult-adoption-reporter
+```
+
+After an engagement ships, the question that decides the renewal is not "did we
+deliver" but "are they using it". Every platform assistant call already lands in
+`crm_ai_usage` — this skill turns that table into the adoption story: WAU,
+actions per user per week, the weekly trend, top features, and the users going
+quiet — rendered as a zh-TW **`[Adoption] {{COMPANY}} — YYYY-MM`** Doc in the
+client's `[N]` folder, backlinked to the CRM deal. It is an **analyst, not an
+operator**: reads telemetry, never touches it; 無法衡量 beats an estimate.
+
+## How this differs from its neighbours
+
+- **project-status-update** — INTERNAL tracker-Sheet weekly; no client telemetry.
+- **consult-uat-writer** — proves the delivery WORKS once, at handoff (UAT
+  scripts from the PRD); THIS skill measures whether it keeps getting USED
+  after go-live — the renewal signal.
+
+## Fixed facts (don't re-derive these)
+
+- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
+- **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
+- **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
+- **CRM deal URL** for the doc/report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- Over the Supabase MCP, `auth.uid()` is **NULL** — moot here: this skill's SQL
+  is SELECT-only (hard rule 1); the step-7 deal backlink goes through the zynkr
+  MCP, never through SQL.
+
+## Hard rules
+
+1. **SELECT only.** Never INSERT / UPDATE / DELETE on platform tables — no SQL
+   write of any kind, anywhere in a run. The only writes are the report Doc
+   (Google Drive) and the step-7 deal-notes backlink, which goes through the
+   zynkr MCP (`mcp__zynkr__update_deal`); MCP unavailable → skip the backlink
+   and hand Peter the line to paste (step 7) — never drop to SQL.
+2. **Never fabricate numbers.** A metric the data can't support is written as
+   無法衡量 with the reason, in the report's 資料覆蓋範圍 section.
+3. **Introspect before querying.** `information_schema.columns` on
+   `crm_ai_usage` every run; if the schema drifted, adapt and note it.
+4. **Client-facing email is ALWAYS a Gmail draft**
+   (`mcp__google-workspace__draft_gmail_message`), only on Peter's yes in
+   step 8 — never send.
+
+## Configuration — the local `adoption-config.md`
+
+Client → telemetry mapping lives in a **local** `adoption-config.md` outside
+this repo (workspace ids, user emails and go-live dates are client
+PII/commercials — never commit the file to this or any repo). Read it every run. Expected per
+client: `company` (as named on the CRM deal) · `workspace_id` (platform.zynkr.ai
+workspace uuid) · `user_emails` · `features` (as in `crm_ai_usage.feature`) ·
+`go_live` (YYYY-MM-DD).
+
+Degradation ladder (never a hard stop): **row missing for this client** → fall
+back to the deal's CRM contact emails as the user set, resolve the workspace
+from them (step 1), and SAY SO in the report's 資料覆蓋範圍. **File missing
+entirely** → same fallback mode, and tell Peter in the final report how to
+create it (the five fields above, one row per client).
+
+---
+
+## Workflow
+
+### 1 · Resolve the client, the config row, and the `[N]` folder
+
+- **Deal** — from a `…/deals/{id}` URL, or by company name. Prefer
+  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals` when the zynkr MCP is
+  connected; fallback SQL via `mcp__supabase__execute_sql`:
+  `SELECT id, name, notes, contact_id FROM crm_deals WHERE name ILIKE '%<company>%' ORDER BY created_at DESC;`
+- **Config row** — look the company up in `adoption-config.md` (ladder above):
+  take `workspace_id`, `user_emails`, `features`, `go_live`. Without a row: use
+  the deal's contact emails from `crm_contacts` as the user set and resolve
+  `workspace_id` via the platform's workspace-membership tables (introspect for
+  names — read-only). No workspace resolves → coverage-caveat case; continue.
+- **Folder** — the deal's `notes` carry a `專案資料夾：<url>` backlink (written
+  by consult-intake / consult-project-specialist); extract the folder id, or
+  list the parent folder and match `[N] Company（…）`. No `[N]` folder at all →
+  STOP and route to /consult-intake or /consult-project-specialist; never
+  create a competing folder.
+
+### 2 · Introspect `crm_ai_usage`
+
+```sql
+SELECT column_name, data_type FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'crm_ai_usage'
+ORDER BY ordinal_position;
+```
+
+Columns as verified 2026-08: `id` · `workspace_id` · `user_id` · `feature` ·
+`model` · `input_tokens` · `output_tokens` · `request_count` ·
+`cache_read_tokens` · `cache_creation_tokens` · `created_at` — rule 3 governs drift.
+
+### 3 · Read-only SELECTs
+
+All via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`.
+Default window: last 4 complete ISO weeks vs the 4 before — pull 8 weeks in one
+pass. Config `features` present → add `AND feature = ANY('{...}')`; else report
+the whole workspace.
+
+**a) Per-user weekly activity** (feeds the trend table + user detail):
+
+```sql
+SELECT date_trunc('week', created_at)::date AS week_start, user_id,
+       SUM(request_count) AS requests, SUM(input_tokens + output_tokens) AS tokens
+FROM crm_ai_usage
+WHERE workspace_id = '<workspace_id>'
+  AND created_at >= date_trunc('week', now()) - interval '8 weeks'
+GROUP BY 1, 2 ORDER BY 1, 2;
+```
+
+**b) Feature breakdown** (current window only):
+
+```sql
+SELECT feature, SUM(request_count) AS requests
+FROM crm_ai_usage WHERE workspace_id = '<workspace_id>'
+  AND created_at >= date_trunc('week', now()) - interval '4 weeks'
+GROUP BY feature ORDER BY requests DESC;
+```
+
+**c) Days since last use, per user** (all-time, not window-bound):
+
+```sql
+SELECT user_id, MAX(created_at) AS last_used,
+       (now()::date - MAX(created_at)::date) AS days_silent
+FROM crm_ai_usage WHERE workspace_id = '<workspace_id>' GROUP BY user_id;
+```
+
+**d) Label the user ids** — resolve `user_id` → email/name with a read-only
+lookup against the platform's user tables (introspect for the exact table). An
+id mapping to no known email shows as 未識別使用者 #n — never guess who it is.
+
+### 4 · Compute the metrics
+
+- **WAU** — distinct active users per ISO week; series + window averages.
+- **Actions / user / week** — `Σ request_count ÷ active users ÷ weeks`, per window.
+- **WoW trend** — direction of the weekly series + current-vs-prior totals (a
+  flat average can hide a falling last fortnight).
+- **Top 3 features** — from query (b), with share of total requests.
+- **At-risk users** — `days_silent >= 14` AND go-live ≥ 14 days ago. If
+  `go_live` is unknown, use the user's earliest telemetry row as the proxy
+  start and say so. Round visibly — false precision is rule-2 fabrication too.
+
+### 5 · Coverage check
+
+Diff **expected vs observed** before writing narrative: expected users (config
+`user_emails` or fallback contact emails) vs `user_id`s seen; expected
+`features` vs features seen; **zero rows for the workspace** (or none resolved)
+→ the classic case: the assistant was delivered as **Claude skills**, not
+platform features, so `crm_ai_usage` cannot see it. Everything found goes into
+資料覆蓋範圍 — what IS measurable, what ISN'T, why, and the concrete step that
+closes each gap (onboard the client onto platform.zynkr.ai; add their row to
+`adoption-config.md`). A zero-coverage client still gets a report — one that
+says exactly that, not empty tables presented as "no adoption".
+
+### 6 · Render the report Doc into the `[N]` folder
+
+Read `./references/adoption-report-template.md`, fill every placeholder, delete
+the comment blocks, and create the Doc via the reliable two-step (creating a
+Doc directly in a folder via `create_drive_file` returns HTTP 400).
+`{{YYYY_MM}}` = the month the reporting window ends in:
+
+```
+mcp__google-workspace__create_doc(          # 1. create — lands in My Drive root
+  user_google_email = "peter_tu@zynkr.ai",
+  title   = "[Adoption] {{COMPANY}} — {{YYYY_MM}}",  # e.g. "[Adoption] 宏宇精密 — 2026-08"
+  content = "<filled-in template>"
+)
+mcp__google-workspace__update_drive_file(   # 2. move into the client's [N] folder
+  user_google_email = "peter_tu@zynkr.ai",
+  file_id     = "<doc id from step 1>",
+  add_parents = "<the [N] folder id from workflow step 1>"
+)
+```
+
+### 7 · Backlink the Doc to the CRM deal (MCP write — SQL stays read-only)
+
+Hard rule 1 has no exceptions, so the backlink never touches SQL. Append, never
+overwrite:
+
+1. `mcp__zynkr__get_deal(deal_id)` — take the current `notes` verbatim.
+2. `mcp__zynkr__update_deal` with `notes` = the existing notes plus:
+
+   ```
+   採用率報告：[Adoption] {{COMPANY}} — {{YYYY_MM}}
+   <doc url>
+   ```
+
+zynkr MCP not connected → do **not** fall back to a SQL UPDATE. Skip the
+backlink and surface the two lines above in the step-9 report under 待 Peter
+for a manual paste into the deal's notes.
+
+### 8 · OPTIONAL — ask-only email draft
+
+Ask Peter — never assume: "Draft an email with this? (a) internal digest to
+peter_tu@zynkr.ai, (b) client-facing summary, (c) skip." On a yes, build it with
+`mcp__google-workspace__draft_gmail_message` — **draft only, never send** (hard
+rule 4). A client-facing draft carries the headline metrics + doc link in the
+client's language — and inherits every 無法衡量 caveat.
+
+### 9 · Report
+
+A compact artifact table, then the headline in prose:
+
+```
+採用率報告已產出：宏宇精密 — 2026-08
+
+| 產出 | 內容 |
+|------|------|
+| 文件 | [Adoption] 宏宇精密 — 2026-08（<doc url>）|
+| CRM backlink | <deal url> — notes 已附報告連結 |
+| 本期指標 | WAU 5 · 每人每週 12.3 次 · WoW ↑ |
+| 風險 | 王小明（wang@example.com）21 天未使用 — 建議已列 |
+| 待 Peter | email draft：已建立（內部 digest）／未建立 · backlink：已寫入／待手動貼上 |
+```
+
+---
+
+## Why it's built this way
+
+- **Read-only by contract.** `crm_ai_usage` is the platform's live metering
+  table (quota warnings and per-user caps read from it); SQL stays SELECT-only
+  and the entire write surface is a Google Doc + one MCP notes-append.
+- **無法衡量 beats a guess.** An invented number, found out later, poisons every
+  honest report after it; the coverage section makes the gap a deliverable.
+- **Config out-of-repo.** Workspace ids, client emails and go-live dates never
+  sit in a public repo — same pattern as guest-lecturer-program's config.
+- **Introspect-first.** The platform ships weekly; the reference SQL is a
+  starting point, not a contract.
+- **Table-first, no charts.** Docs render tables losslessly; charts go stale
+  and can't be diffed. The trend IS the table.
+
+## Inference defaults (Peter overrides by just saying so)
+
+- **Window** → last 4 complete ISO weeks vs the 4 before ("last quarter" → 13 vs 13).
+- **Feature scope** → config `features` when present; whole workspace otherwise.
+- **At-risk threshold** → 14 days silent post go-live.
+- **Report language** → zh-TW; user labels = email (or CRM contact name).
+- **Email step** → OFF; asked in step 8, executed only on a yes, draft only.
+
+## Reference files
+
+- `./references/adoption-report-template.md` — the zh-TW report skeleton (fill
+  all placeholders, delete its comment blocks); its 資料覆蓋範圍 comment lists
+  the canonical caveat cases. Keep that section even when coverage is perfect.
+
+## Limitations
+
+- Sees only platform telemetry: Claude-skill deliveries leave no `crm_ai_usage`
+  rows — the fix is onboarding onto platform.zynkr.ai, not better SQL.
+- Counts and tokens only — no conversation content. It can say WHO used WHAT
+  feature HOW OFTEN, never what they asked or whether the answer helped.
+- `request_count` measures invocations, not business value; pair the numbers
+  with a qualitative client check-in before renewal conversations.
+- Requires an existing deal + `[N]` folder (bootstrapping is consult-intake /
+  consult-project-specialist's job). One client per run — a portfolio sweep is
+  one run per client.

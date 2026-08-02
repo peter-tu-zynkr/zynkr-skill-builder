@@ -198,3 +198,41 @@ lands in Wave 2 today) · local `ingest.ts` dry-run → `✓ 2.12` `✓ 2.13`, 9
 no duplicate ids (artifacts removed, not committed) · this push's `ingest-skills.yml`
 run + `zynkr.ai/api/skills` serving both ids = the go-live proof · real
 install-and-trigger evidence lands at batch close-out (Wave 5).
+
+## 2026-08-03 — SKB-002 Wave 2: consult-uat-writer (2.14) + consult-adoption-reporter (2.15) + consult-bug-ticket (2.16)
+
+The three P1 gap skills closing the post-launch loops, all `2-sales-consultant/`:
+
+**consult-uat-writer (2.14)** — parses a consult-brd-writer PRD (spec-ID H1, Size/DoD
+line, AC-n + *Verify:* pairs, Out-of-scope — the four shapes `prd-spec-template.md`
+guarantees; any missing ⇒ STOP, fix upstream) into a client-runnable zh-TW UAT guide
+Doc in the `[N]` folder: S-n ↔ AC-n traceable scenarios (D3 adds negative/permission
+cases), builder-only Verify lines rewritten as UI-observable with a 顧問側驗證
+appendix, 問題回報方式 section format-compatible with consult-bug-ticket by
+construction, sign-off block, CRM task. Scenario-table gate before any Doc.
+
+**consult-adoption-reporter (2.15)** — read-only analyst over `crm_ai_usage`
+(schema verified 2026-08-03: workspace_id/user_id/feature/model/request_count/token
+counts): WAU, actions/user/week, WoW trend, top features, 14-day at-risk flags →
+`[Adoption] {{COMPANY}} — YYYY-MM` Doc + zynkr-MCP deal backlink. Hard rules:
+SELECT-only (no SQL write of any kind — the backlink goes through mcp__zynkr__update_deal
+or falls back to a paste line for Peter), never-fabricate (無法衡量 + 資料覆蓋範圍
+caveats — incl. the zero-coverage case for skill-delivered assistants), introspect
+schema every run. Client mapping via local out-of-repo `adoption-config.md` with a
+graceful degradation ladder.
+
+**consult-bug-ticket (2.16)** — client bug mail → `gh issue create` in the right repo
+(local out-of-repo `bug-routing-config.md`: client map first, surface fallbacks
+second, no match ⇒ ask at the gate, never guess) + CRM task + threaded acknowledgment
+Gmail DRAFT. One absolute gate before any external write; structural PII split
+(public issue = company + defect only; person + thread live in the CRM task); client
+sees the issue number only; 未確認 markers for reconstructed repro steps; severity
+rubric S1–S4.
+
+**Verification** (D2, SKB-002 AC-2): `validate-skill.ts --tier=all` → 0 errors /
+0 warnings on all three · local `ingest.ts` dry-run → `✓ 2.14` `✓ 2.15` `✓ 2.16`,
+102 ingested, no duplicates (artifacts removed, not committed) · uat-writer's parse
+contract cross-checked against the shipped `prd-spec-template.md` (zero drift) ·
+this push's `ingest-skills.yml` run = go-live proof · install-and-trigger evidence
+at Wave 5 close-out. Note: adoption-reporter's synergy gains "consult-status-report"
+in Wave 4 when that skill exists.
