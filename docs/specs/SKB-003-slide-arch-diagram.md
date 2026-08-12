@@ -67,6 +67,9 @@ not claimed, not deleted here; cleanup tracked outside this spec.
 
 ## Record
 
-- Proposal: zynkr-skill-idea #116
-- Ship commit: (recorded on push)
-- 1.27 routing follow-up: (recorded when filed)
+- Proposal: zynkr-skill-idea #116 (closed out with the 1.34→1.39 correction)
+- Ship commit: bf499c90 (`feat(slide): slide-arch-diagram (1.39)`)
+- CI: ingest-skills.yml run 31564080683 — success (26s)
+- AC-3 evidence: `curl zynkr.ai/s/1.39.md` → 200 with `name: slide-arch-diagram`
+  (verified 2026-08-12)
+- 1.27 routing follow-up: zynkr-skill-idea #117 (AC-4)
