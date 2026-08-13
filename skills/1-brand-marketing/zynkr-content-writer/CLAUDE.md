@@ -27,7 +27,7 @@ Entry: /zynkr-content-writer skill → SKILL.md orchestrator
   ↓ routes via Task tool to one of 7 agents:
 
 Stage 0: content-idea  — Socratic dialogue for vague ideas
-Stage 1: content-style-select     — Picks from 9 structure templates
+Stage 1: content-style-select     — Picks from 10 structure templates (read from Drive)
 Stage 2: content-draft            — Writes ~400 words/section per turn
 Stage 3: content-editor             — Editorial review + forbidden-word check
 Stage 3.5: content-reader       — 100-point scoring (optional)
@@ -82,3 +82,14 @@ Run evals via the skill-creator plugin's `prepare_eval.py` script (see `.claude/
 - Agent files use YAML frontmatter (`name`, `description`, `model`) followed by a Markdown system prompt
 - All agents default to `model: sonnet`
 - CTA links and SEO keyword lists are hardcoded in the agent prompts and guide files — update them there directly when they change
+
+## Knowledge source of truth — edit the Docs, not the prompts
+
+Article structure, style guide, editor guide and forbidden words are **owned by Google Docs** in the Drive folder `[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`). Agents read them at runtime via `get_doc_as_markdown` and fall back to their embedded copies only when Drive is unreachable. See the "Knowledge Sources" table in `.claude/skills/write-article/SKILL.md` for the Doc IDs.
+
+Consequences:
+
+- To change writing behaviour, **edit the Doc** — no code change or redeploy needed.
+- `references/*.md` and the agents' embedded sections are **mirrors**. When a Doc changes, re-sync both.
+- The structure/style Docs are tabbed and `get_doc_as_markdown` returns all tabs as `#` sections (`# 最終產出` is the guide; `# 指令工程` is the generator prompt). The editor Doc stacks versions newest-first — only the top block is live.
+- The retired `wordcheckbe.zeabur.app/api/rules` endpoint is unreachable; forbidden words now come from 《[3.2] 禁用詞清單》.

@@ -1,5 +1,11 @@
 # 禁用詞清單
 
+> **⚠ Mirror — not the source of truth (since 2026-08-13).**
+> The authoritative list is the Google Doc 《[3.2] 禁用詞清單 Forbidden Words》
+> — `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`, in the Drive folder
+> `[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`).
+> Edit the Doc; re-sync this file afterwards. Agents no longer read this path at runtime.
+
 以下詞彙或短語在文章中應避免使用或需替換。
 
 ## 禁用詞

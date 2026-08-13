@@ -1,5 +1,11 @@
 # Article Templates / Article Types (2.0)
 
+> **Mirror — not the source of truth.** The authoritative copy is the Google Doc
+> 《[2.1] 文章架構模板 Article structure template》 — `1-pU_bDxPdf56G5cVP7Lh9E5r6SzeX3dFtwFC6xGFdLc`
+> (folder `[@] 寫作指南`, `12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`).
+> `get_doc_as_markdown` returns both tabs concatenated as top-level `#` headings — use only the
+> `# 最終產出` section; `# 指令工程` is the prompt that produced the template, not the template. If the Doc has moved on, the Doc wins — re-sync this file.
+
 ## Chronological Narrative（時間軸發展型）
 
 Organize the article's content along a timeline: start from the background and development in the past, walk through how it evolved into the present in order, and look ahead to possible future trends. Where applicable, also consider adding key historical events or milestone developments to help the reader understand the arc of change.
@@ -109,3 +115,17 @@ Sample output:
 * 「我常常想：到底什麼東西該收錢、什麼又該免費？」  
 * 「有時候覺得自己像是卡在兩個極端中間——想讓內容被更多人看見，但又不能什麼都免費。」  
 * 「如果你對這種寫法有想法，也歡迎回信跟我聊聊。」
+
+## Product Walkthrough（產品介紹型）
+
+Makes the product/tool the protagonist, breaking it down feature by feature. Each feature point must explain both "what it can do" and "the biggest benefit for the target user." Well suited to instructional articles, tool reviews, and newsletter teaching recommendations.
+
+Suggested structure: Situational hook (why you need this tool) → Breaking down the core features one by one (what it can do + biggest benefit) → Integrated usage takeaways → Call to action
+
+Sample output:
+
+* 情境破題：每週手動整理報表，一次花掉半天
+* 核心功能一：自動抓取資料 — 省去複製貼上
+* 核心功能二：套用範本 — 格式一次到位
+* 整合使用心得：從半天縮短到十分鐘
+* 行動呼籲：附上試用連結與下一步

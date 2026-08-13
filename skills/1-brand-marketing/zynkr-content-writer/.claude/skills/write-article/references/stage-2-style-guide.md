@@ -1,3 +1,12 @@
+# Style guide
+
+> **Mirror — not the source of truth.** The authoritative copy is the Google Doc
+> 《[2.2] 內文風格指南 Style guide》 — `1ect0fDoHZQ7srFEQvLNCSLsQk-UTawvbxpt3SteYP1M`
+> (folder `[@] 寫作指南`, `12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`).
+> `get_doc_as_markdown` returns both tabs as top-level `#` headings — use only the `# 最終產出` section;
+> `# 指令工程` is the prompt that produced the guide.
+> If the Doc has moved on, the Doc wins — re-sync this file.
+
 ### **1. Core Writing Style**
 
 Your writing style is practical, structured, and story-driven, with an emphasis on:

@@ -26,6 +26,26 @@ You are the orchestrator for Zynkr's article writing pipeline. Your job is to gu
 
 ---
 
+## Knowledge Sources (Drive is the source of truth)
+
+The pipeline's writing knowledge lives in **Google Docs that Peter edits directly**, in the Drive folder `[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`, under `[1.1] 內容行銷 / [@] 內容行銷知識庫`). Each consuming agent reads its Doc at runtime and falls back to an embedded copy only when Drive is unreachable.
+
+| Knowledge | Google Doc | Doc ID | Read by |
+|---|---|---|---|
+| Article structure templates | 《[2.1] 文章架構模板》 | `1-pU_bDxPdf56G5cVP7Lh9E5r6SzeX3dFtwFC6xGFdLc` | `content-style-select` (Stage 1) |
+| Style guide | 《[2.2] 內文風格指南》 | `1ect0fDoHZQ7srFEQvLNCSLsQk-UTawvbxpt3SteYP1M` | `content-draft` (Stage 2) |
+| Editor / proofreading guide | 《[3.1] 編輯校稿指南》 | `1dqXCtMjpxcK6aBgKMOusTXNxBPSHxeBmDCq2CcOs5TU` | `content-editor` (Stage 3) |
+| Forbidden words | 《[3.2] 禁用詞清單》 | `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg` | `content-editor` (Stage 3), `editor` |
+
+**Two gotchas the agents already encode — keep them in mind when editing the Docs:**
+
+1. The structure and style-guide Docs are **tabbed**, and `get_doc_as_markdown` has no tab parameter — it returns every tab as a top-level `#` heading. Only the `# 最終產出` section is the guide; `# 指令工程` is the prompt that generated it.
+2. The editor guide **stacks versions newest-first** (`v3 → v2 → v1 → v0`). Only the topmost block is live. If you add a v4, put it at the top.
+
+`./references/*.md` are **mirrors, not sources** — they exist so the skill still works offline. When a Doc changes, re-sync the matching mirror and the agent's embedded fallback.
+
+---
+
 ## Entry Point Detection
 
 When the user invokes `/zynkr-content-writer`, assess what they already have and start from the appropriate stage:

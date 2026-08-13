@@ -303,3 +303,59 @@ mandated local ingest dry-runs did their job).
 consult-intake trigger-on-arrival mode · consult-intake no-go close-out mode ·
 originals synergy backlinks (S) · SKB-001 itself — this batch's five manual dry-runs
 are the standing argument for finally shipping it.
+
+## 2026-08-13 — SKB-004: content-writer knowledge moves to Drive (Docs become the source of truth)
+
+The writing knowledge behind `/zynkr-content-writer` was frozen prose inside the agent
+prompts, and it had silently drifted from the Docs Peter actually maintains. Three
+copies existed (agent-embedded · `references/*.md` · Google Doc) with nothing keeping
+them in sync, and the two "live" lookups were both dead.
+
+**What changed:**
+
+- **Four Docs are now the runtime source of truth**, read via `get_doc_as_markdown`
+  with the embedded copy as offline fallback (same Drive-first pattern the `seo-*`
+  skills already use):
+  | Knowledge | Doc ID | Read by |
+  |---|---|---|
+  | 文章架構模板 | `1-pU_bDxPdf56G5cVP7Lh9E5r6SzeX3dFtwFC6xGFdLc` | `content-style-select` |
+  | 內文風格指南 | `1ect0fDoHZQ7srFEQvLNCSLsQk-UTawvbxpt3SteYP1M` | `content-draft` |
+  | 編輯校稿指南 | `1dqXCtMjpxcK6aBgKMOusTXNxBPSHxeBmDCq2CcOs5TU` | `content-editor` |
+  | 禁用詞清單 (**new**) | `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg` | `content-editor`, `editor` |
+- **Editor guide moved v2 → v3.** The live agent was enforcing the September rules
+  ("15–20 字/句", "40–60 字/段"); the Doc's current v3 (Oct 2025) **reverses** them
+  (3–6 sentences per paragraph, long sentences allowed). Every article was being cut
+  to the wrong rhythm. Agents + mirror now carry v3, with an explicit note that the
+  v2 rules are retired.
+- **Forbidden-word check un-broke.** Both paths were dead: `wordcheckbe.zeabur.app/api/rules`
+  returns nothing (HTTP 000), and `content-editor` read `forbidden-words.md` at
+  「專案根目錄」 — a path that never resolves from a normal cwd, with instructions to
+  skip silently. Now sourced from the new Doc, with the 17-term list embedded as fallback.
+- **10th structure reconciled.** `產品介紹型 (Product Walkthrough)` existed only in the
+  agent; added to the Doc and the mirror so all three agree at 10.
+- **Docs relocated out of the archive.** The three guides were swept into
+  `[Archive] 助理開發 pipeline` by the 2026-08-10 [5.x] audit. Moved to a new
+  `[@] 寫作指南` folder (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`) under
+  `[1.1] 內容行銷 / [@] 內容行銷知識庫`, alongside their sibling guides.
+
+**Verification (D2 evidence):**
+- `validate-skill.ts --tier=all` on the changed SKILL.md: **1/1 pass, 0 errors** when
+  frontmatter was completed; reverted to the `origin/main` baseline (see below), so the
+  shipped file is byte-identical in frontmatter to what was already passing the backstop.
+- `ingest.ts` on a clean tree with these changes: **exit 0**, no duplicate-name error.
+  (Interim finding: adding `category/project/platform/status/author` to the bundled
+  `.claude/skills/write-article/SKILL.md` makes ingest register it as a *second* skill
+  named `zynkr-content-writer` with a freshly-assigned sheetId → `Duplicate skill name`.
+  **Do not add those fields to a `.claude/`-layout bundle SKILL.md.** Reverted.)
+- Drive read-back on 《文章架構模板》 confirms all **10** types incl. 產品介紹型, and
+  confirms `get_doc_as_markdown` takes **no tab parameter** — it returns every tab as a
+  top-level `#` heading, so the agents are instructed to use only the `# 最終產出` section.
+- `[@] 寫作指南` folder listing confirms all 4 Docs present.
+- Both surfaces updated per the runtime-divergence rule: builder (English-canonical) and
+  `~/.claude` (zh-TW install) — 6 matching sections each, same order.
+
+**Open / follow-ups:** the bundled SKILL.md still carries 5 pre-existing ERROR-tier
+frontmatter findings (`category/project/platform/status/author`) that cannot be fixed the
+obvious way without tripping the duplicate above — needs a proper fix in ingest or the
+`.claude/`-layout contract (candidate SKB-005). First real `/zynkr-content-writer` run
+against the Docs is the live wiring proof, to be recorded here when it happens.

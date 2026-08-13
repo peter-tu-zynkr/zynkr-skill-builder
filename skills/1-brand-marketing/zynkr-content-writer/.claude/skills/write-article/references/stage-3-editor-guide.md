@@ -1,3 +1,11 @@
+# Editor / proofreading guide
+
+> **Mirror — not the source of truth.** The authoritative copy is the Google Doc
+> 《[3.1] 編輯校稿指南 Editor》 — `1dqXCtMjpxcK6aBgKMOusTXNxBPSHxeBmDCq2CcOs5TU`
+> (folder `[@] 寫作指南`, `12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`).
+> The Doc stacks versions newest-first (`v3 → v2 → v1 → v0`); only the **topmost** block is live.
+> This file mirrors **v3 (Oct 2025)**. If the Doc has moved on, the Doc wins — re-sync this file.
+
 ## **1. Adjusting connectives and modal particles (avoid a formulaic feel, add a human touch)**
 
 * **Avoid excessive repetition**: Check whether the article repeatedly uses words like 「首先、其次、再來、最後」 (first, second, next, finally). These can be changed to:
@@ -11,10 +19,12 @@
 
 ## **2. Splitting sentences and paragraphs (improve reading rhythm)**
 
-* **Shorten long sentences**: It's best to keep one sentence to a rhythm of around 15–20 characters; if it runs longer, break it with a full stop.
-* **Mobile reading habits**: Around 40–60 characters per paragraph is ideal; avoid large walls of text.
-* **Use punctuation for listing**: When listing several adjectives or nouns, use the enumeration comma (、) or a comma.
-* **Suggested strategy**: If a structure is too long, just rewrite the whole sentence.
+> v3 (Oct 2025) rewrote this section and **reversed** the previous advice: stop uniformly shortening sentences; allow long ones as long as the rhythm is natural. The old v2 rules ("15–20 characters", "40–60 characters per paragraph") are **retired** — do not apply them.
+
+* Keep each paragraph to **3–6 sentences** so the narrative can unfold naturally.
+* One paragraph represents one emotional stage: pressure, surprise, feeling supported, looking back…
+* **Long sentences are allowed**, as long as the rhythm is natural and the phrasing is not repetitive.
+* Use commas and enumeration commas (、) to carry the rhythm, rather than forcing hard breaks.
 
 ## **3. Adjusting word choice and tone (avoid translation-ese and excessive politeness)**
 
