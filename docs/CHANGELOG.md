@@ -359,3 +359,24 @@ frontmatter findings (`category/project/platform/status/author`) that cannot be 
 obvious way without tripping the duplicate above — needs a proper fix in ingest or the
 `.claude/`-layout contract (candidate SKB-005). First real `/zynkr-content-writer` run
 against the Docs is the live wiring proof, to be recorded here when it happens.
+
+---
+
+## 2026-08-16 — 修好 15 支以 raw SQL 寫 CRM 的技能：6 支完全跑不起來、12 支靜默掉資料（Spec: PLAT-046）
+
+盤點 `skills/2-sales-consultant/` 底下所有以 raw SQL 寫 `crm_*` 的技能——**15 支**，不是一開始以為的 4 支或 6 支。以 10 個 agent 扇出＋對抗式覆核跑完全樹審計。
+
+**6 支從來沒有成功寫入過**（`consult-intake` · `consult-project-specialist` · `consult-brd-writer` · `consult-shadowing-scheduler` · `consult-uat-writer` · `sales-specialist`）：
+
+- **`workspace_id` 從未蓋章**。`crm_companies`／`crm_contacts`／`crm_deals` 皆為 `NOT NULL DEFAULT auth.uid()`，而 Supabase MCP 連線沒有 JWT ⇒ `auth.uid()` 為 **NULL** ⇒ 每一筆 INSERT 都以 not-null violation 收場。設了 `owner_id` 不能代替。
+- **`'open'::task_status` 這個值不存在**（實為 `todo|done|in_progress|hold|drop`），整條 atomic CTE 直接 abort。**根因不是技能亂寫**——平台自己的 `CLAUDE.md` 把 `task_status` 記成 `(open/done)`，技能是照抄家規。上游已修（`1124bfd`），本次把這些檔案裡的 enum 小抄一併更正，否則會再長回來。
+
+**跨租戶**：每個 find-or-create 都用 `lower(name)`／`lower(email)` 掃**整張表**、沒有 workspace 條件。在公開 SaaS 資料庫上，這會把 lead 綁到**別的租戶**的公司或聯絡人。全部改為 workspace-scoped——順帶讓查詢改走 `crm_{companies,contacts}_workspace_id_idx` 索引掃描。
+
+**靜默掉資料（12 支）**：`SET notes = notes || …` 沒有 `COALESCE`。當 `notes IS NULL` 時串接結果為 NULL，UPDATE 變成**回報成功但什麼都沒寫**的 no-op，技能以為自己記下了 專案資料夾／BRD／UAT 的 backlink。**322 筆交易中有 65 筆（20%）`notes IS NULL`**。已全數改為 `COALESCE(notes,'')`。
+
+另外：補上 `legal_basis`（PDPA）——填表而來的用 `'consent'`、B2B 會議聯絡人用 `'legitimate_interest'`（與 agent 建立聯絡人的家規值一致）；`zynkr-crm.vercel.app` → `platform.zynkr.ai`（20 個檔案）；並改寫 `consult-brd-writer` 裡那段**假保證**——它宣稱「每一筆 SQL 寫入都帶明確 id」，引用的檔案卻正好漏了 `workspace_id`。
+
+**Verification**：修好的完整 CTE 以 `EXPLAIN`（無 ANALYZE，不執行）對正式環境成功產生查詢計畫——四個 INSERT、所有 enum cast、scoped 查詢走索引 ✓ · `crm_users.id` === `auth.users.id`，故 `(SELECT id FROM own)` 確為正確的 workspace_id（該工作區已有 30 筆交易）✓ · `'consent'`／`'legitimate_interest'::legal_basis`、`'todo'::task_status` 皆可轉型 ✓ · `validate-skill.ts` 對每支改動技能 **0 errors** ✓ · 殘留掃描：0 個舊網域、0 個裸 `notes = notes ||`、0 個 `'open'` ✓ · runtime 副本（`~/.claude/skills/`）已同步，Peter 的線上 session 立即生效。
+
+**範圍外**：`sales-outbound/references/lead-insert.sql` 維持原子不拆——它是六支裡**唯一原本就正確**的（有蓋 workspace_id、dedupe 有 scope、enum 正確）。
