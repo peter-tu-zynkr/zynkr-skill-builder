@@ -17,6 +17,19 @@
 --   {{EMAIL}}            e.g. 'albert321528@gmail.com'    (find-or-create key; keep real)
 --   {{TITLE}}            e.g. '品牌策略行銷顧問'           (or NULL)
 --   {{CONTACT_LIFECYCLE}} e.g. 'sql'                      (lifecycle_stage enum)
+--
+-- BAKED IN (not a placeholder): legal_basis = 'legitimate_interest'.
+--   PDPA requires a lawful basis for holding a person's data, and the MCP
+--   create_contact tool makes it a REQUIRED field for exactly that reason — but
+--   the column is nullable at the DB level, so raw SQL that omits it silently
+--   writes NULL (231 of 410 contacts are NULL today, all from this path).
+--   'legitimate_interest' is the house value for AGENT-created contacts —
+--   app/lib/ai/zynkr/tools.ts:810 ("預設正當利益；內部營運建立") and
+--   app/lib/line/process.ts:283 both hardcode it. Do NOT copy 'consent' from
+--   sales-specialist's contact-insert.sql: consent is right for a business card
+--   somebody handed you, and wrong for a cold outbound DM, where nobody consented.
+--   Only NEW contacts get this — the existing_contact branch returns matched rows
+--   untouched, so the 231 pre-existing NULLs need a separate backfill decision.
 --   {{DEAL_NAME}}        e.g. '超哥 — Zynkr CRM Beta'
 --   {{STAGE}}            e.g. 'qualified'                 (deal_stage enum)
 --   {{LEAD_SOURCE}}      e.g. 'outbound'                  (lead_source enum)
@@ -63,10 +76,11 @@ existing_contact AS (
   LIMIT 1
 ),
 new_contact AS (
-  INSERT INTO crm_contacts (first_name, last_name, email, title, company_id, owner_id, workspace_id, lifecycle_stage, last_contacted_at)
+  INSERT INTO crm_contacts (first_name, last_name, email, title, company_id, owner_id, workspace_id, lifecycle_stage, legal_basis, last_contacted_at)
   SELECT {{FIRST_NAME}}, {{LAST_NAME}}, {{EMAIL}}, {{TITLE}},
          (SELECT id FROM company LIMIT 1),
-         (SELECT uid FROM peter), (SELECT uid FROM peter), {{CONTACT_LIFECYCLE}}::lifecycle_stage, now()
+         (SELECT uid FROM peter), (SELECT uid FROM peter), {{CONTACT_LIFECYCLE}}::lifecycle_stage,
+         'legitimate_interest'::legal_basis, now()
   WHERE NOT EXISTS (SELECT 1 FROM existing_contact)
   RETURNING id
 ),
