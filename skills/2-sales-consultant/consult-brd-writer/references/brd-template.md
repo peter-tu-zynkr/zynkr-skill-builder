@@ -82,7 +82,7 @@ Placeholder guide (fill, then delete this comment block):
   {{PROJECT}}          專案短名，e.g. 報價流程自動化
   {{TODAY}}            e.g. 2026/08/03
   {{VERSION}}          v0.1（草稿）起跳；客戶確認後升 v1.0
-  {{DEAL_URL}}         https://zynkr-crm.vercel.app/deals/{deal_id}
+  {{DEAL_URL}}         https://platform.zynkr.ai/deals/{deal_id}
   {{BACKGROUND}}       2–4 句：客戶是誰、為什麼現在做這件事
   {{OBJECTIVES}}       條列 2–4 條業務目標（業務語言，不是功能清單）
   {{STAKEHOLDERS}}     條列：姓名／職稱／在本案的角色，e.g. 王小明（營運經理）— 需求窗口

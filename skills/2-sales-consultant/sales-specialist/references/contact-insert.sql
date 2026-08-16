@@ -41,17 +41,20 @@ own AS (SELECT id FROM crm_users WHERE email = 'peter_tu@zynkr.ai' LIMIT 1),
 
 -- 1. company: insert only when a real (non-empty) name has no match yet
 new_co AS (
-  INSERT INTO crm_companies (name)
-  SELECT p.company_name FROM params p
+  INSERT INTO crm_companies (name, owner_id, workspace_id)
+  SELECT p.company_name, (SELECT id FROM own), (SELECT id FROM own) FROM params p
   WHERE p.company_name IS NOT NULL
-    AND NOT EXISTS (SELECT 1 FROM crm_companies c WHERE lower(c.name) = lower(p.company_name))
+    AND NOT EXISTS (SELECT 1 FROM crm_companies c
+                     WHERE c.workspace_id = (SELECT id FROM own)
+                       AND lower(c.name) = lower(p.company_name))
   RETURNING id
 ),
 co_id AS (
   SELECT id FROM new_co
   UNION ALL
   SELECT c.id FROM crm_companies c, params p
-   WHERE p.company_name IS NOT NULL AND lower(c.name) = lower(p.company_name)
+   WHERE p.company_name IS NOT NULL
+     AND c.workspace_id = (SELECT id FROM own) AND lower(c.name) = lower(p.company_name)
   LIMIT 1
 ),
 
@@ -59,16 +62,17 @@ co_id AS (
 --    Whole name -> last_name; first_name stays NULL (renders the name as printed).
 new_ct AS (
   INSERT INTO crm_contacts
-    (last_name, email, title, phone, company_id, owner_id,
+    (last_name, email, title, phone, company_id, owner_id, workspace_id,
      lifecycle_stage, lead_status, legal_basis, deal_status, last_activity_at)
   SELECT p.full_name, p.email, p.title, p.phone,
-         (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own),
+         (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own), (SELECT id FROM own),
          'lead', 'other', 'consent', NULL, now()
   FROM params p
   WHERE p.email IS NULL
      OR NOT EXISTS (
        SELECT 1 FROM crm_contacts c
-       WHERE c.email IS NOT NULL AND lower(c.email) = lower(p.email)
+       WHERE c.workspace_id = (SELECT id FROM own)
+         AND c.email IS NOT NULL AND lower(c.email) = lower(p.email)
      )
   RETURNING id
 )

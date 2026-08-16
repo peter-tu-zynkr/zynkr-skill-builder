@@ -16,7 +16,8 @@
 -- Enums (pass an exact value): deal_stage{new,contacted,qualified,proposal,won,lost}
 --   service_tier{workshop,coaching,transformation,advisory,other}
 --   deal_priority{low,medium,high}  lead_source{content,workshop,referral,outbound,other}
---   activity_kind{note,email,task,meeting,stage_change,created,call}  task_status{open,done}
+--   activity_kind{note,email,task,meeting,stage_change,created,call,message}
+--   task_status{todo,done,in_progress,hold,drop}   ← there is NO 'open' (verified vs pg_enum 2026-08-16)
 
 WITH params AS (
   SELECT
@@ -41,10 +42,12 @@ pipe AS (SELECT id FROM crm_pipelines ORDER BY is_default DESC NULLS LAST, name 
 
 -- 1. company: explicit id wins; else create when a real name has no match yet
 new_co AS (
-  INSERT INTO crm_companies (name)
-  SELECT p.company_name FROM params p
+  INSERT INTO crm_companies (name, owner_id, workspace_id)
+  SELECT p.company_name, (SELECT id FROM own), (SELECT id FROM own) FROM params p
   WHERE p.in_company_id IS NULL AND p.company_name IS NOT NULL
-    AND NOT EXISTS (SELECT 1 FROM crm_companies c WHERE lower(c.name) = lower(p.company_name))
+    AND NOT EXISTS (SELECT 1 FROM crm_companies c
+                     WHERE c.workspace_id = (SELECT id FROM own)
+                       AND lower(c.name) = lower(p.company_name))
   RETURNING id
 ),
 co_id AS (
@@ -52,7 +55,8 @@ co_id AS (
   UNION ALL SELECT id FROM new_co
   UNION ALL
   SELECT c.id FROM crm_companies c, params p
-   WHERE p.in_company_id IS NULL AND p.company_name IS NOT NULL AND lower(c.name) = lower(p.company_name)
+   WHERE p.in_company_id IS NULL AND p.company_name IS NOT NULL
+     AND c.workspace_id = (SELECT id FROM own) AND lower(c.name) = lower(p.company_name)
   LIMIT 1
 ),
 
@@ -60,12 +64,15 @@ co_id AS (
 --    Only the always-safe columns are set; lifecycle_stage falls back to its
 --    column default ('opportunity') to avoid enum drift.
 new_ct AS (
-  INSERT INTO crm_contacts (first_name, last_name, email, title, company_id, owner_id)
+  INSERT INTO crm_contacts (first_name, last_name, email, title, company_id, owner_id, workspace_id, legal_basis)
   SELECT p.contact_first, p.contact_last, p.contact_email, p.contact_title,
-         (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own)
+         (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own), (SELECT id FROM own),
+         'legitimate_interest'::legal_basis
   FROM params p
   WHERE p.in_contact_id IS NULL AND p.contact_email IS NOT NULL
-    AND NOT EXISTS (SELECT 1 FROM crm_contacts c WHERE lower(c.email) = lower(p.contact_email))
+    AND NOT EXISTS (SELECT 1 FROM crm_contacts c
+                     WHERE c.workspace_id = (SELECT id FROM own)
+                       AND lower(c.email) = lower(p.contact_email))
   RETURNING id
 ),
 ct_id AS (
@@ -73,7 +80,8 @@ ct_id AS (
   UNION ALL SELECT id FROM new_ct
   UNION ALL
   SELECT c.id FROM crm_contacts c, params p
-   WHERE p.in_contact_id IS NULL AND p.contact_email IS NOT NULL AND lower(c.email) = lower(p.contact_email)
+   WHERE p.in_contact_id IS NULL AND p.contact_email IS NOT NULL
+     AND c.workspace_id = (SELECT id FROM own) AND lower(c.email) = lower(p.contact_email)
   LIMIT 1
 ),
 
@@ -81,10 +89,11 @@ ct_id AS (
 new_deal AS (
   INSERT INTO crm_deals
     (name, pipeline_id, stage, contact_id, company_id, value,
-     service_tier, priority, close_date, owner_id, lead_source, notes)
+     service_tier, priority, close_date, owner_id, workspace_id, lead_source, notes)
   SELECT p.deal_name, (SELECT id FROM pipe), p.stage, (SELECT id FROM ct_id LIMIT 1),
          (SELECT id FROM co_id LIMIT 1), p.value,
-         p.service_tier, p.priority, p.close_date, (SELECT id FROM own), p.lead_source, p.notes
+         p.service_tier, p.priority, p.close_date, (SELECT id FROM own), (SELECT id FROM own),
+         p.lead_source, p.notes
   FROM params p
   RETURNING id
 ),
@@ -105,8 +114,8 @@ acts AS (
   FROM (VALUES
     ('meeting', '{{MEETING_SUBJECT}}', '{{MEETING_BODY}}', NULL::text, NULL::timestamptz),
     ('note',    '{{NOTE_SUBJECT}}',    '{{NOTE_BODY}}',    NULL,        NULL),
-    ('task',    '{{TASK1_SUBJECT}}',   '{{TASK1_BODY}}',   'open',      now() + interval '7 days')
-    -- ,('task', '{{TASK2_SUBJECT}}',  '{{TASK2_BODY}}',   'open',      now() + interval '14 days')
+    ('task',    '{{TASK1_SUBJECT}}',   '{{TASK1_BODY}}',   'todo',      now() + interval '7 days')
+    -- ,('task', '{{TASK2_SUBJECT}}',  '{{TASK2_BODY}}',   'todo',      now() + interval '14 days')
   ) AS v(kind, subject, body, task_status, due)
   RETURNING id
 )

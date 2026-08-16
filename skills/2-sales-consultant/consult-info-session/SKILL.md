@@ -68,7 +68,7 @@ Liao) · recap structure from `training-lecture-recap` (4.08).
 - **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs/Calendar tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, home of the numbered `[N]` folders): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t` — orientation only; this skill never creates anything in it
-- **CRM deal URL** for the report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- **CRM deal URL** for the report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
 - Over the Supabase MCP, `auth.uid()` is **NULL** — any SQL write carries explicit ids; never rely on defaults that read the session user.
 
 ## Hard rules
@@ -194,7 +194,7 @@ SQL fallback via `mcp__supabase__execute_sql`:
 
 ```sql
 UPDATE crm_deals
-SET notes = notes || E'\n\n說明會（2026-08-20·線上）已舉行 — 回顧：<doc url>'
+SET notes = COALESCE(notes,'') || E'\n\n說明會（2026-08-20·線上）已舉行 — 回顧：<doc url>'
 WHERE id = '<deal_id>';
 ```
 

@@ -72,7 +72,7 @@ Placeholder guide (fill, then delete this comment block):
   {{SIZE}}/{{DOD}}  per SDD §2.1/§3 — S/D1 · M/D2 · L/D2; client data/schema/auth/money ⇒ D3
   {{TODAY}}         YYYY-MM-DD
   {{COMPANY}}       client company name
-  {{DEAL_URL}}      https://zynkr-crm.vercel.app/deals/{deal_id}
+  {{DEAL_URL}}      https://platform.zynkr.ai/deals/{deal_id}
   {{SOURCE_DOCS}}   links: the [BRD] doc, discovery summaries, shadowing transcript
   {{CONTEXT}}       see inline comment above
   {{TRIGGER_n}}/{{OUTCOME_n}}/{{VERIFY_n}}  see the AC inline comment

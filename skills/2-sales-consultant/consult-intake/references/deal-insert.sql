@@ -32,34 +32,42 @@ pipe AS (SELECT id FROM crm_pipelines  ORDER BY is_default DESC NULLS LAST, name
 
 -- 1. company: insert only when a real (non-empty) name has no match yet
 new_co AS (
-  INSERT INTO crm_companies (name)
-  SELECT p.company_name FROM params p
+  INSERT INTO crm_companies (name, owner_id, workspace_id)
+  SELECT p.company_name, (SELECT id FROM own), (SELECT id FROM own) FROM params p
   WHERE p.company_name IS NOT NULL
-    AND NOT EXISTS (SELECT 1 FROM crm_companies c WHERE lower(c.name) = lower(p.company_name))
+    AND NOT EXISTS (SELECT 1 FROM crm_companies c
+                     WHERE c.workspace_id = (SELECT id FROM own)
+                       AND lower(c.name) = lower(p.company_name))
   RETURNING id
 ),
 co_id AS (
   SELECT id FROM new_co
   UNION ALL
   SELECT c.id FROM crm_companies c, params p
-   WHERE p.company_name IS NOT NULL AND lower(c.name) = lower(p.company_name)
+   WHERE p.company_name IS NOT NULL
+     AND c.workspace_id = (SELECT id FROM own) AND lower(c.name) = lower(p.company_name)
   LIMIT 1
 ),
 
 -- 2. contact: insert only when this email has no contact yet
 new_ct AS (
   INSERT INTO crm_contacts
-    (first_name, email, company_id, owner_id, lifecycle_stage, deal_status, lead_status)
+    (first_name, email, company_id, owner_id, workspace_id, legal_basis,
+     lifecycle_stage, deal_status, lead_status)
   SELECT p.first_name, p.email, (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own),
+         (SELECT id FROM own), 'consent'::legal_basis,
          'lead', 'new', 'content'
   FROM params p
-  WHERE NOT EXISTS (SELECT 1 FROM crm_contacts c WHERE lower(c.email) = lower(p.email))
+  WHERE NOT EXISTS (SELECT 1 FROM crm_contacts c
+                     WHERE c.workspace_id = (SELECT id FROM own)
+                       AND lower(c.email) = lower(p.email))
   RETURNING id
 ),
 ct_id AS (
   SELECT id FROM new_ct
   UNION ALL
-  SELECT c.id FROM crm_contacts c, params p WHERE lower(c.email) = lower(p.email)
+  SELECT c.id FROM crm_contacts c, params p
+   WHERE c.workspace_id = (SELECT id FROM own) AND lower(c.email) = lower(p.email)
   LIMIT 1
 ),
 
@@ -67,14 +75,16 @@ ct_id AS (
 new_deal AS (
   INSERT INTO crm_deals
     (name, pipeline_id, stage, contact_id, company_id, value,
-     service_tier, priority, close_date, owner_id, lead_source, notes)
+     service_tier, priority, close_date, owner_id, workspace_id, lead_source, notes)
   SELECT p.deal_name, (SELECT id FROM pipe), 'new', (SELECT id FROM ct_id LIMIT 1),
          (SELECT id FROM co_id LIMIT 1), NULL,
-         'advisory', 'medium', (CURRENT_DATE + 30), (SELECT id FROM own), 'content', p.notes
+         'advisory', 'medium', (CURRENT_DATE + 30), (SELECT id FROM own), (SELECT id FROM own),
+         'content', p.notes
   FROM params p
   WHERE NOT EXISTS (
     SELECT 1 FROM crm_deals d JOIN crm_contacts c ON d.contact_id = c.id
-    WHERE lower(c.email) = lower(p.email)
+    WHERE d.workspace_id = (SELECT id FROM own)
+      AND lower(c.email) = lower(p.email)
   )
   RETURNING id
 ),

@@ -49,7 +49,7 @@ Placeholder guide (fill, then delete this comment block):
   {{COMPANY}}          客戶公司全名
   {{CONTACT}}          窗口姓名 + 職稱，e.g. 曜諭 杜（執行長）
   {{CONTACT_EMAIL}}    窗口 email
-  {{DEAL_URL}}         https://zynkr-crm.vercel.app/deals/{deal_id}
+  {{DEAL_URL}}         https://platform.zynkr.ai/deals/{deal_id}
   {{SOURCE_URL}}       原始逐字稿 / Gemini Notes / 會議連結
   {{COMPANY_PROFILE}}  1–2 句客戶業務輪廓（規模、業態、目標）
   {{SUMMARY}} {{PROGRESS}} {{BLOCKERS}} {{NEXT}}  — the 4-section Weekly Update

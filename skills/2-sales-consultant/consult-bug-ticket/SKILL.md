@@ -64,7 +64,7 @@ company + defect in the issue, person + thread in the CRM task — by design.
 - **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2]` consult projects, where the client's numbered `[N]` folder lives): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
-- **CRM deal URL** for the task/report (internal-only — never in the public issue): `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- **CRM deal URL** for the task/report (internal-only — never in the public issue): `https://platform.zynkr.ai/deals/{deal_id}`
 - Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write carries
   explicit ids (owner/creator via a `crm_users` lookup); never rely on defaults
   that read the session user.
@@ -196,7 +196,7 @@ Prefer `mcp__zynkr__create_task`; SQL fallback carries explicit ids
 
 ```sql
 UPDATE crm_deals
-SET notes = notes || E'\n\nBug #<n>：<issue url>（<severity>，追蹤任務已建立）'
+SET notes = COALESCE(notes,'') || E'\n\nBug #<n>：<issue url>（<severity>，追蹤任務已建立）'
 WHERE id = '<deal_id>';
 ```
 

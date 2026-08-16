@@ -41,7 +41,7 @@ This is a dual-write — the Sheet above stays as the full-fidelity record.
 |---------|-------|
 | **Project ID** | `uomieoqlkazknjgmfdda` (shared `Zynkr` Supabase project; CRM tables are `crm_*`) |
 | **Table** | `crm_contacts` |
-| **Contacts page** | `https://zynkr-crm.vercel.app/contacts` |
+| **Contacts page** | `https://platform.zynkr.ai/contacts` |
 | **Owner** | `peter_tu@zynkr.ai` → looked up to `owner_id` in the SQL |
 | **Insert template** | `./references/contact-insert.sql` (find-or-create company + dedup-by-email) |
 

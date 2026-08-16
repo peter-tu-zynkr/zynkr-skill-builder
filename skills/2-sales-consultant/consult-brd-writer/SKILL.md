@@ -63,10 +63,17 @@ first, the prose second.
 - **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
-- **CRM deal URL** for the doc/report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
-- Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write carries explicit
-  ids (owner via the `crm_users` lookup, exactly as in consult-project-specialist's
+- **CRM deal URL** for the doc/report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
+- Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write must carry explicit
+  ids (owner via the `crm_users` lookup, as in consult-project-specialist's
   `references/deal-insert.sql`); never rely on defaults that read the session user.
+  ⚠️ **`workspace_id` is the one that bites.** `crm_companies` / `crm_contacts` / `crm_deals`
+  all declare it `NOT NULL DEFAULT auth.uid()`, so an INSERT that omits it does not quietly
+  land in the wrong workspace — it **fails outright** with a not-null violation. Setting
+  `owner_id` is not enough and does not cover for it; this file said so for weeks while the
+  cited SQL omitted `workspace_id`, and every write from these skills failed
+  (fixed 2026-08-16, PLAT-046). Every dedupe lookup must be workspace-scoped too, or a
+  lead can bind to **another tenant's** company/contact row.
 
 ## Hard rules
 
@@ -196,7 +203,7 @@ Append the Doc URL to the deal's notes (the same pattern consult-intake uses):
 
 ```sql
 UPDATE crm_deals
-SET notes = notes || E'\n\n需求文件：[BRD] {{COMPANY}} — {{PROJECT}}\n<doc url>'
+SET notes = COALESCE(notes,'') || E'\n\n需求文件：[BRD] {{COMPANY}} — {{PROJECT}}\n<doc url>'
 WHERE id = '<deal_id>';
 ```
 

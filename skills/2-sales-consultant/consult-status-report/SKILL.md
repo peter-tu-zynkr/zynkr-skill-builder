@@ -73,7 +73,7 @@ client** is an incident. Peter reviews, edits, and hits send himself.
 - **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
-- **CRM deal URL** for the report/backlink: `https://zynkr-crm.vercel.app/deals/{deal_id}`
+- **CRM deal URL** for the report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
 - **Renderer**: `./scripts/render_dashboard_email.py` · **JSON contract**: `./references/dashboard_schema.json`
 - Over the Supabase MCP, `auth.uid()` is **NULL** — the step-9 SQL fallback
   carries explicit ids and never relies on defaults that read the session user.
@@ -213,7 +213,7 @@ Append to the deal's notes — `mcp__zynkr__update_deal` preferred; SQL fallback
 
 ```sql
 UPDATE crm_deals
-SET notes = notes || E'\n\n週報已擬稿：{{YYYY-Www}}（<health>）— Gmail 草稿待寄'
+SET notes = COALESCE(notes,'') || E'\n\n週報已擬稿：{{YYYY-Www}}（<health>）— Gmail 草稿待寄'
 WHERE id = '<deal_id>';
 ```
 
