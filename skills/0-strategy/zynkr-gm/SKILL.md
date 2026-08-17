@@ -18,6 +18,9 @@ description: >-
   weekly status email from its own tracker), /consult-status-report and /consult-governance
   (consulting portfolio), /admin-governance (file-level Drive↔local index drift),
   /admin-meeting-prep (per-meeting packets), /skill-finder (which skill for a task),
+  /planning-tracker-sync (the TEAM weekly tracker block, nudges and snapshots — it consumes this
+  skill's derived-state rules, but the founder brief stays here), the rest of the planning suite
+  0.03-0.10 (a planning CYCLE: pre-work, offsite synthesis, tracker build, OKR reconcile),
   /curate-livestream-transcripts (it produces the notes this skill only health-checks). This
   skill reads broadly and writes narrowly: it never edits the tracker, the onboarding master
   doc, or another owner's doc.
@@ -29,7 +32,7 @@ author: Peter Tu
 input: "Optional sub-command (week | progress [LOB] | send) and an optional 'as of' date; identifiers come from the private config (~/.config/zynkr/gm.json) or the rendered routine prompt."
 process: "Anchor on today → load private config → idempotency check → read the SOR chain in precedence order (script-first) → derive per-item state + per-owner rollup → compose the fixed-shape brief, every number cited → draft or send → report."
 output: "Weekly GM brief (zh-TW) as an HTML email: runway line · ≤3 GM-only unblocks · two clocks · P0/P1 by LOB · owner rollup · KPI off-target + asks · decisions · skips · machine health."
-synergy: [admin-governance, project-status-update, consult-governance, skill-finder, curate-livestream-transcripts, admin-meeting-prep]
+synergy: [admin-governance, project-status-update, consult-governance, skill-finder, curate-livestream-transcripts, admin-meeting-prep, planning-tracker-sync, planning-evidence-pack]
 ---
 
 # zynkr-gm
@@ -85,7 +88,7 @@ it — do not guess IDs and do not proceed with placeholders.
 | `references/brief-template.md` | Always — the exact 00–08 anatomy, headings, HTML skeleton, evidence-citation rule |
 | `references/derived-state-rules.md` | Always — ENDS_SOON / OVERDUE / UNDATED / PROPOSE_DONE / DIRECTION_UNLABELLED / STALLED, priority weighting |
 | `references/kpi-map.md` | When composing block 05 — per-metric class (AUTO/SEMI/HUMAN), where an Actual comes from, cloud availability |
-| `references/lob-skills-seed.md` | When a "what's next" needs an instrument — which existing skill moves which P0 |
+| `references/lob-skills-seed.md` | When a "what's next" needs an instrument — chain order, which skill moves which P0, and the category-0 weekly boundary. **Which skills exist is NOT in this file** — read it from `sources.skills_knowledge_map` (the skills KB Doc), one category section per LOB |
 
 ---
 

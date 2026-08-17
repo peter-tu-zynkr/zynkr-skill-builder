@@ -15,6 +15,7 @@ Every source is addressed by its **role key** in the private config (`config.exa
 | `sources.org_taxonomy` | Org Taxonomy (Doc) | live tab "Org Taxonomy v2" — LOB 0–9 + DRIs. Owner resolution. | gov | monthly | read | read |
 | `sources.plan_docs.<lob>` | 7 function plans: `1.0` `2.0` `3.0` `4.0` `6.0` `7.0` `8.0` (Docs, single tab) | TOP "2026-08-06 Refresh — aligned to the H2 Planning Main Tracker" block only (P0/P1 tracker IDs + owner + optional date range; retired KPIs; 已定案/還在摸索 labels). Where a later "2026-08-10 Addendum" exists it wins over both. **No status lives here.** Body §1–§9 = May cut, superseded. Note: tracker numbers 6.0→`5.x`, 7.0→`6.x`; 8.0 has no tracker rows. | 6 | on `modifiedTime` change only (key doc-watch on target IDs, not H2-folder shortcuts) | read | read |
 | `sources.eae_readme` | [5.0] Enterprise AI Enablement — README (Doc) | 1-page pointer (五階段交付, consult-* chain, offering SOR link). Not a plan; no tracker rows of its own (EAE lives under 4.01). | 6 | on `modifiedTime` change | read | read |
+| `sources.skills_knowledge_map` | [6.0] Zynkr Skills Knowledge Map (Doc) — **the skills KB** | ONE category section per read: the `## <N>. <Category>` heading matching the LOB in hand (e.g. `## 0. Strategy & Leadership 策略與領導`), plus `## At a glance` when you need the totals. Each `### slug (id)` under it carries the skill's one-liner, source count and readiness. Appendix A = broken/dead knowledge sources; Appendix B = most-shared docs. **This is the answer to "what skills exist now"** — never keep a skill list in this repo. | 6 | on `modifiedTime` change (it is regenerated, not hand-edited) | read | read |
 | `sources.livestream_notes_folder` | 直播筆記 output folder (Drive folder) | Newest file `modifiedTime` only — health check that curate-livestream-transcripts ran this week. Never run it. | health | every run | list | list |
 | `sources.move_log` | GM knowledge move log (Sheet) | append one row per `learn --apply` change (before → after). | gov | write on `learn --apply` | — | append |
 | `sources.core_folder` / `sources.h2_planning_folder` | Drive folders holding the 0-level originals / the H2 suite | folder listings for `learn` drift (name · type · modifiedTime · shortcut target). | gov | monthly | list | list |
@@ -39,3 +40,22 @@ Non-Drive reads (tools, not `sources.*` keys): CRM via `mcp__zynkr` (`list_deals
 ## How to read a big doc
 
 `get_doc_as_markdown(document_id, include_comments=false)` has no range/tab parameter; `ops_weekly` (~266k chars), `vms_v2` and the plan docs will overflow context. Procedure: (1) call with `include_comments=false`; (2) when the harness saves the oversize result to a file, do NOT read it whole — run `python3 scripts/extract_newest_block.py <dump-file> --blocks 1|2` (weekly log: newest `## <Mon DD, YYYY>` block(s)) or `--heading "H2 2026 alignment"` / `--heading "Refresh"` (VMS / plan docs: first top-level dated block); (3) read only the extract. Gate every plan-doc / VMS read on `modifiedTime` from the doc-watch state so steady-state runs read no plan doc at all. Cloud (Drive connector `read_file_content`) returns the same full text — apply the same extract before reasoning.
+
+`skills_knowledge_map` is the same shape (~110k chars, one `##` per category): dump it, then
+`python3 scripts/extract_newest_block.py <dump-file> --heading "0. Strategy"` — one category, never the whole Doc.
+
+## Freshness — the skills KB is a render, not a live feed
+
+The Knowledge Map is **generated** by `scripts/skills-index/build_knowledge_doc.py` in
+`zynkr-skill-builder`; it is only as current as the last rebuild. So do not trust it blind — check
+it against the live registry, which costs one call:
+
+```bash
+curl -s https://zynkr.ai/api/skills | python3 -c "import json,sys; print(len(json.load(sys.stdin)))"
+```
+
+(`WebFetch` gets a Cloudflare 403 on that URL; plain `curl` works.) Compare that count with the
+`## At a glance` → *Skills covered* line in the Doc. If the registry is ahead, say so in the brief's
+evidence line — **"skills KB is N behind, re-run build_knowledge_doc.py"** — and treat the Doc as a
+floor, not a ceiling. Never silently brief off a stale KB, and never patch the gap by typing skill
+names into this repo: the fix is always to regenerate the Doc.

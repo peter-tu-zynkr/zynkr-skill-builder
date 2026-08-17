@@ -1,5 +1,26 @@
 # Derived-state rules (mirrors `scripts/derive_state.py`)
 
+> **This file has a second consumer.** `planning-tracker-sync` (0.09) holds a verbatim copy at
+> `skills/0-strategy/planning-tracker-sync/references/derived-state-rules.md`, and calls
+> `zynkr-gm/scripts/derive_state.py` directly when zynkr-gm is installed. zynkr-gm **owns** these
+> rules; that skill only consumes them. **If you change a threshold or a state name here, re-copy
+> this file there in the same commit** — otherwise the founder brief and the team weekly silently
+> disagree about which items are OVERDUE or STALLED. Verify the rule bodies still match — each
+> file carries its own banner, so strip banner (`>`) and blank lines from both and diff. Use
+> `grep`, not `sed`: BSD/macOS sed rejects `/^$/{1d}` and both sides then compare empty-to-empty,
+> which reports a false pass.
+>
+> ```bash
+> cd skills/0-strategy
+> strip() { grep -v '^>' "$1" | grep -v '^[[:space:]]*$'; }
+> diff <(strip zynkr-gm/references/derived-state-rules.md) \
+>      <(strip planning-tracker-sync/references/derived-state-rules.md) && echo "no drift"
+> ```
+>
+> Expect 33 body lines each side and no output. Any output means the two have drifted and the copy
+> must be refreshed. (Checked 2026-08-17: identical, and verified the check does fail on a seeded
+> one-word change — a drift check that cannot fail is worse than none.)
+
 The Main Tracker 「H2 專案項目」 knows only three statuses — **未開始 / 進行中 / 放棄**. There is no 完成 or 延遲, most `開始`/`結束` cells still hold the literal placeholder `YYYY-MM-DD`, and [3.1] Metrics are mostly bare `#`. Everything below is therefore **inferred** and reported as flags with evidence. The skill never edits the tracker (owners push schedules); it proposes.
 
 ## Inputs
