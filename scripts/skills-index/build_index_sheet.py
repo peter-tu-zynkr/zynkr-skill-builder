@@ -336,6 +336,19 @@ def tab_overview(wb, ctx):
 
 
 # ==================================================== Skill Index (main)
+def hlink(url, label):
+    """A =HYPERLINK() formula: shows a short label, opens the full URL.
+
+    Preferred over openpyxl's cell-hyperlink attribute for two reasons — the cell stays compact
+    (a Drive ID or repo path) while still opening the real target, and a formula is verifiable
+    after the xlsx→Sheets conversion: it renders as its label, so reading the cell back proves
+    the link survived. A native cell link is invisible to every read path available here.
+    """
+    u = str(url).replace('"', '%22')
+    lab = str(label if label else url).replace('"', "'")
+    return f'=HYPERLINK("{u}","{lab}")'
+
+
 def source_url(source_path):
     """GitHub link for a skill's own source file — only when the path resolves on disk.
 
@@ -483,7 +496,7 @@ def tab_index(wb, inv, sx, ax):
     # applied last so it survives the parent/child font passes above
     for r, col, u in srclinks:
         c = ws.cell(row=r, column=col)
-        c.hyperlink = u
+        c.value = hlink(u, c.value)
         c.font = Font(name=FONT_MONO, size=(10 if col == 3 else 9),
                       bold=(col == 3), color=SAGE_DEEP, underline='single')
     ws.auto_filter.ref = f'A1:{get_column_letter(n)}{ws.max_row}'
@@ -540,14 +553,17 @@ def tab_knowledge(wb, inv, sx):
         # display the shortest name seen (longer variants are the same source plus a qualifier)
         name = min(a['names'], key=len) if a['names'] else ''
         pr, label = min((SCOPE.get(t, (6, 'Other')) for t in a['types']), key=lambda x: x[0])
-        # Column D prefers an openable URL; falls back to the raw ID/path when none is derivable.
-        if a['url']:
-            idcell = a['url']
-        elif key[0] == 'id' and a['canon']:
+        # Column D shows the shortest honest identifier and, when a target could be derived,
+        # links it. Display order: canonical Drive ID > the stated id/path > the URL itself.
+        if key[0] == 'id' and a['canon']:
             # every variant resolves to the same Drive ID — show it once, not each phrasing
-            idcell = a['canon']
+            disp = a['canon']
         else:
-            idcell = jl(sorted(a['ids']), ' | ')
+            disp = jl(sorted(a['ids']), ' | ')
+        if a['url']:
+            idcell = hlink(a['url'], disp or a['url'])
+        else:
+            idcell = disp
         purposes = sorted(a['p'], key=len)
         pcell = jl(purposes[:5], '; ')
         if len(purposes) > 5:
@@ -567,10 +583,9 @@ def tab_knowledge(wb, inv, sx):
         if ws.cell(row=r, column=5).value == 'TRUE':
             ws.cell(row=r, column=5).font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
         ws.cell(row=r, column=2).font = Font(name=FONT_ZH, size=9, bold=True, color=INK)
-    for r, url in links:
-        c = ws.cell(row=r, column=4)
-        c.hyperlink = url
-        c.font = Font(name=FONT_MONO, size=9, color=SAGE_DEEP, underline='single')
+    for r, _url in links:
+        ws.cell(row=r, column=4).font = Font(name=FONT_MONO, size=9, color=SAGE_DEEP,
+                                            underline='single')
     for r, pr in band:
         c = ws.cell(row=r, column=1)
         c.font = Font(name=FONT_ZH, size=9, bold=True, color=(INK if pr <= 2 else MUTE))
