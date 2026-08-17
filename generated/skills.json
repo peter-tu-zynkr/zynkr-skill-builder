@@ -58,6 +58,64 @@
     "sourceFile": "0-strategy/planning-prework-pack/SKILL.md"
   },
   {
+    "id": "0.04",
+    "name": "planning-1on1-annual-digest",
+    "category": "strategy",
+    "project": "planning-1on1-annual-digest",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Turn ONE teammate's shared 1:1 Doc (weekly WB entries), their LOB plan Doc and the tracker rows they own into a zh-TW 「年度計畫＿<name>」 Google Doc in the planning hub folder — six fixed sections (過去一年成果總覽 · 策略透鏡 C1–C4 · 復盤 放大／收割／停止或改造 · 年度計劃 3–5 主軸 · OKR · 接下來) with every claim tagged to its WB date, plus a 12-line slide summary block for that person's session one-pager. Trigger on /planning-1on1-annual-digest or when Peter says \"幫 <name> 整理年度計畫\", \"從 1:1 文件整理 <name> 的年度回顧\", \"把 <name> 的 1:1 筆記變成年度計畫\", \"做 年度計畫＿<name>\", \"annual digest for <name>\", or hands over a 1:1 Doc ID before a planning session. Distinct from planning-prework-pack (ALL owners → session workbook + deck; it CONSUMES this skill's slide block), from planning-evidence-pack (company-level numbers scoreboard), from planning-session-synth (digests the SESSION transcript, not 1:1 docs), and from project-status-update (the course-project WEEKLY — it owns bare 「週報」/「weekly report」). Not a performance review: it never grades the person, never invents metrics, never writes into the 1:1 Doc.",
+    "input": "One person's name (→ 1:1 Doc via sources §B, or a Doc ID) · optional cycle H1/H2/YE (default YE) · optional window (default last 12 months) · optional LOB / plan Doc override",
+    "process": "Step 0 resolve cycle + sources → parse WB entries into a dated ledger → read LOB plan Doc + owned tracker rows → build 一~六 (timeline · C1–C4 lens · 放大/收割/停止 · 主軸 · OKR · 接下來) → show outline + 待補 list → create Doc in hub → 12-line slide block",
+    "output": "「年度計畫＿<name>」 Doc in the planning hub folder (zh-TW, six exact sections, WB-dated claims, 待定/（待補） where no source) + a 12-line slide block in chat + a wrote / did-not-touch report",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.04",
+    "sheetId": "0.04",
+    "kind": "skill",
+    "synergy": [
+      "0.04"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.04.md -o ~/.claude/skills/planning-1on1-annual-digest.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-1on1-annual-digest/SKILL.md"
+  },
+  {
+    "id": "0.05",
+    "name": "planning-evidence-pack",
+    "category": "strategy",
+    "project": "planning-evidence-pack",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "The \"looking back in numbers\" scoreboard for a Zynkr planning cycle (H1 / H2 / YE). Seeds KPIs from the session workbook's Pre-work by LOB tab + the OKR tracker's KRs, routes each to ONE readable source (Main Tracker 完成 counts · planning-tracker-sync's `tracker-snapshots` tab · OKR status · Calendar event counts by title pattern · Gmail Fireflies recap counts · numbers the user pastes; zynkr-gm's kpi-map.md when installed), writes a `Scoreboard` tab (KPI · source · <cycle>-start · <cycle>-end · Δ · note) into the cycle workbook or a new hub Sheet, plus the five-tile numbers-slide text. Unreadable → 「（待補）」+ the source needed; never estimates; read-only against every source. Trigger on /planning-evidence-pack or \"數字回顧\", \"把這個週期的數字拉出來\", \"做 scoreboard\", \"KPI 計分板\", \"上半年／全年數字\", \"evidence pack\", \"looking back in numbers\", \"pull the numbers for the offsite\". Distinct from planning-prework-pack (consumes the scoreboard), planning-tracker-sync (weekly agenda + snapshots — a source here), zynkr-gm (founder's weekly GM brief + KPI-variance asks; owns 「GM 週報 / 這週重點 / H2 進度盤點 / KPI 有沒有 off target」), planning-1on1-annual-digest (one person's year), and project-status-update (owns bare 「週報」).",
+    "input": "Cycle label (H1/H2/YE) + as-of date; optional session-workbook Sheet ID; optional pasted numbers (Kit · LINE · marketplace · platform · cash/burn/runway) and ID overrides",
+    "process": "Resolve cycle + sources → seed KPIs (workbook Pre-work + OKR KRs) → route each to one source (zynkr-gm kpi-map when installed) → read tracker / snapshots / OKR / calendar / Fireflies / pasted, （待補）the rest → row plan → confirm → write Scoreboard → 5 tiles",
+    "output": "A `Scoreboard` tab (or new hub Sheet): KPI · source · <cycle>-start · <cycle>-end · Δ · note, plus the five-tile slide-4 text and the （待補）gap list with the source each needs",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.05",
+    "sheetId": "0.05",
+    "kind": "skill",
+    "synergy": [
+      "0.05"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.05.md -o ~/.claude/skills/planning-evidence-pack.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-evidence-pack/SKILL.md"
+  },
+  {
     "id": "0.06",
     "name": "planning-session-synth",
     "category": "strategy",
@@ -87,6 +145,64 @@
     "sourceFile": "0-strategy/planning-session-synth/SKILL.md"
   },
   {
+    "id": "0.07",
+    "name": "planning-tracker-builder",
+    "category": "strategy",
+    "project": "planning-tracker-builder",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Build or extend Zynkr's planning Main Tracker (the cycle's system of record) from a NORMALIZED item list — the planning-session-synth handoff or a pasted table. Fresh cycle: copy the template tracker (never edit it) → 「<year> <cycle> Planning Main Tracker」 → cycle-named tabs → fill the SOR tab with L1 header rows + N.NN numbering, 重要×緊急 → Priority formula, the 專案項目小記 pivot, 狀態 colours. Existing tracker: fill the empty SOR tab session-synth left, append rows under the right L1 block, or add a new tab — never overwrite the SOR tab in place, never renumber. Prints a LINT REPORT (P0 cap > 6 / > 25%, owner > 3 P0, items 掛 All, missing owners/dates, L2 off-taxonomy, duplicate 項目, P3 not 放棄) and the C1 cash pre-mortem before writing; lint warns, never blocks. Trigger on /planning-tracker-builder or \"建 tracker\", \"把項目清單做成 Main Tracker\", \"建立 YE Planning Main Tracker\", \"把正規化清單寫進 tracker\", \"把這些專案 項目排進 tracker\", \"build the planning tracker\", \"extend the tracker with these items\", \"lint the project list\". Distinct from planning-session-synth (upstream — transcript + whiteboard → normalized list), planning-tracker-sync (downstream weekly READ; never builds), planning-suite-reconciler (docs/OKR sheet reconcile TO the tracker) and project-status-update (course-project weekly; owns bare 「週報」).",
+    "input": "A normalized item list (session-synth handoff or pasted rows: L1/L2 · 項目 · 重要 · 緊急 · 負責人 · dates · 備註) + owner/priority decisions · cycle (H1/H2/YE) · optional existing tracker ID",
+    "process": "Resolve cycle + sources → ingest, normalise, number N.NN → lint report + C1 cash pre-mortem → row plan → on explicit go: copy template / fill or extend existing → SOR tab (RAW) + Priority formula, 專案項目小記 pivot, 狀態 colours → read back → report wrote / did-not",
+    "output": "A cycle-named Main Tracker Sheet (or new rows/tab in an existing one) — SOR tab · pivot · colours — plus the printed lint report, C1 section, row plan and wrote/did-not summary",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.07",
+    "sheetId": "0.07",
+    "kind": "skill",
+    "synergy": [
+      "0.07"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.07.md -o ~/.claude/skills/planning-tracker-builder.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-tracker-builder/SKILL.md"
+  },
+  {
+    "id": "0.08",
+    "name": "planning-suite-reconciler",
+    "category": "strategy",
+    "project": "planning-suite-reconciler",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Propagate a FINALIZED planning Main Tracker into Zynkr's satellite planning suite after an H1 / H2 / YE planning session: for the integrated plan Doc and every per-LOB plan Doc it composes and inserts a dated top-of-body Refresh addendum (thesis sharpened · what changed vs the previous plan · open decisions · the P0 list with owners · management fixes from the retro), and for the OKR & KPI Tracker it rebases the OKRs (Objective = 策略主軸, KR = P0 items with Owner + Tracker #) and mirrors P0+P1 Initiatives into NEW dated tabs. Prints every addendum and the tab plan, takes ONE confirmation for the whole batch, then writes — and never edits an existing body, never touches the tracker. Trigger on /planning-suite-reconciler or when Peter says \"同步計畫文件\", \"把 tracker 同步到各部門計畫\", \"更新計畫文件的 addendum\", \"把 OKR 對齊 tracker\", \"reconcile the planning suite\", \"write the plan addenda\", \"rebase the OKRs to the tracker\", \"propagate the tracker\". Distinct from planning-tracker-builder (BUILDS the tracker upstream — this skill only reads it), from planning-lob-gap-audit (a per-LOB report-only audit that READS the addendum this skill wrote), and from admin-governance (local _INDEX.md ↔ Drive index sync — index entries are its job, not this skill's).",
+    "input": "The finalized Main Tracker (SOR tab) + cycle label; suite IDs come from ./references/planning-sources.md unless overridden; optional extra Docs/Sheets to include, 'overwrite' flag",
+    "process": "Resolve cycle + sources → read SOR + retro tabs (read-only) → inventory the suite (shortcuts, tabs, prior addenda) → compose per-Doc addenda + OKR/Initiatives tab plan → print all, ONE confirmation → insert addenda at top, write new tabs → verify → leftovers",
+    "output": "A dated Refresh addendum atop each plan Doc, two new dated tabs in the OKR & KPI Tracker, a written-vs-not-done report with URLs, and a leftovers list of what the API refused",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.08",
+    "sheetId": "0.08",
+    "kind": "skill",
+    "synergy": [
+      "0.08"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.08.md -o ~/.claude/skills/planning-suite-reconciler.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-suite-reconciler/SKILL.md"
+  },
+  {
     "id": "0.09",
     "name": "planning-tracker-sync",
     "category": "strategy",
@@ -114,6 +230,35 @@
     "firstSeen": "2026-08-17",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "0-strategy/planning-tracker-sync/SKILL.md"
+  },
+  {
+    "id": "0.10",
+    "name": "planning-lob-gap-audit",
+    "category": "strategy",
+    "project": "planning-lob-gap-audit",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Audit ONE line of business (an L1 LOB such as 3.0 Operations) after a planning cycle: inventory its Drive folder, read its plan Doc + Refresh addendum and its rows in the planning Main Tracker, and cross-check five gap classes — P0/P1 items with no doctrine/SOP or owner-named plan, role docs / SOPs that contradict the plan (stale tools, stale owners), docs the plan cites that do not exist, superseded snapshots without a [SUPERSEDED] banner, and open decisions the plan needs from the founder. Produces a wave-ordered heal list (SOR sync → banners → build missing doctrine → rewrites) with 可交 Claude flags and the owning skill per fix, written as a NEW report Doc 「[N.0.1] <LOB> — <cycle> Gap Audit & Heal Plan（YYYY-MM-DD）」 plus a NEW 「行動追蹤表」 Sheet in the LOB folder. Report-only: it never edits, renames or moves an existing Doc, and never executes a fix. Trigger on /planning-lob-gap-audit or when Peter says \"部門缺口稽核\", \"幫我做 3.0 的 gap audit\", \"檢查營運部門的文件有沒有跟計畫對齊\", \"文件缺口盤點\", \"做一份 heal plan\", \"哪些 SOP 過時了\", \"audit the ops docs against the H2 plan\", \"LOB gap audit\", \"gap audit and heal plan for <LOB>\". Distinct from admin-governance (local _INDEX.md ↔ Drive INDEX sync — metadata only, all LOBs, weekly), from consult-governance (the consulting ENGAGEMENT portfolio — a pattern source only), and from planning-suite-reconciler (WRITES the plan addendum this skill only READS — this skill writes no addenda).",
+    "input": "One L1 LOB number + cycle label; plan Doc / tracker IDs from ./references/planning-sources.md; the LOB Drive folder ID (admin-governance's folder map if installed, else asked)",
+    "process": "Resolve cycle + sources + LOB folder → inventory folder one level deep → read plan addendum + SOR rows → cross-check G1–G5 → heal list in waves W1–W4 (owner · 可交 Claude · owning skill) → ONE confirmation → write report Doc + 行動追蹤表 → close-out",
+    "output": "A NEW report Doc 「[N.0.1] <LOB> — <cycle> Gap Audit & Heal Plan」 + a NEW 行動追蹤表 Sheet (README · 修復清單 · 待決事項) in the LOB folder, plus GM-directory entry + did-not list",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.10",
+    "sheetId": "0.10",
+    "kind": "skill",
+    "synergy": [
+      "0.10"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.10.md -o ~/.claude/skills/planning-lob-gap-audit.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-lob-gap-audit/SKILL.md"
   },
   {
     "id": "1.01",

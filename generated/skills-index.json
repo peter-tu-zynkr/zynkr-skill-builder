@@ -46,6 +46,52 @@
     "first_seen": "2026-08-17"
   },
   {
+    "id": "0.04",
+    "sheet_id": "0.04",
+    "slug": "planning-1on1-annual-digest",
+    "name": "planning-1on1-annual-digest",
+    "summary": "Turn ONE teammate's shared 1:1 Doc (weekly WB entries), their LOB plan Doc and the tracker rows they own into a zh-TW 「年度計畫＿<name>」 Google Doc in the planning hub folder — six fixed sections (過去一年成果總覽 · 策略透鏡 C1–C4 · 復盤 放",
+    "category": "strategy",
+    "project": "planning-1on1-annual-digest",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/planning-1on1-annual-digest/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.04.md -o ~/.claude/skills/planning-1on1-annual-digest.md",
+    "tags": [
+      "planning-1on1-annual-digest",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
+    "id": "0.05",
+    "sheet_id": "0.05",
+    "slug": "planning-evidence-pack",
+    "name": "planning-evidence-pack",
+    "summary": "The \"looking back in numbers\" scoreboard for a Zynkr planning cycle (H1 / H2 / YE).",
+    "category": "strategy",
+    "project": "planning-evidence-pack",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/planning-evidence-pack/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.05.md -o ~/.claude/skills/planning-evidence-pack.md",
+    "tags": [
+      "planning-evidence-pack",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
     "id": "0.06",
     "sheet_id": "0.06",
     "slug": "planning-session-synth",
@@ -69,6 +115,52 @@
     "first_seen": "2026-08-17"
   },
   {
+    "id": "0.07",
+    "sheet_id": "0.07",
+    "slug": "planning-tracker-builder",
+    "name": "planning-tracker-builder",
+    "summary": "Build or extend Zynkr's planning Main Tracker (the cycle's system of record) from a NORMALIZED item list — the planning-session-synth handoff or a pasted table.",
+    "category": "strategy",
+    "project": "planning-tracker-builder",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/planning-tracker-builder/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.07.md -o ~/.claude/skills/planning-tracker-builder.md",
+    "tags": [
+      "planning-tracker-builder",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
+    "id": "0.08",
+    "sheet_id": "0.08",
+    "slug": "planning-suite-reconciler",
+    "name": "planning-suite-reconciler",
+    "summary": "Propagate a FINALIZED planning Main Tracker into Zynkr's satellite planning suite after an H1 / H2 / YE planning session: for the integrated plan Doc and every per-LOB plan Doc it composes and inserts a dated top-of-body",
+    "category": "strategy",
+    "project": "planning-suite-reconciler",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/planning-suite-reconciler/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.08.md -o ~/.claude/skills/planning-suite-reconciler.md",
+    "tags": [
+      "planning-suite-reconciler",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
     "id": "0.09",
     "sheet_id": "0.09",
     "slug": "planning-tracker-sync",
@@ -84,6 +176,29 @@
     "install_command": "curl -sL zynkr.ai/s/0.09.md -o ~/.claude/skills/planning-tracker-sync.md",
     "tags": [
       "planning-tracker-sync",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
+    "id": "0.10",
+    "sheet_id": "0.10",
+    "slug": "planning-lob-gap-audit",
+    "name": "planning-lob-gap-audit",
+    "summary": "Audit ONE line of business (an L1 LOB such as 3.0 Operations) after a planning cycle: inventory its Drive folder, read its plan Doc + Refresh addendum and its rows in the planning Main Tracker, and cross-check five gap c",
+    "category": "strategy",
+    "project": "planning-lob-gap-audit",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/planning-lob-gap-audit/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.10.md -o ~/.claude/skills/planning-lob-gap-audit.md",
+    "tags": [
+      "planning-lob-gap-audit",
       "strategy",
       "claude",
       "skill"
