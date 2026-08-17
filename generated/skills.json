@@ -29,6 +29,93 @@
     "sourceFile": "0-strategy/zynkr-gm/SKILL.md"
   },
   {
+    "id": "0.03",
+    "name": "planning-prework-pack",
+    "category": "strategy",
+    "project": "planning-prework-pack",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Build the BEFORE-THE-ROOM pack for a Zynkr planning session (H1 / H2 / YE): copy the session-workbook template Sheet and re-fill its five tabs for the new cycle (Read Me · Agenda 8 blocks · Pre-work by LOB 8 rows · Laundry List + Eisenhower seeds · Eisenhower Matrix) from the Main Tracker, the OKR tracker, the per-LOB plan Docs and the 1:1 Docs; write per-owner one-pager text blocks into a 「Pre-work — <cycle>」 Doc; hand a 16-slide template-fill request to /zynkr-slide (or print the slide text if it is not installed); and print a logistics checklist + calendar-invite text. Trigger on /planning-prework-pack or when Peter says \"準備 planning session 的會前資料\", \"做 H2/YE 規劃會的 workbook 跟 deck\", \"會前 pre-work\", \"出規劃會 agenda 跟 pre-work\", \"prep the offsite\", \"build the planning pre-work pack\". Shows the tab-by-tab plan first, writes only on confirmation, marks every number's source, never creates the calendar event or sends anything without an explicit yes. Distinct from planning-evidence-pack (numeric Scoreboard tab — consumed here), planning-1on1-annual-digest (one person's 年度計畫 Doc — only Top-3 lines lifted), planning-session-synth (AFTER the room), zynkr-slide (RENDERS the deck; this skill only writes the request) and project-status-update (the course-project weekly — bare 「週報」 stays there).",
+    "input": "Cycle label (H1/H2/YE) + session date; optional start time, 1:1 look-back weeks (default 8), pasted runway/shipped numbers, ID overrides (tracker, plan Docs, 1:1 Docs, hub)",
+    "process": "Resolve cycle + sources → gather evidence (tracker by owner/status, OKR tracker, plan-Doc addenda, 1:1 WB entries) → print tab-by-tab plan → on confirm copy template Sheet + fill 5 tabs → Pre-work Doc → deck request → logistics + invite → report",
+    "output": "Filled session workbook (5 tabs) + 「Pre-work — <cycle>」 Doc in the hub folder, a 16-slide deck request (or slide text), logistics checklist + invite text, and a not-done list",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.03",
+    "sheetId": "0.03",
+    "kind": "skill",
+    "synergy": [
+      "0.03"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.03.md -o ~/.claude/skills/planning-prework-pack.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-prework-pack/SKILL.md"
+  },
+  {
+    "id": "0.06",
+    "name": "planning-session-synth",
+    "category": "strategy",
+    "project": "planning-session-synth",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Same-day digestion of a Zynkr planning offsite (H1 / H2 / year-end): turn the session transcript + whiteboard photos into the Main Tracker's working tabs — verbatim 「② 白板原文」 (pen colour + 判讀信心 高/中/低), the MECE re-cut 「③ 去重與歸類決策」 + 「④ MECE 檢查」 with every merge/split/move ruling written down, the 「<cycle> 回顧總結」 retro table with 5 重點結論, the README tab, a normalized item list handed to planning-tracker-builder, and the recap mail as a Gmail DRAFT (never sent). Trigger on /planning-session-synth or when Peter says \"整理 offsite 白板\", \"白板轉 tracker\", \"整理 planning 逐字稿\", \"做回顧總結\", \"H2/年度 planning recap\", \"digest the planning session\", \"whiteboard to tracker\", or hands over an offsite transcript and/or board photos. Distinct from project-note-specialist / consult-session-notes (tidy ONE meeting into a Summary/Progress/Blockers/Next shape — no whiteboard, no MECE tabs), from curate-livestream-transcripts (weekly batch summaries of livestream Docs), from planning-tracker-builder (takes THIS skill's item list and adds owners / priority / the SOR tab), and from planning-prework-pack (before the room).",
+    "input": "Cycle (H1/H2/YE) + transcript (Doc ID, pasted text or Fireflies recap) + whiteboard photo(s) (Drive image IDs or local files); optional speaker map, recap recipients, tracker ID",
+    "process": "Resolve cycle + sources → fetch transcript + photos → Pass A verbatim ② 白板原文 → Pass B MECE re-cut ③ + ④ + normalized list → transcript pass: speaker turns → 回顧總結 + 5 重點結論 → README + 請與會者確認 → tabs into the tracker (row plan first) → recap-mail Gmail DRAFT",
+    "output": "Tabs README · <cycle> 回顧總結 · ② 白板原文 · ③ 去重與歸類決策 · ④ MECE 檢查 in the Main Tracker, a normalized item list for planning-tracker-builder, and a recap-mail Gmail DRAFT (never sent)",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.06",
+    "sheetId": "0.06",
+    "kind": "skill",
+    "synergy": [
+      "0.06"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.06.md -o ~/.claude/skills/planning-session-synth.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-session-synth/SKILL.md"
+  },
+  {
+    "id": "0.09",
+    "name": "planning-tracker-sync",
+    "category": "strategy",
+    "project": "planning-tracker-sync",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "description": "Team-side weekly heartbeat on the COMPANY Planning Main Tracker (SOR tab of the H1 / H2 / YE cycle) — zynkr-gm's record-side companion. Reads the `<cycle> 專案項目` tab, derives per-item state with zynkr-gm's rules VERBATIM (ENDS_SOON · OVERDUE · UNDATED · STALLED · PROPOSE_DONE · DIRECTION_UNLABELLED — its scripts when installed, else the copied rules) and prints the zh-TW Team Weekly agenda block in one fixed six-section shape (cadence → OVERDUE／ENDS_SOON → UNDATED／掛 All → 各 owner P0/P1 + Δ → PROPOSE_DONE／上週完成 → 還在摸索／已定案) plus per-owner nudge blocks (Gmail DRAFT only on request; never sends). Writes only the OKR-tracker snapshot tabs: `snapshot` refreshes `tracker-latest` and appends to `tracker-snapshots` in the OKR & KPI Tracker — never a Main Tracker cell. `--retro` prints a looking-back draft for planning-prework-pack. Ships no cron; documents a read-only /schedule string. Trigger on /planning-tracker-sync or \"H2 tracker 同步\", \"tracker 同步\", \"幫我出 Team Weekly 的 tracker 區塊\", \"tracker 上哪些項目缺日期要 nudge\", \"誰該被 nudge\", \"snapshot the tracker\", \"拍一張 tracker snapshot\", \"year-end retro draft\", \"從 tracker 出回顧草稿\". NOT the founder GM brief — zynkr-gm owns 「GM 週報 / 這週重點 / 本週 focus / 本月重點 / 哪些 P0 delay 了 / H2 進度盤點 / KPI off-target」 and every company-level focus / roll-up / variance ask. NOT bare 「週報」/\"weekly report\"/\"project weekly\" or the Monday cron — project-status-update owns those.",
+    "input": "Cycle (H1/H2/YE) + as-of date (default today); optional: pasted last block, focus text, flags snapshot / --retro / --draft / --since / --force, --tracker / --okr ID overrides",
+    "process": "Resolve cycle + sources → read SOR tab, normalise → derive states via zynkr-gm (scripts; else copied rules) against the last tracker-snapshots rows → Fireflies recaps → agenda block → nudges → RAW snapshot to OKR & KPI Tracker on request (local) → --retro",
+    "output": "zh-TW Team Weekly agenda block + per-owner nudges in chat (Gmail DRAFT on request, never sent); tracker-latest + tracker-snapshots rows in the OKR & KPI Tracker on request; retro",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.09",
+    "sheetId": "0.09",
+    "kind": "skill",
+    "synergy": [
+      "0.09"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.09.md -o ~/.claude/skills/planning-tracker-sync.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/planning-tracker-sync/SKILL.md"
+  },
+  {
     "id": "1.01",
     "name": "zynkr-content-writer",
     "category": "brand-marketing",
@@ -868,8 +955,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 169918,
-    "githubForks": 20232
+    "githubStars": 169933,
+    "githubForks": 20233
   },
   {
     "id": "1.29",
@@ -2618,8 +2705,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 29090,
-    "githubForks": 2473
+    "githubStars": 29092,
+    "githubForks": 2475
   },
   {
     "id": "6.02",
@@ -2928,8 +3015,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 40780,
-    "githubForks": 2704
+    "githubStars": 40783,
+    "githubForks": 2705
   },
   {
     "id": "7.01",
