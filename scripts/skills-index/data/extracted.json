@@ -5574,6 +5574,834 @@
     "make this prompt production-ready"
    ],
    "confidence": "high"
+  },
+  {
+   "id": "0.03",
+   "slug": "planning-prework-pack",
+   "one_liner_zh": "規劃會前資料包：會議 workbook 五個分頁、各 owner 的 pre-work 一頁、16 頁簡報需求與場務清單",
+   "one_liner_en": "Builds the before-the-room pack for a planning session: session workbook (5 tabs), per-owner pre-work Doc, a 16-slide deck request and the logistics checklist.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-prework-pack/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-prework-pack/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/session-workbook-template.md",
+     "id_or_url": "skills/0-strategy/planning-prework-pack/references/session-workbook-template.md",
+     "runtime_read": true,
+     "purpose": "exact tab names, banner rows, column headers, Do now/Schedule/Delegate/Drop vocab, the 16-slide field map, one-pager shape and invite text"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "owners, status and P0/P1 rows — the roster comes ONLY from 負責人, never the template's attendee list"
+    },
+    {
+     "type": "google-sheet",
+     "name": "[0] Zynkr H2 2026 — OKR & KPI Tracker",
+     "id_or_url": "1ddtxkUi_lql1y9Ff1MaU7Q3F8sXCGdL6iWxLv0JlSlQ",
+     "runtime_read": true,
+     "purpose": "KRs and KPI Dashboard for the looking-back tiles"
+    },
+    {
+     "type": "google-sheet",
+     "name": "Session workbook template 「Zynkr H2 2026 Planning Session — Agenda & Pre-work」",
+     "id_or_url": "1xWrgewxpUiO2MXFCjOzzyUIiDKpuHlbjqwGHQ-jICUo",
+     "runtime_read": true,
+     "purpose": "copied, then re-filled for the new cycle (never edited in place)"
+    },
+    {
+     "type": "google-slides",
+     "name": "Designed deck 「Zynkr H2 2026 — Planning Session (Designed)」",
+     "id_or_url": "1klgQLF_vG1IFRLPrF1vTPmRXMn_mIcxOnSg1roYQTfI",
+     "runtime_read": true,
+     "purpose": "the 16-slide shape the deck request reproduces"
+    },
+    {
+     "type": "google-doc",
+     "name": "Per-LOB H2 plan Docs (Refresh addendum)",
+     "id_or_url": "1.0 1KZV_uLJ0ybKW5umJDC0uHZwowt2uDoy4ijgk79kMwf8 · 2.0 1GN2VkBBp4thyNJBvUIADB_4ZoWrzaKU2oDQ6QNN2W2o · 4.0 1YoTiWKcHsqbCN2eoWE9KCFFNiV4fTFupZrsN4qRrtxg",
+     "runtime_read": true,
+     "purpose": "per-LOB direction for the mandate / forward columns"
+    },
+    {
+     "type": "google-doc",
+     "name": "Shared 1:1 Docs (WB entries)",
+     "id_or_url": "Peggy 1iC26LVM2wWIBe2SHcQOh71KNkGRMEMkgclLuQmHbYb4 · Jane 1galk8g81WP8pyDQtMX8FAg1JdIDfbXcyG5Twz-GtmAI",
+     "runtime_read": true,
+     "purpose": "last 8 weeks of WB entries feed each owner's one-pager"
+    },
+    {
+     "type": "drive-folder",
+     "name": "Planning hub folder 「H2 planning」",
+     "id_or_url": "1S-u9bM4IbTxhYBDIVGglq1g41Z7Qh46R",
+     "runtime_read": true,
+     "purpose": "where the workbook + Pre-work Doc are created"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "Filled session workbook (5 tabs) in the hub folder",
+    "「Pre-work — <cycle>」 Doc with per-owner blocks",
+    "16-slide deck request handed to /zynkr-slide (or printed slide text)",
+    "Logistics checklist + calendar-invite text (never sent)"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed as peter_tu@zynkr.ai",
+    "IDs live in ./references/planning-sources.md — a new cycle edits that file"
+   ],
+   "human_gate": "Prints the tab-by-tab plan and writes only on confirmation; never creates the calendar event or sends the invite.",
+   "trigger_phrases": [
+    "準備 planning session 的會前資料",
+    "做 H2/YE 規劃會的 workbook 跟 deck",
+    "會前 pre-work",
+    "出規劃會 agenda 跟 pre-work",
+    "prep the offsite",
+    "build the planning pre-work pack"
+   ],
+   "gotchas": "The template workbook's attendee list is history, not a roster — owners come only from the tracker's 負責人 column. Departed names and 「掛 All」 rows are confirmed with the user at Step 0.3.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.04",
+   "slug": "planning-1on1-annual-digest",
+   "one_liner_zh": "把一位同事的 1:1 文件、部門計畫與 tracker 行轉成六段式「年度計畫＿<name>」，每項主張標註 WB 日期",
+   "one_liner_en": "Turns one teammate's 1:1 Doc, their LOB plan and their tracker rows into a six-section 年度計畫 Doc, every claim tagged to its WB date.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-1on1-annual-digest/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-1on1-annual-digest/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/annual-plan-template.md",
+     "id_or_url": "skills/0-strategy/planning-1on1-annual-digest/references/annual-plan-template.md",
+     "runtime_read": true,
+     "purpose": "the six section titles verbatim, plain headings + bullets (no tables — they do not survive import), evidence-tag rule, 12-line slide block"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/wb-entry-parsing.md",
+     "id_or_url": "skills/0-strategy/planning-1on1-annual-digest/references/wb-entry-parsing.md",
+     "runtime_read": true,
+     "purpose": "WB entry contract: `### WB（YYYY/M/D）` newest-first, the label variants (完成的事情／需完成的事情／本週項目／待處理／確認事項／Talking Points), the 「Peter」 sub-block and 我的感覺 score"
+    },
+    {
+     "type": "google-doc",
+     "name": "Shared 1:1 Docs (WB entries, reverse-chronological)",
+     "id_or_url": "Peggy 1iC26LVM2wWIBe2SHcQOh71KNkGRMEMkgclLuQmHbYb4 · Jane 1galk8g81WP8pyDQtMX8FAg1JdIDfbXcyG5Twz-GtmAI",
+     "runtime_read": true,
+     "purpose": "the ONLY evidence source for 成果/復盤; formats vary per person and years are often absent"
+    },
+    {
+     "type": "google-doc",
+     "name": "Per-LOB H2 plan Doc for that person's LOB",
+     "id_or_url": "1.0 1KZV_uLJ0ybKW5umJDC0uHZwowt2uDoy4ijgk79kMwf8 · 2.0 1GN2VkBBp4thyNJBvUIADB_4ZoWrzaKU2oDQ6QNN2W2o · 4.0 1YoTiWKcHsqbCN2eoWE9KCFFNiV4fTFupZrsN4qRrtxg",
+     "runtime_read": true,
+     "purpose": "direction the annual plan must align to"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "the rows that person owns — 主軸 and OKR sections cite them"
+    },
+    {
+     "type": "google-doc",
+     "name": "Exemplar 「年度計畫＿Peggy」",
+     "id_or_url": "1apPdaxhf4_-pdvJAb10el-37wI-q5sTPDtaboTkGb3Y",
+     "runtime_read": true,
+     "purpose": "the template this skill reproduces"
+    },
+    {
+     "type": "drive-folder",
+     "name": "Planning hub folder",
+     "id_or_url": "1S-u9bM4IbTxhYBDIVGglq1g41Z7Qh46R",
+     "runtime_read": true,
+     "purpose": "where the 年度計畫 Doc is created"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "「年度計畫＿<name>」 Doc in the planning hub folder (zh-TW, six sections)",
+    "A 12-line slide block for that person's session one-pager",
+    "A wrote / did-not-touch report"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "the person's 1:1 Doc ID must be in planning-sources.md §B — new hires need adding"
+   ],
+   "human_gate": "Shows the outline + 待補 list before creating the Doc; the new Doc is private until a separate, confirmed sharing step.",
+   "trigger_phrases": [
+    "幫 <name> 整理年度計畫",
+    "從 1:1 文件整理 <name> 的年度回顧",
+    "把 <name> 的 1:1 筆記變成年度計畫",
+    "做 年度計畫＿<name>",
+    "annual digest for <name>"
+   ],
+   "gotchas": "Not a performance review: never grades the person, never invents metrics, never writes into the 1:1 Doc. Empty in-window WB entries are reported as 0 evidence lines rather than filled in.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.05",
+   "slug": "planning-evidence-pack",
+   "one_liner_zh": "回顧數字計分板：每個 KPI 只綁一個可讀來源，寫入 Scoreboard 分頁，讀不到就標「（待補）」絕不估算",
+   "one_liner_en": "The looking-back-in-numbers scoreboard: routes each KPI to exactly one readable source, writes a Scoreboard tab, and marks anything unreadable 待補 rather than estimating.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-evidence-pack/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-evidence-pack/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/kpi-source-map.md",
+     "id_or_url": "skills/0-strategy/planning-evidence-pack/references/kpi-source-map.md",
+     "runtime_read": true,
+     "purpose": "the routing table: stock vs flow, source families S1–S7 with the exact tool, the zynkr-gm kpi-map hand-off (§2a), calendar/recap title patterns, the （待補）wording contract"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/scoreboard-layout.md",
+     "id_or_url": "skills/0-strategy/planning-evidence-pack/references/scoreboard-layout.md",
+     "runtime_read": true,
+     "purpose": "tab/Sheet naming, the exact column strings, row grouping, five-tile selection rules"
+    },
+    {
+     "type": "google-sheet",
+     "name": "Session workbook — tab 「Pre-work by LOB」",
+     "id_or_url": "1xWrgewxpUiO2MXFCjOzzyUIiDKpuHlbjqwGHQ-jICUo",
+     "runtime_read": true,
+     "purpose": "seeds the KPI list"
+    },
+    {
+     "type": "google-sheet",
+     "name": "[0] Zynkr H2 2026 — OKR & KPI Tracker",
+     "id_or_url": "1ddtxkUi_lql1y9Ff1MaU7Q3F8sXCGdL6iWxLv0JlSlQ",
+     "runtime_read": true,
+     "purpose": "KRs seed the scoreboard; also home of the tracker-snapshots / tracker-latest tabs planning-tracker-sync writes"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "完成 counts per LOB"
+    },
+    {
+     "type": "repo-file",
+     "name": "zynkr-gm references/kpi-map.md (when installed)",
+     "id_or_url": "skills/0-strategy/zynkr-gm/references/kpi-map.md",
+     "runtime_read": true,
+     "purpose": "per-metric AUTO/SEMI/HUMAN class and where an Actual comes from — reused rather than re-derived"
+    },
+    {
+     "type": "gmail",
+     "name": "Fireflies recaps",
+     "id_or_url": "from:fireflies.ai after:YYYY/MM/DD",
+     "runtime_read": true,
+     "purpose": "meeting counts for flow KPIs"
+    },
+    {
+     "type": "calendar",
+     "name": "Calendar rhythm (Team Weekly · 合夥人 · 1:1s · offsite)",
+     "id_or_url": "claude_ai_Google_Calendar",
+     "runtime_read": true,
+     "purpose": "count events by title pattern"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "A `Scoreboard` tab (KPI · source · start · end · Δ · note) in the cycle workbook or a new hub Sheet",
+    "The five-tile numbers-slide text",
+    "A （待補）gap list naming the source each one needs"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "calendar only via the claude_ai_Google_Calendar connector — the workspace-mcp Calendar API is disabled locally",
+    "Google Chat is unreadable; those numbers must be pasted"
+   ],
+   "human_gate": "Prints the row plan and confirms before writing the Scoreboard tab; read-only against every source.",
+   "trigger_phrases": [
+    "數字回顧",
+    "把這個週期的數字拉出來",
+    "做 scoreboard",
+    "KPI 計分板",
+    "上半年／全年數字",
+    "evidence pack",
+    "looking back in numbers"
+   ],
+   "gotchas": "Never estimates. A KPI whose source cannot be read becomes 「（待補）」 plus the name of the source needed — an invented number is worse than a hole.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.06",
+   "slug": "planning-session-synth",
+   "one_liner_zh": "當天消化 planning offsite：白板照片轉逐字 ② 分頁，再做 MECE 重切並寫下每個合併/拆分裁決，另擬 recap 信草稿",
+   "one_liner_en": "Same-day digestion of a planning offsite: whiteboard photos become verbatim ② tabs, then a MECE re-cut with every merge/split ruling written down, plus a recap-mail draft.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-session-synth/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-session-synth/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/tracker-tab-schemas.md",
+     "id_or_url": "skills/0-strategy/planning-session-synth/references/tracker-tab-schemas.md",
+     "runtime_read": true,
+     "purpose": "the write contract for Steps 2–8: header rows, layouts, 領域 vocabulary, one worked example row per tab, handoff shape, README keys, recap-mail skeleton"
+    },
+    {
+     "type": "google-doc",
+     "name": "Session transcript 「2026 H2 planning transcript」",
+     "id_or_url": "1ozMnXaImr-p5l_CEAfvtmRESblOcevZ_qzYWMkBDbOc",
+     "runtime_read": true,
+     "purpose": "ASR export — space-separated characters, heavy homophone errors (好好=Hahow · 直牙課=職涯課 · 玩課率=完課率), speakers unlabeled, Part 1 only"
+    },
+    {
+     "type": "drive-folder",
+     "name": "Whiteboard photos folder `Image/`",
+     "id_or_url": "1vnWm4LAmuP2aJkVnmPi79DDOsUv_EV7W",
+     "runtime_read": true,
+     "purpose": "「planning as-is」 (retro by person) + 「planning to-be」 (brainstorm by function) — read pen colour and 判讀信心"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "the tabs this skill writes land here (② 白板原文 · ③ 去重與歸類決策 · ④ MECE 檢查 · 回顧總結 · README)"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "Tabs README · <cycle> 回顧總結 · ② 白板原文 · ③ 去重與歸類決策 · ④ MECE 檢查 in the Main Tracker",
+    "A normalized item list handed to planning-tracker-builder",
+    "Recap-mail Gmail DRAFT"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "photo reads: get_drive_file_download_url returns an extension-less local path in stdio mode — copy to a .jpg scratch path first",
+    "HEIC needs `sips -s format jpeg` on macOS"
+   ],
+   "human_gate": "Row plan printed before any tab is written; the recap mail stops at a Gmail DRAFT and is never sent.",
+   "trigger_phrases": [
+    "整理 offsite 白板",
+    "白板轉 tracker",
+    "整理 planning 逐字稿",
+    "做回顧總結",
+    "H2/年度 planning recap",
+    "whiteboard to tracker"
+   ],
+   "gotchas": "② 白板原文 is VERBATIM — pen colour and 判讀信心 高/中/低 are recorded, never tidied. Every merge/split/move ruling goes in ③ so the re-cut is auditable.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.07",
+   "slug": "planning-tracker-builder",
+   "one_liner_zh": "用正規化項目清單建立或擴充該週期的 Main Tracker，寫入前先印 lint 報告與 C1 現金 pre-mortem",
+   "one_liner_en": "Builds or extends the cycle's Main Tracker from a normalized item list, with a lint report and C1 cash pre-mortem printed before anything is written.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-builder/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-builder/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/tracker-layout.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-builder/references/tracker-layout.md",
+     "runtime_read": true,
+     "purpose": "exact column map A–M, the Priority formula string, the pivot grid + formulas, colour defaults, lint rules T1–T8, the C1 keyword list, report shapes"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "copied as the template for a fresh cycle, or extended in place — never overwritten"
+    },
+    {
+     "type": "drive-folder",
+     "name": "Planning hub folder",
+     "id_or_url": "1S-u9bM4IbTxhYBDIVGglq1g41Z7Qh46R",
+     "runtime_read": true,
+     "purpose": "where a fresh cycle's tracker is created"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "A cycle-named Main Tracker Sheet (or new rows/tab in an existing one): SOR tab · 專案項目小記 pivot · 狀態 colours",
+    "The printed lint report, C1 section, row plan and wrote/did-not summary"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "value_input_option RAW for every data column, USER_ENTERED for every formula write (Priority + the whole pivot grid)"
+   ],
+   "human_gate": "Lint report + C1 pre-mortem + row plan all printed first; writes only on an explicit go. Lint warns, never blocks.",
+   "trigger_phrases": [
+    "建 tracker",
+    "把項目清單做成 Main Tracker",
+    "建立 YE Planning Main Tracker",
+    "把正規化清單寫進 tracker",
+    "build the planning tracker",
+    "lint the project list"
+   ],
+   "gotchas": "There is no rename-sheet or delete-sheet call: cycle tabs are duplicates of template tabs, old tabs are emptied and listed as a manual leftover. resize_sheet_dimensions defaults to the FIRST tab — always pass sheet_name.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.08",
+   "slug": "planning-suite-reconciler",
+   "one_liner_zh": "把定稿的 Main Tracker 擴散到各計畫文件與 OKR 表：加上日期的 Refresh 增補段與新分頁，絕不改寫既有內文",
+   "one_liner_en": "Propagates a finalized Main Tracker into the plan Docs and OKR tracker as dated Refresh addenda and new dated tabs — never editing an existing body.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-suite-reconciler/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-suite-reconciler/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/addendum-template.md",
+     "id_or_url": "skills/0-strategy/planning-suite-reconciler/references/addendum-template.md",
+     "runtime_read": true,
+     "purpose": "the exact addendum skeleton (Form A integrated / Form B per-LOB), the vN rule, and the column contract for the two new OKR-Sheet tabs"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "read-only — the SOR the addenda are aligned to, plus the retro tabs"
+    },
+    {
+     "type": "google-doc",
+     "name": "Integrated plan 「[0] Zynkr H2 2026 Plan — Integrated Refresh」",
+     "id_or_url": "1E7zPF4i3bDiO2-ET6t-w6rFzmQFCpwddffMgfiORSC4",
+     "runtime_read": true,
+     "purpose": "receives the Form A addendum at the top of the body"
+    },
+    {
+     "type": "google-doc",
+     "name": "Per-LOB H2 plan Docs (7) + the 6.0 shortcut",
+     "id_or_url": "1.0 1KZV_uLJ0ybKW5umJDC0uHZwowt2uDoy4ijgk79kMwf8 · 2.0 1GN2VkBBp4thyNJBvUIADB_4ZoWrzaKU2oDQ6QNN2W2o · 4.0 1YoTiWKcHsqbCN2eoWE9KCFFNiV4fTFupZrsN4qRrtxg",
+     "runtime_read": true,
+     "purpose": "each receives a Form B addendum; 6.0 is a shortcut — resolve to the target Doc first"
+    },
+    {
+     "type": "google-sheet",
+     "name": "[0] Zynkr H2 2026 — OKR & KPI Tracker",
+     "id_or_url": "1ddtxkUi_lql1y9Ff1MaU7Q3F8sXCGdL6iWxLv0JlSlQ",
+     "runtime_read": true,
+     "purpose": "OKRs rebased (Objective = 策略主軸, KR = P0 with Owner + Tracker #); P0+P1 mirrored into NEW dated tabs"
+    },
+    {
+     "type": "google-doc",
+     "name": "GM Knowledge Directory",
+     "id_or_url": "1b0evfaAYwHunFUcBltUA1rH8N4nBxZ-jhi2ygGSQgCU",
+     "runtime_read": true,
+     "purpose": "any new planning Doc gets an entry + ⤴ backlink"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "A dated Refresh addendum atop the integrated plan + each per-LOB Doc",
+    "Two new dated tabs in the OKR & KPI Tracker",
+    "A written-vs-not-done report with URLs + a leftovers list of what the API refused"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "tabbed Docs return an empty top-level body — inspect_doc_structure first, then pass tab_id on every op"
+   ],
+   "human_gate": "Every addendum and the tab plan are printed in full, then ONE confirmation covers the whole batch.",
+   "trigger_phrases": [
+    "同步計畫文件",
+    "把 tracker 同步到各部門計畫",
+    "更新計畫文件的 addendum",
+    "把 OKR 對齊 tracker",
+    "reconcile the planning suite",
+    "propagate the tracker"
+   ],
+   "gotchas": "Text inserted above a heading inherits that heading's style — always re-style the inserted range. No find_replace (document-wide, would shift the insertion index). insert_text carries plain text, so bullets only — a markdown table lands as literal | characters.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.09",
+   "slug": "planning-tracker-sync",
+   "one_liner_zh": "Team 端的每週 tracker 心跳：沿用 zynkr-gm 的狀態規則，印出 Team Weekly 議程區塊與各 owner 的 nudge",
+   "one_liner_en": "The team-side weekly heartbeat on the Main Tracker: derives per-item state with zynkr-gm's rules and prints the Team Weekly agenda block plus per-owner nudges.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-sync/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-sync/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/derived-state-rules.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-sync/references/derived-state-rules.md",
+     "runtime_read": true,
+     "purpose": "⚠ verbatim copy of zynkr-gm/references/derived-state-rules.md — zynkr-gm OWNS these rules (ENDS_SOON · OVERDUE · UNDATED · STALLED · PROPOSE_DONE · DIRECTION_UNLABELLED); re-copy on any change there, never edit here"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/sync-formats.md",
+     "id_or_url": "skills/0-strategy/planning-tracker-sync/references/sync-formats.md",
+     "runtime_read": true,
+     "purpose": "the fixed six-section agenda shape, nudge-block wording, snapshot tab columns and the --retro draft"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "the SOR tab — scope, priority, owner, status, dates"
+    },
+    {
+     "type": "google-sheet",
+     "name": "[0] Zynkr H2 2026 — OKR & KPI Tracker",
+     "id_or_url": "1ddtxkUi_lql1y9Ff1MaU7Q3F8sXCGdL6iWxLv0JlSlQ",
+     "runtime_read": true,
+     "purpose": "writes tracker-latest (refresh) and appends to tracker-snapshots; never writes a Main Tracker cell"
+    },
+    {
+     "type": "repo-file",
+     "name": "zynkr-gm scripts/derive_state.py (when installed)",
+     "id_or_url": "skills/0-strategy/zynkr-gm/scripts/derive_state.py",
+     "runtime_read": true,
+     "purpose": "the canonical implementation — preferred over the copied rules so the two weeklies cannot disagree"
+    },
+    {
+     "type": "gmail",
+     "name": "Fireflies recaps",
+     "id_or_url": "from:fireflies.ai after:YYYY/MM/DD",
+     "runtime_read": true,
+     "purpose": "meeting evidence for STALLED detection"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "zh-TW Team Weekly agenda block (six fixed sections)",
+    "Per-owner nudge blocks",
+    "tracker-latest + tracker-snapshots rows in the OKR & KPI Tracker (on request)",
+    "A --retro looking-back draft at cycle end"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "install zynkr-gm to get the canonical derive_state.py — otherwise the copied rules are used and can drift",
+    "ships no cron; the /schedule string is documented read-only"
+   ],
+   "human_gate": "Chat output by default; a Gmail DRAFT only on request and never sent. Writes only the OKR-tracker snapshot tabs — never a Main Tracker cell.",
+   "trigger_phrases": [
+    "H2 tracker 同步",
+    "tracker 同步",
+    "幫我出 Team Weekly 的 tracker 區塊",
+    "誰該被 nudge",
+    "snapshot the tracker",
+    "year-end retro draft"
+   ],
+   "gotchas": "NOT the founder GM brief — zynkr-gm owns 「GM 週報 / 這週重點 / H2 進度盤點 / KPI off-target」, and bare 「週報」 belongs to project-status-update. This skill is the team-side tracker block only.",
+   "confidence": "high"
+  },
+  {
+   "id": "0.10",
+   "slug": "planning-lob-gap-audit",
+   "one_liner_zh": "規劃週期後稽核單一部門的五類缺口，產出分波次的修復計畫；只出報告，不改文件也不執行修復",
+   "one_liner_en": "Audits one LOB after a planning cycle across five gap classes and writes a wave-ordered heal plan — report-only, it never edits or executes a fix.",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/planning-sources.md",
+     "id_or_url": "skills/0-strategy/planning-lob-gap-audit/references/planning-sources.md",
+     "runtime_read": true,
+     "purpose": "the ID registry — hub folder · Main Tracker + tab gids · session workbook · deck · plan Docs · OKR tracker (§A) · 1:1 Docs, Fireflies, calendar (§B) · team conventions (§C). A new cycle edits this file, not the skill."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/planning-knowledge-pack.md",
+     "id_or_url": "skills/0-strategy/planning-lob-gap-audit/references/planning-knowledge-pack.md",
+     "runtime_read": true,
+     "purpose": "shared family vocabulary: cycle (§1) · L1/L2 taxonomy (§2) · priority + 未開始/進行中/完成/放棄 (§3) · C1–C4 (§4) · runbook (§5) · tracker layout (§6) · MECE rulings (§7) · versioning (§8) · never-do list (§9). Byte-identical across all 8 planning skills."
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/gap-audit-checklist.md",
+     "id_or_url": "skills/0-strategy/planning-lob-gap-audit/references/gap-audit-checklist.md",
+     "runtime_read": true,
+     "purpose": "the contract: input resolution (§1), inventory record (§2), G1–G5 definitions + finding-line format (§3), waves W1–W4 + 可交 Claude rule (§4), owning-skill routing (§5), report skeleton (§6), 行動追蹤表 layout (§7), directory entry (§8), close-out (§9)"
+    },
+    {
+     "type": "google-doc",
+     "name": "The LOB's plan Doc + its Refresh addendum",
+     "id_or_url": "1.0 1KZV_uLJ0ybKW5umJDC0uHZwowt2uDoy4ijgk79kMwf8 · 2.0 1GN2VkBBp4thyNJBvUIADB_4ZoWrzaKU2oDQ6QNN2W2o · 4.0 1YoTiWKcHsqbCN2eoWE9KCFFNiV4fTFupZrsN4qRrtxg",
+     "runtime_read": true,
+     "purpose": "what the plan claims, and which docs it cites"
+    },
+    {
+     "type": "google-sheet",
+     "name": "2026 H2 Planning Main Tracker — tab 「H2 專案項目」 (SOR)",
+     "id_or_url": "1KEzywxGUv6p0blRHp6zgBN5o9Ek8pUXazJLtC0YnBXw",
+     "runtime_read": true,
+     "purpose": "the LOB's rows — P0/P1 with no doctrine, owner or date"
+    },
+    {
+     "type": "google-doc",
+     "name": "Ops exemplar 「[3.0.1] Operations — H2 Gap Audit & Heal Plan」",
+     "id_or_url": "1pkJ-QJzBpuWoi8k-oJmSEJ9PCR_gIZ_jdL14zbAyb3w",
+     "runtime_read": true,
+     "purpose": "the report shape this skill reproduces"
+    },
+    {
+     "type": "google-sheet",
+     "name": "Ops exemplar 「行動追蹤表」",
+     "id_or_url": "1O4wyzEJDX_c_ecXYAiW1RRXGAfPzzHO0vO1uweR2u8o",
+     "runtime_read": true,
+     "purpose": "the heal-tracker layout this skill reproduces"
+    },
+    {
+     "type": "repo-file",
+     "name": "admin-governance references/lob-folder-map.md (when installed)",
+     "id_or_url": "skills/3-operations/admin-governance/references/lob-folder-map.md",
+     "runtime_read": true,
+     "purpose": "resolves the LOB's Drive folder; rows are labelled 0 · 1.0 … with no 6.0 row, and the map may lag a rename"
+    },
+    {
+     "type": "google-doc",
+     "name": "GM Knowledge Directory",
+     "id_or_url": "1b0evfaAYwHunFUcBltUA1rH8N4nBxZ-jhi2ygGSQgCU",
+     "runtime_read": true,
+     "purpose": "the new report gets an entry + ⤴ backlink"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "create_sheet",
+    "get_doc_as_markdown",
+    "modify_sheet_values",
+    "read_sheet_values",
+    "search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "A NEW report Doc 「[N.0.1] <LOB> — <cycle> Gap Audit & Heal Plan（YYYY-MM-DD）」 in the LOB folder",
+    "A NEW 「行動追蹤表」 Sheet (README · 修復清單 · 待決事項)",
+    "A GM-directory entry + an explicit did-not list"
+   ],
+   "setup_required": [
+    "google-workspace MCP authed",
+    "the LOB Drive folder ID — from admin-governance's folder map when installed, else the user supplies it"
+   ],
+   "human_gate": "ONE confirmation before writing the two artefacts; it never edits, renames or moves an existing Doc and never executes a fix.",
+   "trigger_phrases": [
+    "部門缺口稽核",
+    "幫我做 3.0 的 gap audit",
+    "檢查營運部門的文件有沒有跟計畫對齊",
+    "文件缺口盤點",
+    "做一份 heal plan",
+    "哪些 SOP 過時了",
+    "LOB gap audit"
+   ],
+   "gotchas": "Report-only by design. It never edits an existing Doc, so a superseded snapshot gets a heal-list item saying it needs a [SUPERSEDED] banner rather than the banner itself.",
+   "confidence": "high"
   }
  ],
  "subagents": [
