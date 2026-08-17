@@ -15,6 +15,10 @@ import json, os, collections, datetime
 HERE = os.path.dirname(os.path.abspath(__file__))
 J = os.path.join(HERE, 'data')
 OUT = os.path.join(HERE, 'Zynkr-Skills-Index.xlsx')
+VALUES_OUT = os.path.join(HERE, 'Zynkr-Skills-Index.values.json')
+
+# Column widths are the reader's business, not the generator's - see set_widths().
+SET_WIDTHS = os.environ.get('ZYNKR_SET_WIDTHS') == '1'
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -143,6 +147,17 @@ def is_drive_id(tok):
             and any(c.isupper() for c in tok) and any(c.islower() for c in tok))
 
 
+# Drive IDs that a skill still declares but that no longer resolve. Every ID rendered by this
+# script was checked against the Drive API on 2026-08-17 (53 checked, 52 alive); the one below
+# 404s and is not recoverable from trash. It is declared in
+# skills/1-brand-marketing/seo-article-pipeline/seo-pipeline-config.md as seed_knowledge_folder_id.
+# Keep it listed until the folder is recreated and the config repointed, so a rebuild cannot
+# quietly hand the reader a dead link again.
+DEAD_IDS = {
+    '1K-pSQtVR7ezWADIH2_tSCqpOcY-btAkK': '⚠ 404 — folder deleted, not in trash',
+}
+
+
 def ks_url(typ, raw, name=None, owner_dir=None):
     """Derive a real, openable URL for a knowledge source — or None.
 
@@ -186,6 +201,12 @@ def ks_url(typ, raw, name=None, owner_dir=None):
 
         # 3. a Drive ID — typed URL when the type says which app, generic opener otherwise
         for tok in TOKEN.findall(s):
+            # A Gmail label ID has the same shape as a Drive ID but is not a Drive object;
+            # linking it produces a guaranteed 404. Rejected on the token and on the type.
+            if tok.startswith('Label_') or 'gmail' in str(typ).lower():
+                continue
+            if tok in DEAD_IDS:      # verified 404 — see DEAD_IDS
+                continue
             if is_drive_id(tok):
                 return DRIVE_URL.get(typ, 'https://drive.google.com/open?id={}').format(tok)
 
@@ -247,8 +268,40 @@ def style_body(ws, ncols, first=2, mono=(), wrap=(), zebra=True):
 
 
 def set_widths(ws, widths):
+    """No-op by default: column widths belong to whoever is reading the Sheet.
+
+    Peter sizes columns by hand in Google Sheets; a rebuild must not undo that.
+    The per-tab width lists are kept at their call sites as a record of the
+    original intent, but are only applied when SET_WIDTHS is switched on (e.g.
+    when generating a brand-new workbook that has no hand-tuned Sheet behind it).
+    """
+    if not SET_WIDTHS:
+        return
     for i, w in enumerate(widths, start=1):
         ws.column_dimensions[get_column_letter(i)].width = w
+
+
+def dump_values(wb):
+    """Emit every tab as a plain 2-D array of cell values.
+
+    This is the payload for updating an existing Sheet *without* re-converting
+    the .xlsx. Re-converting replaces the whole file, so it resets column widths,
+    row heights and any manual formatting; writing these values into the existing
+    grid leaves all of that alone. Push each tab with modify_sheet_values at
+    A1 using value_input_option=USER_ENTERED so =HYPERLINK() formulas evaluate.
+    """
+    out = {}
+    for name in wb.sheetnames:
+        ws = wb[name]
+        grid = []
+        for row in ws.iter_rows(min_row=1, max_row=ws.max_row,
+                                min_col=1, max_col=ws.max_column, values_only=True):
+            grid.append(['' if v is None else v for v in row])
+        out[name] = {'range': f'A1:{get_column_letter(ws.max_column)}{ws.max_row}',
+                     'values': grid}
+    with open(VALUES_OUT, 'w') as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print('WROTE', VALUES_OUT)
 
 
 # ==================================================== Overview
@@ -560,7 +613,12 @@ def tab_knowledge(wb, inv, sx):
             disp = a['canon']
         else:
             disp = jl(sorted(a['ids']), ' | ')
-        if a['url']:
+        dead = next((DEAD_IDS[i] for i in a['ids'] | ({a['canon']} if a['canon'] else set())
+                     if i in DEAD_IDS), None)
+        if dead:
+            # never link a target we have confirmed is gone — say so instead
+            idcell = f'{disp}  {dead}'
+        elif a['url']:
             idcell = hlink(a['url'], disp or a['url'])
         else:
             idcell = disp
@@ -856,6 +914,7 @@ def main():
     tab_summary(wb, inv, sx)
     wb.save(OUT)
     print('WROTE', OUT)
+    dump_values(wb)
     for s in wb.sheetnames:
         print(f'  {s:22s} {wb[s].max_row:4d} rows x {wb[s].max_column:3d} cols')
     print('extracted skills:', len(sx), '/', len(skills), '| subagents:', len(ax), '/', len(agents))

@@ -45,14 +45,49 @@ pip install openpyxl
 python3 build_index_sheet.py
 ```
 
-Then publish (see the caveats below — they each fail quietly):
+This writes two files: `Zynkr-Skills-Index.xlsx` (whole workbook) and
+`Zynkr-Skills-Index.values.json` (every tab as a plain 2-D array of cell values).
+Which one you publish with matters — see next section.
+
+## ⚠ The live Sheet has diverged — do not re-convert over it
+
+The published Sheet is no longer a pure render of this script. As of 2026-08-17 Peter has, by hand:
+
+| Tab | Hand edit |
+|---|---|
+| Knowledge Sources | added column **I `Comment`** (his review notes — the reason the 404 above was caught) |
+| Knowledge Sources | renamed header E `Live-read ⟳` → `Live-read` |
+| Skill Index | **deleted the `一句話說明` column** (31 cols → 30) |
+| Skill Index | renamed `Skill / parent` → `Skill`, blanked the `Child / agent` header |
+| all | hand-tuned column widths |
+
+`update_drive_file(..., source_format="xlsx")` replaces the **whole file**, so publishing the
+rebuilt workbook over it would silently destroy every one of those. Two consequences:
+
+- **Column widths are never set by this script.** `set_widths()` is a no-op unless
+  `ZYNKR_SET_WIDTHS=1`; the per-tab width lists survive at the call sites only as a record of
+  the original intent. Widths belong to whoever is reading the Sheet.
+- **To update content, write values, not the file.** Push from `…values.json` with
+  `modify_sheet_values(range_name="'<Tab>'!A1", values=…, value_input_option="USER_ENTERED")`.
+  `USER_ENTERED` is required or `=HYPERLINK()` cells land as literal text. The Sheets
+  `values.update` endpoint has no field for column width, row height or formatting, so it
+  physically cannot disturb them — that is the guarantee, not just a convention.
+  Best of all, write only the cells that actually changed, as was done for the three
+  column-D fixes on 2026-08-17.
+
+Because of the column-count drift, a **blind full-tab push is now unsafe for `Skill Index`**
+(the script emits 31 columns, the Sheet has 30 — everything from `一句話說明` rightward would
+shift by one). Re-align the header row first, or keep writing surgically.
+
+A full re-convert is only correct when building a **new** Sheet from scratch — in which case set
+`ZYNKR_SET_WIDTHS=1` so the new file gets sensible widths:
 
 ```bash
+ZYNKR_SET_WIDTHS=1 python3 build_index_sheet.py
 cp Zynkr-Skills-Index.xlsx ~/.workspace-mcp/attachments/
 ```
 
-and update the existing Sheet **in place** so the link survives, via the `google-workspace` MCP:
-`update_drive_file(file_id="1VqH1Bmy…", file_path="~/.workspace-mcp/attachments/Zynkr-Skills-Index.xlsx", source_format="xlsx")`.
+then `update_drive_file(file_id="1VqH1Bmy…", file_path="~/.workspace-mcp/attachments/Zynkr-Skills-Index.xlsx", source_format="xlsx")`.
 
 Publishing gotchas:
 
@@ -105,6 +140,18 @@ Publishing gotchas:
   Lucid UUID, or the Supabase project. Templated values (`<your-…-id>`), Gmail label names and
   per-run documents stay plain text. `is_drive_id()` requires mixed case, a digit and no `--`,
   which is what keeps slide-visual-selector's archetype slugs from being mistaken for Drive IDs.
+- **A Gmail label ID looks exactly like a Drive ID.** `Label_1203655627141795093` passes every
+  shape test — mixed case, digits, long enough — so it was briefly rendered as a
+  `drive.google.com/open?id=…` link that could only ever 404. `ks_url()` now rejects both the
+  `Label_` prefix and any source whose declared type is Gmail. Shape is not proof of type.
+- **Link audit, 2026-08-17: 53 Drive IDs checked against the API, 52 alive, 1 dead.** The dead one
+  is `1K-pSQtVR7ezWADIH2_tSCqpOcY-btAkK` ("02 Seed Knowledge"), declared as `seed_knowledge_folder_id`
+  in `skills/1-brand-marketing/seo-article-pipeline/seo-pipeline-config.md` — the file that calls
+  itself the SOT for all Drive IDs. The folder is not in trash and no folder of that name exists;
+  the SEO KB root now holds `00 Brand Context / 01 Rubrics & Templates / 02 AEO Prompt Panel &
+  Metrics (a Doc) / 03 … / 04 …`. **`seo-article-pipeline` and `seo-brief-writer` will fail at
+  runtime when they search it.** Listed in `DEAD_IDS` so a rebuild cannot re-link it; remove the
+  entry once the folder is recreated and the config repointed.
 - Also unindexed on purpose: the nested child skill at
   `skills/1-brand-marketing/zynkr-content-writer/.claude/skills/write-article/SKILL.md`, which the
   marketplace does not list.
