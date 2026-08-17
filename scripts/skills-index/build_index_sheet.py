@@ -132,7 +132,11 @@ DRIVE_URL = {
 TOKEN = re.compile(r'[A-Za-z0-9_-]{25,}')
 LUCID = re.compile(r'\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b')
 PLACEHOLDER = re.compile(r'[<>]|your-|例如|佔位|placeholder|templated', re.I)
-PATHLIKE = re.compile(r'(?:\.{1,2}/|skills/)[\w./-]+')
+# Any slash-joined path-looking token. Deliberately loose — resolve_repo_path() gates every
+# match on existence, so a false positive costs nothing while a narrow pattern silently drops
+# real files (the earlier `(?:\.{1,2}/|skills/)` prefix list missed `generated/…`, `scripts/…`
+# and every sibling-skill reference).
+PATHLIKE = re.compile(r'(?:\.{1,2}/)?[\w.-]+(?:/[\w.-]+)+/?')
 
 
 def is_drive_id(tok):
@@ -158,6 +162,49 @@ DEAD_IDS = {
 }
 
 
+_SKILL_DIRS = None
+
+
+def skill_dirs():
+    """slug -> repo-relative skill folder, for references that name a skill instead of a path."""
+    global _SKILL_DIRS
+    if _SKILL_DIRS is None:
+        _SKILL_DIRS = {}
+        root = os.path.join(REPO_ROOT, 'skills')
+        for cat in sorted(os.listdir(root)) if os.path.isdir(root) else []:
+            d = os.path.join(root, cat)
+            if not os.path.isdir(d):
+                continue
+            for slug in sorted(os.listdir(d)):
+                if os.path.isdir(os.path.join(d, slug)):
+                    _SKILL_DIRS[slug] = f'skills/{cat}/{slug}'
+    return _SKILL_DIRS
+
+
+def resolve_repo_path(cand, owner_dir=None):
+    """Return a repo-relative path that exists on disk, or None.
+
+    Skills state file paths from whatever vantage point their author had: relative to the skill
+    folder (`./references/x.md`), to the sibling skill next door
+    (`seo-publish-article/references/x.md`), to the repo root (`generated/skills-detail.json`),
+    or with the repo name still on the front (`zynkr-skill-builder/scripts/validate-skill.ts`).
+    Try each base and let existence on disk arbitrate — a path that resolves nowhere gets no
+    link, so guessing wide here cannot produce a dead one.
+    """
+    cand = cand.rstrip('.,;')
+    bases = ['']
+    if owner_dir:
+        bases += [owner_dir, os.path.dirname(owner_dir)]
+    for c in dict.fromkeys([cand, cand.split('zynkr-skill-builder/', 1)[-1]]):
+        for b in bases:
+            p = os.path.normpath(os.path.join(b, c))
+            if p.startswith('..') or p in ('.', ''):
+                continue
+            if os.path.exists(os.path.join(REPO_ROOT, p)):
+                return p
+    return None
+
+
 def ks_url(typ, raw, name=None, owner_dir=None):
     """Derive a real, openable URL for a knowledge source — or None.
 
@@ -179,21 +226,27 @@ def ks_url(typ, raw, name=None, owner_dir=None):
 
     # 2. a file in this repo — link only if the path actually resolves on disk
     if typ in ('repo-file', 'local-file'):
+        saw_path = False
         for s in cands:
             for cand in PATHLIKE.findall(s):
-                cand = cand.rstrip('.,;')
-                if cand.startswith(('./', '../')):
-                    if not owner_dir:
-                        continue
-                    p = os.path.normpath(os.path.join(owner_dir, cand))
-                else:
-                    p = os.path.normpath(cand)
-                if p.startswith('..'):
-                    continue
-                full = os.path.join(REPO_ROOT, p)
-                if os.path.exists(full):
-                    kind = 'tree' if os.path.isdir(full) else 'blob'
+                # "FE/BE/DB model" is slash-joined prose, not a stated path. Only a candidate
+                # with a file extension or a trailing slash counts as the author having named
+                # a location — that distinction is what 2b below keys off.
+                saw_path = saw_path or bool(re.search(r'\.\w{1,5}$|/$', cand))
+                p = resolve_repo_path(cand, owner_dir)
+                if p:
+                    kind = 'tree' if os.path.isdir(os.path.join(REPO_ROOT, p)) else 'blob'
                     return f'{GH_REPO}/{kind}/main/{p.rstrip("/")}'
+        # 2b. a bare skill slug rather than a path ("product-flow-design (installed skill)").
+        #     Only when the entry states no path at all: if it does state one and that path does
+        #     not resolve, the honest answer is no link, not a link to some folder nearby. Also
+        #     never resolves to the declaring skill's own folder, which would hide a missing file.
+        if not saw_path:
+            own = os.path.basename(owner_dir or '')
+            for s in cands:
+                for tok in re.findall(r'[a-z][a-z0-9-]{3,}', s):
+                    if tok in skill_dirs() and tok != own:
+                        return f'{GH_REPO}/tree/main/{skill_dirs()[tok]}'
 
     for s in cands:
         if PLACEHOLDER.search(s):
@@ -223,9 +276,11 @@ def ks_url(typ, raw, name=None, owner_dir=None):
                     and not m.group(1).startswith(('repos/', 'api/', 'contents/')):
                 return f'https://github.com/{m.group(1)}'
 
-        # 6. the Supabase project — deep-link the table editor
-        if typ in ('supabase-table', 'supabase-kb') and SUPABASE_PROJECT in s:
-            return f'https://supabase.com/dashboard/project/{SUPABASE_PROJECT}/editor'
+    # 6. a Supabase table or KB entry — every one of them lives in the shared Zynkr project, so
+    #    the table editor is a real destination even though the table name is not a document.
+    #    Outside the loop above: a table name never carries a placeholder to skip on.
+    if typ in ('supabase-table', 'supabase-kb'):
+        return f'https://supabase.com/dashboard/project/{SUPABASE_PROJECT}/editor'
     return None
 
 

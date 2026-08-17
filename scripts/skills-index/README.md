@@ -30,6 +30,7 @@ one entry behind. Always take the row set from the API.
 
 ```
 build_index_sheet.py          # renders data/*.json -> Zynkr-Skills-Index.xlsx (6 tabs)
+build_knowledge_doc.py        # renders the same data -> Zynkr-Skills-Knowledge-Map.html (a Google Doc)
 data/inventory.json           # 112 rows: live API fields + local file paths + parent/child links
 data/extracted.json           # per-skill metadata read out of the SKILL.md bodies
 ```
@@ -106,6 +107,45 @@ Publishing gotchas:
 3. `import_to_google_sheets` always creates a NEW file. Use `update_drive_file` to revise, or the
    old link is orphaned. Tab `gid`s change on re-convert, so share the file link, never a `#gid=`.
 
+## The companion Doc — Zynkr Skills Knowledge Map
+
+```bash
+python3 build_knowledge_doc.py     # -> Zynkr-Skills-Knowledge-Map.html
+cp Zynkr-Skills-Knowledge-Map.html ~/.workspace-mcp/attachments/
+```
+
+then `import_to_google_doc(file_path=…, source_format="html", folder_id="19B9BkAP…")` and rename
+(the `[` truncation gotcha applies to Docs too). Live Doc:
+<https://docs.google.com/document/d/1AcO1kshhyky21EsRnS8oEchN_CFzuY1JfHyuOCEuguM>
+
+**Why a Doc exists at all.** A Sheets cell holds exactly one clickable link (`=HYPERLINK`), but a
+skill reads up to 13 sources — so on `Skill Index` col M the URLs can only be plain text. A Doc has
+no such limit: HTML `<ul>`/`<a href>` convert to native bullets and real links, one per source.
+The Sheet stays the filterable table; the Doc is where you go to *open* things.
+
+Two rules for this script:
+
+- **It imports `build_index_sheet`, it does not re-implement it.** `ks_url()` is the single
+  arbiter of where a source lives. A second copy would drift, and the two artifacts would start
+  disagreeing about the same file.
+- **It classifies every unlinked source, and the classification is the deliverable.** 352 sources,
+  ~220 linked; of the rest, `by-design` (templated ID, Gmail query, calendar, local config, MCP
+  resource, per-run web page) needs no action, `review` (a Doc named with no ID — probably
+  per-engagement, but the source cannot prove it) is worth confirming, and only `defect` (a stated
+  repo path resolving nowhere) plus `DEAD_IDS` are real bugs. Reporting "156 sources have no link"
+  reads as rot; reporting "1 broken, 2 dead" is a to-do list. Keep the split honest — the
+  precedence in `why_no_link()` matters, because the *type* settles it first (a Gmail search is
+  not a file however the entry is phrased) and `via sub-skill` must be tested before the type.
+
+`ks_url()` resolves repo paths through `resolve_repo_path()`, which tries four bases because skills
+state paths from four vantage points: relative to the skill folder (`./references/x.md`), to the
+sibling skill (`seo-publish-article/references/x.md`), to the repo root (`generated/x.json`), and
+with the repo name still attached (`zynkr-skill-builder/scripts/x.ts`). Existence on disk arbitrates,
+so widening the search cannot manufacture a dead link. A bare skill slug
+(`product-flow-design (installed skill)`) resolves to that skill's folder — but *only* when the
+entry states no path at all, and never to the declaring skill's own folder, or a genuinely missing
+file would be masked by a link to something nearby.
+
 ## Refresh the data after skills change
 
 1. Re-snapshot the row set (`WebFetch` gets a Cloudflare 403 here; plain `curl` works):
@@ -160,6 +200,13 @@ Publishing gotchas:
   Metrics (a Doc) / 03 … / 04 …`. **`seo-article-pipeline` and `seo-brief-writer` will fail at
   runtime when they search it.** Listed in `DEAD_IDS` so a rebuild cannot re-link it; remove the
   entry once the folder is recreated and the config repointed.
+- **Appendix B in the Doc groups by resolved URL, not by `ks_key()`.** The same file stated two
+  ways (`./seo-pipeline-config.md` here, `seo-article-pipeline/seo-pipeline-config.md` there) makes
+  two text keys but one file, so a text key under-counts the blast radius. This is deliberately
+  **not** fixed in `ks_key()`: that function decides the `Knowledge Sources` row set, and Peter's
+  review comments in column I are anchored to those rows — re-grouping would silently detach them.
+  Supabase sources are exempt from URL grouping, since they all resolve to the one project-level
+  table editor and would otherwise fuse a dozen distinct tables into a single row.
 - Also unindexed on purpose: the nested child skill at
   `skills/1-brand-marketing/zynkr-content-writer/.claude/skills/write-article/SKILL.md`, which the
   marketplace does not list.
