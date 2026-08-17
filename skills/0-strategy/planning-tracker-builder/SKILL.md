@@ -1,0 +1,423 @@
+---
+name: planning-tracker-builder
+sheetId: "0.07"
+description: >-
+  Build or extend Zynkr's planning Main Tracker (the cycle's system of record)
+  from a NORMALIZED item list — the planning-session-synth handoff or a pasted
+  table. Fresh cycle: copy the template tracker (never edit it) → 「<year>
+  <cycle> Planning Main Tracker」 → cycle-named tabs → fill the SOR tab with L1
+  header rows + N.NN numbering, 重要×緊急 → Priority formula, the 專案項目小記
+  pivot, 狀態 colours. Existing tracker: fill the empty SOR tab session-synth
+  left, append rows under the right L1 block, or add a new tab — never
+  overwrite the SOR tab in place, never renumber. Prints
+  a LINT REPORT (P0 cap > 6 / > 25%, owner > 3 P0, items 掛 All, missing
+  owners/dates, L2 off-taxonomy, duplicate 項目, P3 not 放棄) and the C1 cash
+  pre-mortem before writing; lint warns, never blocks.
+  Trigger on /planning-tracker-builder or "建 tracker", "把項目清單做成 Main
+  Tracker", "建立 YE Planning Main Tracker", "把正規化清單寫進 tracker", "把這些專案
+  項目排進 tracker", "build the planning tracker", "extend the tracker with these
+  items", "lint the project list". Distinct from planning-session-synth
+  (upstream — transcript + whiteboard → normalized list), planning-tracker-sync
+  (downstream weekly READ; never builds), planning-suite-reconciler (docs/OKR
+  sheet reconcile TO the tracker) and project-status-update (course-project
+  weekly; owns bare 「週報」).
+category: strategy
+project: planning-tracker-builder
+platform: claude
+status: Done
+author: Peter Tu
+input: "A normalized item list (session-synth handoff or pasted rows: L1/L2 · 項目 · 重要 · 緊急 · 負責人 · dates · 備註) + owner/priority decisions · cycle (H1/H2/YE) · optional existing tracker ID"
+process: "Resolve cycle + sources → ingest, normalise, number N.NN → lint report + C1 cash pre-mortem → row plan → on explicit go: copy template / fill or extend existing → SOR tab (RAW) + Priority formula, 專案項目小記 pivot, 狀態 colours → read back → report wrote / did-not"
+output: "A cycle-named Main Tracker Sheet (or new rows/tab in an existing one) — SOR tab · pivot · colours — plus the printed lint report, C1 section, row plan and wrote/did-not summary"
+synergy:
+  - "planning-session-synth"
+  - "planning-tracker-sync"
+  - "planning-suite-reconciler"
+---
+
+# Planning Tracker Builder
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill planning-tracker-builder
+```
+
+After a planning session the room has a list of projects; the company needs
+the tracker that the weekly meeting, the OKR sheet and every plan Doc reconcile
+to. This skill turns a normalized item list into that tracker — a copy of the
+proven template with cycle-named tabs, L1 header rows, `N.NN` numbering, the
+重要×緊急 → Priority formula, the 專案項目小記 pivot and 狀態 colours — or fills
+the empty SOR tab of the file planning-session-synth created, or extends an
+existing tracker without disturbing what is already numbered. It is the one
+skill in the family that lints the list and prints the C1 cash pre-mortem
+before a single cell is written; the lint warns, the founder decides, and
+nothing is written until they say go.
+
+---
+
+## How this differs from its neighbours
+
+- **planning-session-synth** (upstream) — digests the transcript and whiteboard
+  photos into `回顧總結` / `② 白板原文` / `③ 去重與歸類決策` / `④ MECE 檢查` and a
+  normalized item list. It writes the SOR tab itself only when the user says so;
+  the default handoff is to this skill, which owns numbering, priority, pivot,
+  colours and the lint. When session-synth has already created this cycle's
+  tracker (`create_spreadsheet` with all seven tabs, SOR + pivot left empty),
+  this skill **fills** those two empty tabs in place (mode = `fill`, Step 6) —
+  it never copies the template into a second file beside it.
+- **planning-tracker-sync** (downstream, weekly) — READS the SOR tab this skill
+  built and produces the Team Weekly block, nudges and snapshots. It never
+  builds or renumbers, and it writes **nothing** into the Main Tracker: its
+  only write is `tracker-latest` + `tracker-snapshots` in the OKR & KPI
+  Tracker (spec row 0.09). Nothing in this file is reserved for it.
+- **planning-suite-reconciler** (downstream, docs) — reconciles the plan Docs and
+  the OKR & KPI Tracker TO the finalized tracker. This skill never touches a
+  Doc; the reconciler never touches the tracker.
+- **project-status-update** — the course-project weekly on its own tracker
+  Sheet; owns bare 「週報」/「weekly report」. Unrelated Sheet, unrelated trigger.
+
+## Fixed facts (read the references first)
+
+- **Knowledge pack** `./references/planning-knowledge-pack.md`: taxonomy L1/L2
+  (§2), priority rule + status vocabulary + do-now cap (§3), C1–C4 frame (§4),
+  tracker tab layout (§6), MECE precedents (§7), versioning (§8), never-list (§9).
+- **Sources** `./references/planning-sources.md`: the Google account, the
+  template = the current-cycle Main Tracker (§A, with tab → gid map), the hub
+  folder (§A). Every ID this skill uses comes from that file or the user — none
+  is hard-coded here.
+- **Layout contract** `./references/tracker-layout.md`: exact column map A–M,
+  the Priority formula string, the pivot grid + formulas, colour defaults, the
+  lint rule table (T1–T8), the C1 keyword list, and the report shapes.
+- **Tools** (`google-workspace` MCP): `copy_drive_file` · `get_spreadsheet_info`
+  · `read_sheet_values` (`include_formulas=true`) · `create_sheet` (new tab, or
+  duplicate a tab under a new name; pass `insert_sheet_index` so the tab lands
+  in the pack §6 order — else list the reorder as a leftover) ·
+  `modify_sheet_values` (write / `clear_values=True`; `value_input_option`
+  `RAW` for **every data column**, `USER_ENTERED` for **every formula write** —
+  column G Priority AND the whole `專案項目小記` grid: COUNTIF / COUNTIFS / SUM /
+  ratios) · `resize_sheet_dimensions` (`insert_rows_at`, freeze — **always with
+  `sheet_name`**: the MCP defaults to the FIRST tab, i.e. README; after every
+  row insert, reset the new rows' format with `format_sheet_range` bold=False +
+  background cleared so header formatting does not bleed) · `format_sheet_range`
+  · `manage_conditional_formatting`. There is **no rename-sheet or delete-sheet
+  call**: cycle-named tabs are *duplicates* of the template tabs; the old tabs
+  are emptied and listed as a manual leftover.
+- **Numbering (matches the live tracker, layout §1):** the pack §2 L1 number
+  lives in the `主類別` TEXT (`6.0 Tech & Platform`); the `#` prefix of an L1
+  block is **positional** — sequential by presence (`1.0`, `2.0` … in the order
+  the blocks appear; the July tracker's `6.0 Tech & Platform` block carries `#`
+  `5.0` and items `5.01`–`5.04` because no Dev-Ops block exists). Items are
+  `<prefix>.01`, `<prefix>.02` … (block prefix + two-digit serial), ordered by
+  L2 prefix then input order. Fresh / fill: all eight blocks are written, so
+  positional prefix = pack §2 number (`1.0`–`8.0`). Extend: locate blocks by
+  `主類別` text (fallback `#` matching `^\d\.0$`), continue serials from
+  `max(existing serial under that block's # prefix) + 1`, and an L1 with no
+  block yet gets a **new header block appended** whose `#` prefix = last
+  existing prefix + 1 and whose `主類別` text carries the pack §2 number. This
+  rule is printed in every row plan. `#` is **text** (the live tracker stores
+  `'1.10'`, `'2.0'`): written `RAW`, never `USER_ENTERED`, or `1.10` becomes
+  1.1 and `1.0` becomes 1.
+
+## Hard rules
+
+1. **Print before writing.** The lint report, the C1 section and the row plan
+   are printed in the chat and the user says go — no Sheet call happens
+   before that. Lint **warns, never blocks**; the founder overrides by saying
+   so and the override is written into `備註` or the README.
+2. **Never overwrite the SOR tab in place, never renumber.** Existing tracker ⇒
+   `fill` only when the SOR tab is empty (no header — the session-synth
+   handoff) **and** `專案項目小記` is empty or missing; else append rows under
+   the right L1 block (serial continues from the last used under that block's
+   `#` prefix; a new L1 = a new block appended, prefix = last + 1) or add a new
+   tab. Existing `N.NN`s and existing `#` prefixes are never rewritten. A
+   `專案項目小記` that already holds a grid belongs to a live cycle: never
+   rewrite it — add a new grid two rows below it or a new tab — and never
+   touch the README counts of another cycle.
+3. **The template is read-only.** Fresh build = `copy_drive_file` of the
+   template tracker (sources §A) and every write goes to the copy. If the
+   copy step fails, stop. Never copy the template when the user named an
+   existing tracker (fill/extend) — one cycle, one file.
+4. **No invented owners, dates or numbers.** An owner not decided is `未定`
+   (a T4 finding), a date not given is the literal `YYYY-MM-DD`, a runway
+   number not supplied is `（待補）`. Owners come from the user's decisions or
+   the tracker's 負責人 column — never from memory.
+5. **Sheet only.** No Doc edits (planning-suite-reconciler), no mail
+   (planning-session-synth drafts the recap), no calendar. Every run ends by
+   printing what it wrote (file ID/URL, tabs, row ranges) and what it did NOT
+   do (leftovers, skipped rows, overrides).
+6. **Every call names its tab.** Every `range_name` carries the `'<tab>'!`
+   prefix and every `resize_sheet_dimensions` passes `sheet_name=<tab>` — an
+   un-prefixed call lands on the FIRST tab (README in the pack §6 order), and
+   a row insert there followed by a prefixed write is exactly the in-place
+   SOR overwrite rule 2 forbids. Every data column is written `RAW`; **every
+   formula write** — the column-G Priority call AND the whole `專案項目小記`
+   grid (COUNTIF / COUNTIFS / SUM / ratio cells) — is `USER_ENTERED`, or the
+   formulas land as literal text.
+
+---
+
+## Workflow
+
+### Step 0 — Resolve cycle + sources
+
+Read `./references/planning-sources.md`. Take `cycle` (`H1` / `H2` / `YE`) and
+the planning `year` from the user; take any ID overrides (template tracker,
+hub folder, existing tracker to extend). Defaults: template = the sources §A
+Main Tracker; parent folder = the sources §A hub folder; Google account = the
+one named in the sources file. Print one line:
+`Operating on cycle <year> <cycle> · mode = fresh|fill|extend · template <ID> · parent <ID>`.
+Mode: no tracker named ⇒ `fresh`. The user names an existing tracker (or says
+「加進現有 tracker」, or hands over the session-synth file) ⇒ `get_spreadsheet_info`
++ `read_sheet_values("'<cycle> 專案項目'!A1:M3")` + `read_sheet_values
+("'專案項目小記'!A1:K3")`: SOR tab missing or empty (no header row) **and**
+`專案項目小記` missing or empty ⇒ `fill` (the synth handoff — write into that
+file, Step 6); SOR header row present ⇒ `extend`; SOR tab empty but
+`專案項目小記` already holds a grid ⇒ the file carries a live cycle — `extend`
+via the new-tab branch (Step 6.4: fill the empty SOR tab, second pivot grid
+below the first, README counts untouched). Never `fresh` on a named file —
+that would split the cycle across two Sheets.
+
+### Step 1 — Ingest the normalized item list
+
+Accept (a) the planning-session-synth handoff (a chat block, or its `③ 去重與
+歸類決策` + `④ MECE 檢查` tabs via `read_sheet_values`) or (b) a pasted table.
+Map every row onto the item schema in `./references/tracker-layout.md` §1
+(`L1 · L2 · 項目（正規化）· 重要 · 緊急 · 負責人 · 協助者 · 開始 · 結束 · 狀態 · 備註`).
+`重要`/`緊急` accept `Y/N`, `✓/✗` etc. and are normalised to the exact pack §3
+strings; unrated stays blank (Priority stays blank) and is noted. Owner and
+priority **decisions** come from the user here — record them, never fill gaps
+yourself. Rows marked 排除 in ③ (layout labels, arrows) are dropped and listed
+under 「未寫入」 in the final report.
+
+### Step 2 — Normalise, classify, number
+
+- **L1/L2** — match on the numeric prefix (`2.2`), not the wording (the July
+  tracker shortened some L2 labels). Unknown L2 ⇒ keep the user's text, raise
+  T6 with the nearest pack §2 row as a suggestion. Apply pack §7 rulings as
+  precedent when two rows look alike; every merge/split you propose is a lint
+  line, not a silent edit.
+- **Order** — group by L1 (pack §2 `1.0` → `8.0`, always all eight headers
+  even when a block is empty — an empty 5.0/6.0/8.0 is echoed as a coverage
+  gap, pack §2), then by L2 prefix, then input order.
+- **Number** (Fixed facts + layout §1) — fresh / fill: all eight blocks are
+  written in pack §2 order, so `#` prefix = pack §2 number; items `1.01`,
+  `1.02` … per block. Extend: the block prefix is whatever the live tracker
+  carries for that `主類別` (positional — read it, never derive it from the
+  pack), serials continue from `max(existing serial under that prefix) + 1`;
+  an L1 with no block yet ⇒ new header block appended after the last one,
+  prefix = last existing prefix + 1, `主類別` text = the pack §2 label with its
+  own number (e.g. `#` `7.0` · `主類別` `8.0 Finance & Admin`).
+- **Priority** — the formula in `./references/tracker-layout.md` §2 (the
+  template's own): blank when either input is blank, else P0/P1/P2/P3 per
+  pack §3. Values are also acceptable when the user asks for a formula-free
+  tab; say which you used.
+- **Defaults (only where the user gave nothing)** — `狀態` = `未開始`; P3 ⇒
+  `狀態` = `放棄` and 負責人/協助者 = `N/A` **when none given** — an owner the
+  user assigned to a parked P3 is kept as-is and echoed in the lint header
+  (「P3 保留 owner：<#s>」, revisit at the mid-cycle gate, pack §3); dates =
+  literal `YYYY-MM-DD` when not given.
+
+### Step 3 — Lint report + C1 cash pre-mortem (print, do not write)
+
+Run the list through the T1–T8 rules in `./references/tracker-layout.md` §4 and
+print the report in the §6 shape — header (cycle · item count · items per L1 ·
+P0/P1/P2/P3 counts and %), then one line per finding with the item numbers,
+then the **C1 cash pre-mortem**: every P0 whose 項目/備註 matches the §5 spend
+keywords (hire · ads · venue · tooling · contractor · bonus/分潤 …), listed with
+負責人 and 開始, followed by the question 「以上 P0 進場後，C1 底線（pack §4：runway
+≥ 4 個月）是否仍成立？runway 目前 = <user number or（待補）>」. State which cap
+rule the room chose (≤ 6 owned P0 vs. the July 25%). Wait for the user: fix
+rows, override with a reason, or accept as-is.
+
+### Step 4 — Row plan + confirmation
+
+Print the row plan (shape in `./references/tracker-layout.md` §6): target
+file (new copy name / existing ID) · tab names · for each L1 block the header
+row and the item rows `first # – last #` · the **numbering rule line**
+(「`#` 前綴依位置排序（現有 <prefix> = <主類別> …）；主類別文字帶 pack §2 編號；
+新 L1 → 前綴 <last+1>」 — in extend mode printed with the prefix → 主類別 map
+read from the tracker) · pivot owner rows · colour rules · tabs to
+duplicate/empty · leftovers you already foresee. Then ask for an explicit go.
+Nothing below runs without it.
+
+### Step 5 — Fresh build (mode = fresh)
+
+1. `copy_drive_file(file_id=<template>, new_name="<year> <cycle> Planning
+   Main Tracker", parent_folder_id=<hub or user folder>)` → new ID; print it.
+   `get_spreadsheet_info` on the copy; confirm the pack §6 tabs exist.
+2. Cycle-named tabs: `create_sheet(spreadsheet_id, source_sheet_name="<template
+   SOR tab, sources §A>", sheet_name="<cycle> 專案項目", insert_sheet_index=
+   <index of the template SOR tab + 1>)`, same for the template retro tab →
+   `<cycle> 回顧總結` (index of the template retro tab + 1) — a duplicate keeps
+   widths, header format, formulas, conditional rules, and the index keeps
+   the pack §6 order (README · 回顧總結 · 專案項目 · 專案項目小記 · ② · ③ · ④); if
+   the order still differs, list the reorder as a leftover. **Name collision:** when the target name
+   already exists in the file (cycle = `H2` built from an `H2 …` template,
+   or `H1`), Sheets rejects the duplicate — use the pack §8 form
+   `<cycle> 專案項目 — YYYY-MM 現行版` (and `<cycle> 回顧總結 — YYYY-MM 現行版`)
+   instead, and use that exact name wherever `<cycle> 專案項目` appears below
+   (pivot references, colour ranges, README, report). Empty the old tabs
+   (`modify_sheet_values(range_name="'<old>'!A2:M1000", clear_values=True)`)
+   and list them as leftovers (「請在 UI 刪除或改名為 (Archive) …」). Also empty
+   `② 白板原文` · `③ 去重與歸類決策` · `④ MECE 檢查` below their header row 1
+   (`'<tab>'!A2:Z1000`), and both retro tabs — the duplicated `<cycle> 回顧總結`
+   AND the old template retro tab — in two ranges: `A1:F6` (the previous
+   cycle's 5 重點結論) and `A9:F1000` (the table body below the header at row
+   8; keep row 8) — session-synth fills those; a fresh copy carries nothing
+   of the previous cycle.
+3. SOR tab (all ranges prefixed `'<cycle> 專案項目'!`): **grid pre-flight** — read
+   each tab's row/column count from `get_spreadsheet_info` (the July template is
+   `65×13` SOR · `10×11` 小記 · `55×6` retro); every clear/write range below is
+   bounded by that grid (write `A2:M<rows>`, not `A2:M1000`), and when the plan
+   has more rows than the grid, `resize_sheet_dimensions(sheet_name=…,
+   insert_rows=<needed>)` FIRST — Sheets rejects `values.update` beyond the grid
+   with "exceeds grid limits". Then clear `A2:M<rows>` and
+   **two writes** — (a) header row (layout §1) + every planned row for columns
+   A–M with G left blank, one `modify_sheet_values` call,
+   `value_input_option="RAW"` (so `1.0`, `1.10`, `YYYY-MM-DD` stay literal
+   text — Hard rule 6); (b) `G2:G<last>` with the layout §2 formula string
+   per item row (header rows blank), `value_input_option="USER_ENTERED"` so it
+   evaluates. Freeze row 1: `resize_sheet_dimensions(sheet_name="<cycle> 專案
+   項目", frozen_row_count=1)`.
+4. `專案項目小記`: rewrite the pivot per layout §3 with every `'<template SOR>'`
+   reference re-pointed to `'<cycle> 專案項目'`; owner rows = the distinct 負責人
+   values (including `All` when present, so the smell stays visible). The
+   whole grid is labels + formulas — one `modify_sheet_values` call with
+   `value_input_option="USER_ENTERED"` (COUNTIF / COUNTIFS / SUM / ratio cells
+   must evaluate; Hard rule 6). Then **clear every row below the grid**
+   (`modify_sheet_values(range_name="'專案項目小記'!A<grid end + 1>:Z<tab rows>",
+   clear_values=True)` — `+1`, not `+2`: a smaller owner list would otherwise
+   leave one stale owner row alive) — the copy may carry stray rows from the
+   previous cycle and they must not travel into the new file. Nothing else writes
+   here: planning-tracker-sync's snapshots go to the OKR & KPI Tracker
+   (`tracker-latest` / `tracker-snapshots`), never to this tab.
+5. Colours: keep the duplicated tab's 狀態 rules if present; otherwise add the
+   four `CUSTOM_FORMULA` rules in layout §3 via `manage_conditional_formatting`
+   on `'<cycle> 專案項目'!A2:M1000`. L1 header rows bold + light fill via
+   `format_sheet_range` on `'<cycle> 專案項目'!A<r>:M<r>`.
+6. README: if it still holds the previous cycle's content, replace the
+   key·value rows (source · method · counts · confidence `（待補）` · coverage
+   gaps from Step 2 · tab guide); if session-synth already wrote it, refresh
+   only the counts line.
+
+### Step 6 — Fill or extend an existing tracker (mode = fill | extend)
+
+1. `get_spreadsheet_info` on the tracker the user named, then
+   `read_sheet_values("'<SOR tab>'!A1:M1000")` (`<SOR tab>` = `<cycle> 專案項目`,
+   or the tab the user points at) and `read_sheet_values("'專案項目小記'!A1:K40")`.
+   Classify:
+   - **SOR tab missing / row 1 empty, AND `專案項目小記` missing or empty** ⇒
+     **fill** (the session-synth handoff: `create_spreadsheet` left
+     `<cycle> 專案項目` + `專案項目小記` empty) → 6.2;
+   - **SOR tab missing / row 1 empty, but `專案項目小記` holds a grid** ⇒ a live
+     cycle owns that grid — **extend, new-tab branch** → 6.4 (write into the
+     empty SOR tab, second pivot grid below the existing one, README counts
+     untouched);
+   - **row 1 = the layout §1 header, exact strings A–M** ⇒ **extend** → 6.3 /
+     6.4; locate every L1 block **by `主類別` text** (the pack §2 label with
+     its own number, e.g. `6.0 Tech & Platform`), fallback `#` matching
+     `^\d\.0$` (a hand-edited tracker that stores `#` numeric reads back
+     `1`–`8` — accept only when `主類別` carries the label); record each
+     block's actual `#` prefix (positional — the July tracker's `6.0 Tech &
+     Platform` block reads `#` `5.0`) and its max serial; a new L1 continues
+     from the last block's prefix + 1;
+   - **row 1 present but ≠ layout §1** ⇒ **stop** and say why — never guess a
+     column mapping, never clear a tab that holds anything.
+2. **Fill** (nothing is overwritten — both tabs are empty): if `<cycle> 專案
+   項目` does not exist, `create_sheet(sheet_name="<cycle> 專案項目")` (blank
+   tab, no template copy, `insert_sheet_index` per the pack §6 order; same for
+   a missing `專案項目小記`). Then exactly Step 5.3 (RAW data write +
+   USER_ENTERED G formulas + freeze, all ranges prefixed) → Step 5.4 pivot grid
+   written `USER_ENTERED` into the empty `專案項目小記` (nothing below it to
+   clear) → Step 5.5 colours (a `create_spreadsheet` tab carries no
+   rules, so add the four layout §3 rules + the L1 header fill). README ·
+   `<cycle> 回顧總結` · `②/③/④` are session-synth's — read the README and
+   refresh only the counts line (Step 5.6, second branch); touch nothing else.
+   The old-cycle tracker (sources §A) is not opened.
+3. **Append under L1** (extend default): per L1 block with new items,
+   `resize_sheet_dimensions(sheet_name="<SOR tab>", insert_rows=<n>,
+   insert_rows_at=<row of the next L1 header>)` (or after the last block —
+   `sheet_name` is mandatory, Hard rule 6), read the inserted range back and
+   confirm it is blank, reset its format (`format_sheet_range(range_name=
+   "'<SOR tab>'!A<r1>:M<r2>", bold=False, background_color="#FFFFFF")` — an
+   insert inherits the row above, and directly under an L1 header that is
+   the bold grey fill), then write the new rows into it — data columns `RAW`
+   with serials continued under the block's **existing `#` prefix**, then the
+   G formulas `USER_ENTERED` — every `range_name` prefixed `'<SOR tab>'!`. An
+   L1 with no block yet: insert `1 + n` rows after the last block, write its
+   header row (`#` = last existing prefix + 1, `主類別` = the pack §2 label,
+   bold + fill per layout §3) and its items `<prefix>.01` …. Existing rows are
+   never rewritten or moved.
+4. **New tab** (user says so, the L2 set/columns differ, or the 6.1 「SOR
+   empty + live 小記」 case): if the target tab already exists empty, use it;
+   else `create_sheet(source_sheet_name=<SOR tab>, sheet_name="<cycle> 專案項目",
+   insert_sheet_index=<index of the old SOR tab + 1>)` — if that name is
+   taken, `<cycle> 專案項目 — YYYY-MM 現行版` (pack §8) — clear
+   `'<new tab>'!A2:M1000`, fill as in Step 5.3; add a second pivot block two
+   rows below the first (`USER_ENTERED`, layout §3), pointing at the new tab;
+   the old tab and the first grid stay untouched as the archive (pack §8), and
+   the README counts of that other cycle are not touched.
+5. Pivot (extend): add owner rows for new 負責人; never delete an owner row.
+
+### Step 7 — Verify + report
+
+Read back the SOR tab (`include_formulas=true`): row count = planned, first/
+last `#` per L1 read back as the literal strings (`1.0`, `1.10` — not `1`,
+`1.1`), G resolves to P0–P3, `專案項目小記` counts evaluate (numbers, not
+literal `=COUNTIF…` text, no `#REF!`); in extend mode also
+re-read README `A1:B3` and confirm it is unchanged (no stray insert). Then print
+the final report (layout §6): **WROTE** (file name + ID + URL, tabs, row
+ranges, pivot rows, colour rules) · **OVERRIDES** (T# + reason) · **DID NOT**
+(排除 rows, tabs to rename/delete manually, README `（待補）` lines) · **NEXT**
+(`/planning-tracker-sync <ID>` for the first Team Weekly block;
+`/planning-suite-reconciler` once the tracker is declared final).
+
+---
+
+## Outputs
+
+- **Fresh:** one new Sheet 「<year> <cycle> Planning Main Tracker」 in the hub
+  (or named) folder — SOR tab `<cycle> 專案項目` (header + L1 blocks + `N.NN`
+  items + Priority formula), `專案項目小記` re-pointed, 狀態 colours, cycle-named
+  retro tab, emptied `②/③/④` tabs for session-synth, README skeleton; the
+  template's old tabs emptied and listed as leftovers.
+- **Fill:** the session-synth file's empty `<cycle> 專案項目` + `專案項目小記`
+  filled in place (header + L1 blocks + items + formula, pivot, colours);
+  README counts refreshed; every other tab untouched; no second file.
+- **Extend:** new rows under the right L1 blocks (serials continued) or a new
+  `<cycle> 專案項目` tab; pivot rows added for new owners.
+- **Always in the chat:** the lint report (T1–T8 + coverage echo), the C1 cash
+  pre-mortem, the row plan, and the wrote / did-not-write summary with IDs.
+
+## Reference files
+
+- `./references/planning-knowledge-pack.md` — the family's shared pack (byte-
+  identical across the eight `planning-*` skills; do not edit here).
+- `./references/planning-sources.md` — live IDs: template tracker, hub folder,
+  tab → gid map, Google account (byte-identical across the family).
+- `./references/tracker-layout.md` — this skill's contract: item schema +
+  column map, Priority formula, pivot grid + formulas, colour defaults, lint
+  rules T1–T8, C1 spend keywords, and the exact lint / row-plan / final-report
+  shapes.
+
+## Limitations
+
+- Tab rename/delete is not exposed by the `google-workspace` MCP: cycle-named
+  tabs are duplicates; the emptied old tabs are a manual leftover.
+- Lint is heuristic: T6 matches L2 by numeric prefix, T7 catches exact/near-
+  exact 項目 text, C1 is keyword-based — a P0 that spends money without saying
+  so is not listed; the founder's confirmation is the gate.
+- Pivot owner rows are whatever the list carries; the roster is read from the
+  負責人 column, never assumed (pack §9).
+- Extend mode trusts the existing header; a hand-modified one stops the run.
+  Fill mode only fires on a genuinely empty SOR tab — a tab with a partial
+  header or stray cells is treated as hand-modified and stops too.
+- Column `#` is written as text (RAW). A tracker whose `#` was later
+  re-typed numeric by hand still extends (the L1 label in `主類別` is the
+  fallback key), but its `1.10`-style serials may already read as `1.1` — the
+  read-back names them; the skill does not repair them.
+- One tracker per run; retro table, whiteboard tabs and recap mail belong to
+  planning-session-synth; Doc addenda to planning-suite-reconciler.
+- **Fill mode extends the spec row** (SKB-007 row 0.07 names fresh + extend
+  only): it exists so the file planning-session-synth creates is completed
+  in place instead of duplicated; it is guarded — SOR tab AND `專案項目小記`
+  both empty — and otherwise falls back to extend.

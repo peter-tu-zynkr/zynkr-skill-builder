@@ -1,0 +1,298 @@
+---
+name: planning-evidence-pack
+sheetId: "0.05"
+description: >-
+  The "looking back in numbers" scoreboard for a Zynkr planning cycle (H1 / H2 /
+  YE). Seeds KPIs from the session workbook's Pre-work by LOB tab + the OKR tracker's
+  KRs, routes each to ONE readable source (Main Tracker 完成 counts · planning-tracker-sync's
+  `tracker-snapshots` tab · OKR status · Calendar event counts by title pattern · Gmail
+  Fireflies recap counts · numbers the user pastes; zynkr-gm's kpi-map.md when installed),
+  writes a `Scoreboard` tab (KPI · source · <cycle>-start · <cycle>-end · Δ · note) into the
+  cycle workbook or a new hub Sheet, plus the five-tile numbers-slide text. Unreadable →
+  「（待補）」+ the source needed; never estimates; read-only against every source. Trigger on
+  /planning-evidence-pack or "數字回顧", "把這個週期的數字拉出來", "做 scoreboard", "KPI 計分板",
+  "上半年／全年數字", "evidence pack", "looking back in numbers", "pull the numbers for the
+  offsite". Distinct from planning-prework-pack (consumes the scoreboard), planning-tracker-sync
+  (weekly agenda + snapshots — a source here), zynkr-gm (founder's weekly GM brief +
+  KPI-variance asks; owns 「GM 週報 / 這週重點 / H2 進度盤點 / KPI 有沒有 off target」),
+  planning-1on1-annual-digest (one person's year), and project-status-update (owns bare 「週報」).
+category: strategy
+project: planning-evidence-pack
+platform: claude
+status: Done
+author: Peter Tu
+input: "Cycle label (H1/H2/YE) + as-of date; optional session-workbook Sheet ID; optional pasted numbers (Kit · LINE · marketplace · platform · cash/burn/runway) and ID overrides"
+process: "Resolve cycle + sources → seed KPIs (workbook Pre-work + OKR KRs) → route each to one source (zynkr-gm kpi-map when installed) → read tracker / snapshots / OKR / calendar / Fireflies / pasted, （待補）the rest → row plan → confirm → write Scoreboard → 5 tiles"
+output: "A `Scoreboard` tab (or new hub Sheet): KPI · source · <cycle>-start · <cycle>-end · Δ · note, plus the five-tile slide-4 text and the （待補）gap list with the source each needs"
+synergy:
+  - "planning-prework-pack"
+  - "planning-tracker-sync"
+  - "zynkr-gm"
+  - "zynkr-slide"
+---
+
+# Planning Evidence Pack
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill planning-evidence-pack
+```
+
+Every planning session opens with "what did the numbers do this cycle?" — in July those
+numbers were pulled by hand from six places the morning of. This skill is the scoreboard
+builder: it seeds a KPI list from the cycle workbook and the OKR tracker, routes each KPI
+to the one source that can answer it (tracker, snapshots, OKR status, calendar counts,
+Fireflies recap counts, or numbers the user pastes), and writes a `Scoreboard` tab plus
+the five stat tiles the deck's looking-back slide (slide 4) needs. Unlike asking a model for "our
+H2 numbers", it refuses to fill a gap: an unreadable KPI is written as `（待補）` with the
+exact source it would need, and every real number names where it was read.
+
+---
+
+## How this differs from its neighbours
+
+- **planning-prework-pack** (0.03) — the CONSUMER: it reads the `Scoreboard` tab to fill
+  the workbook's `Pre-work by LOB` KPI column and pastes the five tiles into the deck
+  request it hands to `zynkr-slide` (its `session-workbook-template.md` §2 slide 4 = 5
+  big-number tiles — that is the count this skill produces); it never counts events or
+  reads Gmail itself.
+- **zynkr-gm** (0.02) — the FOUNDER-facing weekly GM brief; owns every 「GM 週報 / 這週重點 /
+  H2 進度盤點 / KPI off-target」 trigger and the `KPI Dashboard` write rule (`Actual` · `As
+  of` · `Source` cells). When it is installed (`~/.claude/skills/zynkr-gm` or
+  `~/.agents/skills/zynkr-gm`) this skill CITES its `references/kpi-map.md` (Tracker # →
+  metric → AUTO / SEMI / HUMAN class → tool sketch) as the routing for KPI-Dashboard rows
+  instead of re-deriving sources; it never writes an `Actual` cell. A GM-brief phrase ⇒
+  hand over to zynkr-gm.
+- **planning-tracker-sync** (0.09) — the WEEKLY rhythm on the tracker; its `snapshot` mode
+  appends dated rows to the `tracker-snapshots` tab of the **OKR & KPI Tracker** (never the
+  Main Tracker) — one of this skill's sources (S2 in `./references/kpi-source-map.md`).
+  tracker-sync counts one week's movement; this skill looks back over a whole cycle.
+- **planning-1on1-annual-digest** (0.04) — one person's narrative year from their 1:1
+  Doc; company-level numbers come from here, not from a 1:1 Doc.
+- **project-status-update** (3.09) — the course-project weekly on its own tracker Sheet;
+  it owns bare 「週報」 / "weekly report" and is never invoked from here (sources §B: do
+  not re-implement it — ask the user for its latest numbers instead).
+
+## Fixed facts (read the references first)
+
+- `./references/planning-knowledge-pack.md` — cycle vocabulary (§1), the L1 grouping the
+  tab uses (§2), status vocabulary `未開始 · 進行中 · 完成 · 放棄` (§3), the C1–C4 frame the
+  cash tiles serve (§4), the tracker layout (§6 — `專案項目小記` is a pivot grid there, not
+  the snapshot source), Sheet-versioning by new tab (§8), and the never-invent-numbers
+  rule (§9).
+- `./references/planning-sources.md` — every live ID: hub folder, Main Tracker + tab
+  gids, session workbook, designed deck, OKR & KPI Tracker (§A — also home of the
+  `tracker-snapshots` / `tracker-latest` tabs planning-tracker-sync creates); Fireflies query shape,
+  calendar rhythm and the connector rule — calendar via `claude_ai_Google_Calendar` only,
+  Google Chat unreadable (§B header + §B).
+- `./references/kpi-source-map.md` — this skill's routing table: KPI kind (stock / flow),
+  the seven source families S1–S7 with the exact tool + what counts, the zynkr-gm
+  `kpi-map.md` hand-off (§2a), the calendar / recap title patterns, and the `（待補）`
+  wording contract.
+- `./references/scoreboard-layout.md` — the tab / Sheet naming rule, the exact column
+  strings, row grouping, and the five-tile selection rules.
+- Google account for all `google-workspace` calls: `peter_tu@zynkr.ai` (sources file
+  header). Writes: `create_sheet` + `modify_sheet_values` (or `create_spreadsheet` when
+  no workbook is given). Reads: `read_sheet_values`, `search_gmail_messages`, the
+  calendar connector's `list_events`.
+
+## Hard rules
+
+1. **Never estimate.** A KPI is a read value with a source, or it is `（待補）` + the exact
+   source needed (`./references/kpi-source-map.md` §4). No "roughly", no ranges from
+   memory, no numbers copied from an older deck without a dated source.
+2. **Read-only against every source.** The Main Tracker, the OKR & KPI Tracker (incl. its
+   `tracker-snapshots` / `KPI Dashboard` tabs), calendar, Gmail and any connector are only
+   read. The only writes are the `Scoreboard` tab (or the new hub Sheet) — and only after
+   the row plan is shown and confirmed.
+3. **Never overwrite.** An existing `Scoreboard` tab gets a sibling
+   `Scoreboard — YYYY-MM 現行版` (pack §8); the July workbook and the tracker are never
+   edited in place.
+4. **Every number names its source and its date.** The `source` and `note` columns are
+   mandatory; a mid-cycle run labels the end column with the as-of date.
+5. **Counts are rule-bound, not fuzzy.** 狀態 counts are exact-match on the vocabulary
+   (pack §3); calendar / recap counts are word-bounded title-pattern matches, in the order
+   given in `./references/kpi-source-map.md` §3 (first match wins), and list exclusions in
+   `note`.
+6. **Say what you could not read.** Google Chat, Kit, LINE, Portaly, Supabase without a
+   named connector — these are `（待補）` lines, never silently skipped, and the final
+   report lists them.
+7. **No mail, no calendar writes, no tracker cell.** Nothing is sent, created or edited
+   outside the Scoreboard.
+
+## Workflow
+
+### Step 0 — Resolve cycle + sources
+
+Read `./references/planning-sources.md`. Take from the user: `cycle` (`H1` / `H2` /
+`YE`; ask if absent — never assume), the as-of date (default today), the session-workbook
+Sheet ID if one exists for this cycle (else the run creates a Sheet in the hub folder),
+and any ID overrides (a new tracker, a new OKR tracker, a new workbook). Compute the
+window: H1 = Jan 1 → Jun 30 · H2 = Jul 1 → Dec 31 · YE = Jan 1 → Dec 31 of the cycle
+year; if the as-of date falls inside the window, the window ends there (mid-cycle run).
+Check whether `zynkr-gm` is installed (`~/.claude/skills/zynkr-gm` or
+`~/.agents/skills/zynkr-gm`). Print one line before touching anything: `Cycle: <label>
+<year> · window <start> → <end> · workbook <ID or "new Sheet in hub"> · tracker <ID> ·
+OKR tracker <ID> · zynkr-gm <installed | not installed>`.
+
+### Step 1 — Seed the KPI list
+
+Two seeds, merged, duplicates collapsed by wording:
+
+- **Workbook `Pre-work by LOB` tab** (sources §A) — the KPIs column, one or more KPI
+  phrases per LOB row; keep the LOB number as the row's group.
+- **OKR & KPI Tracker `OKRs` tab** — every KR row (Objective · KR · Owner · Tracker # ·
+  Q3 · Q4 · Status · Notes) becomes a KPI row grouped under the LOB its Tracker # points
+  to (L1 prefix); the `KPI Dashboard` tab adds any KPI not already listed (match its rows
+  by Tracker # / metric name, never by position — zynkr-gm `kpi-map.md` rule).
+
+Always add the standing rows the tiles need even if neither seed lists them: tracker 完成
+by LOB · P0 完成 / P0 total · Demo 場次 · 線下講座 · 直播 · Team Weekly · Weekly 合夥人 ·
+Fireflies recaps (total) · and the 公司整體 rows (cash on hand · monthly burn · runway
+months — C1 in pack §4). Print the seeded list (`KPI · group · kind stock/flow`) and let
+the user add or strike rows before any source is read.
+
+### Step 2 — Route every KPI to one source
+
+Using `./references/kpi-source-map.md` §2, assign each KPI exactly one source family
+(S1 tracker · S2 tracker snapshot · S3 OKR tracker · S4 calendar · S5 Gmail Fireflies ·
+S6 pasted / named connector · S7 course tracker → ask). For `KPI Dashboard` rows, when
+zynkr-gm is installed, read its `references/kpi-map.md` first and take the row's class +
+「Actual comes from」 column as the route (§2a): AUTO / SEMI ⇒ the named tool, run read-only
+only if the user names it this run (else `（待補）` citing the kpi-map row); HUMAN ⇒
+`（待補）` with the owner to ask; `note` = `kpi-map <Tracker #>`. A KPI that no family can serve
+this run is routed to `（待補）` now, with the exact-source line drafted (§4 shape). Show
+the routing table; this is where the user pastes S6 numbers (`KPI = value @ date`) or
+names a read-only connector.
+
+### Step 3 — Read the tracker and its snapshots (S1 · S2)
+
+`read_sheet_values` on the SOR tab `<cycle> 專案項目` (ID + gid from sources §A; a
+different cycle → the override from Step 0). Count 狀態 = `完成` per L1 (主類別 header rows
+`1.0` … `8.0`, pack §6), P0 完成 vs P0 total, and 放棄. Then read the `tracker-snapshots`
+tab of the **OKR & KPI Tracker** (sources §A; written by `planning-tracker-sync snapshot`;
+15 columns = the 13 tracker columns + `snapshot_date` + `iso_week`, one row per data row):
+a snapshot = all rows sharing one `snapshot_date`; group each by 狀態 × Priority and take
+the earliest snapshot inside the window as `<cycle>-start` and the latest as
+`<cycle>-end` for the stock rows (open P0, 進行中); no snapshot rows in the window ⇒
+`<cycle>-start` = `（待補）— 需要：OKR & KPI Tracker tracker-snapshots @ <window start>（跑
+planning-tracker-sync snapshot）`. Record the tracker's total row count — it is the
+denominator of the `完成 N / M 項` tile and is read, never remembered.
+
+### Step 4 — Read the OKR tracker (S3)
+
+`read_sheet_values` on `OKRs` and `KPI Dashboard` (sources §A). For each KR row copy
+Status + Q3 / Q4 cells verbatim into `note`, and a numeric target in the KR text as
+`目標 …`. The KR's *actual* value still comes from its routed source (Steps 3, 5, 6) —
+an OKR status word (「on track」) is never written into a numeric cell. One exception: a
+`KPI Dashboard` row whose `Actual` cell is filled together with `As of` + `Source`
+(zynkr-gm's write rule) is a dated read value — copy it into `<cycle>-end` with source
+`OKR tracker` and `note` = `kpi-map <Tracker #> · as of <date> · <Source cell>`.
+
+### Step 5 — Count calendar events by title pattern (S4)
+
+Use `mcp__claude_ai_Google_Calendar__list_events` only (the workspace-mcp Calendar API is
+disabled — sources file header). Query the window **month by month** so no page is
+truncated; expand recurring instances if the connector offers a single-instance mode.
+Match titles case-insensitively against the ordered patterns in
+`./references/kpi-source-map.md` §3 (Demo → 線下講座 → 直播 → Team Weekly → 合夥人 → 1:1 →
+Offsite); first match wins; drop cancelled events and events the account declined; note
+every exclusion. For flow rows, re-run the same query over the previous cycle window of
+equal length to fill `<cycle>-start` (baseline); if that window predates the account's
+calendar history, `<cycle>-start` = `—`. `note` = the pattern used · events counted ·
+exclusions.
+
+### Step 6 — Count Fireflies recaps (S5)
+
+`search_gmail_messages` (`user_google_email` = the account above) with
+`from:fireflies.ai subject:"Fireflies recap" after:YYYY/MM/DD before:YYYY/MM/DD`; page
+until exhausted. One recap = one held meeting. Write the total, the per-pattern split
+(Team Weekly · 合夥人 · 1:1 · other, from the subject after `Fireflies recap – `), and the
+distinct titles into `note`. Do not open recap bodies — this skill counts meetings, it
+does not summarise them.
+
+### Step 7 — Take pasted numbers and named connectors (S6 · S7)
+
+For every S6 row: use exactly what the user pasted, with its date; a value without a
+date is asked back once, then recorded as `（待補）`. If the user names a read-only
+connector and query (a Supabase MCP `SELECT`, an accounting export, a Kit report), run it
+read-only and copy the query verbatim into `note`. Course-project KPIs (S7) are asked
+from the user's latest `project-status-update` draft, never re-derived here.
+
+### Step 8 — Assemble rows, compute Δ, show the plan
+
+Build the table per `./references/scoreboard-layout.md` §2: key rows (cycle · window ·
+generated) → header row → L1 group rows → KPI rows → `公司整體`. Δ = end − start only when
+both are numbers; `—` otherwise; add `%` in `note` when start > 0. For flow rows `note`
+opens with `baseline = 上一週期 <window>` (kinds: `./references/kpi-source-map.md` §1) so
+the Δ is never read as movement from a start-of-cycle level. Print the full row plan
+in the chat as a Markdown table plus a `（待補）` summary (`n 項待補 — sources: …`) and
+**stop for confirmation**. The user may still paste numbers here; re-render and re-ask
+if anything changed.
+
+### Step 9 — Write the Scoreboard
+
+On confirmation only:
+
+- Workbook given, no `Scoreboard` tab → `create_sheet` named `Scoreboard`, then
+  `modify_sheet_values` with the rows; workbook has one already → tab
+  `Scoreboard — YYYY-MM 現行版` (hard rule 3).
+- No workbook → `create_spreadsheet` `<YYYY> <cycle> Scoreboard — 數字回顧`, then move it
+  into the hub folder (sources §A); if moving is not possible, print the URL and ask the
+  user to move it.
+- Optional formatting per `./references/scoreboard-layout.md` §2 — nothing beyond it.
+
+Read the tab back once (`read_sheet_values`) and confirm the row count matches the plan.
+
+### Step 10 — Print the five stat tiles and the closing report
+
+Apply the tile rules in `./references/scoreboard-layout.md` §3 (only real numbers; one
+tile per LOB group in the stated priority order; fewer than five ⇒ fewer tiles, said out
+loud; the Δ label is `vs <cycle>-start` for stock rows and `vs 上一週期` for flow rows).
+Print the block in the chat and append it below the table on the tab under a
+`Slide tiles` header. Then close with: **wrote** — the Sheet URL + tab name + row count;
+**did NOT do** — sources not read (Chat, Kit, LINE, … as applicable), the `（待補）` list
+with the exact source each needs, and a reminder that `planning-prework-pack` reads this
+tab (it is not invoked automatically).
+
+## Outputs
+
+- **`Scoreboard` tab** in the cycle workbook (or a new `<YYYY> <cycle> Scoreboard —
+  數字回顧` Sheet in the hub folder): `KPI · source · <cycle>-start · <cycle>-end · Δ ·
+  note`, grouped by L1 + `公司整體`, key rows on top, `（待補）` cells with exact-source
+  notes.
+- **Numbers-slide text** — the `【<cycle> 數字回顧】` block with up to five tiles (deck slide
+  4), printed in the chat and appended to the tab, ready for `planning-prework-pack` /
+  `zynkr-slide`.
+- **Closing report** — what was written (URL, tab, rows), what could not be read, and
+  the `（待補）` list.
+
+## Reference files
+
+- `./references/planning-knowledge-pack.md` — shared family pack (byte-identical across
+  the eight `planning-*` skills; do not edit here).
+- `./references/planning-sources.md` — shared live IDs, query shapes, connector rules
+  (byte-identical; do not edit here).
+- `./references/kpi-source-map.md` — KPI kinds, source families S1–S7, title patterns,
+  `（待補）` contract.
+- `./references/scoreboard-layout.md` — tab naming, exact columns, grouping, tile rules.
+
+## Limitations
+
+- **Coverage is bounded by connectors.** Kit, LINE OA, Portaly, the marketplace and the
+  platform database are read only when the user pastes numbers or names a read-only
+  connector; otherwise those rows are `（待補）`. Google Chat is never readable.
+- **Calendar counts are title-pattern counts.** An event titled ambiguously (a 1:1 named
+  「demo review」) is a judgment the skill surfaces in `note`, not a number it hides; the
+  patterns are the shared list in `./references/kpi-source-map.md` §3.
+- **Baselines depend on history.** For flow KPIs `<cycle>-start` *means* the previous
+  cycle's count over a window of equal length (tile label 「vs 上一週期」), and exists only
+  when the same source can be re-queried for that window; tracker 完成 counts have no
+  baseline unless a previous cycle's tracker exists.
+- **Snapshots come from `planning-tracker-sync`.** Without its dated rows in the OKR &
+  KPI Tracker's `tracker-snapshots` tab, tracker stock values have no start reading — the
+  tab says so rather than back-filling.
+- **zynkr-gm is cited, not required.** Without it, `KPI Dashboard` rows are routed by §2
+  alone; with it, its `kpi-map.md` is the authority for where a metric's number lives, and
+  this skill never writes the `Actual` cells zynkr-gm owns.
+- **No deck rendering here.** The tiles are text; `planning-prework-pack` / `zynkr-slide`
+  put them on a slide.

@@ -206,7 +206,7 @@ and accepted here so spec and body agree:
       → copied into each skill by `scripts/check-planning-refs.sh --sync`)
 - [x] SKB-007.1 Wave 1: planning-prework-pack (0.03) · planning-session-synth (0.06) ·
       planning-tracker-sync (0.09) — validate + ingest dry-run + push + curl
-- [ ] SKB-007.2 Wave 2: planning-1on1-annual-digest (0.04) · planning-evidence-pack
+- [x] SKB-007.2 Wave 2: planning-1on1-annual-digest (0.04) · planning-evidence-pack
       (0.05) · planning-tracker-builder (0.07) · planning-suite-reconciler (0.08) ·
       planning-lob-gap-audit (0.10) — same gate
 - [ ] SKB-007.3 Governance: `/zynkr-skills` per skill → QA → publish (fresh-intake,

@@ -1,0 +1,316 @@
+---
+name: planning-suite-reconciler
+sheetId: "0.08"
+description: >-
+  Propagate a FINALIZED planning Main Tracker into Zynkr's satellite planning
+  suite after an H1 / H2 / YE planning session: for the integrated plan Doc and
+  every per-LOB plan Doc it composes and inserts a dated top-of-body Refresh
+  addendum (thesis sharpened · what changed vs the previous plan · open
+  decisions · the P0 list with owners · management fixes from the retro), and
+  for the OKR & KPI Tracker it rebases the OKRs (Objective = 策略主軸, KR = P0
+  items with Owner + Tracker #) and mirrors P0+P1 Initiatives into NEW dated
+  tabs. Prints every addendum and the tab plan, takes ONE confirmation for the
+  whole batch, then writes — and never edits an existing body, never touches
+  the tracker. Trigger on /planning-suite-reconciler or when Peter says
+  "同步計畫文件", "把 tracker 同步到各部門計畫", "更新計畫文件的 addendum",
+  "把 OKR 對齊 tracker", "reconcile the planning suite", "write the plan
+  addenda", "rebase the OKRs to the tracker", "propagate the tracker". Distinct
+  from planning-tracker-builder (BUILDS the tracker upstream — this skill only
+  reads it), from planning-lob-gap-audit (a per-LOB report-only audit that
+  READS the addendum this skill wrote), and from admin-governance (local
+  _INDEX.md ↔ Drive index sync — index entries are its job, not this skill's).
+category: strategy
+project: planning-suite-reconciler
+platform: claude
+status: Done
+author: Peter Tu
+input: "The finalized Main Tracker (SOR tab) + cycle label; suite IDs come from ./references/planning-sources.md unless overridden; optional extra Docs/Sheets to include, 'overwrite' flag"
+process: "Resolve cycle + sources → read SOR + retro tabs (read-only) → inventory the suite (shortcuts, tabs, prior addenda) → compose per-Doc addenda + OKR/Initiatives tab plan → print all, ONE confirmation → insert addenda at top, write new tabs → verify → leftovers"
+output: "A dated Refresh addendum atop each plan Doc, two new dated tabs in the OKR & KPI Tracker, a written-vs-not-done report with URLs, and a leftovers list of what the API refused"
+synergy:
+  - "planning-tracker-builder"
+  - "planning-tracker-sync"
+  - "planning-lob-gap-audit"
+  - "admin-governance"
+---
+
+# Planning Suite Reconciler
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill planning-suite-reconciler
+```
+
+After a planning session the Main Tracker is final, but the plan Docs written before
+the room and the OKR Sheet still say what the team *intended* — this skill closes that
+gap in one batch: it reads the finalized tracker, composes a dated Refresh addendum for
+the integrated plan and each per-LOB plan Doc, rebases the OKRs and the P0+P1 Initiatives
+mirror as new dated tabs, shows you everything, and writes after one confirmation. For
+the founder (or whoever ran the session) in the week after the room, once
+`planning-tracker-builder` has landed the tracker. It never rewrites a body, never
+touches the tracker, keeps every `#N.NN` and owner traceable to a tracker cell, and ends
+with a leftovers list of what the API refused.
+
+---
+
+## How this differs from its neighbours
+
+- **planning-tracker-builder** (0.07) — upstream: it BUILDS the tracker. This skill
+  starts only when that tracker is final and reads it read-only; placeholder dates or
+  items 掛 All are quoted in the addenda as 待補/待認領, never fixed here.
+- **planning-lob-gap-audit** (0.10) — downstream: audits ONE LOB's Doc + folder against
+  the tracker and writes a report Doc; it reads the addendum this skill wrote. This skill
+  writes addenda for ALL Docs and audits nothing.
+- **planning-tracker-sync** (0.09) — the weekly agenda/nudge pass over the tracker. Its
+  only write is the dated snapshot into the SAME OKR & KPI Tracker: tabs `tracker-latest`
+  (which repurposes the stale `Initiatives Q3-Q4` tab) + `tracker-snapshots`. This skill
+  never repurposes, clears or writes those two tabs, and treats `Initiatives Q3-Q4` as
+  possibly already renamed to `tracker-latest` — the tab list is whatever
+  `get_spreadsheet_info` returns, not the names in sources §A.
+- **admin-governance** (3.05) — local `_INDEX.md` ↔ Drive index sync. `_INDEX.md`
+  entries are its job; this skill only lists them as leftovers. (It creates no new Docs,
+  so the GM Knowledge Directory needs no entry from this run.)
+
+## Fixed facts (read the references first)
+
+- **`./references/planning-knowledge-pack.md`** — vocabulary (§1), L1/L2 (§2), priority
+  vocabulary and status strings (§3), tracker layout (§6), and the **doc-versioning
+  convention (§8)** this skill implements: Docs get a dated addendum at the top with the
+  exact heading `## YYYY-MM-DD Refresh (vN) — aligned to the <cycle> Planning Main
+  Tracker` and the exact "Where this section conflicts…" sentence; Sheets version by new
+  tab `<name> — YYYY-MM 現行版`; the tracker is the SOR and the addendum wins on conflict.
+- **`./references/planning-sources.md`** — §A holds every ID: the Main Tracker + SOR tab
+  gid, the integrated plan Doc, the seven per-LOB Doc IDs and the 6.0 shortcut, the OKR
+  & KPI Tracker and its tab names, the GM Knowledge Directory. Never type an ID from
+  memory; a new cycle edits the sources file, not this body.
+- **`./references/addendum-template.md`** — the exact addendum skeleton (Form A =
+  integrated plan, Form B = per-LOB), the `vN` rule, and the column contract for the two
+  new OKR-Sheet tabs.
+- **Google account** for every `google-workspace` call: the one named in the sources
+  file (peter_tu@zynkr.ai unless the user overrides).
+- **Docs API gotchas that shape Steps 2 and 6:** tabbed Docs return an empty top-level
+  body — `inspect_doc_structure` first, then pass `tab_id` on every op · text inserted
+  above a heading inherits that heading's style — always re-style the inserted range ·
+  no `find_replace` in this skill (it is document-wide and would shift the insertion
+  index; stale titles/URLs go to leftovers) · `insert_text` carries plain text, so a
+  markdown table would land as literal `|` characters — bullets only · this skill has no
+  rename step (Docs, tabs or files) · Sheets have no tab-rename tool, but `create_sheet`
+  accepts `insert_sheet_index`; keep tab names short.
+
+## Hard rules
+
+1. **Never touch the tracker.** Read the SOR tab and the retro tab; write nothing there
+   — not a cell, not a note. Findings about the tracker go into the addendum text
+   (`待認領`, `待補`) and the closing report.
+2. **Never rewrite an existing body — no exceptions.** Addenda are inserted above the
+   body (and above earlier addenda); a body sentence is quoted, never edited. No
+   `find_replace`, no deletes: a stale title or URL in the body is quoted as-is in the
+   addendum ("the body's §n link points at the superseded …") and listed under
+   leftovers for a human.
+3. **One confirmation for the batch.** Every addendum text, every tab plan, and the
+   write order are printed in full first; the user says go once; no per-Doc re-asks and
+   no writes before that.
+4. **Sheets: new tabs, never overwrite a historic tab.** `OKRs — YYYY-MM 現行版` and
+   `Initiatives — YYYY-MM 現行版` are created next to the old tabs; the historic
+   `OKRs` / `Initiatives …` / `KPI Dashboard` tabs and `planning-tracker-sync`'s
+   `tracker-latest` / `tracker-snapshots` tabs are never cleared, written or repurposed.
+   The `overwrite` flag may only target a same-named `— YYYY-MM 現行版` tab this skill
+   created earlier in the same cycle.
+5. **Every `#N.NN`, owner, date and status is a tracker cell.** Owners come from the
+   負責人 column; 策略主軸 come from the retro tab / README / recap mail the user
+   points at. Nothing is invented — a missing value is `待定` or `（待補）` (pack §9).
+6. **Addendum wins on conflict, and says so** — the pack §8 sentence ("Where this
+   section conflicts…") opens every addendum verbatim: it is the FIRST sentence of the
+   opening paragraph (pack §8 "opening with"), then the one-line "reconciles…" lead and
+   the Links line. No per-skill exception to the pack's order.
+7. **Say what you could not do.** Anything not done — renames and tab reordering this
+   skill never attempts, unresolved shortcuts, a Doc that errored, a tab the API refused
+   — is a leftovers line, not a silent skip.
+
+## Workflow
+
+### Step 0 — Resolve cycle + sources
+
+Read `./references/planning-sources.md`. Take the `cycle` (`H1` / `H2` / `YE`) and any
+ID overrides from the user; default to §A. Print one block before doing anything else:
+`Cycle: <H1|H2|YE> <year> · Tracker: <ID> (SOR tab gid <n>) · Suite: integrated plan
+<ID> · LOB Docs 1.0…8.0 (<n> resolved) · OKR & KPI Tracker <ID> · extra targets: <user
+list or none> · mode: new tabs (default) | overwrite`. If the user's cycle label and the
+tracker title disagree, stop and ask.
+
+### Step 1 — Read the tracker (read-only)
+
+- `read_sheet_values` on the SOR tab (`<cycle> 專案項目`, the 13 columns per pack §6,
+  `#` … `備註`): keep the L1 header rows as grouping, collect every item row.
+- `read_sheet_values` on `<cycle-1> 回顧總結` (or the retro tab the user names): the
+  5 重點結論 lines + the 可加強 rows are the source of the thesis and the management
+  fixes; the README tab supplies counts and ⚠ coverage gaps.
+- Derive: the P0 list grouped by L1 (count + owners), the P1 list, the 放棄 (P3) list,
+  the P2 deferrals, and the 策略主軸 lines. Owners `All` or blank → `待認領`; date
+  placeholders → `待補`. Note the counts for the addendum header line.
+- Where do the 策略主軸 come from? In order: a `策略主軸` block on the README / 回顧總結
+  tab → the recap mail the user pastes → ask. Never derive them from the L1 list.
+
+### Step 2 — Inventory the suite
+
+For each target (integrated plan Doc · per-LOB Docs · OKR & KPI Tracker · anything the
+user added):
+
+- **Resolve shortcuts** — the 6.0 Doc is a shortcut in the hub (sources §A). Call
+  `get_drive_file_permissions` on the shortcut ID: workspace-mcp follows the shortcut
+  and returns the TARGET file's metadata — the `ID:` line in that response is the Doc to
+  edit (there is no `shortcutDetails.targetId` field to read). `update_drive_file`
+  follows shortcuts the same way (it would move the target), so never "move" or edit a
+  shortcut. Unresolvable → leftovers, keep going.
+- **Structure** — `inspect_doc_structure` (no `tab_id`); if it returns tabs, choose the
+  tab holding the plan body (usually `t.0`) and use that `tab_id` everywhere. Then
+  `get_doc_as_markdown` to read the top of the body: title line, preamble, any existing
+  `Refresh` addenda (→ `vN` per `./references/addendum-template.md`), and the body
+  sections you will cite as "§n" in "what changed".
+- **Insertion index** — `inspect_doc_structure(detailed=true, tab_id)`: the
+  `start_index` of the first `## `-level heading paragraph after the title/preamble
+  (that heading is the previous addendum when one exists — the new one goes above it).
+- **OKR Sheet** — `get_spreadsheet_info` for the tab list; confirm the target
+  `— YYYY-MM 現行版` names do not already exist. If one does (an earlier run this
+  cycle): default mode suffixes ` (2)` and adds a leftovers line; `overwrite` mode
+  targets that dated tab only — a historic `OKRs` / `Initiatives …` / `KPI Dashboard`
+  tab, or `planning-tracker-sync`'s `tracker-latest` / `tracker-snapshots`, is never a
+  target, whatever the flag says. Expect `Initiatives Q3-Q4` to be missing (already
+  repurposed to `tracker-latest`) — that is not an error and not this skill's to undo.
+
+### Step 3 — Compose the addenda
+
+One per Doc, from `./references/addendum-template.md`:
+
+- Integrated plan → **Form A** (thesis sharpened · levers · what changed vs the previous
+  plan — dropped / added or elevated / re-scoped, one bullet per L1 that moved · open
+  decisions · the P0 list with owners grouped by L1 · management fixes from the retro).
+- Per-LOB Doc → **Form B**, scoped to that L1's rows plus cross-LOB items that change
+  this Doc's commitments: P0s now (owners) · P1s · 放棄 / P2 deferrals (what changed) ·
+  de-scoped body promises · **open decisions affecting this LOB** (from the Form A open
+  decisions + this L1's `P2 pending …` items; write `none` when there are none) ·
+  cross-LOB line · management cadence. Body promises the tracker neither carries nor
+  放棄s are written as "not in the Tracker — background work, no <cycle> KPI".
+- Extra Docs the user listed (strategy Docs, VMS, value ladder) → Form B with the
+  cross-references those Docs care about; if the user gave a Sheet, treat it like the OKR
+  Sheet (new tab), never in-place.
+- Language: EN sentences, zh-TW item names as they appear in the tracker, owners exactly
+  as the 負責人 column spells them. Links are URLs built from sources §A IDs.
+
+### Step 4 — Build the OKR rebase and the Initiatives mirror
+
+- `OKRs — YYYY-MM 現行版`: one Objective per 策略主軸 (O1, O2, …); under each, one row
+  per P0 item that serves it — `Objective · KR · Owner · Tracker # · <period-1> target ·
+  <period-2> target · Status · Notes`, values per the column contract in the template
+  file. The two target columns are cycle-aware: H1 → `Q1 target · Q2 target`; H2 →
+  `Q3 target · Q4 target` (sources §A's July `OKRs` header `Q3 · Q4` is the H2 example);
+  YE → `H1 target · H2 target`; or the columns the user names. P0s that fit no 主軸 →
+  `O<last> — 其他 P0（待歸軸）` + a leftovers line.
+- `Initiatives — YYYY-MM 現行版`: every P0 and P1 row of the SOR tab in tracker order,
+  the 10 columns of the template contract (`#` … `備註`).
+- Row 1 of each tab = the provenance banner (template file). YYYY-MM = the month of the
+  run unless the user names one.
+- Do NOT rebuild or touch `KPI Dashboard` — its numbers are not in the tracker; list it
+  under leftovers as "review by hand" (confirm this scoping with the user on the first
+  run of a cycle).
+
+### Step 5 — Print the batch plan and get ONE confirmation
+
+Print, in this order, then wait for one "go":
+
+1. Per Doc: `<Doc title> (<ID>, tab <tab_id or none>) — insert at index <n>, v<N>
+   (<how N was counted>)` followed by the **full addendum text**. On the first run of a
+   cycle, ask the user to confirm the `vN` counting rule (template file) in the same
+   breath.
+2. `OKRs — YYYY-MM 現行版`: name · insert index · **every row in full** (the P0 → 策略主軸
+   mapping and the period targets are judgment calls, not a mirror).
+   `Initiatives — YYYY-MM 現行版`: name · insert index · header row · row count · the
+   first 3 rows (a mechanical mirror of the SOR tab).
+3. Stale titles / URLs the addenda quote as-is (per Doc) — leftovers, not edits.
+4. The write order (Docs first, Sheet tabs last) and the leftovers already known.
+
+Edits at this point change the plan text; re-print only the changed piece.
+
+### Step 6 — Write the Docs
+
+Per Doc, in the plan order:
+
+1. Re-read the index just before writing: `inspect_doc_structure(detailed=true,
+   tab_id)` again and confirm the Step 2 insertion index still points at the same
+   heading paragraph (someone may have typed since Step 2). If it moved, use the fresh
+   index; if the heading is gone, skip the Doc → leftovers.
+2. `batch_update_doc` → one `insert_text` at that index (with `tab_id` when the Doc has
+   tabs) carrying the whole addendum as plain paragraphs — heading line, blank line,
+   sentences, one line per bullet, ending with `\n`. **Strip every markdown marker
+   first**: no `## ` / `### ` on heading lines, no `- ` on bullet lines, no `**` — the
+   paragraph style and the list carry the level.
+3. `inspect_doc_structure(detailed=true, tab_id)` → find the inserted range by text
+   preview → second `batch_update_doc`: `update_paragraph_style` HEADING_2 on the
+   heading line, HEADING_3 on the sub-head lines, NORMAL_TEXT on every other line (this
+   undoes the inherited style), `create_bullet_list` on each bullet block, `format_text`
+   bold on the "Where this section conflicts…" sentence.
+4. Verify: `get_doc_as_markdown` and confirm the addendum is the first `## ` heading and
+   the previous first heading is intact directly below it. A verification miss → stop
+   the batch, report, do not "fix" by deleting.
+5. Any error on a Doc → record it in leftovers with the API message and continue with the
+   next Doc; never retry blind.
+
+### Step 7 — Write the Sheet tabs
+
+- `create_sheet(spreadsheet_id, sheet_name="OKRs — YYYY-MM 現行版",
+  insert_sheet_index=0)` then `modify_sheet_values` with the banner, header and data
+  rows; repeat for `Initiatives — YYYY-MM 現行版` at index 1. `overwrite` mode: clear +
+  write the same-named `— YYYY-MM 現行版` tab from the earlier run instead (only when
+  the user said the word, and never a historic tab).
+- Optional, never blocking: `format_sheet_range` bold header. Read back the row count and
+  compare with the plan.
+- Old tabs are not renamed (no tool) — the `(Archive)` prefix from pack §8 is a leftovers
+  line (manual UI step). `tracker-latest` / `tracker-snapshots` are left exactly as
+  found — `planning-tracker-sync` owns them.
+
+### Step 8 — Close-out report
+
+Print two lists and stop:
+
+- **Written** — each Doc: title, URL, `Refresh (vN)` heading, insertion tab; each Sheet
+  tab: name, URL with gid, row count.
+- **Not done / leftovers** — tracker untouched (by design) · renames / reordering this
+  skill never attempts (Sheets `(Archive)` prefixes on old tabs, tab open-order — manual
+  UI steps) · stale body titles/URLs the addenda quote (manual edit) · unresolved
+  shortcuts · Docs that errored · `KPI Dashboard` review by hand · P0s 待歸軸 · items
+  待認領/待補 the addenda quote · `_INDEX.md` entries (→ `admin-governance`) · per-LOB
+  audits (→ `planning-lob-gap-audit`).
+
+## Outputs
+
+- One dated **Refresh addendum** at the top of the integrated plan Doc (Form A) and of
+  each per-LOB plan Doc (Form B) — HEADING_2 + sub-heads + bullets, pack §8 wording, no
+  body edits.
+- Two new tabs in the OKR & KPI Tracker: `OKRs — YYYY-MM 現行版` (KRs = P0 items) and
+  `Initiatives — YYYY-MM 現行版` (P0+P1 mirror), each with a provenance banner row.
+- The batch plan (Step 5) and the close-out report (Step 8) in the chat: what was
+  written with URLs, and the leftovers list.
+
+## Reference files
+
+- `./references/planning-knowledge-pack.md` — shared pack: vocabulary, L1/L2, priority
+  rule, tracker layout, §8 doc-versioning convention. Byte-identical across the
+  `planning-*` family; do not edit here.
+- `./references/planning-sources.md` — shared sources: every live Drive/Docs/Sheets ID
+  and tab gid the skill reads or writes. Byte-identical across the family.
+- `./references/addendum-template.md` — this skill's own: Form A / Form B addendum
+  skeletons, the `vN` rule, insertion rules, the OKR/Initiatives column contract, and a
+  placeholder worked example.
+
+## Limitations
+
+- Reads the tracker as it is: an unfinished tracker yields addenda full of 待補/待認領 —
+  the fix belongs in `planning-tracker-builder`, not here.
+- The 策略主軸 must exist somewhere readable (retro tab, README, pasted recap mail); the
+  skill will not synthesize objectives from the item list.
+- Docs are edited by index math on a live document — run it when the Docs are quiet;
+  Step 6 re-reads the index and verifies, but cannot undo a bad insert.
+- No body edits of any kind (not even a stale URL), no renames, no tab reordering beyond
+  `insert_sheet_index`, no `KPI Dashboard` refresh, no touch on `tracker-latest` /
+  `tracker-snapshots`, no `_INDEX.md` entries — all reported as leftovers.
+- One suite, one cycle per run; re-running the same cycle adds a `v(N+1)` addendum and
+  new tabs — it does not de-duplicate earlier ones.

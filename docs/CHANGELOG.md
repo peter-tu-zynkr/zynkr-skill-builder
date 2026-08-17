@@ -484,3 +484,49 @@ Wave-2 entry for its findings) · this push's `ingest-skills.yml` run = go-live 
 D2 install-and-trigger for the ★ three: evidence at SKB-007 close-out (session-synth on the
 July transcript + photos into a COPY of the tracker; tracker-sync read-only run on the live
 tracker; prework-pack dry-run against the July workbook).
+
+## 2026-08-17 — SKB-007 Wave 2: planning-1on1-annual-digest (0.04) · planning-evidence-pack (0.05) · planning-tracker-builder (0.07) · planning-suite-reconciler (0.08) · planning-lob-gap-audit (0.10)
+
+The remaining five of the planning family, same shared references as Wave 1.
+
+**planning-1on1-annual-digest (0.04)** — one person's shared 1:1 Doc (WB entries,
+label variants incl. 「需完成的事情」「已完成的部分」…, the manager's 「Peter」 sub-block
+excluded) + their LOB plan → 「年度計畫＿<name>」 Doc in the exemplar's six-section
+skeleton (成果總覽 · 策略透鏡 C1–C4 · 復盤 放大／收割／停止 · 年度計劃 · OKR · 接下來) via
+`import_to_google_doc`; every claim quotes a WB date; morale ratings never reach the
+team-visible slide; 12-line slide block for the session.
+
+**planning-evidence-pack (0.05)** — the "looking back in numbers" `Scoreboard` tab
+(KPI · source · <cycle>-start · <cycle>-end · Δ · note) from tracker 完成 counts, OKR
+tracker, calendar title-pattern counts (word-bounded), Fireflies recap counts,
+`tracker-snapshots`, and pasted numbers; anything unreadable → 「（待補）」+ the source
+needed, never estimated; cites zynkr-gm's `kpi-map.md` when installed; read-only.
+
+**planning-tracker-builder (0.07)** — normalized items + owner/priority decisions →
+Main Tracker from the template (copy → clear body → fill) or extend an existing one.
+Numbering rule matched to the actual template: the L1 number lives in the 主類別 text,
+the `#` prefix is positional (sequential-by-presence); extend continues serials under
+the block, new L1 blocks get last-prefix+1. Priority values or formula; `專案項目小記`
+pivot with COUNTIF/COUNTIFS (all formulas USER_ENTERED, data RAW); conditional colours;
+lint report (P0 cap >6 / >25%, owner >3 P0, 掛 All, missing dates, L2 not in pack)
++ the C1 cash-pre-mortem section printed before writing; fill mode refuses to touch a
+live 小記 grid; never renumbers L1.
+
+**planning-suite-reconciler (0.08)** — finalized tracker → dated addendum at the top of
+the integrated plan + each per-LOB plan Doc (pack §8 wording; the 6.0 shortcut resolved
+via `get_drive_file_permissions`, which returns the target's metadata), OKR & KPI
+Tracker rebased as new tabs (`OKRs — YYYY-MM 現行版`, cycle-aware Q/H columns), never
+touching `tracker-latest` / `tracker-snapshots`; one confirmation for the batch;
+leftovers list.
+
+**planning-lob-gap-audit (0.10)** — one LOB's plan addendum + tracker rows + Drive
+folder (paged listing) → report Doc 「[N.0.1] <LOB> — <cycle> Gap Audit & Heal Plan」 +
+「行動追蹤表」 Sheet (README · 修復清單 · 待決事項, 狀態 vocab), waves SOR sync → banners →
+doctrine → rewrites, 可交 Claude flags, previous report proposed for [SUPERSEDED] on
+re-run; report-only.
+
+**Verification (D2, SKB-007 AC-2/3/4/5):** Wave-1 AC-1 evidence: `ingest-skills.yml` run 32055553970 = success; `curl -o /dev/null -w %{http_code}` → `/s/0.03.md` 200 · `/s/0.06.md` 200 · `/s/0.09.md` 200; `/api/skills` lists planning-prework-pack · planning-session-synth · planning-tracker-sync. This wave: `validate-skill.ts --tier=all` → **0 ERROR / 0 WARN** on all five · dry-run ✓ 0.04 · 0.05 ·
+0.07 · 0.08 · 0.10 (same run as Wave 1) · adversarial re-reviews PASS ×5 (advisories
+applied) · `/code-review medium` findings: 3 findings, all resolved before landing — (1) `skills/0-strategy/_shared/` was tracked and would have surfaced as a broken taxonomy node → seed moved to `docs/planning-shared/`; (2) nine copies with only a manual md5 sweep as drift guard → `scripts/check-planning-refs.sh` (`--sync` re-copies the seed; bare run exits 1 on drift), AC-4 now mechanical; (3) no record entry on the branch → these two entries · this push's `ingest-skills.yml` run =
+go-live proof; curl sweep at close-out · live triggers for these five accrue as YE
+exercises them (dated waiver 2026-08-17, SKB-002 pattern).
