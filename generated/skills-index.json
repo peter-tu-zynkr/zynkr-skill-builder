@@ -1,5 +1,28 @@
 [
   {
+    "id": "0.02",
+    "sheet_id": "0.02",
+    "slug": "zynkr-gm",
+    "name": "zynkr-gm",
+    "summary": "The GM operating-rhythm skill for a small company run from Google Docs/Sheets.",
+    "category": "strategy",
+    "project": "zynkr-gm",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/0-strategy/zynkr-gm/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/0.02.md -o ~/.claude/skills/zynkr-gm.md",
+    "tags": [
+      "zynkr-gm",
+      "strategy",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-08-17",
+    "first_seen": "2026-08-17"
+  },
+  {
     "id": "1.01",
     "sheet_id": "1.01",
     "slug": "zynkr-content-writer",
@@ -621,7 +644,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 169856,
+    "github_stars": 169857,
     "github_forks": 20215,
     "first_seen": "2026-06-03"
   },

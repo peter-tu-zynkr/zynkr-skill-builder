@@ -1,5 +1,34 @@
 [
   {
+    "id": "0.02",
+    "name": "zynkr-gm",
+    "category": "strategy",
+    "project": "zynkr-gm",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "The GM operating-rhythm skill for a small company run from Google Docs/Sheets. Reads the source-of-record chain in precedence order (strategy alignment section → H2 project tracker (status SOR) → the ops team's weekly log → OKR & KPI tracker → per-function progress sheets), derives per-item state (ends-soon · overdue · undated · propose-done · direction-unlabelled), and produces a fixed-shape WEEKLY GM BRIEF: runway line first, the ≤3 things only the GM can unblock, two clocks, P0/P1 status by LOB, per-owner rollup, KPI off-target + asks, decisions register, deliberately-not-this-week, machine health. Delivers as a Gmail draft (interactive) or an auto-sent email (the Monday cloud routine rendered from this skill). Trigger EAGERLY on \"/zynkr-gm\", \"zynkr-gm week\", \"GM 週報\", \"這週重點\", \"本週 focus\", \"本月重點\", \"what should I focus on this week\", \"as a GM what will I do this week\", \"week focus\", \"month focus\", \"GM brief\", \"run the GM pass\", \"哪些 P0 delay 了\", \"KPI 有沒有 off target\", \"H2 進度盤點\", \"幫我盤一下 H2 專案\", or any ask for a company-level (not one project's) week/month focus, progress roll-up, or KPI variance. BOUNDARY — do NOT hijack: /project-status-update (one project's weekly status email from its own tracker), /consult-status-report and /consult-governance (consulting portfolio), /admin-governance (file-level Drive↔local index drift), /admin-meeting-prep (per-meeting packets), /skill-finder (which skill for a task), /curate-livestream-transcripts (it produces the notes this skill only health-checks). This skill reads broadly and writes narrowly: it never edits the tracker, the onboarding master doc, or another owner's doc.",
+    "input": "Optional sub-command (week | progress [LOB] | send) and an optional 'as of' date; identifiers come from the private config (~/.config/zynkr/gm.json) or the rendered routine prompt.",
+    "process": "Anchor on today → load private config → idempotency check → read the SOR chain in precedence order (script-first) → derive per-item state + per-owner rollup → compose the fixed-shape brief, every number cited → draft or send → report.",
+    "output": "Weekly GM brief (zh-TW) as an HTML email: runway line · ≤3 GM-only unblocks · two clocks · P0/P1 by LOB · owner rollup · KPI off-target + asks · decisions · skips · machine health.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "0.02",
+    "sheetId": "0.02",
+    "kind": "skill",
+    "synergy": [
+      "0.02"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/0.02.md -o ~/.claude/skills/zynkr-gm.md",
+    "updatedAt": "2026-08-17",
+    "firstSeen": "2026-08-17",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "0-strategy/zynkr-gm/SKILL.md"
+  },
+  {
     "id": "1.01",
     "name": "zynkr-content-writer",
     "category": "brand-marketing",
@@ -839,7 +868,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 169856,
+    "githubStars": 169857,
     "githubForks": 20215
   },
   {
