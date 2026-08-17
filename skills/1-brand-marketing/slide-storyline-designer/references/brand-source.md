@@ -14,7 +14,10 @@ BRAND_GUIDE = <your brand guide location>
 
 - **Local file**: use Read to open your brand guide (including the Voice & Tone / Method / Messaging sections).
 - **Google Drive**: use the `google-workspace` MCP to search for your brand guide by name.
-- **Zynkr internal default**: the brand guide is named `Zynkr-Brand-Guide.md` (located in the brand folder) and contains the narrative method, voice formula, signature sentence patterns, and word-choice preferences; load it via local Read or a Drive search.
+- **Zynkr internal default (cloud-first since 2026-08-17)**: the guide is a Google Doc named **`Zynkr-Brand-Guide`** in the Drive folder **`[4] Zynkr-Brandbook`**. Find it with `search_drive_files("name = 'Zynkr-Brand-Guide'")` and read it with `get_doc_as_markdown`. It holds the narrative method, voice formula, signature sentence patterns and word-choice preferences.
+  - Read the **Drive Doc, not a local path** — the local `Zynkr-Brand-Guide.md` only exists on one machine, so a local-only read silently produced "no brand applied" everywhere else.
+  - The Doc is a **mirror**: its canonical source is the git file `1.0 brand-marketing/1.1 brand/Zynkr-Brand-Guide.md`, re-synced by `scripts/sync-brand-guide.py`. Never edit the Doc — the next sync overwrites it.
+  - Fallback order: Drive Doc → local `Zynkr-Brand-Guide.md` if present → neutral defaults, saying so.
 
 **When not found / not configured** → use the generic narrative principles in §3, and tell the user "Currently using generic narrative principles; no brand voice applied."
 

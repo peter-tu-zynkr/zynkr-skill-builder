@@ -13,7 +13,8 @@ BRAND_GUIDE = <your brand guide location>
 
 - **Local file**: Read your brand guide / token file directly.
 - **Google Drive**: use the `google-workspace` MCP to find and read it.
-- **Zynkr internal default**: color VALUES come from the token manifest `https://zynkr.ai/data/tokens.json` (`TOKENS_VERSION`-stamped; per SDD §4 arrow of truth, the website `styles.css :root` values win over any hex table in a guide). The brand guide (`Zynkr-Brand-Guide.md`) supplies the *roles and restraint rules*; the manifest supplies the hex.
+- **Zynkr internal default**: color VALUES come from the token manifest `https://zynkr.ai/data/tokens.json` (`TOKENS_VERSION`-stamped; per SDD §4 arrow of truth, the website `styles.css :root` values win over any hex table in a guide). The brand guide supplies the *roles and restraint rules*; the manifest supplies the hex.
+- **Where the guide lives (cloud-first since 2026-08-17)**: a Google Doc named **`Zynkr-Brand-Guide`** in the Drive folder **`[4] Zynkr-Brandbook`** — `search_drive_files("name = 'Zynkr-Brand-Guide'")`, then `get_doc_as_markdown`. Read the **Drive Doc, not a local path**: the local `Zynkr-Brand-Guide.md` exists on one machine only, so a local-only read silently fell through to neutral defaults elsewhere. The Doc is a **mirror** of the git file `1.0 brand-marketing/1.1 brand/Zynkr-Brand-Guide.md` (re-synced by `scripts/sync-brand-guide.py`) — never edit it.
 
 **When not found / not configured** → neutral fallback (§3) and clearly tell the user "Currently using neutral visual defaults; no brand applied."
 

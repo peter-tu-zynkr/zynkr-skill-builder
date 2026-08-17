@@ -189,11 +189,11 @@
      "purpose": "Config: WHERE to load brand colour roles/type scale from"
     },
     {
-     "type": "local-file",
-     "name": "Zynkr-Brand-Guide.md (via local Read or Drive search)",
-     "id_or_url": "1.0 brand-marketing/1.1 brand/Zynkr-Brand-Guide.md",
+     "type": "google-doc",
+     "name": "《Zynkr-Brand-Guide》 Drive Doc (folder [4] Zynkr-Brandbook)",
+     "id_or_url": "1DBvdat-lvazDzM6vJyUXIv1VJRdPXyIK2NKsS-fRI6o",
      "runtime_read": true,
-     "purpose": "Colour ROLES + restraint rules for design notes"
+     "purpose": "colour ROLES + restraint rules for design notes (hex VALUES come from tokens.json)"
     },
     {
      "type": "web",
@@ -239,7 +239,7 @@
     "BRAND_GUIDE configured in references/brand-source.md (else neutral defaults)"
    ],
    "human_gate": "Step 4 page-by-page layout sign-off before it hands off to slide-pptx for rendering — blocking unless ▸ Brief mode=express",
-   "gotchas": "Layout enum is fixed at nine archetypes; density overflow is kicked back to leg 2 rather than shrunk to fit. Colour values drop the `#`. Don't type a unicode • with bullet:true (double bullet). Brand content is deliberately NOT bundled — unconfigured means neutral defaults and the user must be told. Memory notes a 1.27 routing issue (#117) still open.",
+   "gotchas": "Layout enum is fixed at nine archetypes; density overflow is kicked back to leg 2 rather than shrunk to fit. Colour values drop the `#`. Don't type a unicode • with bullet:true (double bullet). Brand content is deliberately NOT bundled — unconfigured means neutral defaults and the user must be told. Memory notes a 1.27 routing issue (#117) still open. Brand guide is read from the Drive Doc 《Zynkr-Brand-Guide》 (folder [4] Zynkr-Brandbook) since 2026-08-17 — the old local-file path existed on one machine only, so every other environment silently fell through to neutral defaults. The Doc is a mirror of the git .md; re-sync with scripts/sync-brand-guide.py.",
    "trigger_phrases": [
     "挑視覺呈現",
     "選版式",
@@ -1750,11 +1750,11 @@
      "purpose": "Actual brand hex values (never hard-coded in this public repo)"
     },
     {
-     "type": "local-file",
-     "name": "Zynkr-Brand-Guide.md (configurable BRAND_GUIDE)",
-     "id_or_url": "",
+     "type": "google-doc",
+     "name": "《Zynkr-Brand-Guide》 Drive Doc (folder [4] Zynkr-Brandbook)",
+     "id_or_url": "1DBvdat-lvazDzM6vJyUXIv1VJRdPXyIK2NKsS-fRI6o",
      "runtime_read": true,
-     "purpose": "Colour roles + restraint rules (local file or Drive)"
+     "purpose": "colour roles + restraint rules for the .arch component (hex VALUES come from tokens.json)"
     }
    ],
    "connected_solutions": [
@@ -1789,7 +1789,7 @@
     "draw this as an architecture diagram",
     "工作流架構圖"
    ],
-   "gotchas": "HTML/CSS artifacts only in v1 — no pptxgenjs render (screenshot → full-bleed image slide for Slides). Lanes are FE/BE/DB, NEVER Input/Process/Output (that mistake is why the skill exists). Exactly one orange element (the law line); 2–4 BE nodes; no emoji; arrow spans must contain no text glyphs; lane borders must form one continuous line (align-self:center floats the border — shipped as a bug once). Lucid version of the same convention is product-flow-design.",
+   "gotchas": "HTML/CSS artifacts only in v1 — no pptxgenjs render (screenshot → full-bleed image slide for Slides). Lanes are FE/BE/DB, NEVER Input/Process/Output (that mistake is why the skill exists). Exactly one orange element (the law line); 2–4 BE nodes; no emoji; arrow spans must contain no text glyphs; lane borders must form one continuous line (align-self:center floats the border — shipped as a bug once). Lucid version of the same convention is product-flow-design. Brand guide is read from the Drive Doc 《Zynkr-Brand-Guide》 (folder [4] Zynkr-Brandbook) since 2026-08-17 — the old local-file path existed on one machine only, so every other environment silently fell through to neutral defaults. The Doc is a mirror of the git .md; re-sync with scripts/sync-brand-guide.py.",
    "confidence": "high"
   },
   {
@@ -2955,11 +2955,11 @@
      "purpose": "where to load the brand guide from; apply-brand switch"
     },
     {
-     "type": "local-file",
-     "name": "Zynkr-Brand-Guide.md",
-     "id_or_url": "",
+     "type": "google-doc",
+     "name": "《Zynkr-Brand-Guide》 Drive Doc (folder [4] Zynkr-Brandbook)",
+     "id_or_url": "1DBvdat-lvazDzM6vJyUXIv1VJRdPXyIK2NKsS-fRI6o",
      "runtime_read": true,
-     "purpose": "voice · method · color roles · type scale (via Read or Drive search)"
+     "purpose": "voice · method · colour roles · type scale — resolved once and passed to the three relays so they read the same revision"
     },
     {
      "type": "web",
@@ -3026,7 +3026,7 @@
     "BRAND_GUIDE pointer configured in brand-source.md, else neutral defaults"
    ],
    "human_gate": "express mode = 2 gates (storyline finalization + final .pptx); guided keeps each stage's per-page blocking review; retro writes only on item-by-item approval",
-   "gotchas": "▸ Brief field names 逐棒強調 ▸ 故事線/分頁/視覺 are matched VERBATIM by the three stages — don't rename or realign. workspace-mcp create_drive_file(fileUrl=file://) can only read ~/.workspace-mcp/attachments/ — cp the .pptx there first; MCP cannot convert pptx→native Slides. Don't name a temp script inspect.py (shadows stdlib, breaks lxml). Don't default to the three-stage relay when a fixed template is given (prior lesson). Render exactly once — stage 3 renders on the normal path.",
+   "gotchas": "▸ Brief field names 逐棒強調 ▸ 故事線/分頁/視覺 are matched VERBATIM by the three stages — don't rename or realign. workspace-mcp create_drive_file(fileUrl=file://) can only read ~/.workspace-mcp/attachments/ — cp the .pptx there first; MCP cannot convert pptx→native Slides. Don't name a temp script inspect.py (shadows stdlib, breaks lxml). Don't default to the three-stage relay when a fixed template is given (prior lesson). Render exactly once — stage 3 renders on the normal path. Brand guide is read from the Drive Doc 《Zynkr-Brand-Guide》 (folder [4] Zynkr-Brandbook) since 2026-08-17 — the old local-file path existed on one machine only, so every other environment silently fell through to neutral defaults. The Doc is a mirror of the git .md; re-sync with scripts/sync-brand-guide.py.",
    "confidence": "high"
   },
   {
@@ -4610,11 +4610,11 @@
      "purpose": "Config telling the skill WHERE to load brand voice from"
     },
     {
-     "type": "local-file",
-     "name": "Zynkr-Brand-Guide.md (brand folder) — the configured BRAND_GUIDE",
-     "id_or_url": "",
+     "type": "google-doc",
+     "name": "《Zynkr-Brand-Guide》 Drive Doc (folder [4] Zynkr-Brandbook)",
+     "id_or_url": "1DBvdat-lvazDzM6vJyUXIv1VJRdPXyIK2NKsS-fRI6o",
      "runtime_read": true,
-     "purpose": "Narrative method · voice formula · signature patterns · lexicon"
+     "purpose": "narrative method · voice formula · signature patterns · lexicon"
     }
    ],
    "connected_solutions": [],
@@ -4634,7 +4634,7 @@
     "Optionally set BRAND_GUIDE in references/brand-source.md (else generic narrative principles)"
    ],
    "human_gate": "Step 5 HITL storyline sign-off — beats keep/modify/delete/reorder; no auto-handoff without an explicit OK",
-   "gotchas": "Field names must match slide-page-splitter's input word-for-word; 4–7 beats only; never fabricates data — missing evidence is marked 待補素材; no paging, no layouts, no .pptx",
+   "gotchas": "Field names must match slide-page-splitter's input word-for-word; 4–7 beats only; never fabricates data — missing evidence is marked 待補素材; no paging, no layouts, no .pptx Brand guide is read from the Drive Doc 《Zynkr-Brand-Guide》 (folder [4] Zynkr-Brandbook) since 2026-08-17 — the old local-file path existed on one machine only, so every other environment silently fell through to neutral defaults. The Doc is a mirror of the git .md; re-sync with scripts/sync-brand-guide.py.",
    "trigger_phrases": [
     "幫我設計簡報故事線",
     "順一下這份簡報的邏輯",
