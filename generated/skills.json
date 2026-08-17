@@ -868,8 +868,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 169857,
-    "githubForks": 20215
+    "githubStars": 169918,
+    "githubForks": 20232
   },
   {
     "id": "1.29",
@@ -1023,7 +1023,7 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Business card pipeline — OCR extraction, schema normalization, Google Sheet logging, Supabase CRM contact creation, company research, and personalized follow-up email drafting.",
+    "description": "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
     "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",
@@ -2618,7 +2618,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 29074,
+    "githubStars": 29090,
     "githubForks": 2473
   },
   {
@@ -2816,7 +2816,7 @@
     "author": "Peter Tu",
     "description": "Triage the queue of approved skill proposals in peter-tu-zynkr/zynkr-skill-idea (label: triage-ready), present each as a one-screen review packet, and on assign-build fire a repository_dispatch event to zynkr-skill-builder so the pickup-approved-issue workflow scaffolds the SKILL.md. The DevOps-admin middle layer of the skill pipeline. Trigger on phrases like 'triage skills', 'review skill queue', 'skill triage', or '/skill-triager'.",
     "input": "None (reads triage-ready issues from peter-tu-zynkr/zynkr-skill-idea) — or a specific issue number",
-    "output": "For each triaged issue: sheet row updated (Pipeline Status, Build Status, Build Target), labels swapped on the issue (triage-ready → building / parked / rejected), and on...",
+    "output": "Issue labels swapped (triage-ready → building/parked/rejected/shipped), build target posted as an issue comment, and on assign-build a repository_dispatch to zynkr-skill-builder",
     "ipoProvenance": {
       "input": "frontmatter",
       "output": "frontmatter"
@@ -2928,8 +2928,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 40766,
-    "githubForks": 2699
+    "githubStars": 40780,
+    "githubForks": 2704
   },
   {
     "id": "7.01",
