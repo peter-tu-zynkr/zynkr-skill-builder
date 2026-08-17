@@ -1,49 +1,37 @@
 ---
 name: sales-specialist-config
-description: "Configuration for the business card pipeline skill — Google Sheet target, column mapping, and email defaults."
+description: "Configuration for the business card pipeline skill — Zynkr platform target, field mapping, and email defaults."
 ---
 
 # Business Card Pipeline Config
 
-## Google Sheet
+## Zynkr platform (the only destination)
 
 | Setting | Value |
 |---------|-------|
-| **Sheet ID** | `1Y4ImMHewm3BXRj-msTD8Y-nZtRBPWcDRBt6CfczLZ5A` |
-| **Sheet Name** | `B2B Customer List` |
-| **Sheet Tab Name** | `Sheet2` |
-| **Header Row** | Row 1 (auto-created if missing) |
-| **Data Start Row** | Row 2 |
-
-### Column Mapping (A → L)
-
-| Column | Field |
-|--------|-------|
-| A | name |
-| B | title |
-| C | company |
-| D | email |
-| E | phone |
-| F | mobile |
-| G | website |
-| H | address |
-| I | linkedin |
-| J | industry |
-| K | notes |
-| L | card_date |
-
-## Supabase CRM (Contacts)
-
-Each card is also written to the live Zynkr CRM so it appears on the contacts page.
-This is a dual-write — the Sheet above stays as the full-fidelity record.
-
-| Setting | Value |
-|---------|-------|
-| **Project ID** | `uomieoqlkazknjgmfdda` (shared `Zynkr` Supabase project; CRM tables are `crm_*`) |
-| **Table** | `crm_contacts` |
+| **Project ID** | `uomieoqlkazknjgmfdda` (shared `Zynkr` Supabase project; platform tables are `crm_*`) |
+| **Tables** | `crm_contacts` · `crm_companies` · `crm_activities` (the 名片 note) |
 | **Contacts page** | `https://platform.zynkr.ai/contacts` |
 | **Owner** | `peter_tu@zynkr.ai` → looked up to `owner_id` in the SQL |
-| **Insert template** | `./references/contact-insert.sql` (find-or-create company + dedup-by-email) |
+| **Insert template** | `./references/contact-insert.sql` (find-or-create company, enrich blanks, dedup-by-email, attach note) |
+
+### Card → platform field mapping (all 12 fields have a home)
+
+| Card field | Lands in |
+|------------|----------|
+| name | `crm_contacts.last_name` (whole name as printed; `first_name` left blank so it renders exactly) |
+| title | `crm_contacts.title` |
+| email | `crm_contacts.email` (dedup key) |
+| mobile | `crm_contacts.phone` |
+| company | `crm_companies.name` (find-or-create) |
+| website | `crm_companies.domain` (SQL strips scheme and `www.`) |
+| industry | `crm_companies.industry` |
+| address | `crm_companies.address` |
+| phone (office) | `crm_companies.phone` |
+| linkedin · notes · card_date | body of the `名片` note on the contact (`crm_activities`, `kind='note'`) |
+
+Enriching an existing company only fills columns that are still `NULL`, so a card
+can never overwrite something curated by hand.
 
 ### Contact defaults (baked into `contact-insert.sql` — change there, not in prose)
 
@@ -54,18 +42,16 @@ This is a dual-write — the Sheet above stays as the full-fidelity record.
 | `lead_status` | `other` | "met in person / event" has no dedicated enum |
 | `deal_status` | `NULL` | not a deal yet |
 
-### Card → CRM field mapping (only 5 of the 12 fields have a column)
+## Retired: the B2B Customer List Sheet
 
-| Card field | `crm_contacts` column |
-|------------|-----------------------|
-| name | `last_name` (whole name as printed; `first_name` left blank so it renders exactly) |
-| title | `title` |
-| company | `company_id` (find-or-create) |
-| email | `email` (dedup key) |
-| mobile *or* phone | `phone` |
+Until 2026-08-17 each card was **also** appended to a Google Sheet
+(`1Y4ImMHewm3BXRj-msTD8Y-nZtRBPWcDRBt6CfczLZ5A`, tab `Sheet2`, columns A–L =
+the 12 fields in schema order), because `crm_contacts` had no column for 7 of them.
+`crm_companies` has since grown `domain` / `industry` / `address` / `phone`, so the
+platform holds the entire card and the dual-write was dropped.
 
-mobile/website/address/linkedin/industry/notes/card_date have no CRM column — they
-stay in the Google Sheet only.
+**Do not append to that Sheet.** It stays readable as the historical record of
+cards captured before the cutover; anything newer lives on the platform.
 
 ## Google Account
 

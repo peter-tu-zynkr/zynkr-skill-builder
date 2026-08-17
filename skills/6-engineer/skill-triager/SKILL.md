@@ -8,7 +8,7 @@ platform: claude
 status: WIP
 author: Peter Tu
 input: "None (reads triage-ready issues from peter-tu-zynkr/zynkr-skill-idea) — or a specific issue number"
-output: "For each triaged issue: sheet row updated (Pipeline Status, Build Status, Build Target), labels swapped on the issue (triage-ready → building / parked / rejected), and on assign-build a repository_dispatch fired to peter-tu-zynkr/zynkr-skill-builder triggering pickup-approved-issue.yml"
+output: "Issue labels swapped (triage-ready → building/parked/rejected/shipped), build target posted as an issue comment, and on assign-build a repository_dispatch to zynkr-skill-builder"
 synergy: ["skill-sourcer"]
 disable-model-invocation: true
 ---
@@ -18,7 +18,7 @@ disable-model-invocation: true
 The **gate** of the skill-authoring chain — runs twice:
 
 - **Option A `assign-build`** (front-gate): the second-look approval right after `/skill-sourcer`. Fires `skill-build-request` → `pickup-approved-issue.yml` opens a `skill/<slug>` PR with a stub for `/skill-creator` to fill.
-- **Option D `confirm-ship`** (back-gate): the audit closer after `/skill-publish` lands the SKILL.md and `ingest-skills.yml` publishes it live. Three read-only checks, then flips Project to `shipped`.
+- **Option D `confirm-ship`** (back-gate): the audit closer after `/skill-publish` lands the SKILL.md and `ingest-skills.yml` publishes it live. Three read-only checks, then flips the issue to `shipped`.
 
 ```
 /skill-sourcer  →  /skill-triager  →  /skill-creator  →  /skill-qa  →  /skill-publish  →  /skill-triager
@@ -26,7 +26,7 @@ The **gate** of the skill-authoring chain — runs twice:
                     (this skill, front-gate)                                              (this skill, back-gate)
 ```
 
-This skill is the **only authorised path** to fire a `skill-build-request` dispatch to `zynkr-skill-builder`. Manual `gh api dispatches` calls are fine for one-offs but should be tracked back into the Project by hand.
+This skill is the **only authorised path** to fire a `skill-build-request` dispatch to `zynkr-skill-builder`. Manual `gh api dispatches` calls are fine for one-offs but should be tracked back onto the issue by hand (label + a comment saying what was dispatched).
 
 ---
 
@@ -61,24 +61,31 @@ For the chosen issue, gather and display in one screen:
    gh api repos/peter-tu-zynkr/zynkr-skill-idea/contents/skills/approved/{slug}.md \
      --jq '.content' | base64 -d
    ```
-3. **From the pipeline sheet** (`1_0bYyZiB6sGEI4nGw1QDgLip4rRQtNh9ybPGs-WXAMA`): find the row whose `Idea Issue URL` matches the issue URL. Read these columns and surface them:
-   - Category (number + name)
-   - Dedup verdict
-   - Source URL
-   - Current `Pipeline Status`, `Keep`, `Build Repo`, `Build Target`, `Build Status`
+3. **From the issue's labels** — this is where pipeline state lives:
+   - **Category** — the `category:<N>-<slug>` label (e.g. `category:0-strategy`).
+   - **Pipeline status** — whichever of `triage-ready` / `building` / `parked` / `rejected` / `shipped` is present.
+   - **Dedup verdict and Source URL** — from the issue body; `/skill-sourcer` writes a `**Source**:` line and its dedup finding into the body.
 
-Resolve the `slug` from the spec URL on the sheet row, or fall back to the issue title (kebab-case the post-`[Skill Proposal]` portion).
+> **The Google Sheet is retired — do not read or write it.** `Zynkr Skills Pipeline`
+> (`1_0bYyZ…`) was the pipeline SOT until the move to GitHub; its own header cell now
+> reads *"⚠️ SOT moved to GitHub Project DO NOT EDIT THIS SHEET"*. Earlier versions of
+> this skill still wrote `Pipeline Status` / `Build Status` / `Build Target` back to it,
+> which meant triage was updating a retired store. Everything it used to hold is on the
+> issue: status and category as labels, source and dedup verdict in the body, the slug
+> in the title. The Sheet stays readable as the pre-cutover history.
 
-If the sheet row is missing or its `Build Repo` is still `peter-tu-zynkr/zynkr-skills` (the archived repo), flag it and offer to fix on the spot — set `Build Repo` to `peter-tu-zynkr/zynkr-skill-builder` before continuing.
+Resolve the `slug` from the spec md path if one exists, otherwise from the issue title (kebab-case the post-`[Skill Proposal]` portion).
+
+The build repo is always `peter-tu-zynkr/zynkr-skill-builder`. (`peter-tu-zynkr/zynkr-skills` is archived — if an issue body still names it, say so and carry on with the builder.)
 
 ### Detect the intake source
 
-Surface the `Intake Source` field prominently — it changes the recommended decision in Step 3:
+Read the intake source **off the issue body** — it changes the recommended decision in Step 3:
 
-- **`skill-sourcer`** (raw idea) → Step 3 defaults to **Option A `assign-build`** (the build hasn't happened yet).
-- **`skill-publish`** (built artifact) → Step 3 defaults to **Option D `confirm-ship`** (the SKILL.md is likely already in-tree; the triager just needs to verify and close the loop). If `Built Skill URL` is empty on the Project item, flag this to the user: the publisher hasn't committed the artifact yet, and `confirm-ship` needs a committed file to verify against.
+- **`/skill-sourcer`** (raw idea) → Step 3 defaults to **Option A `assign-build`** (the build hasn't happened yet). This is the default when the body carries no build markers.
+- **`/skill-publish`** (built artifact) → Step 3 defaults to **Option D `confirm-ship`**. Recognised by a `**Built via**: skill-publish` line and a `**Built Skill URL**:` line in the body; the SKILL.md is already in-tree and the triager just verifies and closes the loop.
 
-Cross-check the issue body — `/skill-publish` issues carry a `**Built via**: skill-publish` line and a `**Built Skill URL**:` line. If those are present and `Intake Source` says `skill-sourcer`, the Project field is stale; trust the issue body and treat as a publish.
+If the body says `**Built via**: skill-publish` but carries no `**Built Skill URL**:`, flag it: the publisher hasn't committed the artifact yet, and `confirm-ship` needs a committed file to verify against.
 
 ---
 
@@ -97,10 +104,11 @@ The issue is ready to go into the build pipeline.
    - Recommend `lift-and-shift` whenever the issue's **Source** field points to an external GitHub repo (i.e. anything except a Peter-authored skill).
    - On `lift-and-shift`, extract `upstream_url` from the issue body's `**Source**:` line (the skill-sourcer always writes it). If missing, ask the user.
    - On `lift-and-shift`, optionally ask for an `upstream_author` override (defaults to the GitHub org from `upstream_url`).
-3. **Sheet writes:**
-   - `Pipeline Status` → `queued`
-   - `Build Status` → `context-prep`
-   - `Build Target` → confirmed slug
+3. **Record the build target** on the issue — post it as a comment so the dispatch payload is auditable from the issue alone:
+   ```bash
+   gh issue comment <num> --repo peter-tu-zynkr/zynkr-skill-idea \
+     --body "Triage: assign-build · target \`<slug>\` · mode \`<rescaffold|lift-and-shift>\`"
+   ```
 4. **Label swap on issue:**
    ```bash
    gh issue edit <num> --repo peter-tu-zynkr/zynkr-skill-idea \
@@ -115,13 +123,13 @@ The issue is ready to go into the build pipeline.
      -F "client_payload[issue_repo]=peter-tu-zynkr/zynkr-skill-idea" \
      -F "client_payload[slug]=<slug>" \
      -F "client_payload[category]=<category-number-or-slug>" \
-     -F "client_payload[spec_url]=<Idea Spec URL from sheet>" \
+     -F "client_payload[spec_url]=<URL of skills/approved/<slug>.md, if one exists>" \
      -F "client_payload[mode]=<rescaffold|lift-and-shift>" \
      -F "client_payload[upstream_url]=<github URL — only if mode=lift-and-shift>" \
      -F "client_payload[upstream_author]=<optional override — only if mode=lift-and-shift>"
    ```
    `mode`, `upstream_url`, `upstream_author` are optional — omit them entirely for the default rescaffold path.
-5. **Verify dispatch landed:**
+6. **Verify dispatch landed:**
    ```bash
    gh run list --repo peter-tu-zynkr/zynkr-skill-builder \
      --workflow pickup-approved-issue.yml --limit 3
@@ -132,17 +140,15 @@ The issue is ready to go into the build pipeline.
 
 Not now, but don't reject.
 
-1. **Sheet:** `Pipeline Status` → `parked`.
-2. **Labels:** swap `triage-ready` → `parked`.
+1. **Labels:** swap `triage-ready` → `parked`. (The label *is* the status — there is nothing else to update.)
 3. Optionally prompt the user for a `parked-reason` comment to post on the issue.
 
 ### Option C — `reject`
 
 Not happening.
 
-1. **Sheet:** `Pipeline Status` → `rejected`.
-2. **Labels:** add `rejected`, remove `triage-ready`.
-3. **Close issue:**
+1. **Labels:** add `rejected`, remove `triage-ready`.
+2. **Close issue:**
    ```bash
    gh issue close <num> --repo peter-tu-zynkr/zynkr-skill-idea \
      --comment "Triage decision: rejected. <reason>"
@@ -151,11 +157,11 @@ Not happening.
 
 ### Option D — `confirm-ship`
 
-The artifact is **already built and committed** (typical for `/skill-publish` intakes). No scaffold is needed — just verify it landed correctly and close the loop in the Project.
+The artifact is **already built and committed** (typical for `/skill-publish` intakes). No scaffold is needed — just verify it landed correctly and close the loop on the issue.
 
 > **QA is pre-ship; confirm-ship is post-ship.** By the time you reach Option D the skill has *necessarily* passed QA — the PR could not have merged otherwise, because the `qa.yml` / `publish-skill.yml` QA check blocks any ERROR-tier skill. So Option D does **not** re-run QA; it trusts the merged PR's green QA check as the receipt and verifies the *live* artifact (the post-ship checks below).
 
-**Precondition:** `Built Skill URL` is set on the Project item, or the issue body has a `**Built Skill URL**:` line. If neither is present, tell the user "the SKILL.md hasn't been committed yet — commit to `zynkr-skill-builder`, then come back" and exit this option.
+**Precondition:** the issue body has a `**Built Skill URL**:` line. If it doesn't, tell the user "the SKILL.md hasn't been committed yet — commit to `zynkr-skill-builder`, then come back" and exit this option.
 
 1. **Confirm the in-tree path** — derive `<path>` from `Built Skill URL` (e.g. `skills/6-engineer/skill-publish/SKILL.md`) or fall back to `skills/<N-cat>/<slug>/SKILL.md`.
 2. **Verify the file is live in `main`:**
@@ -176,10 +182,11 @@ The artifact is **already built and committed** (typical for `/skill-publish` in
      | python3 -c "import sys,json; print(any(s.get('slug')=='<slug>' or s.get('name')=='<slug>' for s in json.load(sys.stdin)))"
    ```
    If `False`: the Supabase mirror hasn't synced yet — usually <30 s after ingest. Worth re-checking before flipping status.
-5. **Project writes:**
-   - `Pipeline Status` → `shipped`
-   - `Build Status` → `shipped`
-   - `Built Skill URL` → confirmed GitHub URL (backfill if missing)
+5. **Post the verification receipt** as an issue comment — the confirmed GitHub URL plus the marketplace URL, so the shipped state is self-evidencing from the issue:
+   ```bash
+   gh issue comment <num> --repo peter-tu-zynkr/zynkr-skill-idea \
+     --body "confirm-ship: in main at \`<path>\` · live at https://zynkr.ai/s/<sheetId>"
+   ```
 6. **Label swap on issue:**
    ```bash
    gh issue edit <num> --repo peter-tu-zynkr/zynkr-skill-idea \
@@ -219,12 +226,9 @@ When the session ends, summarise:
 - Confirmed-shipped: S (with marketplace URLs)
 - Deferred: D
 - Rejected: R
-- Any sheet rows repaired during triage
 
 **Completion checklist (per dispatched issue — Option A):**
-- [ ] Sheet `Pipeline Status` = `queued`
-- [ ] Sheet `Build Status` = `context-prep`
-- [ ] Sheet `Build Target` set
+- [ ] Build target recorded as an issue comment
 - [ ] Issue label `triage-ready` removed, `building` added
 - [ ] `repository_dispatch` fired to `zynkr-skill-builder`
 - [ ] `pickup-approved-issue` workflow run observed
@@ -233,9 +237,8 @@ When the session ends, summarise:
 - [ ] `gh api contents` confirmed the SKILL.md is in `main`
 - [ ] `generated/skills-index.json` contains the slug
 - [ ] `/api/skills` returns the slug
-- [ ] Sheet `Pipeline Status` = `shipped`, `Build Status` = `shipped`
-- [ ] `Built Skill URL` backfilled if it was empty
-- [ ] Issue label `triage-ready` removed, `shipped` added
+- [ ] Issue label swapped to `shipped` (the label is the status of record)
+- [ ] Marketplace URL posted on the issue if it wasn't already
 - [ ] Issue closed with verification comment
 - [ ] Local install offered (`npx skills add … --skill <slug>`) — run on user OK, or skipped for non-Claude skills / on decline
 
@@ -243,6 +246,6 @@ When the session ends, summarise:
 
 ## Error handling
 
-- **No sheet row for the issue:** ask the user whether to create one on the fly (calling out that the dedup/classification context will be missing) or skip the issue.
-- **Spec md not found at `skills/approved/{slug}.md`:** continue with title-derived description, but flag it to the user; the scaffolder will leave a `_No spec md found_` marker in the SKILL.md.
-- **Dispatch returns non-2xx:** report the error and do **not** flip sheet `Build Status` to `context-prep`. Roll back the label swap so the issue stays `triage-ready` for retry.
+- **Issue has no `category:` label:** ask the user which of the 0–9 categories applies, then add the label before dispatching — the scaffolder needs it to pick the folder.
+- **Spec md not found at `skills/approved/{slug}.md`:** continue with title-derived description, but flag it to the user; the scaffolder will leave a `_No spec md found_` marker in the SKILL.md. (Most issues have no spec md — only one exists in the repo today — so treat this as the normal case, not an error.)
+- **Dispatch returns non-2xx:** report the error and roll back the label swap so the issue stays `triage-ready` for retry.

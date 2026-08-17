@@ -3,9 +3,21 @@
 -- Runs against the Zynkr Supabase project (project_id = uomieoqlkazknjgmfdda)
 -- via mcp__supabase__execute_sql. One statement does the whole transform:
 --   1. find-or-create the company (by case-insensitive name) -> company_id
---   2. insert the contact — but ONLY if this email isn't already a contact
+--   2. enrich that company with any card fields it is still missing
+--   3. insert the contact — but ONLY if this email isn't already a contact
+--   4. attach a 名片 note carrying the fields that have no column of their own
 -- It mirrors the CRM's createContact server action (app/contacts/actions.ts):
 -- same columns, owner = Peter, legal_basis required.
+--
+-- The Zynkr platform is the ONLY destination — every one of the 12 card fields
+-- lands somewhere here, so nothing needs a spreadsheet to fall back on:
+--
+--   name      -> crm_contacts.last_name      title    -> crm_contacts.title
+--   email     -> crm_contacts.email          mobile   -> crm_contacts.phone
+--   company   -> crm_companies.name          website  -> crm_companies.domain
+--   industry  -> crm_companies.industry      address  -> crm_companies.address
+--   phone     -> crm_companies.phone (the office line, kept off the person)
+--   linkedin · notes · card_date             -> the 名片 note (step 4)
 --
 -- Returns the new contact id, or ZERO rows if the contact was de-duped (a
 -- contact with this email already exists). Zero rows = report "already in CRM".
@@ -34,46 +46,100 @@ WITH params AS (
     NULLIF('{{FULL_NAME}}', '')::text AS full_name,
     NULLIF('{{EMAIL}}',     '')::text AS email,
     NULLIF('{{TITLE}}',     '')::text AS title,
-    NULLIF('{{PHONE}}',     '')::text AS phone,
-    NULLIF('{{COMPANY}}',   '')::text AS company_name
+    NULLIF('{{MOBILE}}',    '')::text AS mobile,
+    NULLIF('{{PHONE}}',     '')::text AS office_phone,
+    NULLIF('{{COMPANY}}',   '')::text AS company_name,
+    NULLIF('{{WEBSITE}}',   '')::text AS website,
+    NULLIF('{{ADDRESS}}',   '')::text AS address,
+    NULLIF('{{INDUSTRY}}',  '')::text AS industry,
+    NULLIF('{{LINKEDIN}}',  '')::text AS linkedin,
+    NULLIF('{{NOTES}}',     '')::text AS notes,
+    NULLIF('{{CARD_DATE}}', '')::text AS card_date
+),
+-- the card's website is printed as a URL; crm_companies.domain wants the bare host
+norm AS (
+  SELECT p.*,
+         lower(regexp_replace(regexp_replace(p.website, '^https?://', ''),
+                              '^www\.|/.*$', '', 'g')) AS domain
+  FROM params p
 ),
 own AS (SELECT id FROM crm_users WHERE email = 'peter_tu@zynkr.ai' LIMIT 1),
 
 -- 1. company: insert only when a real (non-empty) name has no match yet
 new_co AS (
-  INSERT INTO crm_companies (name, owner_id, workspace_id)
-  SELECT p.company_name, (SELECT id FROM own), (SELECT id FROM own) FROM params p
-  WHERE p.company_name IS NOT NULL
+  INSERT INTO crm_companies (name, domain, industry, address, phone, owner_id, workspace_id)
+  SELECT n.company_name, n.domain, n.industry, n.address, n.office_phone,
+         (SELECT id FROM own), (SELECT id FROM own) FROM norm n
+  WHERE n.company_name IS NOT NULL
     AND NOT EXISTS (SELECT 1 FROM crm_companies c
                      WHERE c.workspace_id = (SELECT id FROM own)
-                       AND lower(c.name) = lower(p.company_name))
+                       AND lower(c.name) = lower(n.company_name))
   RETURNING id
 ),
 co_id AS (
   SELECT id FROM new_co
   UNION ALL
-  SELECT c.id FROM crm_companies c, params p
-   WHERE p.company_name IS NOT NULL
-     AND c.workspace_id = (SELECT id FROM own) AND lower(c.name) = lower(p.company_name)
+  SELECT c.id FROM crm_companies c, norm n
+   WHERE n.company_name IS NOT NULL
+     AND c.workspace_id = (SELECT id FROM own) AND lower(c.name) = lower(n.company_name)
   LIMIT 1
 ),
 
--- 2. contact: the de-dup guard lives here so re-scanning a card never doubles it.
+-- 2. enrich an ALREADY-EXISTING company: only fills columns that are still empty,
+--    so a card can never overwrite something a human curated. (A company created
+--    by new_co above is invisible to this UPDATE — same statement, same snapshot —
+--    and needs no enriching anyway, since new_co already set these.)
+enrich_co AS (
+  UPDATE crm_companies c
+     SET domain   = COALESCE(c.domain,   n.domain),
+         industry = COALESCE(c.industry, n.industry),
+         address  = COALESCE(c.address,  n.address),
+         phone    = COALESCE(c.phone,    n.office_phone)
+    FROM norm n
+   WHERE c.id = (SELECT id FROM co_id LIMIT 1)
+     AND (c.domain IS NULL OR c.industry IS NULL OR c.address IS NULL OR c.phone IS NULL)
+  RETURNING c.id
+),
+
+-- 3. contact: the de-dup guard lives here so re-scanning a card never doubles it.
 --    Whole name -> last_name; first_name stays NULL (renders the name as printed).
+--    phone = the mobile (the number you'd actually use); the office line sits on
+--    the company, so both survive instead of one being dropped.
 new_ct AS (
   INSERT INTO crm_contacts
     (last_name, email, title, phone, company_id, owner_id, workspace_id,
      lifecycle_stage, lead_status, legal_basis, deal_status, last_activity_at)
-  SELECT p.full_name, p.email, p.title, p.phone,
+  SELECT n.full_name, n.email, n.title, COALESCE(n.mobile, n.office_phone),
          (SELECT id FROM co_id LIMIT 1), (SELECT id FROM own), (SELECT id FROM own),
          'lead', 'other', 'consent', NULL, now()
-  FROM params p
-  WHERE p.email IS NULL
+  FROM norm n
+  WHERE n.email IS NULL
      OR NOT EXISTS (
        SELECT 1 FROM crm_contacts c
        WHERE c.workspace_id = (SELECT id FROM own)
-         AND c.email IS NOT NULL AND lower(c.email) = lower(p.email)
+         AND c.email IS NOT NULL AND lower(c.email) = lower(n.email)
      )
+  RETURNING id
+),
+
+-- 4. the 名片 note: carries every field with no column of its own, so the card is
+--    reproducible from the CRM alone. Skipped entirely when there is nothing to say.
+new_note AS (
+  INSERT INTO crm_activities (kind, subject, body, contact_id, company_id, created_by, metadata)
+  SELECT 'note',
+         '名片 · ' || COALESCE(n.card_date, to_char(now(), 'YYYY-MM-DD')),
+         concat_ws(E'\n',
+           CASE WHEN n.linkedin     IS NOT NULL THEN 'LinkedIn: '  || n.linkedin     END,
+           CASE WHEN n.card_date    IS NOT NULL THEN '名片日期: '   || n.card_date    END,
+           CASE WHEN n.office_phone IS NOT NULL AND n.mobile IS NOT NULL
+                THEN '公司電話: ' || n.office_phone END,
+           CASE WHEN n.notes        IS NOT NULL THEN '備註: '      || n.notes        END),
+         (SELECT id FROM new_ct LIMIT 1), (SELECT id FROM co_id LIMIT 1),
+         (SELECT id FROM own),
+         jsonb_build_object('source', 'sales-specialist', 'card_date', n.card_date)
+  FROM norm n
+  WHERE EXISTS (SELECT 1 FROM new_ct)
+    AND num_nonnulls(n.linkedin, n.notes, n.card_date) > 0
   RETURNING id
 )
 SELECT id AS contact_id FROM new_ct;
