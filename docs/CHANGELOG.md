@@ -380,3 +380,46 @@ against the Docs is the live wiring proof, to be recorded here when it happens.
 **Verification**：修好的完整 CTE 以 `EXPLAIN`（無 ANALYZE，不執行）對正式環境成功產生查詢計畫——四個 INSERT、所有 enum cast、scoped 查詢走索引 ✓ · `crm_users.id` === `auth.users.id`，故 `(SELECT id FROM own)` 確為正確的 workspace_id（該工作區已有 30 筆交易）✓ · `'consent'`／`'legitimate_interest'::legal_basis`、`'todo'::task_status` 皆可轉型 ✓ · `validate-skill.ts` 對每支改動技能 **0 errors** ✓ · 殘留掃描：0 個舊網域、0 個裸 `notes = notes ||`、0 個 `'open'` ✓ · runtime 副本（`~/.claude/skills/`）已同步，Peter 的線上 session 立即生效。
 
 **範圍外**：`sales-outbound/references/lead-insert.sql` 維持原子不拆——它是六支裡**唯一原本就正確**的（有蓋 workspace_id、dedupe 有 scope、enum 正確）。
+
+---
+
+## 2026-08-17 — zynkr-gm 0.02: the GM operating-rhythm skill + Monday cloud routine that emails the weekly brief (Spec: SKB-006)
+
+First skill in `0-strategy`. Packages Peter's Monday read pass — Main Tracker 「H2 專案項目」
+(status SOR) → [3.1] ops weekly log (newest block) → OKR & KPI Tracker (metrics SOR) → Ops Gap
+Heal sheet + course tracker → strategy/plan docs' authoritative sections on change — into one
+fixed-shape brief: **runway line first**, ≤3 things only the GM can unblock, two clocks, P0/P1
+by LOB with derived state (the tracker vocab has no 完成/延遲, so ENDS_SOON · OVERDUE · UNDATED ·
+PROPOSE_DONE · DIRECTION_UNLABELLED are inferred and shown as such), per-owner rollup, KPI
+off-target + asks, decisions register, deliberately-not, machine health. **Reads broadly,
+writes narrowly**: v1 is read-only — never the tracker, the onboarding 母本, or another
+owner's doc.
+
+- **Public method / private config.** SKILL.md carries the method with placeholders; the doc
+  IDs live in `~/.config/zynkr/gm.json` (local) and inside the routine prompt (cloud), which
+  `scripts/render_routine_prompt.py` renders from `references/routine-prompt.tmpl` + config so
+  the two cannot drift (the project-status-update failure mode). Leak lint = grep for Google
+  ID / `@zynkr.ai` / `trig_` / `env_0` over the skill folder → nothing.
+- **Routine-first automation.** Verified 2026-08-17 that the claude.ai Google-Drive connector
+  reads the tracker/KPI/ops sheets as clean tables and the Gmail connector exposes
+  `send_message` (its absence retired the June project-status routine). Monday 09:00 TPE
+  (`0 1 * * 1`) routine sends the brief; draft fallback; idempotent per ISO week. Writes (KPI
+  cells, state tabs) are P1 and stay local (workspace-mcp). Inngest = later home.
+- `references/`: source-map (roles, precedence, read policy) · derived-state-rules · kpi-map
+  (19 rows, AUTO/SEMI/HUMAN, cloud availability) · lob-skills-seed · brief-template ·
+  routine-prompt.tmpl · config.example.json. `scripts/` (stdlib, `--selftest`):
+  extract_newest_block · derive_state · tracker_diff · kpi_locate · render_routine_prompt.
+- **sheetId 0.02**, not 0.01: `catalog/sheet-map.json` carries a legacy `0.01` row
+  (skill-finder → 5.01); collisions drop silently, so skipped. Sibling `planning-*` proposal
+  starts at 0.03.
+
+**Verification**: `validate-skill.ts` 0 errors (single + tree) · all `--selftest` green ·
+ingest dry-run assigned exactly 0.02, no redirect-prune line, no other id moved ·
+routine `<trigger-id · in ~/.config/zynkr/gm.json>` created (Mon 09:00 TPE) and run once (session <first-run session id · in ~/.config/zynkr/gm.json>): all 5 SOR sources read via the Drive connector, weekly log sliced to newest 2 blocks unaided, derived states matched the local run (9/14 P0 UNDATED · 4.01 ENDS_SOON · 1.03 OVERDUE 47d · GM 6/14 P0); **Gmail connector token expired in the cloud environment** → no send/draft, fail-loud report + push notification (correct), re-auth is Peter's; W34 brief delivered by the local `week send` path instead (Gmail msg <gmail message id · in ~/.config/zynkr/gm.json>, subject 【GM 週報】2026-08-17（W34）— 先拆掉 §D，再給 P0 日期), which also seeds the routine's idempotency check · scope proposal artifact 72e63d14 (v1.1,
+D1–D13 resolved).
+
+**Open / follow-ups (P1–P3, separate specs)**: `kpi` writes + state tabs in the OKR & KPI
+Tracker (needs `As of`/`Source` columns — Peter) · `month` + Q3/H2 checkpoint scoring ·
+`learn` propose → `--apply` · workspace Calendar API still disabled (calendar anchors
+interactive-only) · `planning-*` kit renumber to 0.03+ · Inngest migration when the
+`zynkr-automation` worker exists.

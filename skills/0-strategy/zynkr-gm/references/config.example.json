@@ -1,0 +1,52 @@
+{
+  "$comment": "zynkr-gm PRIVATE runtime config. Copy to ~/.config/zynkr/gm.json (never commit). All values below are placeholders.",
+  "google_account": "gm@example.com",
+  "recipients": ["gm@example.com", "ops@example.com"],
+  "timezone": "Asia/Taipei",
+  "brief_language": "zh-TW",
+  "sources": {
+    "vms_v2": { "id": "<doc-id>", "type": "doc", "authoritative_section": "H2 2026 alignment" },
+    "integrated_refresh": { "id": "<doc-id>", "type": "doc", "authoritative_section": "2026-07-28 Refresh (v2)" },
+    "main_tracker": { "id": "<sheet-id>", "type": "sheet", "tab": "H2 專案項目" },
+    "ops_weekly": { "id": "<doc-id>", "type": "doc", "tab": "每週事項 2026" },
+    "okr_kpi_tracker": { "id": "<sheet-id>", "type": "sheet", "tabs": { "okrs": "OKRs", "kpi_dashboard": "KPI Dashboard" } },
+    "ops_heal_tracker": { "id": "<sheet-id>", "type": "sheet", "tabs": { "fixes": "修復清單", "decisions": "待決事項" } },
+    "course_tracker": { "id": "<sheet-id>", "type": "sheet", "tab": "專案管理總表" },
+    "knowledge_directory": { "id": "<doc-id>", "type": "doc" },
+    "org_taxonomy": { "id": "<doc-id>", "type": "doc", "tab": "Org Taxonomy v2" },
+    "move_log": { "id": "<sheet-id>", "type": "sheet" },
+    "onboarding_master": { "id": "<doc-id>", "type": "doc", "never_write": true },
+    "plan_docs": {
+      "1.0": "<doc-id>",
+      "2.0": "<doc-id>",
+      "3.0": "<doc-id>",
+      "4.0": "<doc-id>",
+      "6.0": "<doc-id>",
+      "7.0": "<doc-id>",
+      "8.0": "<doc-id>"
+    },
+    "eae_readme": { "id": "<doc-id>", "type": "doc" },
+    "livestream_notes_folder": { "id": "<folder-id>", "type": "folder" },
+    "core_folder": { "id": "<folder-id>", "type": "folder" },
+    "h2_planning_folder": { "id": "<folder-id>", "type": "folder" }
+  },
+  "people": {
+    "Peter": "gm@example.com",
+    "Jane": "ops@example.com",
+    "Mark": "marketing@example.com",
+    "Peggy": "courses@example.com",
+    "Ernie": "sales@example.com"
+  },
+  "routine": {
+    "trigger_id": "<trigger-id>",
+    "cron": "0 9 * * 1",
+    "timezone": "Asia/Taipei",
+    "environment_id": "<environment-id>",
+    "connectors": { "drive_uuid": "<connector-uuid>", "gmail_uuid": "<connector-uuid>" },
+    "model": "<model-id>"
+  },
+  "limits": {
+    "max_tokens_per_run": 120000,
+    "doc_dump_dir": "~/.cache/zynkr-gm/dumps"
+  }
+}
