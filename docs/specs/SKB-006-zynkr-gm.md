@@ -131,5 +131,7 @@ proven. First clean id = 0.02. The parallel `planning-*` proposal starts at
   undated P0s. Local brief additionally surfaced course-tracker milestone dates the
   manual brief had called "undated" (7.1 overdue, 7.2 overdue-not-started, 4.4/4.5/7.3
   dated) — an improvement over the baseline, not a regression.
-- Ship commit: (fill on push)
-- CI: (fill on push)
+- Ship commit: `6c6071e7` (feat(strategy): zynkr-gm 0.02 …), pushed to main 2026-08-17.
+- CI: ingest-skills.yml run 32021169276 — success; `zynkr.ai/s/0.02.md` → 200 with `name: zynkr-gm`; `/api/skills` lists `0.02 · zynkr-gm · WIP` (112 rows).
+- Local install: `npx skills add … --skill zynkr-gm` → `~/.claude/skills/zynkr-gm` symlink → `~/.agents/skills/zynkr-gm`, SKILL.md md5-identical to main.
+- AC-5 (`/zynkr-skills` governance): four-signal lookup — no Project card, no proposal (hand-authored), on-disk ✓, live ✓. Backfilled record issue zynkr-skill-idea **#118** (labels skill-proposal · category:0-strategy · shipped; closed completed). Open 0-strategy proposals #99 strategy-planner and #115 strategy-planning-assistant judged orthogonal (facilitation method vs operating rhythm) — left open, cross-ref comments posted with the 0.02 / 0.03+ sheetId reservations.
