@@ -214,10 +214,13 @@ def ks_url(typ, raw, name=None, owner_dir=None):
         if typ in ('other', 'web') and LUCID.search(s):
             return f'https://lucid.app/lucidchart/{LUCID.search(s).group(0)}/edit'
 
-        # 5. a bare owner/repo reference
+        # 5. a bare owner/repo reference — and only that. A `gh api repos/<owner>/<repo>/…`
+        #    path also matches `owner/repo`, but its first segment is the API route, which
+        #    yielded github.com/repos/<owner>. Anchor the match and skip API/path prefixes.
         if typ == 'github':
-            m = re.search(r'\b([\w.-]+/[\w.-]+)\b', s)
-            if m and not m.group(1).endswith(('.md', '.json', '.sql')):
+            m = re.match(r'^([\w.-]+/[\w.-]+)$', s.strip())
+            if m and not m.group(1).endswith(('.md', '.json', '.sql')) \
+                    and not m.group(1).startswith(('repos/', 'api/', 'contents/')):
                 return f'https://github.com/{m.group(1)}'
 
         # 6. the Supabase project — deep-link the table editor
@@ -230,8 +233,28 @@ def jl(xs, sep=' · '):
     return sep.join([str(x) for x in xs if x])
 
 
-def ks_render(ks):
-    """Render knowledge sources: '⟳ name (Type | purpose) -> id'  (⟳ = re-read every run)."""
+def bullets(xs):
+    """One item per line, so a multi-value cell reads as a list, not a run-on line.
+
+    Cells must carry real newlines for Sheets to break them, and the column needs
+    wrapStrategy=WRAP or the extra lines stay hidden behind a fixed row height.
+    A single item gets no bullet — a one-item list doesn't need one.
+    """
+    items = [str(x).strip() for x in xs if x and str(x).strip()]
+    if not items:
+        return ''
+    if len(items) == 1:
+        return items[0]
+    return '\n'.join('• ' + i for i in items)
+
+
+def ks_render(ks, owner_dir=None):
+    """Render knowledge sources: '⟳ name (Type | purpose) -> url'  (⟳ = re-read every run).
+
+    Resolves each source to a real URL where one can be derived, so the cell answers
+    "which doc is this skill's knowledge?" without a trip to the Knowledge Sources tab.
+    Falls back to the raw id/path when no URL can be stood behind. One source per line.
+    """
     out = []
     for k in ks:
         flag = '⟳ ' if k.get('runtime_read') else ''
@@ -239,8 +262,12 @@ def ks_render(ks):
         if k.get('purpose'):
             s += f" | {k['purpose']}"
         s += ')'
-        if k.get('id_or_url'):
-            s += f" → {k['id_or_url']}"
+        raw = k.get('id_or_url')
+        target = ks_url(k.get('type'), raw, k.get('name'), owner_dir) or raw
+        if target:
+            # a verified-dead target keeps its id but says so, rather than looking like a live one
+            note = next((v for i, v in DEAD_IDS.items() if raw and i in raw), '')
+            s += f"\n     → {target}{'  ' + note if note else ''}"
         out.append(s)
     return '\n'.join(out)
 
@@ -265,6 +292,17 @@ def style_body(ws, ncols, first=2, mono=(), wrap=(), zebra=True):
             cell.alignment = Alignment(horizontal='left', vertical='top', wrap_text=(c in wrap))
             cell.border = BORDER
             cell.fill = PatternFill('solid', fgColor=(PAPER_RAIS if (zebra and r % 2 == 0) else PAPER))
+
+
+def set_row_height(ws, row, h):
+    """No-op by default, for the same reason as set_widths() — layout is the reader's.
+
+    Fixed row heights are also what *hides* content: a cell can hold ten newline-separated
+    items and still look like one line if the row is pinned at 58px. Leaving height alone
+    lets Sheets size the row to the wrapped content.
+    """
+    if SET_WIDTHS:
+        ws.row_dimensions[row].height = h
 
 
 def set_widths(ws, widths):
@@ -368,11 +406,11 @@ def tab_overview(wb, ctx):
         if kind == 'TITLE':
             c = ws.cell(row=r, column=1, value=a)
             c.font = Font(name=FONT_ZH, bold=True, size=18, color=INK)
-            ws.row_dimensions[r].height = 30
+            set_row_height(ws, r, 30)
         elif kind == 'SECTION':
             c = ws.cell(row=r, column=1, value=a)
             c.font = Font(name=FONT_ZH, bold=True, size=13, color=SAGE_DEEP)
-            ws.row_dimensions[r].height = 26
+            set_row_height(ws, r, 26)
         else:
             c1 = ws.cell(row=r, column=1, value=a)
             c1.font = Font(name=FONT_ZH, bold=True, size=10, color=INK)
@@ -383,7 +421,7 @@ def tab_overview(wb, ctx):
             c2.font = Font(name=FONT_ZH, size=10, color=INK_MID)
             c2.alignment = Alignment(vertical='top', wrap_text=True)
             c2.border = BORDER
-            ws.row_dimensions[r].height = max(20, 13 * (len(str(b)) // 110 + 1))
+            set_row_height(ws, r, max(20, 13 * (len(str(b)) // 110 + 1)))
         r += 1
     return ws
 
@@ -469,17 +507,18 @@ def tab_index(wb, inv, sx, ax):
             no, cat_label(p['category']), f"{p['slug']} ({p['id']})", '',
             KIND.get(p['kind'], p['kind']), p.get('status') or '', readiness(e),
             e.get('one_liner_en') or (p.get('summary') or ''), e.get('one_liner_zh', ''),
-            jl(e.get('trigger_phrases') or [], '  ·  '),
+            bullets(e.get('trigger_phrases') or []),
             p.get('input') or '', p.get('process') or '', p.get('output') or '',
-            ks_render(ks), ('TRUE' if any(k.get('runtime_read') for k in ks) else ('FALSE' if ks else '—')),
+            ks_render(ks, os.path.dirname(p.get('source_path') or '') or None),
+            ('TRUE' if any(k.get('runtime_read') for k in ks) else ('FALSE' if ks else '—')),
             jl(sorted({c.get('solution', '') for c in cs})),
             jl([f"{c.get('solution','')}: {c.get('touchpoint','')} ({c.get('direction','')})" for c in cs], '\n'),
             'Yes' if e.get('requires_mcp') else 'No',
-            jl(sorted(e.get('mcp_servers') or [])), jl(sorted(e.get('mcp_tools') or [])),
-            jl(sorted({x for x in (norm_ext(s) for s in (e.get('external_services') or [])) if x})),
+            jl(sorted(e.get('mcp_servers') or [])), bullets(sorted(e.get('mcp_tools') or [])),
+            bullets(sorted({x for x in (norm_ext(s) for s in (e.get('external_services') or [])) if x})),
             SIDE.get(e.get('side_effect_level'), e.get('side_effect_level') or ''),
             e.get('human_gate') or '', jl(e.get('artifacts_produced') or []),
-            jl(e.get('setup_required') or []), e.get('gotchas') or '',
+            bullets(e.get('setup_required') or []), e.get('gotchas') or '',
             jl(sorted(p.get('synergy') or [])), prov,
             p.get('install_command') or '', p.get('source_path') or '', p.get('updated_at') or '',
         ])
@@ -518,7 +557,7 @@ def tab_index(wb, inv, sx, ax):
     set_widths(ws, [5, 24, 34, 34, 13, 8, 17, 50, 32, 46, 40, 46, 40,
                     62, 11, 22, 44, 9, 22, 40, 22, 24, 34, 34, 32, 46, 16, 26, 52, 56, 11])
     for r in range(2, ws.max_row + 1):
-        ws.row_dimensions[r].height = 58
+        set_row_height(ws, r, 58)
         ws.cell(row=r, column=1).font = Font(name=FONT_MONO, size=9, bold=True, color=MUTE)
         m = ws.cell(row=r, column=18)
         if m.value == 'Yes':
@@ -543,7 +582,7 @@ def tab_index(wb, inv, sx, ax):
         ws.cell(row=r, column=4).font = Font(name=FONT_MONO, size=9, color=INK_MID)
         for c in range(1, n + 1):
             ws.cell(row=r, column=c).fill = PatternFill('solid', fgColor=PAPER)
-        ws.row_dimensions[r].height = 40
+        set_row_height(ws, r, 40)
     for r in wip:
         ws.cell(row=r, column=6).font = Font(name=FONT_ZH, size=9, bold=True, color=ORANGE)
     # applied last so it survives the parent/child font passes above
@@ -637,7 +676,7 @@ def tab_knowledge(wb, inv, sx):
     style_body(ws, n, mono={4}, wrap={2, 4, 6, 8})
     set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64])
     for r in range(2, ws.max_row + 1):
-        ws.row_dimensions[r].height = 38
+        set_row_height(ws, r, 38)
         if ws.cell(row=r, column=5).value == 'TRUE':
             ws.cell(row=r, column=5).font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
         ws.cell(row=r, column=2).font = Font(name=FONT_ZH, size=9, bold=True, color=INK)
@@ -695,7 +734,7 @@ def tab_mcp(wb, inv, sx):
         cell.font = Font(name=FONT_ZH, size=10, bold=True, color=PAPER)
         cell.fill = PatternFill('solid', fgColor=INK_MID)
     for r in range(2, last):
-        ws.row_dimensions[r].height = 24
+        set_row_height(ws, r, 24)
         ws.cell(row=r, column=1).font = Font(name=FONT_MONO, size=9, color=MUTE)
         ws.cell(row=r, column=2).font = Font(name=FONT_MONO, size=9, bold=True, color=INK)
         for c in range(4, 5 + len(servers) + 1):
@@ -731,7 +770,7 @@ def tab_solutions(wb, inv, sx):
     style_body(ws, n, mono={2}, wrap={3, 5})
     set_widths(ws, [28, 34, 24, 12, 66, 26, 12])
     for r in range(2, ws.max_row + 1):
-        ws.row_dimensions[r].height = 32
+        set_row_height(ws, r, 32)
         ws.cell(row=r, column=1).font = Font(name=FONT_ZH, size=9, bold=True, color=INK)
         ws.cell(row=r, column=2).font = Font(name=FONT_MONO, size=9, color=INK)
     ws.auto_filter.ref = f'A1:{get_column_letter(n)}{ws.max_row}'
@@ -784,7 +823,7 @@ def tab_summary(wb, inv, sx):
         cell.font = Font(name=FONT_ZH, size=10, bold=True, color=PAPER)
         cell.fill = PatternFill('solid', fgColor=INK_MID)
     for r in range(2, last):
-        ws.row_dimensions[r].height = 24
+        set_row_height(ws, r, 24)
         ws.cell(row=r, column=2).font = Font(name=FONT_ZH, size=10, bold=True, color=INK)
         for c in range(3, 12):
             ws.cell(row=r, column=c).alignment = Alignment(horizontal='center', vertical='center')

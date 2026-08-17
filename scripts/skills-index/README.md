@@ -64,9 +64,17 @@ The published Sheet is no longer a pure render of this script. As of 2026-08-17 
 `update_drive_file(..., source_format="xlsx")` replaces the **whole file**, so publishing the
 rebuilt workbook over it would silently destroy every one of those. Two consequences:
 
-- **Column widths are never set by this script.** `set_widths()` is a no-op unless
-  `ZYNKR_SET_WIDTHS=1`; the per-tab width lists survive at the call sites only as a record of
-  the original intent. Widths belong to whoever is reading the Sheet.
+- **Column widths and row heights are never set by this script.** `set_widths()` and
+  `set_row_height()` are no-ops unless `ZYNKR_SET_WIDTHS=1`; the per-tab values survive at the
+  call sites only as a record of the original intent. Layout belongs to whoever is reading the
+  Sheet — and a *pinned row height actively hides content*: a cell can hold ten newline-separated
+  items and still look like one line if the row is stuck at 58px. That is exactly what happened
+  to Knowledge source / Triggers / Key MCP tools / External services / Setup required on the live
+  Sheet, and why those cells looked like run-on lines despite containing real newlines.
+- **Multi-value cells are one item per line** (`bullets()`), not `·`-joined. Two things are
+  needed for that to *show* in Sheets, and both must hold: real `\n` in the value, and
+  `wrapStrategy=WRAP` on the column (`format_sheet_range`). Newlines alone are not enough
+  when the row height is fixed.
 - **To update content, write values, not the file.** Push from `…values.json` with
   `modify_sheet_values(range_name="'<Tab>'!A1", values=…, value_input_option="USER_ENTERED")`.
   `USER_ENTERED` is required or `=HYPERLINK()` cells land as literal text. The Sheets

@@ -1564,13 +1564,6 @@
      "purpose": "Spec detail for the one-screen review packet"
     },
     {
-     "type": "google-sheet",
-     "name": "Zynkr skills pipeline sheet (row matched by Idea Issue URL)",
-     "id_or_url": "1_0bYyZiB6sGEI4nGw1QDgLip4rRQtNh9ybPGs-WXAMA",
-     "runtime_read": true,
-     "purpose": "Category · dedup verdict · source · Pipeline/Build/Keep status"
-    },
-    {
      "type": "github",
      "name": "generated/skills-index.json on zynkr-skill-builder main (raw.githubusercontent)",
      "id_or_url": "https://raw.githubusercontent.com/peter-tu-zynkr/zynkr-skill-builder/main/generated/skills-index.json",
@@ -1590,6 +1583,13 @@
      "id_or_url": "peter-tu-zynkr/zynkr-skill-builder",
      "runtime_read": true,
      "purpose": "Verify the SKILL.md is in main and the dispatch fired"
+    },
+    {
+     "type": "github",
+     "name": "zynkr-skill-idea issue labels + body (pipeline SOT)",
+     "id_or_url": "peter-tu-zynkr/zynkr-skill-idea",
+     "runtime_read": true,
+     "purpose": "status (triage-ready/building/parked/rejected/shipped) · category label · source + dedup verdict in the body"
     }
    ],
    "connected_solutions": [
@@ -1626,7 +1626,7 @@
    "human_gate": "User picks the issue and chooses Option A/B/C/D; build mode (rescaffold vs lift-and-shift) and Build Target are confirmed; rejection needs a stated reason; local install runs only on OK",
    "setup_required": [
     "gh CLI authed with repo + dispatch + project scope",
-    "Read access to pipeline sheet 1_0bYyZiB6sGEI4nGw1QDgLip4rRQtNh9ybPGs-WXAMA",
+    "Pipeline status read from zynkr-skill-idea issue labels (the old Sheet is retired)",
     "disable-model-invocation: true — explicit invocation only"
    ],
    "gotchas": "Only authorised path to fire skill-build-request. On non-2xx dispatch, do NOT flip Build Status and roll the label swap back so the issue stays triage-ready. Option D needs a committed Built Skill URL — otherwise stop; it never re-runs QA (trusts the merged PR's green check) and fires no dispatch. Stale Intake Source: if the issue body has 'Built via: skill-publish', trust the body. Flag+fix rows still pointing at the archived peter-tu-zynkr/zynkr-skills repo. Shipping to the marketplace does not install the skill locally.",
@@ -3065,7 +3065,7 @@
      "name": "sales-specialist-config.md (sibling)",
      "id_or_url": "./sales-specialist-config.md",
      "runtime_read": true,
-     "purpose": "SHEET_ID/tab · Supabase project id · email defaults · signature"
+     "purpose": "Zynkr platform project id · field mapping · email defaults · signature"
     },
     {
      "type": "repo-file",
@@ -3080,13 +3080,6 @@
      "id_or_url": "./references/contact-insert.sql",
      "runtime_read": true,
      "purpose": "find-or-create company + dedup-by-email contact insert template"
-    },
-    {
-     "type": "google-sheet",
-     "name": "B2B Customer List (tab Sheet2, cols A–L)",
-     "id_or_url": "1Y4ImMHewm3BXRj-msTD8Y-nZtRBPWcDRBt6CfczLZ5A",
-     "runtime_read": true,
-     "purpose": "reads header row A1:L1, then appends the card rows"
     },
     {
      "type": "supabase-table",
@@ -3108,6 +3101,13 @@
      "id_or_url": "",
      "runtime_read": true,
      "purpose": "auto-fill missing website; build the personalization hook"
+    },
+    {
+     "type": "supabase-table",
+     "name": "crm_activities (the 名片 note)",
+     "id_or_url": "crm_activities",
+     "runtime_read": true,
+     "purpose": "holds linkedin · notes · card_date — the fields with no column of their own"
     }
    ],
    "connected_solutions": [
@@ -3131,7 +3131,6 @@
     "mcp__gmail__send_email"
    ],
    "external_services": [
-    "Google Sheets",
     "Gmail",
     "WebSearch"
    ],
@@ -3142,8 +3141,8 @@
     "personalized follow-up email as a Gmail draft (or sent on [SEND])"
    ],
    "setup_required": [
-    "google-workspace + supabase + gmail MCP authed",
-    "Google Sheet ID (falls back to asking if TBD)",
+    "supabase MCP on the Zynkr project (CRM_PROJECT_ID) — the only write target",
+    "google-workspace + gmail MCP authed for the follow-up draft",
     "user_google_email + EMAIL_SIGNATURE still placeholders in the config (`<your-google-workspace-account>`, [Title])"
    ],
    "human_gate": "Step 3 schema review ([OK]/[EDIT]) before any write; Step 5 research approval; Step 6 email approval — default action is Gmail DRAFT, [SEND] only on explicit request. The CRM write in 4.5 runs autonomously on the already-approved data.",
