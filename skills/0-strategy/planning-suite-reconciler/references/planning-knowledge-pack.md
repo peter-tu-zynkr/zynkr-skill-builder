@@ -37,7 +37,7 @@ L1 numbering is fixed and shared with the H2 plan Docs and the `[N]` Drive folde
 | **2.0** | Sales & Consulting | 2.1 業務體系與流程 · 2.2 業務招募／誘因與 on-board · 2.3 陌生開發與 outreach · 2.4 機構・B2B 通路 · 2.5 外部業務講師 |
 | **3.0** | Operations | 3.1 基礎營運 · 3.2 講師供給 · 3.3 場次與排課 · 3.4 營運衡量 (Metrics) · 3.5 內部工具與知識資產 |
 | **4.0** | Knowledge Products & Training | 4.1 顧問與導入服務 · 4.2 培訓型服務 · 4.3 課程主題（內容 IP）· 4.4 內容型商品 · 4.5 商品階梯與定價 · 4.6 會員經營 |
-| **5.0** | Development Ops & Productization *(2026-08 taxonomy: 企業 AI 賦能與深度診斷)* | 5.1 流程 · 5.2 建置 · 5.3 GTM — often 0 items on a whiteboard; **flag emptiness, don't invent** |
+| **5.0** | Development Ops & Productization *(the July H2-plan label; the 2026-08 Org-Taxonomy v2 relabels 5 as 企業 AI 賦能與深度診斷 and moves platform work to 6.0)* | 5.1 流程 · 5.2 建置 · 5.3 GTM — often 0 items on a whiteboard; **flag emptiness, don't invent**. **Which taxonomy?** Default = the July L1 labels (they match the plan Docs and the tracker). If a cycle adopts v2, say so in the tracker README and remap 企業 AI 診斷／導入／流程設計 from 4.1 → 5.0 — never mix the two in one file. |
 | **6.0** | Tech & Platform | 6.1 對外平台 · 6.2 內部平台／自動化 |
 | **7.0** | People & Talent | 7.1 目標與績效 (KPI) · 7.2 人才發展 (Onboarding · Training) |
 | **8.0** | Finance & Admin | 8.1 現金與 runway · 8.2 定價與護欄 · 8.3 法務與合約 — **also usually 0 items on a whiteboard; flag it** |
@@ -115,7 +115,7 @@ Tabs, in order, as built 2026-07-26 → 07-28 (`planning-tracker-builder` reprod
 |---|---|---|
 | `README` | how the tracker was made: source (photo/transcript), method (transcribe → MECE re-cut → merge/split), counts, confidence, ⚠ coverage gaps, tab guide | two-column key · value |
 | `H1 回顧總結` (or `<cycle> 回顧總結`) | the retro table + 5 重點結論 on top | `# · 領域 · 類型 (做得好／可加強) · 項目 · 逐字稿重點 · 建議下一步` |
-| `H2 專案項目` (or `<cycle> 專案項目`) | the project list — **the SOR tab** | `# · 主類別 · 子類別 · 項目（正規化）· 重要 · 緊急 · Priority · 負責人 · 協助者 · 開始 · 結束 · 狀態 · 備註`; L1 header rows (`1.0`, `2.0`, …) with items numbered `1.01`, `1.02` … |
+| `H2 專案項目` (or `<cycle> 專案項目`) | the project list — **the SOR tab** | `# · 主類別 · 子類別 · 項目（正規化）· 重要 · 緊急 · Priority · 負責人 · 協助者 · 開始 · 結束 · 狀態 · 備註`; L1 header rows (`1.0`, `2.0`, …) with items numbered `1.01`, `1.02` … **The `#` prefix is positional (sequential by presence), the L1 number lives in the 主類別 text** — in the July tracker `#5.0x` rows are 主類別 `6.0 Tech & Platform` and `#6.0x` are `7.0 People & Talent`. Group by 主類別, quote `#` verbatim. `read_sheet_values` returns ≤50 rows per call — page the rest. |
 | `專案項目小記` | pivot: count + % per priority; per-owner P0/P1/P2/total | small grid, formulas allowed |
 | `② 白板原文` | verbatim whiteboard transcription, column by column, pen colour noted | `# · 白板欄位 · 手寫原文 · 筆色 · 判讀信心 · 備註` (the live July header; `#` = running row number) |
 | `③ 去重與歸類決策` | every ruling that changed an item | `# · 決策 (合併／拆分／移欄／不合併／排除) · 項目 · 白板出處 · 歸到哪裡 · 判準／理由` |

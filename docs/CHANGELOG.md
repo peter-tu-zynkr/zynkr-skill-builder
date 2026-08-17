@@ -530,3 +530,63 @@ re-run; report-only.
 applied) · `/code-review medium` findings: 3 findings, all resolved before landing — (1) `skills/0-strategy/_shared/` was tracked and would have surfaced as a broken taxonomy node → seed moved to `docs/planning-shared/`; (2) nine copies with only a manual md5 sweep as drift guard → `scripts/check-planning-refs.sh` (`--sync` re-copies the seed; bare run exits 1 on drift), AC-4 now mechanical; (3) no record entry on the branch → these two entries · this push's `ingest-skills.yml` run =
 go-live proof; curl sweep at close-out · live triggers for these five accrue as YE
 exercises them (dated waiver 2026-08-17, SKB-002 pattern).
+
+## 2026-08-17 — SKB-007 close-out: planning-* family SHIPPED (8 skills, 0.03–0.10) — governance, D2 triggers, post-trigger polish
+
+**Governance via `/zynkr-skills` (AC-7).** Route = `local-skill-md`, no prior issue →
+`/skill-qa` (engine `--json`: PASS ×8, 0 ERROR / 0 WARN on the main tree) → `/skill-publish`
+fresh-intake with the dispatch **decoupled** (files were already on main; `publish-skill.ts`
+refuses existing targets) → `/skill-triager confirm-ship`. Result: one `[Skill Record]` issue
+per skill in `peter-tu-zynkr/zynkr-skill-idea` — **#119** planning-prework-pack · **#120**
+planning-session-synth · **#121** planning-tracker-sync · **#122** planning-1on1-annual-digest ·
+**#123** planning-evidence-pack · **#124** planning-tracker-builder · **#125**
+planning-suite-reconciler · **#126** planning-lob-gap-audit — labels `skill-proposal` ·
+`category:0-strategy` · `shipped`, closed as completed; Project 1 items with Pipeline Status =
+shipped · Build Status = shipped · Category = 0-strategy · Keep = yes · Build Repo =
+zynkr-skill-builder · Build Target Path = `0-strategy/<slug>` · Built URL = landing commit
+(`1bd05ad9` / `f8cf74d3`) · Status = Done. Dedup verdict `new` (#99 / #115 = strategy
+facilitation; #118 zynkr-gm = weekly operating rhythm; this family = the once-per-half
+planning event). Field drift noted in each issue: the Project has no `Intake Source =
+skill-publish` and no `Artifact = skill-md-only` option (used `manual`, left Artifact unset).
+confirm-ship's three read-only checks per skill: `gh api contents` ✓ · `generated/skills-index.json`
+✓ · `/api/skills` ✓ · `/s/<id>.md` 200 (curl).
+
+**Local install (confirm-ship last step).** `npx skills add … --skill <slug>` for the ★ three
+→ `~/.claude/skills/planning-prework-pack` · `planning-session-synth` · `planning-tracker-sync`
+(symlinks into `~/.agents/skills/`), all three visible in the session skill list.
+
+**D2 install-and-trigger — one real run each, zero writes:**
+- `planning-tracker-sync` on the live H2 tracker (55 items, zynkr-gm `derive_state.py`
+  path): 1 OVERDUE (#1.03 SEO 文章, 開始 07-01 +47d) · 1 ENDS_SOON (#4.01 企業 AI 診斷, 11 d) ·
+  24 UNDATED / 掛 All · LOAD Peter 6 P0 · all 14 P0 DIRECTION_UNLABELLED · full agenda block +
+  6 nudge drafts printed; no snapshot, no cell, no draft, nothing sent.
+- `planning-session-synth` on the July transcript + both whiteboard photos (full-res
+  column crops): 70 verbatim rows (11 layout marks; 中 8 / 低 3 confidence), 24 rulings
+  (12 = pack precedents, 4 new: 知識管理 ↗B↘C split · 訂閱制/書/YouTube → 4.4 · 學員交流專場 →
+  4.6 · 「（減法 使用Token）」 excluded), coverage 5.0 = 0 · 8.0 = 0 · 6.0/7.0 thin, 17 retro rows
+  + 5 重點結論, recap-mail text — all printed; every write gate answered no.
+- `planning-prework-pack` YE dry-run (session 2026-12-13): resolved all sources incl. the
+  6.0 shortcut → target Doc, read tracker/OKR/3 plan addenda/2 1:1 Docs, printed the 5-tab
+  plan (Laundry 40 rows, seed Do-now 14/40 = 35% → lint fired as designed), one owner
+  one-pager, logistics + invite text; no copy/Doc/deck/event.
+
+**Post-trigger polish (same commit).** Friction from the three runs folded back: shared
+`planning-sources.md` (transcript = space-separated ASR, Part-1 only; 1:1 heading variants;
+`comment_mode="none"`; July event 09:30–18:30 not all-day) and `planning-knowledge-pack.md`
+(§2 which-taxonomy rule for 5.0; §6 `#` prefix is positional / L1 lives in 主類別; ≤50-row
+paging) re-synced to all eight copies (`scripts/check-planning-refs.sh` OK); tracker-sync
+(paging, DIRECTION/STALLED always local, 掛 All counting, `--retro` by 主類別, self-owner
+nudge, P0-cap line, `--since` in the routine string); session-synth (normalise-first ASR
+step, photo download has no extension, conditional rulings on 中/低 rows, as-is board
+headers, README dated section, non-interactive recap stop, 筆色 uncertainty);
+prework-pack (YE reads `H1 回顧總結` + fallbacks when 完成 = 0, paging + 主類別 bucketing,
+1:1 variants, status-word targets, departed-owner confirm + Owner=All cell, YE Qtr vocab +
+「(H2 verdict)」 seeds, working-day due date, abbreviated agenda print, shortcut/calendar
+notes). Validator 0 ERROR / 0 WARN on all three after polish; tree-wide 0-strategy 9/9.
+
+**Follow-ups (local tracker `to-do.md`):** schedule the read-only tracker-sync block via
+`/schedule` + observe once (wiring proof) · CI step for `check-planning-refs.sh` (S) · D2
+waivers for the five non-★ skills until YE · pipeline field drift (Intake Source /
+Artifact options) · optional hub-skill hoist · pack §2 5.0/8.0 vs 2026-08 taxonomy at YE.
+
+Spec `docs/specs/SKB-007-planning-skill-family.md` → **Shipped 2026-08-17**.

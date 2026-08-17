@@ -8,6 +8,9 @@
 >
 > Example rows are the July 2026 rulings re-quoted from the tracker. They carry **no
 > personal names**; owners always come from the tracker's 負責人 column or the user.
+> That "no names" rule binds the *examples in this file* only. Board text is data: when
+> an as-is board's column headers are person names written on the board, the ② 白板欄位
+> label is that header text as written (SKILL.md hard rule 8).
 
 ---
 
@@ -33,7 +36,12 @@ Re-runs never overwrite: if a tab already has content (= at least one data row b
 the header; a missing or header-only tab is empty and is written in place), `create_sheet`
 a new tab `<tab> — YYYY-MM-DD` first, then write into it and leave the old one. This is
 the day-suffixed form of pack §8's `<name> — YYYY-MM 現行版` (two digest runs can land in
-one month) — note it in the README.
+one month) — note it in the README. On a tracker whose working tabs already hold data,
+that means all four of this run's tabs are suffixed (`② 白板原文 — YYYY-MM-DD`,
+`③ 去重與歸類決策 — YYYY-MM-DD`, `④ MECE 檢查 — YYYY-MM-DD`, `<cycle> 回顧總結 — YYYY-MM-DD`).
+**`README` is the exception**: never day-suffixed and never overwritten — the new run's
+dated section (§6) is written on top and the previous cycle's README rows are re-emitted
+unchanged below it.
 
 A tracker created by this skill (Step 5, no-tracker branch) leaves `<cycle> 專案項目` and
 `專案項目小記` completely empty — no header row — so `planning-tracker-builder` detects its
@@ -54,10 +62,14 @@ Rules per row:
 
 - One row per handwritten line, in reading order **top→bottom within a column,
   columns left→right**. If more than one board photo, prefix 白板欄位 with the board name
-  (`to-be · Sales`, `as-is · 第 3 欄`).
+  (`to-be · Sales`, `as-is · 第 3 欄`). When the column header written on the board is a
+  person's name (the July as-is board), 白板欄位 = that header text as written — board
+  text is data, not an example payload; the name-free rule covers this file's examples only.
 - 手寫原文 is what is written, character for character — including layout labels, arrows,
   crossed-out words (write `～刪除～`), and abbreviations. **No normalising in this tab.**
-- 筆色 ∈ {黑 · 紅 · 藍 · 灰 · 綠 · …} as seen; unknown → `？`.
+- 筆色 ∈ {黑 · 紅 · 藍 · 灰 · 綠 · …} as seen; unknown → `？`. When the colour itself is
+  ambiguous on the photo (dark blue vs black is the common case) write `藍／黑` and cap
+  判讀信心 at 中 for that row.
 - 判讀信心 ∈ {高 · 中 · 低}. Anything 中/低 gets a 備註 with the candidate readings and
   is echoed into the README `請與會者確認` list.
 - Layout labels (欄位左緣標註, arrows, headers) stay in this tab with 備註 `非工作項` —
@@ -86,6 +98,10 @@ Header row, exactly:
 - 判準／理由 is one sentence that a room member could dispute. Reuse the pack §7 wording
   when the case matches; write a fresh one when it does not, and number it after the
   17 precedents.
+- A ruling that depends on a 中/低 ② reading is **conditional**: append `（待確認 ②#n）`
+  to 判準／理由 (e.g. pack §7 #2 only holds if ②#2 reads 「投標」 rather than 「槓桿」) and
+  list that ②#n in the README `請與會者確認` set. The ruling stands provisionally; the
+  builder treats such items as 信心 中/低 (§5).
 
 Worked example rows:
 
@@ -113,6 +129,9 @@ Row 16+ one row per overlap resolved in ③
 - 涵蓋程度 ∈ {已涵蓋 · 偏薄 · 未涵蓋}: `0` items → 未涵蓋; `≤2` (or clearly thin against
   the LOB plan Doc) → 偏薄; else 已涵蓋. 說明 for 偏薄/未涵蓋 must quote what the LOB's
   plan Doc (sources §A) says should have been there — that is the coverage-gap evidence.
+  Quote the newest dated addendum in the Doc when one exists; if the sources §A entry is
+  a Drive shortcut, `get_drive_file_permissions` returns the target's metadata — take the
+  real Doc ID from its `ID:` line, read that, and name the resolved ID in the 說明.
 - 切法 vocabulary: `歸 <L2>` · `1 拆 2` · `全歸 <L2>` · `不合併`.
 
 Worked example rows:
@@ -192,6 +211,12 @@ Row 1 title: `<cycle> <year> Offsite — 白板盤點（MECE・已去重）`; ro
 (`來源：<date> offsite 白板照片 <file names> · N 欄 · K 種筆色 · 逐字稿 <Doc title>`).
 Then two-column key · value rows in this order (blank rows between groups are fine):
 
+When the README already has rows from a previous run, this whole block (title, source
+line, key · value rows) becomes a **dated section written at the top** — prefix the title
+row with the run date (`YYYY-MM-DD digest · <cycle> <year> Offsite — …`), leave one blank
+spacer row, then re-emit every previous row unchanged below. The README tab is never
+day-suffixed and no earlier row is ever overwritten (§0).
+
 | Key | Value shape |
 |---|---|
 | 這份表是什麼 | one sentence: transcribe verbatim → MECE re-cut → merge/split |
@@ -201,7 +226,7 @@ Then two-column key · value rows in this order (blank rows between groups are f
 | 原文行數 | `N 行（其中 K 行是版面標註／箭頭，不計為工作項）` |
 | 正規化後項目 | `N 項 · a 組合併 · b 組拆分 · c 組跨欄移位 · d 組刻意不合併` |
 | 判讀信心 | counts of 高/中/低 + "中/低 列於下方 請與會者確認" |
-| 請與會者確認 | one line per 中/低 reading: `②#<n> 「<原文>」→ 候選：A／B` |
+| 請與會者確認 | one line per 中/低 reading: `②#<n> 「<原文>」→ 候選：A／B`; a reading that a ③ ruling hinges on adds `（③#<m> 待確認）` so the room sees which merge/split depends on it |
 | ⚠ 覆蓋缺口 | each L1 with 0 items, with the plan-Doc quote |
 | ⚠ <L1> 偏薄 | each thin L1 |
 | 回顧總結 | `做得好 N · 可加強 M · 領域 K · 重點結論 5` + 逐字稿 segmentation note (speakers 未標示 unless a map was given) |
@@ -213,7 +238,8 @@ Then two-column key · value rows in this order (blank rows between groups are f
 
 Subject (house default — pack §5 gives the body shape only; take the user's wording if
 given): `[<cycle> planning] 回顧＋專案盤點 recap（YYYY-MM-DD）`. `to` is one comma-separated
-string.
+string. No recipients named + non-interactive run → print the body in chat and stop; do
+not create a `to=""` draft (SKILL.md Step 8).
 
 ```
 TL;DR（3 行）

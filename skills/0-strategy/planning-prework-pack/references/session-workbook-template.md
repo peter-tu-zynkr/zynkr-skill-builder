@@ -66,7 +66,9 @@ in what order (pack §5 "what the room actually did" — person-by-person round-
 Part 1, function-column brainstorm in Part 2/3a). `Output` = the artefact on the wall
 when the block ends. `Lead` = role names (facilitator · each LOB owner · Ops for
 logistics/RACI). Facts quoted inside blocks (targets, C1 numbers, uncovered L1s) come
-from the cycle's evidence — mark `（待補）` when missing.
+from the cycle's evidence — mark `（待補）` when missing. In the Step 2 chat plan the
+facilitation cells may appear abbreviated (first line + `…`, "full text at write time");
+the Sheet always receives the full runbook text.
 
 ### 1.3 `Pre-work by LOB` — one row per L1
 
@@ -80,11 +82,11 @@ Column sources:
 
 | Column | Source (mark it in the plan) |
 |---|---|
-| Owner | tracker 負責人 column for that L1's items (+ helpers); an L1 with no owner is written `（待補：no owner in tracker）` — never invented |
+| Owner | tracker 負責人 column for that L1's items (+ helpers); an L1 with no owner is written `（待補：no owner in tracker）` — never invented. `All` is not an owner: write the L1's named owners, then 「掛 All：n 項待認領」 (n = that L1's rows with 負責人 = `All`). A name flagged as departed (Read Me `Roster reality` / the user) is listed only after the SKILL.md Step 0.3 confirm |
 | Mandate | the LOB plan Doc's opening mandate paragraph (or its newest addendum) |
-| Looking back — delivered | bullets `• …`: tracker rows with 狀態 = `完成` for that L1 (quote `#`), plus 1:1 Doc WB entries in the window (quote the WB date), plus pasted CHANGELOG-style lists if the user gave them; each bullet carries its proof number or `（待補）` |
+| Looking back — delivered | bullets `• …`: tracker rows with 狀態 = `完成` for that L1 (quote `#` verbatim + the L1 from 主類別, e.g. `tracker #5.02 (L1 6.0)` — the `#` prefix is positional), plus 1:1 Doc WB entries in the window (quote the WB date), plus pasted CHANGELOG-style lists if the user gave them; each bullet carries its proof number or `（待補）`. `YE` header reads `Looking back — what we delivered (H1 + H2)`; when the tracker has 0 `完成` rows, fill from the fallbacks in SKILL.md Step 1.1 (`H1 回顧總結` · 年度計畫 digests · CHANGELOG lists · pasted) before writing `（待補）` |
 | Looking forward | bullets from the plan Doc's forward section / addendum + tracker `進行中` items |
-| KPIs / targets | numbers from the OKR & KPI Tracker `OKRs`/`KPI Dashboard` tabs or the plan Doc; every target quotes a number or `（待補）` |
+| KPIs / targets | numbers from the OKR & KPI Tracker `OKRs`/`KPI Dashboard` tabs or the plan Doc; every target quotes a number, or an OKR status-word target (`target: live (OKR row N)` when the row's target is a word and Actual is blank), or `（待補）` |
 | Top risk | the plan Doc's risk line; if absent, the C1–C4 constraint that bites this LOB hardest, labelled as the skill's suggestion |
 
 ### 1.4 `Laundry List + Eisenhower` — the candidate table
@@ -98,9 +100,14 @@ row 2 header:
 - One row per candidate, grouped by L1 (`1.0 Marketing` … `8.0 Finance`), `#` running.
 - Sources: plan Doc forward bullets + tracker rows with 狀態 ∈ {`未開始`, `進行中`}
   (quote tracker `#` in a trailing note if useful) + the user's additions.
-- `Qtr` ∈ {first quarter of the cycle · second quarter · ongoing}. `Impact`/`Effort` ∈
+- `Qtr` vocabulary per cycle — `H1`: {`Q1` · `Q2` · `ongoing`} · `H2`: {`Q3` · `Q4` ·
+  `ongoing`} · `YE` (plans the NEXT year): {`<year+1> Q1` · `<year+1> Q2` · `<year+1> H2` ·
+  `ongoing`}, e.g. `2027 Q1` · `2027 Q2` · `2027 H2`. `Impact`/`Effort` ∈
   {High, Med, Low}. `Urgency`/`Importance` ∈ {High, Med, Low} using the pack §3
-  definitions (重要 = moves a top-3 target; 緊急 = gates or expires).
+  definitions (重要 = moves a top-3 target; 緊急 = gates or expires). U/I values lifted
+  from the tracker's own 重要 × 緊急 columns are LAST cycle's call — append
+  「(<prev cycle> verdict)」 (e.g. 「(H2 verdict)」) to the Initiative text so the room
+  re-rates rather than inherits.
 - `Eisenhower (seed)` ∈ {`Do now`, `Schedule`, `Delegate`, `Drop`} — derived from
   U × I; the template workbook's conditional colours key on these exact strings in col I
   (`Do now` #FCE4D6 · `Schedule` #E2EFDA · `Delegate` #FFF2CC · `Drop` #EDEDED) — a
@@ -112,7 +119,9 @@ row 2 header:
   rows in the Step 7 report. Read the copy's rules first — the bound may have moved.
 - `Owner` = tracker 負責人 or `（待補）`. `Live decision →` stays EMPTY — the room fills it.
 - Seed sanity (pack §3 lint, warn only): count `Do now`; if > 6 or > 25 % of rows, say
-  so in the plan and demote the weakest to `Schedule` only if the user agrees.
+  so in the plan and demote the weakest to `Schedule` only if the user agrees. On a
+  `YE` seed this lint is EXPECTED to fire (a full year of carried-in P0s) — print the
+  count as a note for the room, never demote silently.
 
 ### 1.5 `Eisenhower Matrix` — the 2×2 seed board
 
@@ -168,7 +177,7 @@ exactly three sections so it maps 1:1 onto that owner's LOB slide:
 - <item> — proof: <number + source: tracker #N.NN 完成 / WB YYYY/M/D / pasted> ｜ （待補）
 - …
 ### 2 · Top 3 goals（<cycle>）
-- <goal> — target: <number + source: OKR tab / plan Doc §> ｜ （待補）
+- <goal> — target: <number + source: OKR row N / plan Doc §> ｜ <status word> (OKR row N) ｜ （待補）
 - …
 ### 3 · Laundry list（self-rate U 1–5 · I 1–5 · quarter）
 | # | Initiative | U | I | Qtr | Note |
@@ -176,7 +185,8 @@ exactly three sections so it maps 1:1 onto that owner's LOB slide:
 ```
 
 Header of the Doc: cycle · session date · due date for pre-work (this skill's default:
-5 working days before the session, unless the user set one) · the two self-rating
+5 WORKING days before the session, counting back over Mon–Fri only — a Saturday or
+Sunday session ⇒ the preceding Monday — unless the user set one) · the two self-rating
 definitions (pack §3) · "do NOT
 pre-place on the matrix — we do that live". Names in the Doc are read from the tracker
 at run time; example payloads in this file use `王小明` / `Jane` only.

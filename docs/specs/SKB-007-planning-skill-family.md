@@ -1,6 +1,6 @@
 # SKB-007 — `planning-*` skill family: package the H2 planning cycle for YE planning
 
-- **Status:** Active
+- **Status:** Shipped 2026-08-17
 - **Size / DoD:** L / D2 (new module — an 8-skill product line in the empty `0-strategy`
   category; no auth/cron/secret/migration in-repo → not D3. `planning-tracker-sync` is
   *designed* to be scheduled but this spec ships no cron — scheduling is a follow-up with
@@ -209,9 +209,9 @@ and accepted here so spec and body agree:
 - [x] SKB-007.2 Wave 2: planning-1on1-annual-digest (0.04) · planning-evidence-pack
       (0.05) · planning-tracker-builder (0.07) · planning-suite-reconciler (0.08) ·
       planning-lob-gap-audit (0.10) — same gate
-- [ ] SKB-007.3 Governance: `/zynkr-skills` per skill → QA → publish (fresh-intake,
+- [x] SKB-007.3 Governance: `/zynkr-skills` per skill → QA → publish (fresh-intake,
       dispatch decoupled) → confirm-ship; ★ three installed + one real trigger each
-- [ ] SKB-007.4 Close-out: AC-4 md5 sweep · AC-1/2 curl sweep · record entry · main
+- [x] SKB-007.4 Close-out: AC-4 md5 sweep · AC-1/2 curl sweep · record entry · main
       checkout fast-forwarded · spec → Shipped
 
 ## Verification plan

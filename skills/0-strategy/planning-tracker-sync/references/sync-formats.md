@@ -11,14 +11,17 @@
 
 ## 1 · SOR tab column map (as built 2026-07; pack §6 wording)
 
-Read range: `'<cycle> 專案項目'!A1:M500` via `read_sheet_values`. Row 1 = header. All 13
-columns are kept **raw** for the snapshot and for `derive_state.py` (keys = header cells);
-the columns below are the ones the printed block uses.
+Read range: `'<cycle> 專案項目'!A1:M<n>` via `read_sheet_values`, in **≤50-row pages** (the
+MCP returns at most 50 rows per call): `A1:M50`, then `A51:M100`, … until a page is short or
+empty; concatenate. The API drops trailing empty cells, so **pad every short row to 13
+columns** (`""`) before writing `rows.json` — `derive_state.py` wants the exact 13 keys on
+every row. Row 1 = header. All 13 columns are kept **raw** for the snapshot and for
+`derive_state.py` (keys = header cells); the columns below are the ones the printed block uses.
 
 | Col | Header | Used for |
 |---|---|---|
 | A | `#` | `N.0` = L1 header row (skip in counts) · `N.NN` = item id quoted in every line |
-| B | `主類別` | L1 label — retro 「完成 by LOB」 grouping |
+| B | `主類別` | L1 label — the ONLY key for any "by LOB" grouping (retro 「完成 by LOB」, coverage gap). Never group by the `#` prefix: in the live tracker `#5.0x` rows carry 主類別 `6.0 Tech` and `#6.0x` carry `7.0 People`; `#` is quoted verbatim, never re-derived |
 | C | `子類別` | shown in the retro only |
 | D | `項目（正規化）` | the item text printed in every line |
 | G | `Priority` | `P0`–`P3` (formula result; blank ⇒ 未評 — listed, not guessed) |
@@ -48,17 +51,21 @@ table only says where each lands in the block. Computed against **as-of** = run 
 | zynkr-gm | `OVERDUE` | §4 sec 2 · nudge | which date, days late |
 | zynkr-gm | `ENDS_SOON` | §4 sec 2 (P0/P1) · sec 4 tag (P2) | 結束, days left |
 | zynkr-gm | `UNDATED` (P0/P1 only) | §4 sec 3 · nudge | which cell(s), raw value |
-| zynkr-gm | `STALLED` / `STALLED?` | §4 sec 4 tag; `n/a` unless zynkr-gm supplied it | last change date |
+| zynkr-gm (rule) — computed by THIS skill's fallback logic in every path (`derive_state.py` never emits it) | `STALLED` / `STALLED?` | §4 sec 4 tag; the sec-4 line is always `STALLED：n/a（需 ≥2 snapshots）` unless a pasted `/zynkr-gm progress` supplies it | last change date / snapshot age |
 | zynkr-gm | `PROPOSE_DONE` | §4 sec 5 · nudge (「若已完成請改狀態」) | the 備註 quote |
-| zynkr-gm | `DIRECTION_UNLABELLED` (P0) | §4 sec 6 | where the label was looked for |
+| zynkr-gm (rule) — computed by THIS skill's fallback logic in every path (`derive_state.py` never emits it) | `DIRECTION_UNLABELLED` (P0) | §4 sec 6 (備註-only test, `plan Doc 未讀`) | where the label was looked for |
 | zynkr-gm | `CHANGED` / `TRACKER_DELTA` | the `Δ` on the item's line in sec 4 | field: old → new (`derive_state.py --prev` CHANGE_FIELDS = 狀態/開始/結束/負責人; `tracker_diff.py` FIELDS = 狀態·開始·結束·負責人·Priority; 備註 is never diffed) |
-| pack §3 lint | 掛 All (`負責人 = All`, any priority) | §4 sec 3 | — |
-| pack §3 lint | LOAD (one owner > 3 P0) | one line at the end of sec 4 | count |
+| pack §3 lint | 掛 All (`負責人 = All`, any priority) | §4 sec 3 (merged into the item's UNDATED line when it is both); P0/P1 held by `All` are NOT owner lines in sec 4 — one cross-reference line there | — |
+| pack §3 lint | LOAD (one owner > 3 P0) | one line near the end of sec 4 | count |
+| pack §3 lint | P0-cap (`P0 > 6` or `> 25%` of items) | the LAST line of sec 4, always printed, informative only | `P0 <n>/<total> = <pct>%` |
 | tag | 會議提到 (Fireflies action item names the `#` / 項目) | suffix on the item's line | one sentence |
 | count | 完成 recent (狀態 = 完成 AND transition since baseline; no baseline ⇒ 結束 ≥ as-of − 14 d) | §4 sec 5 | 結束 date |
 
-An item can carry several states; print it once per section it belongs to. Order inside a
-section: P0 → P1 → P2, then by `#`. P3 rows are not reported unless 狀態 changed.
+An item can carry several states; print it once per section it belongs to — and once
+WITHIN a section: an item that is both UNDATED and 掛 All prints ONE combined line in sec 3
+(`UNDATED · 掛 All #… （P0 · 結束 YYYY-MM-DD）— 需要認領`), and every `（<n> 項）` section
+count is a count of items, not lines. Order inside a section: P0 → P1 → P2, then by `#`.
+P3 rows are not reported unless 狀態 changed.
 
 ## 4 · Team Weekly agenda block — fixed shape (zh-TW, chat)
 
@@ -74,16 +81,19 @@ tracker：<Sheet 名稱> · 讀取 <n> 項（不含 L1 標題列）· 狀態來�
    - OVERDUE #1.05 <項目>（李小華 · P1 · 未開始 · 開始 2026-08-01 已過 12 天）會議提到：<action item 摘句>
    - ENDS_SOON #3.04 <項目>（王小明 · P0 · 進行中 · 結束 2026-08-20，還有 7 天）
 
-3. UNDATED／掛 All（<n> 項）
+3. UNDATED／掛 All（<n> 項 — 項目數，非行數）
    - UNDATED #4.03 <項目>（王小明 · P0 · 結束 YYYY-MM-DD）
    - 掛 All #3.04 <項目>（P1）— 需要認領
+   - UNDATED · 掛 All #3.06 <項目>（P0 · 開始 YYYY-MM-DD · 結束 YYYY-MM-DD）— 需要認領   ← 同一項目兩種狀態合併一行
 
 4. 各 owner P0/P1
    王小明：P0 #1.01 <項目> 進行中（Δ 狀態 未開始→進行中）· P0 #2.02 <項目> 進行中 OVERDUE · P1 #1.05 <項目> 未開始
    李小華：P0 #3.01 <項目> 完成 ✓ · P1 #3.02 <項目> 進行中 STALLED?（自 07-30 snapshot 無變動）
+   掛 All 的 P0/P1 見第 3 節（<n> 項）
    （LOAD）王小明 持有 4 個 P0 — 建議轉 P2 或換 owner
    缺負責人：#4.05 <項目>（P2）
-   STALLED：n/a（需 zynkr-gm 讀 [3.1] 週報與 SOT）
+   STALLED：n/a（需 ≥2 snapshots；zynkr-gm 讀 [3.1] 週報與 SOT）
+   P0 <n>/<total> = <pct>%（>6 或 >25% ⇒ 建議收斂）
 
 5. PROPOSE_DONE／上週完成（<n> 項）
    - PROPOSE_DONE #2.07 <項目>（李小華 · 進行中 · 備註「已上線 8/12」）— 請 owner 確認並改狀態
@@ -94,7 +104,14 @@ tracker：<Sheet 名稱> · 讀取 <n> 項（不含 L1 標題列）· 狀態來�
 ```
 
 Rules: no invented items; an empty section prints `—`; `Δ` only when a baseline exists; state
-names appear exactly as above; owners appear in the order they first occur in the SOR tab.
+names appear exactly as above; owners appear in the order they first occur in the SOR tab;
+`All` is never an owner line in sec 4 (its P0/P1 live in sec 3 — the cross-reference line
+only); the P0-cap line is always the last line of sec 4 and never blocks anything;
+`<Sheet 名稱>` in the header is the Main Tracker's name as recorded in
+`planning-sources.md` §A (「2026 H2 Planning Main Tracker」 for H2 2026) — no
+`get_spreadsheet_info` call on the Main Tracker is needed to print it. `狀態來源` names the
+path that produced ENDS_SOON/OVERDUE/UNDATED/CHANGED/PROPOSE_DONE; STALLED and
+DIRECTION_UNLABELLED are this skill's fallback logic under either label (§3).
 When the block is also requested as a Gmail DRAFT the subject is `【Tracker 同步】<cycle>
 <YYYY-MM-DD>` and the body is this block verbatim.
 
@@ -108,6 +125,16 @@ Hi 王小明，週四 Team Weekly 前幫忙看一下 tracker 上你的這幾項�
 - #4.03 <項目>：結束日還是 YYYY-MM-DD → 填一個日期
 - #2.07 <項目>：備註寫「已上線」但狀態仍進行中 → 若已完成請改狀態
 更新在 tracker 上就好，不用回信。方向若有變請直接寫「還在摸索」或「已定案」。
+```
+
+Self-owner carve-out — when the owner IS the invoking user (e.g. Peter running the skill),
+the block is a to-do list, not a nudge: same item lines, no greeting, no closing sentence,
+never drafted:
+
+```
+── （自己的項目）──
+- #2.02 <項目>：結束日 2026-08-10 已過、狀態還是進行中 → 更新狀態或改結束日
+- #4.03 <項目>：結束日還是 YYYY-MM-DD → 填一個日期
 ```
 
 Gmail DRAFT only when the user says so; recipient addresses come from the user (the
@@ -179,7 +206,10 @@ Snapshot 走勢（tracker-snapshots）：<first snapshot_date> P0 open <a> → <
 ```
 
 Every number is a count over the SOR tab or `tracker-snapshots`; nothing else is consulted
-unless the user pastes it (then it is marked `（使用者提供）`).
+unless the user pastes it (then it is marked `（使用者提供）`). 「by LOB」 groups on the 主類別
+column text (`1.0 …` · `2.0 …` labels as written there), NOT on the `#` prefix — the live
+tracker's `#5.0x` items are 主類別 `6.0 Tech` and `#6.0x` are `7.0 People`, so a prefix
+grouping mislabels two LOBs; `#` ids are quoted verbatim inside each group.
 
 ## 8 · Baseline for Δ (first hit wins)
 
@@ -200,15 +230,18 @@ sources §B). A claude.ai cloud routine has **no workspace-mcp Sheets write acce
 routine runs the agenda block only: no `snapshot`, no tab creation, no Gmail draft. The
 snapshot is taken in a local interactive session (Step 6) — before or after the routine, by
 hand — and the routine reads whatever `tracker-snapshots` rows exist as its Δ baseline (§8;
-none ⇒ `基準：首次，無 Δ`). Routine prompt, verbatim:
+none ⇒ `基準：首次，無 Δ`). Fireflies: a manual run reads no recaps unless asked; the routine
+carries `--since <last run date>` so its recap search has a lower bound (7 days back for a
+weekly cron — the user updates the date if the cadence changes). Routine prompt, verbatim:
 
 ```
-Run /planning-tracker-sync --cycle H2 (unattended, read-only): read the Main Tracker SOR
-tab from ./references/planning-sources.md, derive states with zynkr-gm's rules (fallback
-rules if zynkr-gm is not installed here — say so in the header), use the newest
-tracker-snapshots rows in the OKR & KPI Tracker as the Δ baseline if any, and print the
-Team Weekly agenda block and the per-owner nudge blocks in the chat. Do NOT run snapshot,
-do not create or rename any tab, do not create Gmail drafts, do not send anything, do not
+Run /planning-tracker-sync --cycle H2 --since <last run date, YYYY-MM-DD> (unattended,
+read-only): read the Main Tracker SOR tab from ./references/planning-sources.md, derive
+states with zynkr-gm's rules (fallback rules if zynkr-gm is not installed here — say so in
+the header), use the newest tracker-snapshots rows in the OKR & KPI Tracker as the Δ
+baseline if any, read Fireflies recaps in Gmail after --since only, and print the Team
+Weekly agenda block and the per-owner nudge blocks in the chat. Do NOT run snapshot, do
+not create or rename any tab, do not create Gmail drafts, do not send anything, do not
 write a single cell anywhere. If the SOR tab cannot be read, stop and print
 「Tracker 同步失敗：<reason>」.
 ```

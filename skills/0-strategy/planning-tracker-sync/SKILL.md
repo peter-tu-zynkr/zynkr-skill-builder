@@ -152,9 +152,13 @@ baseline <snapshots | pasted | gmail | none yet>`.
 
 ### Step 1 — Read the SOR tab and normalise
 
-`read_sheet_values(spreadsheet_id=<tracker>, range_name="'<SOR tab>'!A1:M500",
-user_google_email=…)`. Keep the 13 raw columns as read (the snapshot and zynkr-gm's scripts
-want them raw); skip `N.0` header rows from every count (keep the L1 label for grouping).
+`read_sheet_values(spreadsheet_id=<tracker>, range_name="'<SOR tab>'!A1:M50",
+user_google_email=…)` — the MCP returns ≤50 rows per call, so read in ≤50-row pages
+(`A1:M50`, then `A51:M100`, … until a page comes back short/empty) and concatenate; the
+API also drops trailing empty cells, so pad every short row to the 13 columns (`""`) before
+building `rows.json` (`derive_state.py` wants the exact 13 keys on every row). Keep the 13
+raw columns as read (the snapshot and zynkr-gm's scripts want them raw); skip `N.0` header
+rows from every count (keep the L1 label for grouping).
 Apply `./references/sync-formats.md` §1–§2 for the printed view: normalise 狀態 to the pack
 §3 strings, dates to ISO or `undated`, Priority `P0`–`P3` (blank = 未評), trim 負責人; keep
 every raw value that did not map so it can be quoted (`（狀態未知：<原值>）`). Print the
@@ -169,8 +173,9 @@ or an auth error ⇒ hard rule 9.
   → a pasted block → the newest `【Tracker 同步】` Gmail draft/sent (`search_gmail_messages`
   `in:drafts subject:"【Tracker 同步】"`, then `in:sent`) → none. Record the baseline date and
   kind in the header.
-- **Fireflies recaps** — only when asked, or unattended with a known last run: `search_gmail_messages`
-  `from:fireflies.ai after:<last run or --since>` (sources §B) → `get_gmail_threads_content_batch`;
+- **Fireflies recaps** — a manual run reads NONE unless asked (`--since` or "讀會議 recap");
+  the unattended routine always passes `--since <last run date>` (§9) as its lower bound:
+  `search_gmail_messages` `from:fireflies.ai after:<--since>` (sources §B) → `get_gmail_threads_content_batch`;
   keep action-item lines that name a tracker item by `#` or an unambiguous 項目 substring and
   attach one sentence to that item as the 「會議提到」 tag. Ambiguous hits go to
   `會議提到（未對上）：…` at the end, never attached.
@@ -186,13 +191,18 @@ Neither source is written to; a missing baseline or zero recaps is stated, not p
    and `python3 <zynkr-gm>/scripts/tracker_diff.py prev_rows.json rows.json --json`. Take the
    emitted states (ENDS_SOON · OVERDUE · UNDATED · CHANGED · PROPOSE_DONE), evidence strings and
    `by_owner` rollup as-is (CHANGED = 狀態/開始/結束/負責人 vs `--prev`; `tracker_diff` also
-   reports Priority; neither compares 備註). If the user has run `/zynkr-gm progress` this week, its per-item
+   reports Priority; neither compares 備註). The scripts emit ONLY those five states — they
+   never emit STALLED or DIRECTION_UNLABELLED — so even with the scripts installed,
+   DIRECTION_UNLABELLED (備註-only test, `plan Doc 未讀`) and `STALLED：n/a（需 ≥2 snapshots）`
+   are ALWAYS computed by this skill's own fallback logic (point 2 below); the header still
+   says `狀態來源：zynkr-gm scripts`. If the user has run `/zynkr-gm progress` this week, its per-item
    states (incl. STALLED and DIRECTION_UNLABELLED, which need sources this skill never reads)
    may be pasted and win.
 2. **Not installed** — apply `./references/derived-state-rules.md` verbatim (same names,
    `ENDS_SOON_DAYS = 14`, same evidence) and mark the header `狀態來源：fallback rules`.
-   DIRECTION_UNLABELLED is tested on 備註 only (say `plan Doc 未讀`); STALLED prints `n/a`
-   plus, as evidence lines, P0/P1 進行中 rows unchanged vs a snapshot ≥14 days old.
+   In BOTH paths: DIRECTION_UNLABELLED is tested on 備註 only (say `plan Doc 未讀`); STALLED
+   prints `n/a（需 ≥2 snapshots）` plus, as evidence lines, P0/P1 進行中 rows unchanged vs a
+   snapshot ≥14 days old.
 
 Then map states + lints to sections per `./references/sync-formats.md` §3 and build the
 per-owner view: for each distinct 負責人 in first-seen order, their P0 and P1 items with
@@ -205,10 +215,15 @@ evidence (which date, days late / left) — a flag without evidence is dropped.
 Render `./references/sync-formats.md` §4 verbatim in the chat — six numbered sections, never
 reordered or renamed: **1. 本週 focus 提醒** (the 「每週一貼 1–3 件、週四 review」 cadence
 line + `--focus` text or `（待填）`; the company-level focus itself is zynkr-gm's) → **2.
-OVERDUE／ENDS_SOON** → **3. UNDATED／掛 All** → **4. 各 owner P0/P1** (+ LOAD line + 缺負責人)
-→ **5. PROPOSE_DONE／上週完成** (owner to confirm) → **6. 方向若變請明講：還在摸索／已定案** (+
-DIRECTION_UNLABELLED P0s). The header carries the run date, Sheet name, item count, 狀態來源
-and baseline (or 首次). Empty sections print `—`. With `--draft`, also create a Gmail DRAFT
+OVERDUE／ENDS_SOON** → **3. UNDATED／掛 All** (an item that is both UNDATED and 掛 All prints
+ONE combined line; the `（<n> 項）` count is items, not lines) → **4. 各 owner P0/P1** (owner
+lines never list `All`-held rows — one cross-reference line 「掛 All 的 P0/P1 見第 3 節」
+instead; + LOAD line + 缺負責人 + the pack §3 P0-cap lint as the LAST line, `P0 <n>/<total> =
+<pct>%（>6 或 >25% ⇒ 建議收斂）`, informative only) → **5. PROPOSE_DONE／上週完成** (owner to
+confirm) → **6. 方向若變請明講：還在摸索／已定案** (+ DIRECTION_UNLABELLED P0s). The header
+carries the run date, the Sheet name (from `./references/planning-sources.md` §A — no
+`get_spreadsheet_info` on the Main Tracker), item count, 狀態來源 and baseline (or 首次).
+Empty sections print `—`. With `--draft`, also create a Gmail DRAFT
 (`draft_gmail_message`, subject `【Tracker 同步】<cycle> <date>`, body = the block, `to` = the
 addresses the user gave, e.g. `team@example.com`) and print the Draft ID — never send.
 
@@ -217,8 +232,10 @@ addresses the user gave, e.g. `team@example.com`) and print the Draft ID — nev
 For every 負責人 holding at least one OVERDUE / UNDATED / PROPOSE_DONE item, print the block
 in `./references/sync-formats.md` §5: greeting by the tracker name, one line per item with
 the concrete ask (更新狀態或改結束日 · 是否啟動？若不做請標 放棄 · 填一個日期 · 若已完成請改
-狀態), and the closing 「更新在 tracker 上就好，不用回信」 + the 還在摸索／已定案 line. Owners
-with nothing flagged get `無需 nudge：<names>`. Gmail DRAFTs only on request and only to
+狀態), and the closing 「更新在 tracker 上就好，不用回信」 + the 還在摸索／已定案 line. Self-owner
+carve-out: when the owner is the invoking user (e.g. Peter), print that block headed
+「（自己的項目）」 with the same item lines but no greeting and no closing — a to-do list, not a
+nudge; never drafted. Owners with nothing flagged get `無需 nudge：<names>`. Gmail DRAFTs only on request and only to
 user-supplied addresses (`wang@example.com`); the tracker holds names, not addresses, and
 this skill never looks one up or guesses.
 
@@ -248,7 +265,9 @@ step. Any Main Tracker cell, `OKRs`, `KPI Dashboard` — out of bounds.
 Only when the invocation says `--retro` (the last weeks of the cycle, before
 `planning-prework-pack` runs). From the normalised rows plus `tracker-snapshots`, print
 `./references/sync-formats.md` §7: 完成／PROPOSE_DONE by LOB (`n/m` per L1, `⚠ 無項目` where an
-L1 has zero items — pack §2 coverage gap), P0 結案率, Slipped (OVERDUE at cycle end), Dropped
+L1 has zero items — pack §2 coverage gap; group by the 主類別 column TEXT, never by the `#`
+prefix — in the live tracker `#5.0x` rows are 主類別 `6.0 Tech` and `#6.0x` are `7.0 People`;
+quote `#` verbatim), P0 結案率, Slipped (OVERDUE at cycle end), Dropped
 (放棄 with 備註 quoted), owner load, the snapshot trend (first → last `snapshot_date`, or
 `（待補）— 需要 snapshot`), the fields prework-pack can take, and the sources not read. Chat
 only — no Doc, no tab.

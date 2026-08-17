@@ -80,7 +80,8 @@ the template workbook (sources §A), fills it, writes the per-owner Doc, hands t
 - Google account for all `google-workspace` MCP calls: `peter_tu@zynkr.ai`; calendar via
   the `claude_ai_Google_Calendar` connector (sources header).
 - Roster and owners come ONLY from the tracker's 負責人 column (or the user); the
-  template workbook's attendee list (sources §A) is history, not a default.
+  template workbook's attendee list (sources §A) is history, not a default. Departed
+  names and `All` are handled per Step 0.3 (confirm line · 「掛 All：n 項待認領」).
 
 ## Hard rules
 
@@ -91,9 +92,12 @@ the template workbook (sources §A), fills it, writes the per-owner Doc, hands t
 2. **Copy, never fill the template in place.** The template workbook and the designed
    deck (sources §A) are templates: `copy_drive_file` into the hub folder, rename, then
    fill the copy. If the copy fails, stop — never write into the source IDs.
-3. **Every number names its source** — `tracker #N.NN 完成` · `WB YYYY/M/D` · `OKR tab
-   row` · `plan Doc addendum YYYY-MM-DD` · `pasted by user` · Scoreboard tab. No source
-   ⇒ `（待補：需要 <source>）`. Never estimate, never round up (pack §9).
+3. **Every number names its source** — `tracker #N.NN (L1 x.0) 完成` (the `#` is
+   verbatim; the L1 comes from 主類別, Step 1.1) · `WB YYYY/M/D` · `OKR row N` · `plan
+   Doc addendum YYYY-MM-DD` · `pasted by user` · Scoreboard tab. An OKR target that is a
+   status word (`built` / `live`) with a blank Actual is a valid target — write
+   `target: <status word> (OKR row N)`. No number AND no status word ⇒ `（待補：需要
+   <source>）`. Never estimate, never round up (pack §9).
 4. **No calendar event, no mail, no share** without an explicit yes on that exact
    action. Default deliverable for logistics is text in the chat.
 5. **L1 numbers 1.0–8.0 are fixed**; L2 rows may be added per cycle. Never renumber.
@@ -114,13 +118,23 @@ the template workbook (sources §A), fills it, writes the per-owner Doc, hands t
    `N` weeks, and any ID overrides (tracker, workbook template, deck template, plan
    Docs, 1:1 Docs, hub folder). When not given, use THIS SKILL's defaults (not family
    rules — say so in the Step 0 block): start `09:00` · look-back 8 weeks (`YE` = 26)
-   · pre-work due 5 working days before the session.
-2. Resolve the 6.0 plan Doc through its hub shortcut (sources §A → target ID). Never
-   move a shortcut (`update_drive_file` follows it to the target).
-3. Print one block and continue only if it is right:
+   · pre-work due 5 WORKING days before the session (count back skipping Sat/Sun; a
+   weekend session ⇒ the preceding Monday; print the resolved date in the block).
+   `YE` look-back spans the whole year: prev cycle = `H2`, and Step 1 also reads the
+   tracker's `H1 回顧總結` tab + the OKR tracker (H1 retro + H2 tracker = full-year).
+2. Resolve the 6.0 plan Doc through its hub shortcut (sources §A): ONE
+   `get_drive_file_permissions` call on the shortcut ID already returns the TARGET's
+   metadata — take the `ID:` line as the plan-Doc ID and do not re-resolve. Never move a
+   shortcut (`update_drive_file` follows it to the target).
+3. Roster = the tracker's 負責人 column. When a name is flagged as departed (template
+   Read Me `Roster reality`, or by the user), print one confirm line (`<name> 已離職？
+   仍列入 pre-work / 移到 Roster reality`) BEFORE listing them as an owner or invitee.
+   Owner = `All` is never an owner: for that L1 list its named owners and append
+   「掛 All：n 項待認領」 (n = tracker rows with 負責人 = `All`); the Step 2 lint repeats n.
+4. Print one block and continue only if it is right:
 
 ```
-Cycle: <H1|H2|YE> <year> · Session: <YYYY-MM-DD|TBD> <HH:MM> · Prev cycle: <label>
+Cycle: <H1|H2|YE> <year> · Session: <YYYY-MM-DD|TBD> <HH:MM> · Prev cycle: <label> · Pre-work due: <YYYY-MM-DD>
 Template workbook: <id> · Template deck: <id> · Hub folder: <id>
 Tracker: <id> (SOR tab gid <gid>) · OKR tracker: <id> · Plan Docs: 1.0…8.0 <ids>
 1:1 Docs: <n> found (window <N> weeks) · Missing: <list or none>
@@ -132,24 +146,45 @@ Read in this order, keeping a running `evidence` list where each fact = `text ·
 owner · source tag`:
 
 1. **Main Tracker SOR tab** (`read_sheet_values`, the `<prev cycle> 專案項目` tab): every
-   row's `# · 主類別 · 項目 · Priority · 負責人 · 開始 · 結束 · 狀態`. Normalise 狀態 to the
+   row's `# · 主類別 · 項目 · Priority · 負責人 · 開始 · 結束 · 狀態`. `read_sheet_values`
+   returns at most 50 rows per call — page the tab (`A1:M50`, `A51:M100`, … until a
+   short page) and count rows before bucketing. The `#` prefix is POSITIONAL, not the L1
+   number: the L1 lives in the 主類別 text (live tracker: `#5.0x` rows are `6.0 Tech`,
+   `#6.0x` rows are `7.0 People`) — bucket by 主類別, and quote `#` verbatim with the L1
+   beside it (`tracker #5.02 (L1 6.0)`). Normalise 狀態 to the
    exact strings `完成` / `進行中` / `未開始` / `放棄` (trim; anything else ⇒ keep raw and
    flag `狀態未知`). Bucket by L1 and by 負責人: 完成 ⇒ "delivered" candidates; 進行中 +
    未開始 ⇒ "forward" + laundry-list candidates. Also read `專案項目小記` for the counts.
+   `YE` ⇒ also read the `H1 回顧總結` tab (sources §A gid) so H1 retro + H2 tracker both
+   feed "delivered". If the SOR tab has 0 rows with 狀態 = `完成`, do NOT leave every
+   Looking-back cell `（待補）` — fill from these fallbacks, in order, each with its own
+   tag: `H1 回顧總結` · the owners' 年度計畫 digest Docs (`planning-1on1-annual-digest`) ·
+   CHANGELOG-style shipped lists · numbers pasted by the user.
 2. **OKR & KPI Tracker** (`OKRs` · `KPI Dashboard` · `Initiatives Q3-Q4` tabs, names
    per sources §A): the numeric
    targets per objective/owner — the only allowed source for "target: <number>" lines
-   besides the plan Docs.
+   besides the plan Docs. Many OKR rows carry a status word (`built`, `live`, `shipped`)
+   as the target with a blank Actual — that is a valid target: write
+   `target: <status word> (OKR row N)`; reserve `（待補）` for rows with no number AND no
+   status word.
 3. **Per-LOB plan Docs** (`get_doc_as_markdown` ×8): the newest dated addendum (pack §8
    shape) — mandate line, what changed, P0 list, open decisions, the risk line.
-4. **1:1 Docs** (sources §B; `get_doc_as_markdown`): `### WB（YYYY/M/D）` entries inside
-   the window; lift dated delivered/next lines per person, always with the WB date.
-   A person on the tracker with no 1:1 Doc in sources ⇒ ask for the ID or mark `（待補）`.
+4. **1:1 Docs** (sources §B; `get_doc_as_markdown`): WB entries inside the window;
+   heading formats VARY per person (`### WB（YYYY/M/D）` vs `# WB 0803` / `# WB 7/7` with
+   no year — see sources §B). When a heading has no year, filter the window by document
+   order (newest first) and infer the year from neighbours; if two years collide, ask.
+   Lift dated delivered/next lines per person, always with the WB date. An in-window
+   entry that is an empty shell (score + asks only) yields 0 evidence lines — say
+   `WB M/D: 0 lines`, never invent. A person on the tracker with no 1:1 Doc in sources ⇒
+   ask for the ID or mark `（待補）`.
 5. **Optional pasted inputs**: runway/cash/burn (C1), founder hours (C2), shipped lists,
    marketplace/platform numbers — tag `pasted by user`. If a `Scoreboard` tab exists in
    an earlier workbook copy (from `planning-evidence-pack`), read it for slide-4 tiles.
-6. **Calendar** (optional, `claude_ai_Google_Calendar` `list_events`): only to confirm
-   the offsite hold exists — never to count events (the evidence pack's job).
+6. **Calendar** (optional, `claude_ai_Google_Calendar` `search_events` by keyword —
+   `Planning & Team Building` — is enough; no `list_events` sweep): only to confirm the
+   offsite hold exists and read its real window (the July event ran 09:30–18:30 with the
+   day agenda in the description — quote that, not the 09:00 default) — never to count
+   events (the evidence pack's job).
 
 End with a coverage line: items per L1 for delivered / forward / laundry, and the LOBs
 that came up empty (pack §2 coverage check).
@@ -165,11 +200,19 @@ in tab order — the values you WILL write, not a description of them:
   plan-Doc addendum + open tracker items), C1–C4 (numbers or `（待補：需要 <source>）`),
   Roster reality, Sequencing rule, Tabs, Links.
 - **Agenda** — 8 rows with the timeboxes from §1.2 shifted to the start time; the
-  facilitation column quotes this cycle's targets/constraints from evidence.
+  facilitation column quotes this cycle's targets/constraints from evidence. The
+  `How to run (facilitation)` cells may be printed abbreviated in the chat (first line +
+  `…`) with the note "full text at write time" — the full runbook text is still written
+  in Step 3.
 - **Pre-work by LOB** — the 8 rows; every bullet ends with its source tag; empty cells
-  are `（待補）`.
+  are `（待補）`; Owner = `All` rows follow the Step 0.3 form.
 - **Laundry List + Eisenhower** — the full row list (`#` … `Owner`, `Live decision →`
   blank) with the seed verdict per row and the seed sanity count (Do-now n / total).
+  `Qtr` uses the cycle's vocabulary (template §1.4; `YE` ⇒ `<year+1> Q1` · `Q2` · `H2` ·
+  `ongoing`). U × I seeds lifted from the tracker's 重要 × 緊急 columns are labelled
+  「(<prev cycle> verdict)」 (e.g. 「(H2 verdict)」) so the room knows they are last
+  cycle's call; on a `YE` seed the Do-now cap lint is EXPECTED to fire (a year of P0s
+  carried in) — print it as a note, do not silently demote.
 - **Eisenhower Matrix** — the four quadrant cell texts + the founder-time line + the
   parking-lot line, re-derived from the laundry list.
 
@@ -209,8 +252,8 @@ one yes covers Steps 3–5, the calendar event still gets its own question in St
 with `update_drive_file(file_id=<the NEW Doc's id>, add_parents=<hub folder id>,
 remove_parents="root")` — never on a template or shortcut ID. Body per
 `./references/session-workbook-template.md` §3: header (cycle · session date · pre-work
-due date — this skill's default is 5 working days before the session unless the user
-set one · the two self-rating definitions from pack §3),
+due date — the date resolved in Step 0.1 (5 working days before; weekend session ⇒
+preceding Monday) unless the user set one · the two self-rating definitions from pack §3),
 then one H2 per owner in tracker 負責人 order with the three sections — Top-3 delivered
 (proof number + source or `（待補）`), Top-3 goals (target + source), and that owner's
 laundry-list rows from the workbook with empty U / I / Qtr cells for self-rating. When
