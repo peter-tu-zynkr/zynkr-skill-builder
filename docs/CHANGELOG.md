@@ -423,3 +423,64 @@ Tracker (needs `As of`/`Source` columns — Peter) · `month` + Q3/H2 checkpoint
 `learn` propose → `--apply` · workspace Calendar API still disabled (calendar anchors
 interactive-only) · `planning-*` kit renumber to 0.03+ · Inngest migration when the
 `zynkr-automation` worker exists.
+
+## 2026-08-17 — SKB-007 Wave 1: `planning-*` family opens `0-strategy` — planning-prework-pack (0.03) · planning-session-synth (0.06) · planning-tracker-sync (0.09)
+
+The three first-build ★ skills of the eight-skill planning family (spec
+`docs/specs/SKB-007-planning-skill-family.md`, Active). Built from the 2026-07-26 H2
+offsite trace: every step of that cycle had been a Claude one-off; these package the
+parts that cost the most hours. All three share two byte-identical reference files —
+`references/planning-knowledge-pack.md` (LOB taxonomy 1.0–8.0 + L2, 重要×緊急 → P0–P3,
+status vocab, C1–C4 constraint frame, facilitation runbook incl. the 【Recap】 mail shape,
+Main-Tracker tab schemas, the 17 MECE rulings from 07-27, the addendum / new-tab
+versioning convention) and `references/planning-sources.md` (live Drive IDs of the H2
+suite, tracker gids, 1:1 Docs, Fireflies/Meet patterns, venue conventions).
+
+**planning-prework-pack (0.03)** — T-4w → T-1d: copies the session workbook template
+(Read Me · Agenda 8 blocks · Pre-work by LOB · Laundry List + Eisenhower · Matrix) into
+the hub folder and refills it for the new cycle from the tracker / OKR tracker / per-LOB
+plan addenda / 1:1 Docs; writes the per-owner one-pager Doc (Top-3 delivered w/ proof or
+（待補）· Top-3 goals · laundry list w/ U/I); hands the 16-slide designed deck to
+`/zynkr-slide` template-fill (text-block fallback); logistics checklist + invite text.
+One confirmation covers workbook + Doc + deck; the calendar event keeps its own yes.
+
+**planning-session-synth (0.06)** — same-day digestion: whiteboard photos → verbatim
+「② 白板原文」 (with 判讀信心) → 「③ 去重與歸類決策」 (合併/拆分/移欄/不合併/排除 with 判準,
+the July rulings as precedent) → 「④ MECE 檢查」 (coverage per L1, flags empty LOBs) →
+normalized item list for the tracker builder; transcript → 「<cycle> 回顧總結」 rows +
+5 重點結論; README tab; the recap mail as a Gmail DRAFT (never sent). Cycle-aware:
+the §A tracker is the default target only when its cycle label matches — a YE run
+never writes into the H2 SOR file.
+
+**planning-tracker-sync (0.09)** — the team-side / record-side companion of
+`zynkr-gm` (0.02, SKB-006): reuses zynkr-gm's derived-state rules (invokes its
+`scripts/derive_state.py` / `tracker_diff.py` when installed; provenance-stamped copy
+as fallback), drafts the Team Weekly agenda block + per-owner nudges (chat / Gmail
+draft), and in `snapshot` mode writes the ONLY thing zynkr-gm needs but never writes:
+`tracker-latest` (repurposes the stale `Initiatives Q3-Q4` tab after confirmation) +
+`tracker-snapshots` in the OKR & KPI Tracker, RAW, 13 tracker columns + snapshot_date +
+iso_week — zero writes to the Main Tracker. `--retro` pre-fills the cycle-end
+looking-back draft. Boundaries: GM-brief triggers → zynkr-gm; bare 週報 / weekly report /
+Monday cron → project-status-update. Ships no cron; the `/schedule` prompt runs the
+read-only block only.
+
+**Mid-build collision handled:** the family was drafted at 0.02–0.09; `zynkr-gm`
+shipped 0.02 to main during the build (parallel session). Renumbered to 0.03–0.10,
+rebased onto `6c6071e7`, ID split + snapshot home agreed by cross-session message
+(SDD §2.2 unmerged-branch rule).
+
+**Verification (D2, SKB-007 AC-1/3/4/5):** `validate-skill.ts --tier=all` → **0 ERROR / 0 WARN** on all three (and on all eight —
+tree-wide run 85/86 pass, the single ERROR is the pre-existing `content-governance`
+`paths.absolute_home`, untouched by this batch) · tree-wide duplicate-sheetId scan → none
+(0.02 zynkr-gm · 0.03–0.10 this family) · local `ingest.ts` dry-run → `✓ 0.03` `✓ 0.06`
+`✓ 0.09` (+ the Wave-2 five), 120 ingested, **no** redirect-prune line; artifacts restored,
+not committed · AC-4 md5: one hash per shared file across all eight folders · build =
+26-agent authoring/review/fix workflow + a second fix pass + eight adversarial re-reviews,
+all PASS (last blocking finds fixed by hand: 1on1 `share_file` → `manage_drive_access`
+grant w/o notification; tracker-sync one-go-per-snapshot + A1:Z clear; tracker-builder
+pivot off-by-one + grid pre-flight) · `/code-review medium` on the branch diff (see the
+Wave-2 entry for its findings) · this push's `ingest-skills.yml` run = go-live proof;
+`curl zynkr.ai/api/skills` + `/s/0.03.md` `/s/0.06.md` `/s/0.09.md` recorded at close-out ·
+D2 install-and-trigger for the ★ three: evidence at SKB-007 close-out (session-synth on the
+July transcript + photos into a COPY of the tracker; tracker-sync read-only run on the live
+tracker; prework-pack dry-run against the July workbook).
