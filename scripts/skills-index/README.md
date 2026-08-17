@@ -95,9 +95,16 @@ Publishing gotchas:
   into the parent and tags the inherited-only ones `(via sub-skill)`, because invoking a parent
   invokes its children. It is a no-op on the current data (every affected parent already declared
   the server itself) but guards against a parent that only delegates.
-- **`zynkr-gm` (0.02) is published but has no file in this repo** — `skills/0-strategy/` holds only a
-  `.gitkeep`. Its row was read from the published `zynkr.ai/s/0.02.md`. It is the one broken
-  `source_path` of the 112, and the reason step 2 above must tolerate a missing local file.
+- **Resolve paths against `origin/main`, not whatever the local checkout is on.** `zynkr-gm` (0.02)
+  was first extracted from the published `zynkr.ai/s/0.02.md` because the local checkout was on a
+  stale commit where `skills/0-strategy/` still held only a `.gitkeep`. The file does exist on
+  `origin/main` (added by `6c6071e7`, SKB-006) and is byte-identical to the published copy, so the
+  extraction stands — but step 2 should still tolerate a missing local file rather than assume one.
+- **No link is emitted that cannot be stood behind.** `ks_url()` and `source_url()` only return a
+  URL for an explicit URL, a Drive ID, a repo path that resolves on disk, a bare `owner/repo`, a
+  Lucid UUID, or the Supabase project. Templated values (`<your-…-id>`), Gmail label names and
+  per-run documents stay plain text. `is_drive_id()` requires mixed case, a digit and no `--`,
+  which is what keeps slide-visual-selector's archetype slugs from being mistaken for Drive IDs.
 - Also unindexed on purpose: the nested child skill at
   `skills/1-brand-marketing/zynkr-content-writer/.claude/skills/write-article/SKILL.md`, which the
   marketplace does not list.

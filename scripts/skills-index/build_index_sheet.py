@@ -115,6 +115,96 @@ def ks_key(k):
     return ('name', nm, k.get('type'))
 
 
+GH_REPO = 'https://github.com/peter-tu-zynkr/zynkr-skill-builder'
+SUPABASE_PROJECT = 'uomieoqlkazknjgmfdda'
+REPO_ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
+
+DRIVE_URL = {
+    'google-doc': 'https://docs.google.com/document/d/{}/edit',
+    'google-sheet': 'https://docs.google.com/spreadsheets/d/{}/edit',
+    'google-slides': 'https://docs.google.com/presentation/d/{}/edit',
+    'drive-folder': 'https://drive.google.com/drive/folders/{}',
+}
+TOKEN = re.compile(r'[A-Za-z0-9_-]{25,}')
+LUCID = re.compile(r'\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b')
+PLACEHOLDER = re.compile(r'[<>]|your-|例如|佔位|placeholder|templated', re.I)
+PATHLIKE = re.compile(r'(?:\.{1,2}/|skills/)[\w./-]+')
+
+
+def is_drive_id(tok):
+    """Drive IDs are 25+ chars mixing upper, lower and digits, and never contain a double hyphen.
+
+    The mixed-case + no-`--` test is what keeps this off the false positive the source audit
+    flagged: slide-visual-selector's archetype slugs (`1-assertion-single-claim--high-emphasis…`)
+    are long and contain digits, but are all-lowercase and double-hyphenated.
+    """
+    return (len(tok) >= 25 and '--' not in tok
+            and any(c.isdigit() for c in tok)
+            and any(c.isupper() for c in tok) and any(c.islower() for c in tok))
+
+
+def ks_url(typ, raw, name=None, owner_dir=None):
+    """Derive a real, openable URL for a knowledge source — or None.
+
+    Reads both `id_or_url` and the source `name`, because the extraction put the identifier in
+    whichever field the SKILL.md happened to state it in. Only emits a link it can stand behind:
+    an explicit URL, a Drive ID, a repo path that actually resolves on disk, a bare owner/repo,
+    a Lucid doc UUID, or the Supabase project. Templated values (`<your-…-id>`) and ambiguous ones
+    (Gmail label names, prose) return None rather than a link that 404s.
+    """
+    cands = [c.strip() for c in (raw, name) if c and c.strip()]
+    if not cands:
+        return None
+
+    # 1. an explicit URL wins, minus any trailing prose the extraction appended
+    for s in cands:
+        m = re.search(r'https?://[^\s|、，)）]+', s)
+        if m:
+            return m.group(0).rstrip('.,;')
+
+    # 2. a file in this repo — link only if the path actually resolves on disk
+    if typ in ('repo-file', 'local-file'):
+        for s in cands:
+            for cand in PATHLIKE.findall(s):
+                cand = cand.rstrip('.,;')
+                if cand.startswith(('./', '../')):
+                    if not owner_dir:
+                        continue
+                    p = os.path.normpath(os.path.join(owner_dir, cand))
+                else:
+                    p = os.path.normpath(cand)
+                if p.startswith('..'):
+                    continue
+                full = os.path.join(REPO_ROOT, p)
+                if os.path.exists(full):
+                    kind = 'tree' if os.path.isdir(full) else 'blob'
+                    return f'{GH_REPO}/{kind}/main/{p.rstrip("/")}'
+
+    for s in cands:
+        if PLACEHOLDER.search(s):
+            continue
+
+        # 3. a Drive ID — typed URL when the type says which app, generic opener otherwise
+        for tok in TOKEN.findall(s):
+            if is_drive_id(tok):
+                return DRIVE_URL.get(typ, 'https://drive.google.com/open?id={}').format(tok)
+
+        # 4. a Lucid document UUID
+        if typ in ('other', 'web') and LUCID.search(s):
+            return f'https://lucid.app/lucidchart/{LUCID.search(s).group(0)}/edit'
+
+        # 5. a bare owner/repo reference
+        if typ == 'github':
+            m = re.search(r'\b([\w.-]+/[\w.-]+)\b', s)
+            if m and not m.group(1).endswith(('.md', '.json', '.sql')):
+                return f'https://github.com/{m.group(1)}'
+
+        # 6. the Supabase project — deep-link the table editor
+        if typ in ('supabase-table', 'supabase-kb') and SUPABASE_PROJECT in s:
+            return f'https://supabase.com/dashboard/project/{SUPABASE_PROJECT}/editor'
+    return None
+
+
 def jl(xs, sep=' · '):
     return sep.join([str(x) for x in xs if x])
 
@@ -190,6 +280,13 @@ def tab_overview(wb, ctx):
                          'sub-skill it invokes. Ready to run is the prerequisite gate: Just invoke = no dependencies · Local '
                          'config = a config file or key · Cloud docs = the Drive/DB sources must exist · MCP auth = needs an MCP '
                          'server · MCP + cloud docs = both.'),
+        ('KV', 'Links', 'Underlined sage text is a live link. On Skill Index the skill name opens its SKILL.md on GitHub; on '
+                        'Knowledge Sources the ID / URL column opens the actual Doc, folder, repo file or dashboard. A link is '
+                        'only generated when it can be stood behind — every GitHub link was checked to resolve against the repo '
+                        'tree, and templated values (`<your-…-id>`), Gmail label names and per-run documents ("whatever Doc the '
+                        'user passes") are deliberately left as plain text rather than guessed. Where the source type does not '
+                        'say which Google app a Drive ID belongs to, the generic drive.google.com opener is used — it resolves '
+                        'to the right Doc, Sheet or folder on its own.'),
         ('GAP', '', ''),
         ('SECTION', 'Headline', ''),
     ]
@@ -239,6 +336,17 @@ def tab_overview(wb, ctx):
 
 
 # ==================================================== Skill Index (main)
+def source_url(source_path):
+    """GitHub link for a skill's own source file — only when the path resolves on disk.
+
+    zynkr-gm is published but absent from the repo, so its path must not become a dead link.
+    """
+    p = (source_path or '').strip()
+    if not p or not os.path.exists(os.path.join(REPO_ROOT, p)):
+        return None
+    return f'{GH_REPO}/blob/main/{p}'
+
+
 def readiness(e):
     """Controlled-vocabulary 'what must be true before I can invoke this' gate.
 
@@ -281,7 +389,7 @@ def tab_index(wb, inv, sx, ax):
     parents = [r for r in inv if not r['is_agent']]
     parents.sort(key=lambda r: (CATS.get(r['category'], ('9',))[0], r['id']))
 
-    wip, child_rows, parent_rows = [], [], []
+    wip, child_rows, parent_rows, srclinks = [], [], [], []
     no = 0
     for p in parents:
         no += 1
@@ -310,6 +418,9 @@ def tab_index(wb, inv, sx, ax):
             p.get('install_command') or '', p.get('source_path') or '', p.get('updated_at') or '',
         ])
         parent_rows.append(ws.max_row)
+        u = source_url(p.get('source_path'))
+        if u:
+            srclinks.append((ws.max_row, 3, u))
         if (p.get('status') or '').upper() == 'WIP':
             wip.append(ws.max_row)
         for k in sorted(kids.get(p['slug'], []), key=lambda x: (ax.get(x['id'], {}).get('stage_order') or 99, x['id'])):
@@ -328,6 +439,9 @@ def tab_index(wb, inv, sx, ax):
                 '', 'First-party', '', k.get('source_path') or '', k.get('updated_at') or '',
             ])
             child_rows.append(ws.max_row)
+            u = source_url(k.get('source_path'))
+            if u:
+                srclinks.append((ws.max_row, 4, u))
             if (k.get('status') or '').upper() == 'WIP':
                 wip.append(ws.max_row)
 
@@ -366,6 +480,12 @@ def tab_index(wb, inv, sx, ax):
         ws.row_dimensions[r].height = 40
     for r in wip:
         ws.cell(row=r, column=6).font = Font(name=FONT_ZH, size=9, bold=True, color=ORANGE)
+    # applied last so it survives the parent/child font passes above
+    for r, col, u in srclinks:
+        c = ws.cell(row=r, column=col)
+        c.hyperlink = u
+        c.font = Font(name=FONT_MONO, size=(10 if col == 3 else 9),
+                      bold=(col == 3), color=SAGE_DEEP, underline='single')
     ws.auto_filter.ref = f'A1:{get_column_letter(n)}{ws.max_row}'
     return ws
 
@@ -390,7 +510,7 @@ def tab_knowledge(wb, inv, sx):
         for k in (e.get('knowledge_sources') or []):
             key = ks_key(k)
             a = agg.setdefault(key, {'names': [], 'ids': set(), 'p': set(), 'rt': False,
-                                     's': set(), 'types': set(), 'canon': None})
+                                     's': set(), 'types': set(), 'canon': None, 'url': None})
             if key[0] == 'id' and not a['canon']:
                 # keep the ORIGINAL case — Drive IDs are case-sensitive, the dedup key is not
                 m = re.search(r'[-\w]{25,}', k.get('id_or_url') or '')
@@ -400,6 +520,12 @@ def tab_knowledge(wb, inv, sx):
             a['types'].add(k.get('type', ''))
             if k.get('id_or_url'):
                 a['ids'].add(k['id_or_url'].strip())
+            # Relative paths ("./references/x.md") only resolve against the skill that declared
+            # them, so derive the URL here while the owning skill is still known.
+            if not a['url']:
+                sp = byid.get(sid, {}).get('source_path') or ''
+                owner = os.path.dirname(sp) if sp else None
+                a['url'] = ks_url(k.get('type'), k.get('id_or_url'), k.get('name'), owner)
             if k.get('purpose'):
                 a['p'].add(k['purpose'])
             if k.get('runtime_read'):
@@ -409,13 +535,16 @@ def tab_knowledge(wb, inv, sx):
         pr = min(SCOPE.get(t, (6, 'Other'))[0] for t in a['types'])
         return (pr, -len(a['s']), min(a['names'], key=len) if a['names'] else '')
 
-    band = []
+    band, links = [], []
     for key, a in sorted(agg.items(), key=sortkey):
         # display the shortest name seen (longer variants are the same source plus a qualifier)
         name = min(a['names'], key=len) if a['names'] else ''
         pr, label = min((SCOPE.get(t, (6, 'Other')) for t in a['types']), key=lambda x: x[0])
-        # When every variant resolves to the same Drive ID, show that ID once, not each phrasing.
-        if key[0] == 'id' and a['canon']:
+        # Column D prefers an openable URL; falls back to the raw ID/path when none is derivable.
+        if a['url']:
+            idcell = a['url']
+        elif key[0] == 'id' and a['canon']:
+            # every variant resolves to the same Drive ID — show it once, not each phrasing
             idcell = a['canon']
         else:
             idcell = jl(sorted(a['ids']), ' | ')
@@ -427,15 +556,21 @@ def tab_knowledge(wb, inv, sx):
                    'TRUE' if a['rt'] else 'FALSE', pcell,
                    len(a['s']), jl(sorted(a['s']))])
         band.append((ws.max_row, pr))
+        if a['url']:
+            links.append((ws.max_row, a['url']))
     n = len(heads)
     style_header(ws, n, freeze='C2')
     style_body(ws, n, mono={4}, wrap={2, 4, 6, 8})
-    set_widths(ws, [20, 46, 18, 52, 11, 56, 8, 68])
+    set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64])
     for r in range(2, ws.max_row + 1):
         ws.row_dimensions[r].height = 38
         if ws.cell(row=r, column=5).value == 'TRUE':
             ws.cell(row=r, column=5).font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
         ws.cell(row=r, column=2).font = Font(name=FONT_ZH, size=9, bold=True, color=INK)
+    for r, url in links:
+        c = ws.cell(row=r, column=4)
+        c.hyperlink = url
+        c.font = Font(name=FONT_MONO, size=9, color=SAGE_DEEP, underline='single')
     for r, pr in band:
         c = ws.cell(row=r, column=1)
         c.font = Font(name=FONT_ZH, size=9, bold=True, color=(INK if pr <= 2 else MUTE))
@@ -687,13 +822,12 @@ def main():
                    f'and Sales & Consultant, which together hold the majority of skills and nearly all of the live-publishing ones.',
         'caveat': 'Columns are derived by reading each SKILL.md (and its agents/ + references/ files) in full, so they report what '
                   'the source declares. Treat an empty Knowledge source cell as "nothing declared in the source", not a guarantee '
-                  'of none. Three specifics worth knowing: (1) an MCP server tagged "(via sub-skill)" is inherited — the parent '
-                  'itself makes no such call, but invoking it invokes a child that does, so the dependency is real at runtime; '
-                  '(2) consult-flow-design (2.14) names Lucid throughout but makes no Lucid call itself — it is a thin delegation '
-                  'wrapper over product-flow-design, so its Lucid dependency is transitive; (3) zynkr-gm (0.02) is published but '
-                  'has no file in the repo (skills/0-strategy/ holds only a .gitkeep) — its row was read from the published '
-                  'zynkr.ai/s/0.02.md, and that source_path is the one broken pointer of the 112. Also unindexed: a nested child '
-                  'skill at zynkr-content-writer/.claude/skills/write-article/SKILL.md, which the marketplace does not list.'
+                  'of none — a skill that uses a Doc without naming it cannot be captured. Three specifics worth knowing: '
+                  '(1) an MCP server tagged "(via sub-skill)" is inherited — the parent itself makes no such call, but invoking '
+                  'it invokes a child that does, so the dependency is real at runtime; (2) consult-flow-design (2.14) names Lucid '
+                  'throughout but makes no Lucid call itself — it is a thin delegation wrapper over product-flow-design, so its '
+                  'Lucid dependency is transitive; (3) one nested child skill is deliberately not indexed — '
+                  'zynkr-content-writer/.claude/skills/write-article/SKILL.md — because the marketplace does not list it.'
                   + (f' Extraction gap: {len(missing)} skill(s) had no metadata extracted ({jl(missing)}).' if missing else ''),
     }
 
