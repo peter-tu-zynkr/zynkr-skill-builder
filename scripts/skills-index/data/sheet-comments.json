@@ -3,32 +3,38 @@
   "drive_id": "1Y4ImMHewm3BXRj-msTD8Y-nZtRBPWcDRBt6CfczLZ5A",
   "source_name": "B2B Customer List (tab Sheet2, cols A–L)",
   "comment": "This should point to Zynkr platform instead",
-  "done": "Done — sales-specialist (2.02) no longer reads the B2B Customer List Sheet; it writes crm_companies / crm_users / crm_activities on the platform. Source row retired 2026-08-18."
+  "done": "Done — sales-specialist (2.02) no longer reads the B2B Customer List Sheet; it writes crm_companies / crm_users / crm_activities on the platform. Source row retired 2026-08-18.",
+  "action": "✅ FIXED (commit 2c51e400). sales-specialist no longer appends to this Sheet — the Zynkr platform is now the only destination. It dual-wrote before because crm_contacts had no home for 7 of the 12 card fields; crm_companies has since gained domain/industry/address/phone, so the whole card now fits: person → crm_contacts, company fields → crm_companies, linkedin+notes+card_date → a 名片 note on the contact. SQL verified with EXPLAIN against the live schema. This Sheet stays readable as the pre-cutover record — just don't append to it."
  },
  {
   "drive_id": "",
   "source_name": "Client discovery docs (consult-discovery summaries · consult-session-notes 痛點 ledgers)",
-  "comment": "Should we start a new doc / sheet in the proper folder?"
+  "comment": "Should we start a new doc / sheet in the proper folder?",
+  "action": "↩ ANSWER: no new doc needed — the pattern is already right. These are per-engagement documents, so they have no fixed ID by design; the skill resolves them inside the client's [N] folder under [2.2] 業務與顧問部門：專案 (1hkXPX7O…, verified live, shared by 14 skills). A standing doc/sheet would add a second place to look. The real gap is that discovery relies on a naming convention ([Notes] / 痛點 ledger / [Plan] / [BRD]) that isn't written down or enforced anywhere — say the word and I'll pin it in the consult-* skills so lookup is deterministic."
  },
  {
   "drive_id": "",
   "source_name": "Engagement docs in the [N] folder — [Notes] session notes · 痛點 ledger · [Plan] · [BRD]",
-  "comment": "Should we start a new doc / sheet in the proper folder?"
+  "comment": "Should we start a new doc / sheet in the proper folder?",
+  "action": "↩ ANSWER: same as row 18 — keep these in the engagement's [N] folder, don't start a new doc. This row is the same pattern seen from consult-flow-design. Worth noting it's the weaker of the two: row 18 at least names the read path (get_doc_content per engagement), while this row declares no ID or path at all, so document discovery is entirely convention. That's the thing to fix, not the location."
  },
  {
   "drive_id": "10u7TaTZW6BMoUyN-55ZymA-LkyZ_ca0tIzarPWOG4Zw",
   "source_name": "Source Doc for the charter facilitation prompt",
-  "comment": "Might want to use skills creator to upgrade"
+  "comment": "Might want to use skills creator to upgrade",
+  "action": "✔ CLOSED — leave as-is (Peter, 2026-08-17). No /skill-creator rebuild. This row is provenance only (Live-read = FALSE): [13.1] 專案章程發想 records where project-planning's charter prompt came from; the skill does not read it at run time, so nothing is broken and nothing is pending."
  },
  {
   "drive_id": "1_0bYyZiB6sGEI4nGw1QDgLip4rRQtNh9ybPGs-WXAMA",
   "source_name": "Zynkr skills pipeline sheet (row matched by Idea Issue URL)",
   "comment": "Doc outdated, should point to Git repo instead",
-  "done": "Done — skill-triager (6.08) no longer reads the pipeline Sheet; the pipeline SOT is now zynkr-skill-idea issue labels + the builder contents API. Source row retired 2026-08-18."
+  "done": "Done — skill-triager (6.08) no longer reads the pipeline Sheet; the pipeline SOT is now zynkr-skill-idea issue labels + the builder contents API. Source row retired 2026-08-18.",
+  "action": "✅ FIXED (commit 2c51e400). Confirmed — and the Sheet says so itself: its header cell A1 reads \"⚠️ SOT moved to GitHub Project DO NOT EDIT THIS SHEET\", yet skill-triager was still writing Pipeline Status / Build Status / Build Target to it. All Sheet reads and writes removed. Everything it took from the Sheet is already on the issue: status + category as labels, source + dedup verdict in the body, slug in the title. Build target and confirm-ship receipt are now issue comments, so a triage decision is auditable from the issue alone."
  },
  {
   "drive_id": "1YIfYi5PWvuoLG4Qq0OhjXg-ju58Nl4CDl2QJRnQfRoM",
   "source_name": "指令工程助理 ─ 重構指令 source Doc (tab \"Tab 4\" — latest version)",
-  "comment": "Might want to use skills creator to upgrade"
+  "comment": "Might want to use skills creator to upgrade",
+  "action": "✔ CLOSED — leave as-is (Peter, 2026-08-17). No /skill-creator rebuild. Provenance only (Live-read = FALSE): the 指令工程助理 Doc records where product-optimize-prompt's frameworks came from; they are inlined in SKILL.md, so the skill does not read the Doc at run time."
  }
 ]

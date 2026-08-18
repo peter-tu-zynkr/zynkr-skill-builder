@@ -659,8 +659,9 @@ def tab_index(wb, inv, sx, ax):
 def tab_knowledge(wb, inv, sx):
     ws = wb.create_sheet('Knowledge Sources')
     heads = ['Scope', 'Source', 'Type', 'ID / URL', 'Live-read', 'Read for', '# skills',
-             'Consumed by', 'Comment']
+             'Consumed by', 'Comment', 'Action taken (2026-08-17)']
     by_id, by_name = load_comments()
+    act_id, act_name = load_actions()
     seen_comments = set()
     ws.append(heads)
     SCOPE = {
@@ -737,16 +738,23 @@ def tab_knowledge(wb, inv, sx):
             cmt = by_name.get(name, '')
         if cmt:
             seen_comments.add(cmt)
+        act = ''
+        for i in (a['ids'] | ({a['canon']} if a['canon'] else set())):
+            if i in act_id:
+                act = act_id[i]
+                break
+        if not act:
+            act = act_name.get(name, '')
         ws.append([label, name, jl(sorted(KST.get(t, t) for t in a['types'])), idcell,
                    'TRUE' if a['rt'] else 'FALSE', pcell,
-                   len(a['s']), jl(sorted(a['s'])), cmt])
+                   len(a['s']), jl(sorted(a['s'])), cmt, act])
         band.append((ws.max_row, pr))
         if a['url']:
             links.append((ws.max_row, a['url']))
     n = len(heads)
     style_header(ws, n, freeze='C2')
-    style_body(ws, n, mono={4}, wrap={2, 4, 6, 8, 9})
-    set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64, 40])
+    style_body(ws, n, mono={4}, wrap={2, 4, 6, 8, 9, 10})
+    set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64, 40, 60])
     lost = [c for c in {r['comment'] for r in _comment_rows() if not r.get('done')}
             if c not in seen_comments]
     if lost:
@@ -771,6 +779,19 @@ def tab_knowledge(wb, inv, sx):
 
 def _comment_rows():
     return json.load(open(J + '/sheet-comments.json')) if os.path.exists(J + '/sheet-comments.json') else []
+
+
+def load_actions():
+    """Peter's replies in column J, keyed the same way as his column-I comments.
+
+    Column I is his question, column J is the answer — they are one thread and must move
+    together. Missing this on 2026-08-18 left four replies sitting against the wrong sources
+    after a re-sort, which is worse than losing them: a confident answer under the wrong
+    question reads as correct.
+    """
+    rows = _comment_rows()
+    return ({r['drive_id']: r['action'] for r in rows if r.get('drive_id') and r.get('action')},
+            {r['source_name']: r['action'] for r in rows if r.get('source_name') and r.get('action')})
 
 
 def load_comments():
