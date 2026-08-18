@@ -54,13 +54,18 @@ Which one you publish with matters — see next section.
 
 The published Sheet is no longer a pure render of this script. As of 2026-08-17 Peter has, by hand:
 
-| Tab | Hand edit |
-|---|---|
-| Knowledge Sources | added column **I `Comment`** (his review notes — the reason the 404 above was caught) |
-| Knowledge Sources | renamed header E `Live-read ⟳` → `Live-read` |
-| Skill Index | **deleted the `一句話說明` column** (31 cols → 30) |
-| Skill Index | renamed `Skill / parent` → `Skill`, blanked the `Child / agent` header |
-| all | hand-tuned column widths |
+| Tab | Hand edit | Now reproduced by the script? |
+|---|---|---|
+| Knowledge Sources | added column **I `Comment`** (his review notes — the reason the 404 above was caught) | yes — `data/sheet-comments.json` |
+| Knowledge Sources | renamed header E `Live-read ⟳` → `Live-read` | yes |
+| Skill Index | **deleted the `一句話說明` column** (31 cols → 30) | yes |
+| Skill Index | renamed `Skill / parent` → `Skill`, blanked the `Child / agent` header | yes |
+| MCP & Services | shortened the per-server headers `MCP · gmail` → `gmail` | yes |
+| Overview | dropped the `⟳` from the `Live-read` headline label | yes |
+| all | hand-tuned column widths | n/a — never written, see below |
+
+As of 2026-08-18 the generator reproduces every one of those, so its output and the live grid
+line up column-for-column. That is enforced, not remembered — see **Header parity** below.
 
 `update_drive_file(..., source_format="xlsx")` replaces the **whole file**, so publishing the
 rebuilt workbook over it would silently destroy every one of those. Two consequences:
@@ -84,9 +89,44 @@ rebuilt workbook over it would silently destroy every one of those. Two conseque
   Best of all, write only the cells that actually changed, as was done for the three
   column-D fixes on 2026-08-17.
 
-Because of the column-count drift, a **blind full-tab push is now unsafe for `Skill Index`**
-(the script emits 31 columns, the Sheet has 30 — everything from `一句話說明` rightward would
-shift by one). Re-align the header row first, or keep writing surgically.
+### Header parity — the guard that replaced that warning
+
+Column drift used to make a full-tab push unsafe: the script emitted 31 columns while the Sheet
+had 30, so everything from `一句話說明` rightward would land one column to the left of where it
+belonged. Nothing would error. The data would just be wrong, quietly, in a document people trust.
+
+`data/live-headers.json` records the live Sheet's header row for all six tabs, and
+`check_header_parity()` runs before the workbook is saved. Any added, removed or renamed column
+prints a per-column diff and **exits 1** — the build produces no artifact to push.
+
+```
+HEADER DRIFT — publishing this would shift live cells. DO NOT PUSH:
+  Skill Index   col I   generated='一句話說明'   live='Triggers'
+REFUSING: regenerate after reconciling headers, or set ZYNKR_ALLOW_HEADER_DRIFT=1
+```
+
+If a column change is *intended*, update `live-headers.json` in the same commit. To build a
+brand-new Sheet from scratch, set `ZYNKR_ALLOW_HEADER_DRIFT=1`.
+
+### Review comments survive a rebuild
+
+Column I of Knowledge Sources holds Peter's review notes. That tab is sorted by scope and then by
+how many skills share a source, so **adding any skill reshuffles it** — the 2026-08-18 rebuild
+moved his six notes from rows 15/18/23/44/52/85 to 25/31/57/98. A positional write would have left
+every note against the wrong source, which reads as a comment about the wrong thing rather than as
+an obvious error.
+
+`data/sheet-comments.json` keys each note to its source's Drive ID (or, when the source has none,
+its name), and the build re-attaches them by identity. A note that matches nothing is **not**
+dropped silently — the build warns. Notes whose underlying request has since been carried out
+carry a `done` field recording what changed; those stop being emitted and stop warning.
+
+### Growing the grid
+
+`values.update` does not extend a sheet: writing past the last row fails with
+`Range (...) exceeds grid limits`. When a rebuild adds rows, grow the grid first with
+`resize_sheet_dimensions(sheet_name=…, insert_rows=N)` (appending at the end never disturbs
+existing rows), then push values.
 
 A full re-convert is only correct when building a **new** Sheet from scratch — in which case set
 `ZYNKR_SET_WIDTHS=1` so the new file gets sensible widths:

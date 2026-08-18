@@ -10,7 +10,7 @@ Layout deliberately mirrors "[3.3] PM Flow x Skill Portfolio Assessment" (Sheet 
 Brand tokens copied from 6.0 tech/zynkr-website-fe/styles.css :root (sync 2026-08-17).
 Orange (#F26B1F) is the decision colour - used once, on the WIP status flag.
 """
-import json, os, collections, datetime
+import json, os, sys, collections, datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 J = os.path.join(HERE, 'data')
@@ -448,7 +448,9 @@ def tab_overview(wb, ctx):
                               'that is the columns. Re-run the generator after any skill change to rebuild the workbook; do not '
                               'hand-edit cells, they will be overwritten.'),
         ('KV', 'Known caveat', ctx['caveat']),
-        ('KV', 'Related', '[3.3] PM Flow × Skill Portfolio Assessment (Sheet 15uxtdPhF95jP4qt0AhdulxuOP5eOwSD9K8yijZ3tqSg) · '
+        ('KV', 'Related', 'Zynkr Skills Knowledge Map — the companion Doc, same data with every knowledge source as a clickable link '
+                          '(Doc 1AcO1kshhyky21EsRnS8oEchN_CFzuY1JfHyuOCEuguM); a Sheets cell holds only one link, which is why it exists · '
+                          '[3.3] PM Flow × Skill Portfolio Assessment (Sheet 15uxtdPhF95jP4qt0AhdulxuOP5eOwSD9K8yijZ3tqSg) · '
                           '[2.5] Consultant Flow × Skill Portfolio Assessment (Sheet 1Q1o2nYCBJ-uj9hYjcOzua0M4ch_iUMwg_SRdQGvvuyM) · '
                           'taxonomy.md (canonical 0–9 categories) · SKILL_SPEC.md (frontmatter contract) · '
                           'architecture.md (ingest pipeline: SKILL.md → generated JSON → Supabase → marketplace)'),
@@ -528,10 +530,13 @@ def readiness(e):
     return 'Just invoke'
 
 
+# Mirrors the LIVE Sheet's 30 columns exactly. Peter deleted 一句話說明 by hand on
+# 2026-08-17 ("No need this column") and renamed C/D/O; emitting the old 31-column
+# header again would shift every cell right of 'What it does' by one on the next push.
 HEADERS = [
-    'No.', 'Category', 'Skill / parent', 'Child / agent', 'Kind', 'Status', 'Ready to run',
-    'What it does', '一句話說明', 'Triggers', 'Input', 'Process', 'Output',
-    'Knowledge source', 'Live-read ⟳', 'Connected solution', 'Solution touchpoint',
+    'No.', 'Category', 'Skill', '', 'Kind', 'Status', 'Ready to run',
+    'What it does', 'Triggers', 'Input', 'Process', 'Output',
+    'Knowledge source', 'Live-read', 'Connected solution', 'Solution touchpoint',
     'MCP required', 'MCP servers', 'Key MCP tools', 'External services',
     'Write impact', 'Human gate', 'Artifacts', 'Setup required', 'Caveats',
     'Related skills', 'Provenance', 'Install', 'Source path', 'Updated',
@@ -561,7 +566,7 @@ def tab_index(wb, inv, sx, ax):
         ws.append([
             no, cat_label(p['category']), f"{p['slug']} ({p['id']})", '',
             KIND.get(p['kind'], p['kind']), p.get('status') or '', readiness(e),
-            e.get('one_liner_en') or (p.get('summary') or ''), e.get('one_liner_zh', ''),
+            e.get('one_liner_en') or (p.get('summary') or ''),
             bullets(e.get('trigger_phrases') or []),
             p.get('input') or '', p.get('process') or '', p.get('output') or '',
             ks_render(ks, os.path.dirname(p.get('source_path') or '') or None),
@@ -590,7 +595,7 @@ def tab_index(wb, inv, sx, ax):
                 no, '', '└', f"{k['slug']} ({k['id']})", 'Sub-skill', k.get('status') or '',
                 '(via parent)',
                 (f"[stage {order}] " if order else '') + (ae.get('role_en') or k.get('summary') or ''),
-                ae.get('role_zh', ''), '',
+                '',
                 ae.get('input') or k.get('input') or '', '', ae.get('output') or k.get('output') or '',
                 jl(ae.get('knowledge_sources') or [], '\n'), '', '', '',
                 'Yes' if ae.get('requires_mcp') else 'No',
@@ -653,7 +658,10 @@ def tab_index(wb, inv, sx, ax):
 # ==================================================== Knowledge Sources
 def tab_knowledge(wb, inv, sx):
     ws = wb.create_sheet('Knowledge Sources')
-    heads = ['Scope', 'Source', 'Type', 'ID / URL', 'Live-read ⟳', 'Read for', '# skills', 'Consumed by']
+    heads = ['Scope', 'Source', 'Type', 'ID / URL', 'Live-read', 'Read for', '# skills',
+             'Consumed by', 'Comment']
+    by_id, by_name = load_comments()
+    seen_comments = set()
     ws.append(heads)
     SCOPE = {
         'google-doc': (1, 'Google Workspace'), 'google-sheet': (1, 'Google Workspace'),
@@ -720,16 +728,30 @@ def tab_knowledge(wb, inv, sx):
         pcell = jl(purposes[:5], '; ')
         if len(purposes) > 5:
             pcell += f' (+{len(purposes) - 5} more)'
+        cmt = ''
+        for i in (a['ids'] | ({a['canon']} if a['canon'] else set())):
+            if i in by_id:
+                cmt = by_id[i]
+                break
+        if not cmt:
+            cmt = by_name.get(name, '')
+        if cmt:
+            seen_comments.add(cmt)
         ws.append([label, name, jl(sorted(KST.get(t, t) for t in a['types'])), idcell,
                    'TRUE' if a['rt'] else 'FALSE', pcell,
-                   len(a['s']), jl(sorted(a['s']))])
+                   len(a['s']), jl(sorted(a['s'])), cmt])
         band.append((ws.max_row, pr))
         if a['url']:
             links.append((ws.max_row, a['url']))
     n = len(heads)
     style_header(ws, n, freeze='C2')
-    style_body(ws, n, mono={4}, wrap={2, 4, 6, 8})
-    set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64])
+    style_body(ws, n, mono={4}, wrap={2, 4, 6, 8, 9})
+    set_widths(ws, [20, 44, 18, 62, 11, 52, 8, 64, 40])
+    lost = [c for c in {r['comment'] for r in _comment_rows() if not r.get('done')}
+            if c not in seen_comments]
+    if lost:
+        # a note that matches nothing would vanish on the next push without a sound
+        print('WARNING: %d review comment(s) matched no source row: %s' % (len(lost), lost))
     for r in range(2, ws.max_row + 1):
         set_row_height(ws, r, 38)
         if ws.cell(row=r, column=5).value == 'TRUE':
@@ -747,6 +769,23 @@ def tab_knowledge(wb, inv, sx):
     return ws
 
 
+def _comment_rows():
+    return json.load(open(J + '/sheet-comments.json')) if os.path.exists(J + '/sheet-comments.json') else []
+
+
+def load_comments():
+    """Peter's review notes for column I of Knowledge Sources, keyed by SOURCE not by row.
+
+    The tab is sorted by scope then by how many skills share a source, so adding any skill
+    reshuffles it. A positional write would leave every note sitting against the wrong row —
+    silently, because a comment on the wrong line still reads as a comment. Keying them to the
+    Drive ID (or, when a source has none, its name) makes a rebuild re-attach them by identity.
+    """
+    rows = [r for r in _comment_rows() if not r.get('done')]
+    return ({r['drive_id']: r['comment'] for r in rows if r.get('drive_id')},
+            {r['source_name']: r['comment'] for r in rows if r.get('source_name')})
+
+
 # ==================================================== MCP & Services
 def tab_mcp(wb, inv, sx):
     ws = wb.create_sheet('MCP & Services')
@@ -754,7 +793,10 @@ def tab_mcp(wb, inv, sx):
         return re.sub(r'\s*\(via sub-skill\)$', '', s).strip()
 
     servers = sorted({base(s) for e in sx.values() for s in (e.get('mcp_servers') or [])})
-    heads = (['No.', 'Skill', 'Category', 'MCP required'] + [f'MCP · {s}' for s in servers]
+    # Bare server names, not 'MCP · <s>' — Peter shortened these headers on the live Sheet and
+    # the tick columns are only legible narrow. A server appearing or disappearing changes the
+    # column COUNT here, which is why check_header_parity() runs before anything is published.
+    heads = (['No.', 'Skill', 'Category', 'MCP required'] + [s.replace('-', ' ') for s in servers]
              + ['# MCP servers', 'External services', 'Write impact'])
     ws.append(heads)
     rows = [r for r in inv if not r['is_agent']]
@@ -928,6 +970,49 @@ def rollup(inv, sx, ax):
     return n_fixed
 
 
+LIVE_HEADERS = os.path.join(J, 'live-headers.json')
+
+
+def check_header_parity(wb):
+    """Refuse to emit a grid whose columns no longer line up with the published Sheet.
+
+    Values are pushed per tab starting at A1, so a single added or renamed column silently
+    shifts every cell to its right by one — the data still looks plausible, just wrong, which
+    is the worst kind of wrong. The recorded headers are the live Sheet's, including the ones
+    Peter renamed or deleted by hand. If a change here is intended, update live-headers.json
+    in the same commit and say so; to build a brand-new Sheet, set ZYNKR_ALLOW_HEADER_DRIFT=1.
+    """
+    if not os.path.exists(LIVE_HEADERS):
+        print('NOTE: no live-headers.json — parity unchecked')
+        return
+    expect = json.load(open(LIVE_HEADERS))
+    drift = []
+    for tab, want in expect.items():
+        if tab not in wb.sheetnames:
+            drift.append((tab, 'tab missing from the workbook', '', ''))
+            continue
+        got = [('' if c.value is None else str(c.value)) for c in wb[tab][1]]
+        if got == want:
+            continue
+        if len(got) != len(want):
+            drift.append((tab, f'column COUNT {len(got)} != live {len(want)}', '', ''))
+        for i in range(max(len(got), len(want))):
+            g = got[i] if i < len(got) else '<none>'
+            w = want[i] if i < len(want) else '<none>'
+            if g != w:
+                drift.append((tab, f'col {get_column_letter(i + 1)}', g, w))
+    if not drift:
+        print(f'header parity: OK — {len(expect)} tabs match the live Sheet')
+        return
+    print('\nHEADER DRIFT — publishing this would shift live cells. DO NOT PUSH:')
+    for tab, what, g, w in drift:
+        print(f'  {tab:20s} {what:34s} generated={g!r:34s} live={w!r}')
+    if os.environ.get('ZYNKR_ALLOW_HEADER_DRIFT') == '1':
+        print('ZYNKR_ALLOW_HEADER_DRIFT=1 — continuing anyway (new-Sheet build)')
+        return
+    sys.exit('REFUSING: regenerate after reconciling headers, or set ZYNKR_ALLOW_HEADER_DRIFT=1')
+
+
 def main():
     inv = json.load(open(J + '/inventory.json'))
     ex = json.load(open(J + '/extracted.json'))
@@ -971,7 +1056,7 @@ def main():
             ('Status', f"Done {sum(1 for r in skills if r.get('status') == 'Done')} · "
                        f"WIP {sum(1 for r in skills if r.get('status') == 'WIP')}"),
             ('Reads external knowledge', f'{n_kn} of {len(skills)} skills ({round(100*n_kn/max(1,len(skills)))}%) read a Doc / Sheet / KB / table beyond user input'),
-            ('Live-read ⟳', f'{n_rt} skills re-read their source every run — editing those documents changes behaviour with no code change'),
+            ('Live-read', f'{n_rt} skills re-read their source every run — editing those documents changes behaviour with no code change'),
             ('Needs an MCP server', f'{n_mcp} of {len(skills)} skills ({round(100*n_mcp/max(1,len(skills)))}%). '
                                     f'Most-depended: ' + jl([f'{k} ({v})' for k, v in srv.most_common(6)])),
             ('External services', jl([f'{k} ({v})' for k, v in ext.most_common(8)]) or 'none'),
@@ -1006,6 +1091,7 @@ def main():
     tab_mcp(wb, inv, sx)
     tab_solutions(wb, inv, sx)
     tab_summary(wb, inv, sx)
+    check_header_parity(wb)
     wb.save(OUT)
     print('WROTE', OUT)
     dump_values(wb)

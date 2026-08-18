@@ -1,0 +1,34 @@
+[
+ {
+  "drive_id": "1Y4ImMHewm3BXRj-msTD8Y-nZtRBPWcDRBt6CfczLZ5A",
+  "source_name": "B2B Customer List (tab Sheet2, cols A–L)",
+  "comment": "This should point to Zynkr platform instead",
+  "done": "Done — sales-specialist (2.02) no longer reads the B2B Customer List Sheet; it writes crm_companies / crm_users / crm_activities on the platform. Source row retired 2026-08-18."
+ },
+ {
+  "drive_id": "",
+  "source_name": "Client discovery docs (consult-discovery summaries · consult-session-notes 痛點 ledgers)",
+  "comment": "Should we start a new doc / sheet in the proper folder?"
+ },
+ {
+  "drive_id": "",
+  "source_name": "Engagement docs in the [N] folder — [Notes] session notes · 痛點 ledger · [Plan] · [BRD]",
+  "comment": "Should we start a new doc / sheet in the proper folder?"
+ },
+ {
+  "drive_id": "10u7TaTZW6BMoUyN-55ZymA-LkyZ_ca0tIzarPWOG4Zw",
+  "source_name": "Source Doc for the charter facilitation prompt",
+  "comment": "Might want to use skills creator to upgrade"
+ },
+ {
+  "drive_id": "1_0bYyZiB6sGEI4nGw1QDgLip4rRQtNh9ybPGs-WXAMA",
+  "source_name": "Zynkr skills pipeline sheet (row matched by Idea Issue URL)",
+  "comment": "Doc outdated, should point to Git repo instead",
+  "done": "Done — skill-triager (6.08) no longer reads the pipeline Sheet; the pipeline SOT is now zynkr-skill-idea issue labels + the builder contents API. Source row retired 2026-08-18."
+ },
+ {
+  "drive_id": "1YIfYi5PWvuoLG4Qq0OhjXg-ju58Nl4CDl2QJRnQfRoM",
+  "source_name": "指令工程助理 ─ 重構指令 source Doc (tab \"Tab 4\" — latest version)",
+  "comment": "Might want to use skills creator to upgrade"
+ }
+]
