@@ -1,0 +1,68 @@
+{
+  "$comment": "zynkr-ops-weekly PRIVATE runtime config. Copy to ~/.config/zynkr/ops-weekly.json (never commit). Every value below is a placeholder.",
+  "google_account": "ops@example.com",
+  "timezone": "Asia/Taipei",
+  "language": "zh-TW",
+
+  "space": {
+    "id": "spaces/<space-id>",
+    "name": "<space display name>",
+    "$note": "The spaces/ prefix is REQUIRED — get_messages rejects a bare id."
+  },
+
+  "doc": {
+    "id": "<doc-id>",
+    "tab_id": "t.0",
+    "tab_name": "<tab name holding the week sections>",
+    "section_heading_level": "HEADING_2",
+    "section_date_format": "%b %d, %Y",
+    "$note": "Sections are named by MEETING day (Thursday), not by report day (Monday)."
+  },
+
+  "chat_ids": {
+    "$note": "The ONLY hardcoded map in this skill. Chat gives no email field at all; the Doc gives email and no id. TWO key forms are valid, because the MCP resolves a sender to a DISPLAY NAME when that person is in the account's personal Contacts and leaves everyone else as users/<id>. Key each person by whichever form their messages actually arrive as -- keeping both is harmless and survives a contact being added later.",
+    "Display Name": "owner-a@example.com",
+    "users/<21-digit-id>": "owner-b@example.com"
+  },
+
+  "reporters": [
+    "owner-a@example.com",
+    "owner-b@example.com"
+  ],
+  "non_reporting_members": {
+    "$note": "In the space but deliberately outside the report + chase lists.",
+    "members": ["observer@example.com"]
+  },
+
+  "sources": {
+    "main_tracker": { "id": "<sheet-id>", "type": "sheet", "tab": "<tab>", "$note": "overdue items + status" },
+    "okr_kpi_tracker": { "id": "<sheet-id>", "type": "sheet", "tabs": { "kpi_dashboard": "<tab>" }, "$note": "metric backfill + off-target" },
+    "decisions_register": { "id": "<sheet-id>", "type": "sheet", "tab": "<tab>" }
+  },
+
+  "cadence": {
+    "report_day": "MON",
+    "meeting_day": "THU",
+    "rollup_cutoff": "TUE 09:00",
+    "chase_cutoff": "WED 12:00",
+    "carryover_agenda_threshold": 3
+  },
+
+  "routine": {
+    "timezone": "Asia/Taipei",
+    "triggers": {
+      "nudge":     { "id": "<trigger-id>", "cron": "0 9 * * 1" },
+      "rollup":    { "id": "<trigger-id>", "cron": "0 9 * * 2" },
+      "chase":     { "id": "<trigger-id>", "cron": "30 9 * * 2" },
+      "agenda":    { "id": "<trigger-id>", "cron": "0 17 * * 3" },
+      "decisions": { "id": "<trigger-id>", "cron": "0 18 * * 4" }
+    },
+    "connectors": { "drive_uuid": "<connector-uuid>", "gmail_uuid": "<connector-uuid>", "chat_uuid": "<connector-uuid>" },
+    "model": "<model-id>"
+  },
+
+  "limits": {
+    "max_messages_per_sweep": 400,
+    "max_decisions_on_agenda": 3
+  }
+}

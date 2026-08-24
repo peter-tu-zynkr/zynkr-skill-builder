@@ -1,0 +1,306 @@
+---
+name: zynkr-ops-weekly
+sheetId: "3.19"
+description: >-
+  The weekly operations loop that keeps a Google Chat space and a weekly operations Google Doc
+  in sync. Five scheduled modes run one beat each: `nudge` (Mon 09:00 — post the four-line
+  template plus last week's decisions), `rollup` (Tue 09:00 — read the week's `#週報` posts,
+  route each one to its department heading using the owner person-chips already in the Doc, and
+  write a clearly-marked auto-summary block), `chase` (Tue 09:30 — @ the owners who did not
+  post), `agenda` (Wed 17:00 — re-sweep for late arrivals, then produce carry-over, overdue,
+  KPI-off-target and the ≤3 decisions the Thursday meeting must actually make), and `decisions`
+  (Thu 18:00 — post the resolutions back to the space, send the recap mail, write the decisions
+  register, and assert the send actually happened). Routing is never hardcoded: it is read at
+  run time from the Doc's own owner chips, so changing the Doc changes both the routing and the
+  recap-mail recipient list. Trigger EAGERLY on "/zynkr-ops-weekly", "營運週報", "週報彙整",
+  "把大廳的週報整理進 Doc", "roll up the chat updates", "誰還沒回報", "補件提醒", "週四議程",
+  "產週會議程", "會後回貼決議", "recap 信", "weekly ops loop", "ops weekly rollup", or any ask to
+  collect / chase / summarise the team's weekly updates, build the weekly meeting agenda, or
+  publish the meeting's decisions. BOUNDARY — do NOT hijack: /zynkr-gm (the founder's own
+  company-level Monday brief, reads this Doc but never writes it), /project-status-update (one
+  project's status email from its own tracker), /planning-tracker-sync (the H2 tracker block and
+  its own nudges), /consult-status-report (client-facing consulting status), /admin-meeting-prep
+  (per-meeting packets for external meetings). This skill owns exactly one artefact — the weekly
+  operations Doc's current week section — and one channel loop around it.
+category: operations
+project: zynkr-ops-weekly
+platform: claude
+status: WIP
+author: Peter Tu
+input: "A mode (nudge | rollup | chase | agenda | decisions | status) and an optional 'as of' date; every identifier comes from the private config at ~/.config/zynkr/ops-weekly.json."
+process: "Anchor on today → resolve the target Thursday (Monday's posts belong to the NEXT Thursday) → load config → check idempotency → read routing from the Doc's owner chips → sweep Chat by createTime → parse the four lines → write a marked block → assert delivery."
+output: "Per mode: a Chat post, a marked 〔自動彙整〕 block under each department heading of the current week's Doc section, a Wednesday agenda block, and a Thursday recap email."
+synergy: [zynkr-gm, project-status-update, planning-tracker-sync, operations-flow-optimization, admin-governance]
+---
+
+# zynkr-ops-weekly
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zynkr-ops-weekly
+```
+
+A small team posts its weekly update into a Google Chat space on Monday, and discusses
+operations from a weekly Google Doc on Thursday. Nothing connects the two, so the Doc records
+what people *intended* to do (week after week, near-verbatim) while the actual progress stays
+in chat scrollback. This skill is the connective tissue: it collects, routes, chases, and
+closes the loop — one scheduled beat at a time.
+
+It is built around a single discovery about the Doc: **every department heading already carries
+its owner's Google Docs person chip**, keyed by email. That is a routing table someone is
+already maintaining by hand for other reasons. So this skill keeps **no department map of its
+own** — it reads the chips at run time. Change the Doc, and routing *and* the recap-mail
+recipient list both follow.
+
+**It writes narrowly.** Auto-content only ever lands inside a block stamped
+`〔自動彙整 W35 · 08-24 12:00〕`. It never edits a line a human wrote. A bot that silently
+rewrites prose in a doc people are actively editing is a bot nobody trusts by week two.
+
+---
+
+## The cadence
+
+| When | Mode | Who | What happens |
+|---|---|---|---|
+| Mon 09:00 | `nudge` | skill | Post the four-line template + last week's decisions + the Tue 09:00 cut-off |
+| Mon (all day) | — | team | People post `#週報` in the space |
+| **Tue 09:00** | `rollup` | skill | Read the window, route by owner chip, write the marked block, backfill metrics |
+| **Tue 09:30** | `chase` | skill | Owners in the Doc − people who posted → @ the difference |
+| Wed 17:00 | `agenda` | skill | Re-sweep for late arrivals, then carry-over · overdue · KPI · ≤3 decisions |
+| Thu (meeting) | — | team | Discuss exceptions and decisions only; edit the Doc live |
+| **Thu 18:00** | `decisions` | skill | Resolutions → space (3 lines) + recap mail + decisions register + **assert the send** |
+| Thu 18:00 | `scaffoldNextWeek` | **Apps Script** | Duplicate the newest week section, re-stamp next Thursday |
+
+`chase` must run **after** `rollup` — it cannot know who is missing until the roll-up has
+resolved who posted. Both beats sit on Tuesday morning so that the Doc's Thursday section is
+already full two days before anyone opens it.
+
+**Why the scaffold is not this skill's job.** The split is by *whether judgement is needed*, not
+by preference. Duplicating a section is purely mechanical and must never fail, so it belongs to
+Apps Script, whose authorisation does not expire. In the week this skill breaks entirely, the
+skeleton still opens and Thursday still has a page. See `references/scaffold.md`.
+
+---
+
+## Configuration (private — never in this repo)
+
+This repository is public. The method is here; the **identifiers are not**. At runtime load
+`~/.config/zynkr/ops-weekly.json` (schema in `references/config.example.json`, notes in
+`references/config.README.md`; override the path with `ZYNKR_OPS_WEEKLY_CONFIG`).
+
+| Config key | Role |
+|---|---|
+| `google_account` | account for every `google-workspace` MCP call |
+| `space.id` | the Chat space, in `spaces/<id>` form — **the `spaces/` prefix is required** |
+| `space.name` | human label, for report lines only |
+| `doc.id` · `doc.tab_id` · `doc.tab_name` | the weekly operations Doc and the tab that holds the week sections |
+| `chat_ids` | **the only hardcoded map** — 6 rows of Chat `users/<id>` → email. See below |
+| `reporters` | the emails expected to post each week (6 people; excludes non-reporting members) |
+| `sources.main_tracker` · `sources.okr_kpi_tracker` | sheets read to backfill metrics and overdue items |
+| `routine.*` | cron ids / timezone for the five scheduled triggers |
+
+If a required value is missing or still a placeholder, **fail loud** (`config: doc.id unset`).
+Never guess an id, and never fall back to a hardcoded department map.
+
+### Why `chat_ids` has to exist
+
+Chat and Docs do not share an identity space. The Chat payload **carries no email field at
+all**; the Doc gives an email and no user id. Nothing bridges them automatically — the People
+API resolves the id but exposes no name or email for domain profiles. So the bridge is six
+hardcoded rows, and only six. Everything else is read from the Doc.
+
+The map has **two key forms**, and a real space yields a mix of both: the MCP renders a sender
+as a **display name** when that person is in the account's personal Contacts, and as
+`users/<21-digit id>` when they are not. Key each person by the form their messages actually
+arrive as, and keep both if unsure — a person joining Contacts later would otherwise silently
+stop resolving.
+
+---
+
+## Required reading (before acting)
+
+| File | Read when |
+|---|---|
+| `references/post-format.md` | Always — the four-line format, what each line feeds, and the parse rules |
+| `references/routing.md` | Always — how to read owner chips out of the Doc, and the off-by-one |
+| `references/doc-write-rules.md` | Any mode that writes — marked blocks, tab targeting, idempotency |
+| `references/message-templates.md` | Composing any Chat post or the recap mail |
+| `references/scaffold.md` | Installing or debugging the Apps Script half |
+
+---
+
+## Step 0 — Anchor on today, and get the off-by-one right
+
+Resolve today in `Asia/Taipei`. Compute:
+
+- **ISO week key** — e.g. `2026-W35`. Every mode is idempotent on this key.
+- **The window** — Monday 00:00 of the current ISO week → now.
+- **The target Thursday** — the Doc names its sections by **Thursday** date (`Aug 27`,
+  `Aug 20`, …), but the team reports on **Monday**.
+
+> **Monday's posts belong to the Thursday that is coming, not the one that just passed.**
+> This is the single easiest thing to get wrong, and it silently writes a whole week's
+> updates into the previous meeting's section. Assert it: the target Thursday must be
+> **≥ today**. If the newest section in the Doc is already in the past, the scaffold did not
+> run — say so loudly rather than writing into a stale section.
+
+## Step 1 — Load config and check idempotency
+
+Load the private config; fail loud on placeholders. Then check whether this mode already ran
+for this ISO week:
+
+- Chat-delivering modes (`nudge`, `chase`, `agenda`, `decisions`) — list the space's messages
+  for today and look for this skill's own marker line (each template ends with a
+  `— zynkr-ops-weekly · W<week>` footer). Found → stop and report "already ran".
+- `rollup` — look for a `〔自動彙整 W<week>` stamp inside the target Thursday section. Found →
+  do not write a second block; re-run in *append-new-only* mode (Step 4.4).
+
+## Step 2 — Read routing from the Doc (every run)
+
+Fetch the Doc **as markdown** — `get_doc_as_markdown`. This matters:
+`get_doc_content` returns plain text and **silently strips person chips**, which is exactly the
+data the routing depends on. In markdown a chip arrives as `[Sam Rivera](mailto:owner-a@example.com)`.
+
+Pipe it through `scripts/parse_routing.py` to get `{heading → owner email}`. Rules, precedence
+and the heading-grouping details are in `references/routing.md`.
+
+Sanity-check the result before using it: every email must appear in `reporters` or be a known
+non-reporting owner. An unexpected address means a chip changed — surface it in the report
+rather than dropping the section.
+
+## Step 3 — Read the week's posts (`rollup`, `chase`, `agenda`)
+
+Call `get_messages` with the **`space_id` and a `createTime` window**.
+
+> Do **not** use `search_messages` to find the posts. It is a *client-side* scan bounded by
+> `max_spaces` × `page_size`; the Chat API's underlying `spaces.messages.list` supports only
+> `createTime` and `thread.name` filters and has no full-text search at all. Used for
+> retrieval it under-scans silently and reports "nothing found" for messages that exist.
+
+Paginate until the window is covered. Then `scripts/parse_reports.py` turns the raw messages
+into records — one per reporter — resolving the sender through `chat_ids` and splitting the
+four lines. Posts without the `#週報` tag are ignored: the space is a mixed channel and carries
+plenty of other traffic.
+
+**While the format is still being adopted**, pass `--accept-untagged`. The team's pre-tag
+shapes (`上禮拜進度` … `本週待辦`, `這個禮拜我的 focus`) carry no tag, so a tag-only parse
+returns nothing and the first roll-up reads as total non-compliance. Each record is stamped
+`format: "tagged" | "legacy"`; report how many are still legacy, and drop the flag once that
+number has been zero for two weeks. An optional format is not a format.
+
+## Step 4 — Mode bodies
+
+### 4.1 `nudge` (Mon 09:00)
+
+Read **last week's** Doc section and extract its decisions — from the **Doc**, not from the
+recap mail that was sent. Mail is a delivery channel, never a data dependency; a failed send
+should cost an archive copy, not break the chain.
+
+Post the template from `references/message-templates.md` with those decisions quoted above it
+and the Tue 09:00 cut-off stated. Reference last week's decisions so people report *against*
+something.
+
+### 4.2 `rollup` (Tue 09:00)
+
+1. Parse the window (Step 3).
+2. Resolve routing (Step 2). For each record, its owner email selects the department heading(s)
+   it belongs under. One owner may hold several headings — write the block under each, or under
+   the primary one if the report names a department explicitly.
+3. **Backfill metrics.** Reporters fill the `數字:` line only with what they have on hand. For
+   the rest, read `sources.main_tracker` / `sources.okr_kpi_tracker` and fill the Doc's metric
+   slots from there. Cite the source cell for every number written. Never invent a number and
+   never carry one forward from a prior week — an empty slot is information.
+4. **Compute carry-over.** `scripts/carryover.py` compares this week's items to prior sections
+   and emits `↻N週` counts. An item at `↻3週` or higher is agenda material by default.
+
+   Two things it deliberately does **not** count, both learned from the real Doc:
+   **template rows** — a label like `Funnel` or `CTR` that appears in most sections carries no
+   work and would otherwise dominate the agenda; and **drifting matches** — the walk-back
+   requires a near-exact match, because loose matching chains across unrelated items and
+   invents long streaks. Digits are stripped before comparison, so `90%` → `92%` is correctly
+   one item rather than two.
+5. Write one marked block per department under its heading — `references/doc-write-rules.md`.
+6. Report: who posted, who did not, what was written where. The "did not" list is `chase`'s input.
+
+### 4.3 `chase` (Tue 09:30)
+
+`missing = reporters − posters`. Empty → post nothing and report full coverage; a chase message
+that chases nobody teaches people to ignore chase messages.
+
+Otherwise post one short message naming the missing people and the Wed 12:00 cut-off. Name them
+in plain text — `send_message` posts text, and reliable programmatic @-mentions need the
+annotation payload the MCP tool does not currently expose.
+
+> If `chase` names the same person two weeks running, the problem is the format or the routing,
+> not the person. Say that in the report.
+
+### 4.4 `agenda` (Wed 17:00)
+
+1. **Re-sweep the window first** (Mon 00:00 → now) to pick up anything that arrived after the
+   chase. Append only records not already stamped in the Doc — match on reporter + ISO week so
+   a re-run cannot duplicate.
+2. Assemble, in this order, and cap it: **carry-over `↻N週`** · **overdue** (from the tracker)
+   · **KPI off-target** · **≤3 decisions**. The decisions come from the reporters' `卡關:` line —
+   that is the only field in the format that forces a decision, which is why it cannot be
+   dropped.
+3. Write the agenda at the **top of the target Thursday section**, in its own marked block.
+4. Post a short pointer to the space with the Doc link — the agenda itself lives in the Doc.
+
+If there are more than three candidate decisions, choose the three with the largest blast
+radius and list the rest under a "not this week" line. An agenda that lists everything makes no
+decisions.
+
+### 4.5 `decisions` (Thu 18:00)
+
+Runs **after** the meeting, against the section as the humans edited it live.
+
+1. Extract resolutions: **decision · owner · date**. A resolution missing an owner or a date is
+   not a resolution — list it as still open rather than promoting it.
+2. `send_message` — three lines to the space. Short, because next Monday's `nudge` quotes it.
+3. `send_gmail_message` — the full recap to **the owner-chip emails read in Step 2**, not to a
+   list maintained here. Contents: decisions · owner · date / overdue and carry-over / KPI
+   off-target / next week's focus per department / a link back to this week's Doc section.
+4. **Assert it fired.** Immediately search `in:sent` for the subject just used, within the last
+   few minutes. Not found → post a one-line failure notice to the space and say so in the
+   report. This is the SDD "prove it fired" rule, and it is here for a concrete reason: two
+   consecutive weekly sends once failed unnoticed because nothing checked. A dead token must
+   surface within a week, not five.
+5. Write the resolutions into the tracker's decisions register.
+6. **Check the scaffold.** Confirm a section for *next* Thursday now exists. If it does not by
+   the end of this run, the Apps Script trigger is not installed or not firing — post a notice.
+   Do not silently create the section here: rebuilding it from scratch would lose the owner
+   person chips, which cannot be recreated programmatically.
+
+### 4.6 `status` (on demand)
+
+Read-only. Print what the loop currently sees: target Thursday, who has posted, what is
+already stamped in the Doc, which triggers ran this week. Writes nothing — use it to debug
+before reaching for a mode that writes.
+
+## Step 5 — Report
+
+Every run ends with a compact report: mode, ISO week, target Thursday, records parsed, who is
+missing, what was written where, what was delivered, and — for `decisions` — the send
+assertion result. If a step was skipped, say which and why.
+
+---
+
+## Guardrails
+
+- **Never edit a human's line.** Auto-content lives only inside `〔自動彙整 …〕` blocks. Promotion
+  or deletion of that content is a human act, at Thursday's meeting.
+- **Never rebuild the Doc's skeleton.** Person chips cannot be created by Apps Script or the
+  Docs REST API — only copied. Rebuilding loses the routing table. Copy, or do nothing.
+- **Never write to a past section.** If the target Thursday is behind today, stop and report.
+- **Never invent a metric.** Cite the cell, or leave the slot empty.
+- **Never treat mail as an input.** Every mode reads state from the Doc and the tracker.
+- **Fail loud on config.** Placeholder id → stop; a wrong id writes into someone else's file.
+
+## Limitations
+
+- `send_message` posts plain text; @-mentions render as names, not live mentions.
+- Metric backfill only covers metrics that exist in the configured sheets; anything measured
+  outside them stays a human line.
+- The Apps Script half must be installed once by hand, and `installTriggers()` must actually be
+  *run* — pasting the file does not schedule anything. See `references/scaffold.md`.
+- Deliberately not built: writing to the H2 tracker's status column (that is
+  `planning-tracker-sync`'s), and any auto-promotion of an auto-summary line into a human line.
