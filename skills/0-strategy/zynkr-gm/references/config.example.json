@@ -7,7 +7,7 @@
   "sources": {
     "vms_v2": { "id": "<doc-id>", "type": "doc", "authoritative_section": "H2 2026 alignment" },
     "integrated_refresh": { "id": "<doc-id>", "type": "doc", "authoritative_section": "2026-07-28 Refresh (v2)" },
-    "main_tracker": { "id": "<sheet-id>", "type": "sheet", "tab": "H2 專案項目" },
+    "main_tracker": { "id": "<sheet-id>", "type": "sheet", "tab": "H2 專案項目", "status_vocab": ["未開始", "進行中", "放棄", "完成", "暫停"], "$note": "status_vocab observed 2026-08-24; 完成 and 放棄 are terminal. A value outside this list surfaces as UNKNOWN_STATUS — update this list, derive_state.py KNOWN_STATUSES and the routine prompt together." },
     "ops_weekly": { "id": "<doc-id>", "type": "doc", "tab": "每週事項 2026" },
     "okr_kpi_tracker": { "id": "<sheet-id>", "type": "sheet", "tabs": { "okrs": "OKRs", "kpi_dashboard": "KPI Dashboard" } },
     "ops_heal_tracker": { "id": "<sheet-id>", "type": "sheet", "tabs": { "fixes": "修復清單", "decisions": "待決事項" } },

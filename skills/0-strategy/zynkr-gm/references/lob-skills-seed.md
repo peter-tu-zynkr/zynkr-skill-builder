@@ -13,7 +13,7 @@ This file holds only what the KB **cannot** tell you, and which therefore has to
    `seo-article-pipeline`, or that the consult-* chain has a fixed sequence.
 2. **Which skill moves which tracker item** — the mapping from an H2 P0/P1 number to an instrument.
 3. **Gaps** — a skill that does not exist cannot appear in the KB. Only a human notices absence.
-4. **Tracker numbering quirks** — 6.0 Tech rows are `5.x`, 7.0 People rows are `6.x`;
+4. **Tracker numbering quirks** — none since the 2026-08-21 renumber: tracker `#` now matches the LOB number (Tech = `6.x`, People = `7.x`).
    5.0 Product and 8.0 Finance have no tracker rows.
 
 So: the KB answers *what exists*, this file answers *what to reach for and in what order*, and
@@ -33,8 +33,8 @@ as the registry.
 | 3.0 Operations | P0 3.02 內部講師 · 3.04 加開線下場次; P1 3.01 LINE@ · 3.06 內部導入 Zynkr | 3.04 → accupass-agent · guest-lecturer-program · admin-meeting-prep; 3.06 → zynkr-support · zynkr-kms · admin-governance · skill-finder; hygiene → project-status-update · project-note-specialist · admin-video-document | 3.01 LINE@ 營運 (LINE connector is platform-side, not a skill) · 3.02 內部講師 · 3.05 Metrics 儀表 |
 | 4.0 Knowledge & Training | P0 4.01 企業 AI 診斷 · 4.05 陪跑課 · 4.07 Vibe Coding; P1 4.04 Workshop | 4.01 → consult-* chain: consult-intake → consult-discovery (as-is / to-be) → consult-transcriber → consult-session-notes → consult-solution-planning → consult-flow-design → consult-brd-writer → consult-uat-writer → consult-launch-comms → consult-info-session → consult-status-report → consult-adoption-reporter → consult-governance; 4.05 / 4.07 → project-status-update · training-lecture-transcript · training-lecture-recap · training-process-video · curate-livestream-transcripts · training-srt-*; slides → zynkr-slide; KB → zynkr-kms / zynkr-support | 4.14 訂閱制 · 4.15 會員經營 |
 | 5.0 Product (taxonomy only) | — | product-planning · product-flow-design · product-optimize-prompt · skill-finder | — |
-| 6.0 Tech & Platform (tracker 5.x) | P0 5.02 使用 Zynkr 並擴展功能 · 5.03 業務團隊分潤系統; P1 5.01 課程平台 | meta / skill-pipeline tooling only: zynkr-skills · skill-sourcer · skill-triager · skill-qa · skill-publish · eng-find-skills · agent-browser (Vercel / Supabase plugin skills exist runtime-only) | platform build / ops (deploy, incident, 分潤 billing) — no builder skill |
-| 7.0 People & Talent (tracker 6.x) | P0 6.01 KPI 制度; P2 6.03 Training | zynkr-recruiter + recruiter-* (hiring); cv-customizer · career-consult (candidate side); training-* for 6.03 | 6.01 KPI / performance (zynkr-gm partly fills the metering) · org design · onboarding |
+| 6.0 Tech & Platform (tracker 6.x) | P0 6.02 使用 Zynkr 並擴展功能 · 6.03 業務團隊分潤系統; P1 6.01 課程平台 | meta / skill-pipeline tooling only: zynkr-skills · skill-sourcer · skill-triager · skill-qa · skill-publish · eng-find-skills · agent-browser (Vercel / Supabase plugin skills exist runtime-only) | platform build / ops (deploy, incident, 分潤 billing) — no builder skill |
+| 7.0 People & Talent (tracker 7.x) | P0 7.01 KPI 制度; P2 7.03 Training | zynkr-recruiter + recruiter-* (hiring); cv-customizer · career-consult (candidate side); training-* for 7.03 | 7.01 KPI / performance (zynkr-gm partly fills the metering) · org design · onboarding |
 | 8.0 Finance / 9.0 Legal | not in tracker | **zero skills**; runway meter = zynkr-gm `kpi` step reading the accounting app | everything (accounting lives in the app, not a skill) |
 
 Refresh cadence: the *existence* half needs no refresh — it is read from the KB every run. `learn`

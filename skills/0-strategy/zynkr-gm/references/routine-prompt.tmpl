@@ -4,7 +4,7 @@ You are running {{gm_name}}'s WEEKLY GM BRIEF routine (skill: zynkr-gm, mode `we
 - Timezone: {{timezone}} (today = the date this runs, in that timezone; also given as {{today_tpe}} at render time — recompute from the actual run date if they differ)
 - Recipients (send_message `to`, JSON array of plain emails): {{recipients}}
 - Subject prefix: {{routine.subject_prefix}}
-- Main Tracker (status SOR) — Google Sheet fileId `{{sources.main_tracker.id}}`, tab 「{{sources.main_tracker.tab}}」. Header: # · 主類別 · 子類別 · 項目（正規化）· 重要 · 緊急 · Priority · 負責人 · 協助者 · 開始 · 結束 · 狀態 · 備註. Status vocabulary is ONLY 未開始 / 進行中 / 放棄 (there is no 完成 and no 延遲 — those are DERIVED below). Rows whose # is like `1.0` with an empty 項目 are category headers — skip them. Dates are often the literal placeholder `YYYY-MM-DD` — treat as undated.
+- Main Tracker (status SOR) — Google Sheet fileId `{{sources.main_tracker.id}}`, tab 「{{sources.main_tracker.tab}}」. Header: # · 主類別 · 子類別 · 項目（正規化）· 重要 · 緊急 · Priority · 負責人 · 協助者 · 開始 · 結束 · 狀態 · 備註. Status vocabulary is 未開始 / 進行中 / 放棄 / 完成 / 暫停 (完成 · 暫停 added 2026-08-24; there is no 延遲 — that is DERIVED below). 完成 and 放棄 are TERMINAL: exclude them from open-work counts, from "N 個 P0" denominators and from per-owner load. 暫停 keeps its owner but takes no deadline/date flag. Any other value → report it verbatim as UNKNOWN_STATUS, never map it. Rows whose # is like `1.0` with an empty 項目 are category headers — skip them. Dates are often the literal placeholder `YYYY-MM-DD` — treat as undated.
 - Ops weekly log (what actually happened) — Google Doc fileId `{{sources.ops_weekly.id}}` (owner: the ops lead; READ-ONLY for you). Weekly blocks start with a heading like `## Aug 13, 2026` (newest on top; blocks are Thursday-dated). Fixed skeleton per block: #Team update · #Demand Marketing (##Branding · ##Content marketing & community · ##Affiliate · ##Establish SOP) · #AI consulting & Sales · #Operation (##Operation BAU & event — event list with Accupass links + 報名人數) · #Knowledge product (course timeline checklist) · #AI assistant development team · Tech product · People · Finance; each with `Metrics` bullets, mostly bare `#` placeholders.
 - OKR & KPI Tracker (metrics SOR) — Google Sheet fileId `{{sources.okr_kpi_tracker.id}}`. Use the tables headed `Objective | Key Result | Owner | Tracker # | Q3 target | Q4 target | Status | Notes` (OKRs) and `Function | Metric | Tracker # | Q3 target | Q4 target | Actual | Owner` (KPI Dashboard; extra columns `As of` / `Source` may exist — resolve by header text). IGNORE the third table (`Priority | Tracker # | Initiative …`) — it is a stale mirror of the tracker.
 - Ops Gap Heal action tracker — Google Sheet fileId `{{sources.ops_heal_tracker.id}}`: tabs 「{{sources.ops_heal_tracker.tabs.fixes}}」(# · 波次 · 動作 · 嚴重度 · 目標 · 連結 · 建議負責人 · 狀態 · 開始) and 「{{sources.ops_heal_tracker.tabs.decisions}}」(# · 事項 · 決策者 · 期限／備註 · 狀態 · 決議紀錄).
@@ -37,12 +37,14 @@ read_file_content(fileId=`{{sources.course_tracker.id}}`) → parse the 專案�
 For the livestream-notes folder: search_files with query `parentId = '{{sources.livestream_notes_folder.id}}'` (paginate if needed), extract the newest date from filenames `逐字稿_*_YYYY-MM-DD_*`; if it is older than 8 days → flag "weekly curation did not run" in block 08.
 For the strategy/plan docs: if search_files exposes modifiedTime, list any of the doc IDs above modified within the last 7 days; read ONLY those, ONLY the named authoritative section, and record "SOR doc changed" in block 08. If modifiedTime is not exposed, skip this and say so in 08 — do NOT read all the plan docs.
 
-=== STEP 7 — DERIVE STATE (the tracker has no 完成 / 延遲) ===
+=== STEP 7 — DERIVE STATE (the tracker has no 延遲; 完成 / 暫停 are read, not derived) ===
 For every tracker row with Priority P0 or P1 (and any P2 that is OVERDUE):
-- ENDS_SOON: 結束 is a real date within 14 days and 狀態 ≠ 放棄.
+- ENDS_SOON: 結束 is a real date within 14 days and 狀態 ∈ {進行中, 未開始}. Never flag a 完成 / 放棄 / 暫停 row.
 - OVERDUE: 狀態 = 進行中 and 結束 < today; OR 狀態 = 未開始 and 開始 < today.
+- DONE / PAUSED: 狀態 = 完成 → report as delivered and drop from load; 狀態 = 暫停 → report as paused AND cross-check the newest [3.1] block (a paused row that is visibly running is an SOR divergence worth block 01).
 - UNDATED: 開始 or 結束 is blank / the literal `YYYY-MM-DD` (P0/P1 only). A P0 UNDATED counts as escalation-worthy (block 01) if the item has been in the tracker for >2 weeks — treat all P0 UNDATED as escalation-worthy in this first run and say so.
 - PROPOSE_DONE: 狀態 = 進行中 but 備註 or the weekly log says shipped/上線/完成 → propose 完成 to the owner (you never edit the tracker).
+- UNDATED applies only to LIVE rows (進行中 / 未開始). A 完成, 放棄 or 暫停 row with placeholder dates is NOT a missing-dates ask.
 - DIRECTION_UNLABELLED: a P0 whose 備註 (and Refresh block, if read) carries neither 已定案 nor 還在摸索.
 - STALLED: not computable in this run (needs two snapshots) — write "STALLED 檢測待 P1" once in block 08, do not guess.
 Also build a per-owner rollup: for each 負責人 → P0 ids · P1 ids · UNDATED ids · OVERDUE ids · ENDS_SOON ids · newest weekly-log block that mentions their function. GM load = share of P0 rows whose 負責人 is the GM.

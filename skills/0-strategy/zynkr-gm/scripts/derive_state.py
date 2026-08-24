@@ -4,15 +4,28 @@
 Input: JSON array of row dicts as read from the Main Tracker tab 「H2 專案項目」, keys exactly:
   "#","主類別","子類別","項目（正規化）","重要","緊急","Priority","負責人","協助者","開始","結束","狀態","備註"
 (the alias "項目" is accepted for the item column). Category header rows (id like "1.0" or
-empty 項目) are skipped. Tracker status vocabulary is 未開始 / 進行中 / 放棄 — there is no 完成 or
-延遲, so those are INFERRED here and reported as evidence, never written back.
+empty 項目) are skipped.
+
+Tracker status vocabulary (observed 2026-08-24): 未開始 / 進行中 / 放棄 / 完成 / 暫停. 完成 and 暫停
+were added by the GM on 2026-08-24; 延遲 still does not exist and stays INFERRED (OVERDUE). A row
+carrying any other value gets UNKNOWN_STATUS — surfaced, never silently mapped. This script never
+writes back to the tracker.
+
+Status classes:
+  TERMINAL  放棄 · 完成  — no live schedule, no owner load, no date asks
+  PAUSED    暫停        — no live schedule (so no deadline/date flags), but still owned and surfaced
+  LIVE      未開始 · 進行中
 
 Rules (today = --today):
-  ENDS_SOON     結束 is a real date, today <= 結束 <= today+14, and 狀態 != 放棄
+  ENDS_SOON     結束 is a real date, today <= 結束 <= today+14, and 狀態 is LIVE
   OVERDUE       (狀態 == 進行中 and 結束 < today) OR (狀態 == 未開始 and 開始 < today)
-  UNDATED       Priority in {P0,P1} and 開始 or 結束 is blank / a `YYYY-MM-DD` placeholder
+  UNDATED       Priority in {P0,P1}, 狀態 is LIVE, and 開始 or 結束 is blank / a `YYYY-MM-DD` placeholder
   CHANGED       any of 狀態/開始/結束/負責人 differs from the --prev snapshot (new rows count as CHANGED)
   PROPOSE_DONE  狀態 == 進行中 and 備註 matches 完成|shipped|done|上線|已上線
+  DONE          狀態 == 完成 (terminal; excluded from load and from every deadline/date flag)
+  PAUSED        狀態 == 暫停 (no schedule; check the weekly log — a "paused" row that is actually
+                running is a real SOR divergence and belongs in the brief)
+  UNKNOWN_STATUS 狀態 outside the vocabulary above
 Placeholder dates ("YYYY-MM-DD", "MM-DD", "TBD", blank) are treated as undated.
 
 Output (--json): {today, rows:[{id,item,priority,owner,status,start,end,states,evidence}],
@@ -31,6 +44,10 @@ ITEM_KEYS = ("項目（正規化）", "項目(正規化)", "項目")
 STATUS_KEY, START_KEY, END_KEY, OWNER_KEY, PRIO_KEY, NOTE_KEY, ID_KEY = "狀態", "開始", "結束", "負責人", "Priority", "備註", "#"
 CHANGE_FIELDS = (STATUS_KEY, START_KEY, END_KEY, OWNER_KEY)
 DONE_WORDS = re.compile(r"完成|shipped|done|已上線|上線", re.IGNORECASE)
+STATUS_NOT_STARTED, STATUS_ACTIVE, STATUS_DROPPED, STATUS_DONE, STATUS_PAUSED = "未開始", "進行中", "放棄", "完成", "暫停"
+KNOWN_STATUSES = frozenset({STATUS_NOT_STARTED, STATUS_ACTIVE, STATUS_DROPPED, STATUS_DONE, STATUS_PAUSED})
+TERMINAL_STATUSES = frozenset({STATUS_DROPPED, STATUS_DONE})      # no owner load, no flags
+NO_SCHEDULE_STATUSES = TERMINAL_STATUSES | frozenset({STATUS_PAUSED})  # no deadline / date flags
 HEADER_ID = re.compile(r"^\d+\.0$")
 OWNER_SPLIT = re.compile(r"[+＋/、,，&]|\s+and\s+|\s+&\s+")
 ENDS_SOON_DAYS = 14
@@ -106,7 +123,7 @@ def derive(rows, today, prev_rows=None):
         end, end_kind = parse_date(end_raw, today)
         states, evidence = [], []
 
-        if end and status != "放棄" and 0 <= (end - today).days <= ENDS_SOON_DAYS:
+        if end and status not in NO_SCHEDULE_STATUSES and 0 <= (end - today).days <= ENDS_SOON_DAYS:
             states.append("ENDS_SOON")
             evidence.append(f"結束 {end.isoformat()} in {(end - today).days}d")
         if status == "進行中" and end and end < today:
@@ -115,7 +132,7 @@ def derive(rows, today, prev_rows=None):
         elif status == "未開始" and start and start < today:
             states.append("OVERDUE")
             evidence.append(f"狀態 未開始 but 開始 {start.isoformat()} < today ({(today - start).days}d)")
-        if prio in ("P0", "P1") and (start is None or end is None):
+        if prio in ("P0", "P1") and status not in NO_SCHEDULE_STATUSES and (start is None or end is None):
             states.append("UNDATED")
             missing = []
             if start is None:
@@ -140,6 +157,15 @@ def derive(rows, today, prev_rows=None):
         if status == "進行中" and note and DONE_WORDS.search(note):
             states.append("PROPOSE_DONE")
             evidence.append(f"備註 matches done-word: {DONE_WORDS.search(note).group(0)!r} (status still 進行中)")
+        if status == STATUS_DONE:
+            states.append("DONE")
+            evidence.append(f"狀態 {STATUS_DONE} — terminal; dropped from owner load and from deadline/date flags")
+        if status == STATUS_PAUSED:
+            states.append("PAUSED")
+            evidence.append(f"狀態 {STATUS_PAUSED} — no live schedule; confirm against the weekly log before trusting it")
+        if status and status not in KNOWN_STATUSES:
+            states.append("UNKNOWN_STATUS")
+            evidence.append(f"狀態 {status!r} is outside the vocabulary {sorted(KNOWN_STATUSES)} — not mapped")
 
         out.append({
             "id": rid, "item": item, "priority": prio, "owner": owner, "helper": get(r, "協助者"),
@@ -154,15 +180,22 @@ def derive(rows, today, prev_rows=None):
 def summarise(derived, prev_given):
     by_ps, by_state = {}, {}
     lists = {"p0_undated": [], "p1_undated": [], "p0_overdue": [], "overdue": [], "ends_soon": [],
-             "propose_done": [], "changed": [], "dropped": []}
+             "propose_done": [], "changed": [], "dropped": [], "done": [], "paused": [],
+             "unknown_status": []}
     by_owner = {}
     for d in derived:
         by_ps.setdefault(d["priority"] or "?", {}).setdefault(d["status"] or "?", 0)
         by_ps[d["priority"] or "?"][d["status"] or "?"] += 1
         for s in d["states"]:
             by_state[s] = by_state.get(s, 0) + 1
-        if d["status"] == "放棄":
+        if d["status"] == STATUS_DROPPED:
             lists["dropped"].append(d["id"])
+        if d["status"] == STATUS_DONE:
+            lists["done"].append(d["id"])
+        if d["status"] == STATUS_PAUSED:
+            lists["paused"].append(d["id"])
+        if "UNKNOWN_STATUS" in d["states"]:
+            lists["unknown_status"].append(d["id"])
         if "UNDATED" in d["states"]:
             lists["p0_undated" if d["priority"] == "P0" else "p1_undated"].append(d["id"])
         if "OVERDUE" in d["states"]:
@@ -175,7 +208,7 @@ def summarise(derived, prev_given):
             lists["propose_done"].append(d["id"])
         if "CHANGED" in d["states"]:
             lists["changed"].append(d["id"])
-        if d["status"] == "放棄":
+        if d["status"] in TERMINAL_STATUSES:
             continue
         for o in split_owners(d["owner"]):
             slot = by_owner.setdefault(o, {"p0": [], "p1": [], "undated": [], "overdue": [], "ends_soon": []})
@@ -199,7 +232,8 @@ def render_text(result):
     lines = [f"today={result['today']}  rows={s['rows']}  prev={'yes' if s['prev_snapshot_given'] else 'no'}",
              "counts by priority×status: " + json.dumps(s["counts_by_priority_status"], ensure_ascii=False),
              "counts by state: " + json.dumps(s["counts_by_state"], ensure_ascii=False)]
-    for k in ("p0_undated", "p1_undated", "p0_overdue", "overdue", "ends_soon", "propose_done", "changed", "dropped"):
+    for k in ("p0_undated", "p1_undated", "p0_overdue", "overdue", "ends_soon", "propose_done", "changed",
+              "dropped", "done", "paused", "unknown_status"):
         lines.append(f"{k}: {', '.join(s[k]) or '-'}")
     lines.append("")
     for d in result["rows"]:
@@ -237,6 +271,11 @@ SAMPLE_ROWS = [
     _row("4.01", "4.0", "企業 AI 診斷", "P0", "Peter", "2026-08-03", "2026-08-28", "進行中"),           # ENDS_SOON (11d)
     _row("4.05", "4.0", "陪跑課", "P0", "Peter+Peggy", "2026-07-15", "2026-08-10", "進行中"),          # OVERDUE (end<today)
     _row("6.01", "6.0", "公司 KPI 制度", "P0", "Peter/Jane", "2026-08-31", "2026-08-31", "未開始"),      # ENDS_SOON (14d), two owners
+    # --- vocab added 2026-08-24: 完成 / 暫停, plus a P0 放棄 (the P2 放棄 above never caught the leak) ---
+    _row("4.02", "4.0", "企業 AI 導入", "P0", "Peter", "2026-08-03", "2026-08-28", "完成"),              # DONE: no ENDS_SOON, no load
+    _row("4.07", "4.0", "Vibe Coding", "P0", "Peggy", "YYYY-MM-DD", "YYYY-MM-DD", "暫停"),             # PAUSED: no UNDATED ask
+    _row("3.02", "3.0", "增加講師 — 內部", "P0", "Peggy", "YYYY-MM-DD", "YYYY-MM-DD", "放棄"),           # P0 放棄: must NOT leak into p0_undated
+    _row("9.99", "9.0", "未知狀態列", "P2", "Mark", "", "", "審核中"),                                   # UNKNOWN_STATUS
 ]
 SAMPLE_PREV = [dict(r) for r in SAMPLE_ROWS]
 SAMPLE_PREV[2]["狀態"] = "未開始"          # 1.08 status changed
@@ -247,7 +286,7 @@ SAMPLE_PREV = [r for r in SAMPLE_PREV if r["#"] != "6.01"]  # 6.01 is new
 def selftest():
     res = run(SAMPLE_ROWS, SAMPLE_TODAY, SAMPLE_PREV)
     by_id = {r["id"]: r for r in res["rows"]}
-    assert "1.0" not in by_id and len(by_id) == 8, list(by_id)
+    assert "1.0" not in by_id and len(by_id) == 12, list(by_id)
     assert set(by_id["1.03"]["states"]) == {"OVERDUE", "UNDATED"}, by_id["1.03"]
     assert by_id["1.08"]["states"] == ["CHANGED", "PROPOSE_DONE"], by_id["1.08"]
     assert by_id["2.01"]["states"] == [], by_id["2.01"]
@@ -260,11 +299,21 @@ def selftest():
     assert s["p0_undated"] == ["2.03"] and s["p1_undated"] == ["1.03"], s
     assert s["overdue"] == ["1.03", "4.05"] and s["p0_overdue"] == ["4.05"], s
     assert s["ends_soon"] == ["4.01", "6.01"] and s["propose_done"] == ["1.08"], s
-    assert s["changed"] == ["1.08", "4.05", "6.01"] and s["dropped"] == ["3.05"], s
-    assert s["counts_by_priority_status"]["P0"] == {"進行中": 3, "未開始": 3}, s["counts_by_priority_status"]
+    assert s["changed"] == ["1.08", "4.05", "6.01"] and s["dropped"] == ["3.05", "3.02"], s
+    assert s["counts_by_priority_status"]["P0"] == {"進行中": 3, "未開始": 3, "完成": 1, "暫停": 1, "放棄": 1}, \
+        s["counts_by_priority_status"]
+    # --- vocab 2026-08-24: 完成 is terminal, 暫停 has no schedule, 放棄 leaks nothing ---
+    assert by_id["4.02"]["states"] == ["DONE"], by_id["4.02"]              # NOT ENDS_SOON despite 結束 in 11d
+    assert by_id["4.07"]["states"] == ["PAUSED"], by_id["4.07"]            # NOT UNDATED
+    assert by_id["3.02"]["states"] == [], by_id["3.02"]                    # P0 放棄 → no flags at all
+    assert by_id["9.99"]["states"] == ["UNKNOWN_STATUS"], by_id["9.99"]
+    assert s["done"] == ["4.02"] and s["paused"] == ["4.07"] and s["unknown_status"] == ["9.99"], s
+    assert "4.02" not in s["ends_soon"] and "3.02" not in s["p0_undated"], s
     bo = res["by_owner"]
     assert "Jane" in bo and bo["Jane"]["p0"] == ["6.01"], bo   # split on '/', 放棄 row excluded
     assert bo["Peggy"]["overdue"] == ["4.05"], bo
+    assert bo["Peggy"]["p0"] == ["4.05", "4.07"], bo["Peggy"]   # 暫停 still owned; 放棄 3.02 excluded
+    assert "4.02" not in bo["Peter"]["p0"], bo["Peter"]          # 完成 drops out of GM load
     assert bo["Peter"]["p0"] == ["2.01", "4.01", "4.05", "6.01"], bo["Peter"]
     assert bo["Mark"]["undated"] == ["2.03"], bo["Mark"]
     # without prev → no CHANGED anywhere
