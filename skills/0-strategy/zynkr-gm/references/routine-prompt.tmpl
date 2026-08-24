@@ -43,8 +43,8 @@ For every tracker row with Priority P0 or P1 (and any P2 that is OVERDUE):
 - OVERDUE: 狀態 = 進行中 and 結束 < today; OR 狀態 = 未開始 and 開始 < today.
 - DONE / PAUSED: 狀態 = 完成 → report as delivered and drop from load; 狀態 = 暫停 → report as paused AND cross-check the newest [3.1] block (a paused row that is visibly running is an SOR divergence worth block 01).
 - UNDATED: 開始 or 結束 is blank / the literal `YYYY-MM-DD` (P0/P1 only). A P0 UNDATED counts as escalation-worthy (block 01) if the item has been in the tracker for >2 weeks — treat all P0 UNDATED as escalation-worthy in this first run and say so.
-- PROPOSE_DONE: 狀態 = 進行中 but 備註 or the weekly log says shipped/上線/完成 → propose 完成 to the owner (you never edit the tracker).
 - UNDATED applies only to LIVE rows (進行中 / 未開始). A 完成, 放棄 or 暫停 row with placeholder dates is NOT a missing-dates ask.
+- PROPOSE_DONE: 狀態 = 進行中 but 備註 or the weekly log says shipped/上線/完成 → propose 完成 to the owner (you never edit the tracker).
 - DIRECTION_UNLABELLED: a P0 whose 備註 (and Refresh block, if read) carries neither 已定案 nor 還在摸索.
 - STALLED: not computable in this run (needs two snapshots) — write "STALLED 檢測待 P1" once in block 08, do not guess.
 Also build a per-owner rollup: for each 負責人 → P0 ids · P1 ids · UNDATED ids · OVERDUE ids · ENDS_SOON ids · newest weekly-log block that mentions their function. GM load = share of P0 rows whose 負責人 is the GM.
