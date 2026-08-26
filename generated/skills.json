@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 171661,
-    "githubForks": 20401
+    "githubStars": 171706,
+    "githubForks": 20408
   },
   {
     "id": "1.29",
@@ -1961,10 +1961,10 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "The knowledge-curator (WRITE) half of Peter's support loop. After a support / inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual answer, and writes it as a clean, LLM-friendly card into the **Zynkr platform 知識庫** (platform.zynkr.ai/kb, via the `zynkr` MCP server) — the single source of truth since the 2026-07-15 cutover. Core Facts (canonical numbers/policies) become `fact` cards with a stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to structure for retrieval), proposes entries, and only writes after Peter approves. /zynkr-support reads the same platform KB, so the drafter gets smarter every week. Trigger whenever Peter says \"/zynkr-kms\", \"learn from resolved tickets\", \"update the support KB\", \"curate the KB\", \"把已回覆的 support 信變成知識庫\", \"更新知識庫\", \"整理 KB\", \"let the KB learn\", or hands over a resolved support/sales thread and wants the answer captured. This is the WRITE side; /zynkr-support is the READ side.",
+    "description": "The knowledge-curator (WRITE) half of Peter's support loop. After a support / inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual answer, and writes it as a clean, LLM-friendly card into the **Zynkr platform 知識庫** (platform.zynkr.ai/kb, via the `zynkr` MCP server) — the single source of truth since the 2026-07-15 cutover. Core Facts (canonical numbers/policies) become `fact` cards with a stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to structure for retrieval), proposes entries, and only writes after Peter approves. /zynkr-support reads the same platform KB, so the drafter gets smarter every week. It also GOVERNS BOTH STORES: after every approved write it mirrors the change to the Google Drive backup (`[3.2] 客服知識庫 (KMS)`) — one Doc per section plus a full-fidelity JSON snapshot — so the knowledge survives a Supabase incident and stays human-readable. The mirror is one-way (platform → Drive) and never authoritative. Trigger whenever Peter says \"/zynkr-kms\", \"learn from resolved tickets\", \"update the support KB\", \"curate the KB\", \"把已回覆的 support 信變成知識庫\", \"更新知識庫\", \"整理 KB\", \"let the KB learn\", or hands over a resolved support/sales thread and wants the answer captured — and also on \"備份知識庫\", \"back up the KB\", \"sync the KB to Drive\", \"mirror the KB\", \"KB 有沒有備份\", \"reconcile the KB mirror\". This is the WRITE side; /zynkr-support is the READ side.",
     "input": "Resolved Support／Inbound-Sales Gmail threads (or a single thread Peter specifies); the KB is the Zynkr platform 知識庫 (platform.zynkr.ai/kb) — sections + fact/qa cards, accessed...",
     "process": "Pull resolved, not-yet-ingested threads → confirm they are learnable and extract the question + Peter's answer (PII-stripped) → draft cards through three lenses (intent classification / target section / fact-vs-qa structuring) → propose to Peter for...",
-    "output": "After Peter's approval, cards are written into the matching platform-KB section; a new intent creates a new section via create_kb_section; the source thread is marked...",
+    "output": "After Peter's approval, cards are written into the matching platform-KB section; a new intent creates a new section via create_kb_section; the touched sections and the JSON...",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -2879,8 +2879,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 29689,
-    "githubForks": 2537
+    "githubStars": 29700,
+    "githubForks": 2539
   },
   {
     "id": "6.02",
@@ -3189,7 +3189,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 41356,
+    "githubStars": 41363,
     "githubForks": 2746
   },
   {
