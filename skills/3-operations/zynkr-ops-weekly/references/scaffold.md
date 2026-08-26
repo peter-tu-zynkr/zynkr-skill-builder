@@ -1,7 +1,7 @@
 # The Apps Script half
 
 `scripts/scaffold.gs` duplicates the newest week section and re-stamps it with the next
-Thursday. It runs **Thu 18:00**, right after the meeting.
+Thursday. It runs **Thu 23:00**, after `decisions` (22:00) has closed the week out.
 
 ## Why this is not the skill's job
 

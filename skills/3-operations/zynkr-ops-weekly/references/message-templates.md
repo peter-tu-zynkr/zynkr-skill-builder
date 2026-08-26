@@ -82,7 +82,7 @@ The agenda itself lives in the Doc. This post is a pointer.
 
 ---
 
-## `decisions` — Thu 18:00 (Chat, three lines)
+## `decisions` — Thu 22:00 (Chat, three lines)
 
 Short by design — next Monday's `nudge` quotes it.
 
@@ -99,7 +99,7 @@ Short by design — next Monday's `nudge` quotes it.
 
 ---
 
-## `decisions` — Thu 18:00 (recap mail)
+## `decisions` — Thu 22:00 (recap mail)
 
 Subject: `【營運週報】2026-08-27（W35）— 決議 3 項 · 逾期 2 項`
 

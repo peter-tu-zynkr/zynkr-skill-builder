@@ -38,7 +38,7 @@ next week's section) because it is purely mechanical, must never fail, and its a
 does not expire. The skill owns everything requiring interpretation. In the week the skill
 breaks entirely, Thursday still has a page.
 
-**The scaffold runs Thursday 18:00, not Wednesday.** Tuesday's roll-up needs a section to write
+**The scaffold runs Thursday 23:00, not Wednesday.** Tuesday's roll-up needs a section to write
 into; a Wednesday scaffold leaves Tuesday with nowhere to go. Closing this week and opening the
 next in one move keeps **exactly one future section open** at any time.
 
@@ -62,8 +62,9 @@ who posted. Both sit on Tuesday morning, which the user moved from the original 
 | Tue 09:00 | `rollup` | skill | Sweep → route by chip → marked block → metric backfill |
 | Tue 09:30 | `chase` | skill | Doc owners − posters → name the difference |
 | Wed 17:00 | `agenda` | skill | Re-sweep → carry-over · overdue · KPI · ≤3 decisions |
-| Thu 18:00 | `decisions` | skill | 3-line post + recap mail + register + **assert send** |
-| Thu 18:00 | `scaffoldNextWeek()` | Apps Script | Duplicate section, re-stamp next Thursday |
+| **Thu 21:00** | — | team | The weekly meeting |
+| Thu 22:00 | `decisions` | skill | 3-line post + recap mail + register + **assert send** |
+| Thu 23:00 | `scaffoldNextWeek()` | Apps Script | Duplicate section, re-stamp next Thursday |
 
 ## sheetId allocation
 
