@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 171740,
-    "githubForks": 20415
+    "githubStars": 171792,
+    "githubForks": 20423
   },
   {
     "id": "1.29",
@@ -1961,10 +1961,10 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "The knowledge-curator (WRITE) half of Peter's support loop. After a support / inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual answer, and writes it as a clean, LLM-friendly card into the **Zynkr platform 知識庫** (platform.zynkr.ai/kb, via the `zynkr` MCP server) — the single source of truth since the 2026-07-15 cutover. Core Facts (canonical numbers/policies) become `fact` cards with a stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to structure for retrieval), proposes entries, and only writes after Peter approves. /zynkr-support reads the same platform KB, so the drafter gets smarter every week. It also GOVERNS BOTH STORES: after every approved write it mirrors the change to the Google Drive backup (`[3.2] 客服知識庫 (KMS)`) — one Doc per section plus a full-fidelity JSON snapshot — so the knowledge survives a Supabase incident and stays human-readable. The mirror is one-way (platform → Drive) and never authoritative. Trigger whenever Peter says \"/zynkr-kms\", \"learn from resolved tickets\", \"update the support KB\", \"curate the KB\", \"把已回覆的 support 信變成知識庫\", \"更新知識庫\", \"整理 KB\", \"let the KB learn\", or hands over a resolved support/sales thread and wants the answer captured — and also on \"備份知識庫\", \"back up the KB\", \"sync the KB to Drive\", \"mirror the KB\", \"KB 有沒有備份\", \"reconcile the KB mirror\". This is the WRITE side; /zynkr-support is the READ side.",
-    "input": "Resolved Support／Inbound-Sales Gmail threads (or a single thread Peter specifies); the KB is the Zynkr platform 知識庫 (platform.zynkr.ai/kb) — sections + fact/qa cards, accessed...",
-    "process": "Pull resolved, not-yet-ingested threads → confirm they are learnable and extract the question + Peter's answer (PII-stripped) → draft cards through three lenses (intent classification / target section / fact-vs-qa structuring) → propose to Peter for...",
-    "output": "After Peter's approval, cards are written into the matching platform-KB section; a new intent creates a new section via create_kb_section; the touched sections and the JSON...",
+    "description": "The knowledge-curator (WRITE) half of Peter's support loop: it turns resolved support threads into KB cards in the Zynkr platform 知識庫 (the source of truth), then mirrors every change to a Google Drive backup. After a support / inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual answer, and writes it as a clean, LLM-friendly card into the **Zynkr platform 知識庫** (platform.zynkr.ai/kb, via the `zynkr` MCP server) — the single source of truth since the 2026-07-15 cutover. Core Facts (canonical numbers/policies) become `fact` cards with a stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to structure for retrieval), proposes entries, and only writes after Peter approves. /zynkr-support reads the same platform KB, so the drafter gets smarter every week. It also GOVERNS BOTH STORES: after every approved write it mirrors the change to the Google Drive backup (`[3.2] 客服知識庫 (KMS)`) — one Doc per section plus a full-fidelity JSON snapshot — so the knowledge survives a Supabase incident and stays human-readable. The mirror is one-way (platform → Drive) and never authoritative. Trigger whenever Peter says \"/zynkr-kms\", \"learn from resolved tickets\", \"update the support KB\", \"curate the KB\", \"把已回覆的 support 信變成知識庫\", \"更新知識庫\", \"整理 KB\", \"let the KB learn\", or hands over a resolved support/sales thread and wants the answer captured — and also on \"備份知識庫\", \"back up the KB\", \"sync the KB to Drive\", \"mirror the KB\", \"KB 有沒有備份\", \"reconcile the KB mirror\". This is the WRITE side; /zynkr-support is the READ side.",
+    "input": "Resolved Support／Inbound-Sales Gmail threads (or one Peter specifies); the KB is the Zynkr platform 知識庫 (SOT), mirrored one-way to a Google Drive backup",
+    "process": "Pull resolved, not-yet-ingested threads → extract Peter's answer (PII-stripped) → classify intent / target section / fact-vs-qa → propose for approval → write facts before citing qa cards → mirror touched sections + snapshot to Drive → mark KMS-ingested",
+    "output": "Approved cards land in the matching platform 知識庫 section (SOT); touched sections + _KB-SNAPSHOT.json are re-mirrored to the Google Drive backup; source thread marked KMS-ingested",
     "ipoProvenance": {
       "input": "frontmatter",
       "process": "frontmatter",
@@ -2879,8 +2879,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 29705,
-    "githubForks": 2539
+    "githubStars": 29722,
+    "githubForks": 2541
   },
   {
     "id": "6.02",
@@ -3189,8 +3189,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 41364,
-    "githubForks": 2746
+    "githubStars": 41377,
+    "githubForks": 2748
   },
   {
     "id": "7.01",
