@@ -84,11 +84,14 @@ disk and never enter context.
 ### 2. Stage into the MCP sandbox
 
 The `google-workspace` MCP server only accepts local paths under
-**`/Users/petertu/.workspace-mcp/attachments/`**. Copy the rendered files there before uploading:
+**`~/.workspace-mcp/attachments/`**. Copy the rendered files there before uploading:
+
+> The MCP tool arg must be a real absolute path — expand `~` to an absolute path when you
+> pass `file_path`; the tilde form here is only to keep machine-specific paths out of the skill.
 
 ```bash
-mkdir -p /Users/petertu/.workspace-mcp/attachments/kb-mirror
-cp <staging-dir>/*.md <staging-dir>/_*.json /Users/petertu/.workspace-mcp/attachments/kb-mirror/
+mkdir -p ~/.workspace-mcp/attachments/kb-mirror
+cp <staging-dir>/*.md <staging-dir>/_*.json ~/.workspace-mcp/attachments/kb-mirror/
 ```
 
 ### 3. Upload (in place, by Doc ID)
@@ -96,7 +99,7 @@ cp <staging-dir>/*.md <staging-dir>/_*.json /Users/petertu/.workspace-mcp/attach
 Per touched section — `mcp__google-workspace__update_drive_file`:
 
 - `file_id` — from the registry above
-- `file_path` — `/Users/petertu/.workspace-mcp/attachments/kb-mirror/NN-slug.md`
+- `file_path` — `~/.workspace-mcp/attachments/kb-mirror/NN-slug.md`
 - `source_format: "md"` — Drive converts Markdown → native Doc, **keeping the Doc ID**, so links,
   comments and sharing all survive
 - `description` — the AUTO-GENERATED MIRROR banner
