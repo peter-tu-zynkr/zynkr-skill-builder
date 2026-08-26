@@ -10,6 +10,10 @@ section to Peter** (don't silently overload `other`). Once Peter approves, creat
 `create_kb_section` (see `new-section-playbook.md`) and add a row here so it becomes
 first-class.
 
+Every section also owns one Doc in the Drive backup mirror — adding a section here means
+adding a Doc and a registry row in `drive-mirror.md`. ⚠️ This table lists **Peter's workspace only**;
+`crm_kb_sections` is multi-tenant and other tenants have `nn`-colliding slugs.
+
 | Intent tag / slug | nn | Section | Covers | zh-TW / EN aliases |
 |---|---|---|---|---|
 | `core-facts` | 01 | Core Facts 核心事實 | Canonical `fact` cards only — pricing tables, policies, durations. NOT a Q&A intent. | 核心事實, canonical, facts |
@@ -25,6 +29,7 @@ first-class.
 | `brand-product-vision` | 11 | Brand & Product Vision 品牌與願景 | Zynkr brand, vision, mission, product direction, "about us" | 品牌, 願景, 使命, 產品方向, 公司理念, Zynkr, brand, vision, mission, about |
 | `ai-workflow-architecture` | 12 | AI Workflow Architecture AI 工作流架構 | AI workflow / automation architecture, memory & KB design, RAG | 架構, 流程設計, pipeline, 自動化架構, 知識庫架構, RAG, workflow, architecture, automation, memory, retrieval |
 | `tone-style` | 13 | Tone of Voice & Style 語氣與風格 | ALWAYS-READ style rules as `fact` cards: `tone-voice-rules` + `term-mapping-table` (the anti-Chinglish 用語對照表). NOT a Q&A intent. | 語氣, 風格, 用語對照表, 晶晶體, tone, voice, style, wording, term mapping |
+| `gov-subsidy` | 14 | Government Subsidy 政府補助 | 企業申請政府補助（AI 導入/轉型）：核銷機制, 資格, 時程, 提案要點. Facts: `gov-subsidy-mechanics` / `-ai-programs` / `-proposal-elements` / `-timeline` (core-facts). Partner 拆帳條款 (Eric 王騰緯) stays in Drive `[2.7] 政府補助 knowledge` — NEVER in the KB. | 補助, 補助案, 補助款, 政府計畫, 專案補助, 核銷, 數位發展部, subsidy, grant, government funding, moda |
 
 > **Core Facts** (`fact` cards with a `fact_id`) are NOT a Q&A intent — canonical numbers live
 > in the `core-facts` section, and qa cards **cite** them (`cites: ["<fact_id>"]`).

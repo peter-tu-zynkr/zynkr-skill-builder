@@ -10,23 +10,28 @@ description: >-
   stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating
   numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to
   structure for retrieval), proposes entries, and only writes after Peter approves.
-  /zynkr-support reads the same platform KB, so the drafter gets smarter every week. Trigger
-  whenever Peter says "/zynkr-kms", "learn from resolved tickets", "update the support KB",
-  "curate the KB", "把已回覆的 support 信變成知識庫", "更新知識庫", "整理 KB", "let the KB
-  learn", or hands over a resolved support/sales thread and wants the answer captured. This
-  is the WRITE side; /zynkr-support is the READ side.
+  /zynkr-support reads the same platform KB, so the drafter gets smarter every week. It also
+  GOVERNS BOTH STORES: after every approved write it mirrors the change to the Google Drive
+  backup (`[3.2] 客服知識庫 (KMS)`) — one Doc per section plus a full-fidelity JSON snapshot —
+  so the knowledge survives a Supabase incident and stays human-readable. The mirror is
+  one-way (platform → Drive) and never authoritative. Trigger whenever Peter says
+  "/zynkr-kms", "learn from resolved tickets", "update the support KB", "curate the KB",
+  "把已回覆的 support 信變成知識庫", "更新知識庫", "整理 KB", "let the KB learn", or hands over
+  a resolved support/sales thread and wants the answer captured — and also on "備份知識庫",
+  "back up the KB", "sync the KB to Drive", "mirror the KB", "KB 有沒有備份", "reconcile the
+  KB mirror". This is the WRITE side; /zynkr-support is the READ side.
 category: operations
 project: zynkr-kms
 platform: claude
 status: WIP
 author: Peter Tu
 input: "Resolved Support／Inbound-Sales Gmail threads (or a single thread Peter specifies); the KB is the Zynkr platform 知識庫 (platform.zynkr.ai/kb) — sections + fact/qa cards, accessed through the `zynkr` MCP server"
-process: "Pull resolved, not-yet-ingested threads → confirm they are learnable and extract the question + Peter's answer (PII-stripped) → draft cards through three lenses (intent classification / target section / fact-vs-qa structuring) → propose to Peter for approval → write via mcp__zynkr__create_kb_article / update_kb_article (facts before the qa cards that cite them) → mark KMS-ingested"
-output: "After Peter's approval, cards are written into the matching platform-KB section; a new intent creates a new section via create_kb_section; the source thread is marked KMS-ingested; finishes with an added / updated / skipped summary"
+process: "Pull resolved, not-yet-ingested threads → confirm they are learnable and extract the question + Peter's answer (PII-stripped) → draft cards through three lenses (intent classification / target section / fact-vs-qa structuring) → propose to Peter for approval → write via mcp__zynkr__create_kb_article / update_kb_article (facts before the qa cards that cite them) → mirror the touched sections + snapshot to the Google Drive backup → mark KMS-ingested"
+output: "After Peter's approval, cards are written into the matching platform-KB section; a new intent creates a new section via create_kb_section; the touched sections and the JSON snapshot are re-mirrored to the Google Drive backup; the source thread is marked KMS-ingested; finishes with an added / updated / skipped / mirrored summary"
 synergy: ["zynkr-support"]
 ---
 
-# Zynkr KMS — Support Knowledge Curator (platform-KB backed)
+# Zynkr KMS — Support Knowledge Curator (platform KB + Drive mirror)
 
 ```bash
 npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zynkr-kms
@@ -47,12 +52,26 @@ The golden rule: **extract, never invent.** KB facts come only from what Peter a
 bad KB card silently poisons every future auto-reply, so the bar is high and **nothing enters the
 KB without Peter's approval.**
 
-> **The KB is the Zynkr platform 知識庫 (since 2026-07-15).** History: one monolith Google Doc →
-> nested one-doc-per-section Google Docs (2026-06-06) → seeded into the platform KB (2026-06-09) →
-> **full cutover 2026-07-15**. The platform (Supabase-backed, browsable at
-> `https://platform.zynkr.ai/kb`) is now the ONLY writable KB. The old Google-Docs folder
-> (`1LpymoVhy4YrxDBi81Sw6CRQQbZAiSLQ6`, `[3.2] Support knowledge base`) is a **read-only archive —
-> never write to it**, and never treat its contents as current.
+> **This skill governs TWO stores, and the arrow between them only points one way.**
+>
+> ```
+> Zynkr platform KB  ──(mirror)──▶  Google Drive Docs
+>    (writable SOT)                  (read-only backup)
+> ```
+>
+> - **Zynkr platform 知識庫** (Supabase-backed, `https://platform.zynkr.ai/kb`, via the `zynkr`
+>   MCP server) — the **only writable KB** and the single source of truth. `/zynkr-support`
+>   reads this, never the mirror.
+> - **Google Drive** `[3.2] 客服知識庫 (KMS)` (`1LpymoVhy4YrxDBi81Sw6CRQQbZAiSLQ6`) — the
+>   **backup mirror**: one Doc per section plus a full-fidelity `_KB-SNAPSHOT.json`. Rewritten
+>   from the platform on every run (Step 6). Never authoritative, never read back into the KB;
+>   a human edit made there is destroyed on the next mirror. If the two disagree, the platform
+>   is right.
+>
+> History: one monolith Google Doc → nested one-doc-per-section Google Docs (2026-06-06) →
+> seeded into the platform KB (2026-06-09) → **full cutover 2026-07-15**, after which Drive was
+> a frozen archive → **2026-08-26: Drive relit as a live one-way mirror**, closing a 6-week gap
+> where 22 cards existed only in Supabase.
 
 ---
 
@@ -76,10 +95,23 @@ KB without Peter's approval.**
   - Inbound Sales: `[2] Sales & consultant/[2.1] Inbound Sales`
 - **Ingest-ledger label**: `KMS-ingested` — applied once a thread's answer is in the KB. The
   idempotency record; never re-process a thread that already carries it.
+- **Drive mirror** (the backup half — full mechanics in `references/drive-mirror.md`):
+  - Folder `[3.2] 客服知識庫 (KMS)` — `1LpymoVhy4YrxDBi81Sw6CRQQbZAiSLQ6`
+  - `scripts/kb-drive-mirror.mjs` — renders the KB to Markdown locally (read-only; needs
+    `--workspace`, see below). Card bodies stay on disk, out of context.
+  - `mcp__google-workspace__update_drive_file` — uploads in place by Doc ID (`source_format: "md"`
+    converts Markdown → native Doc and **keeps the Doc ID**)
+  - ⚠️ **Peter's workspace is `19881fe1-0081-452e-9141-8ba196e61abe`.** `crm_kb_*` is a shared
+    multi-tenant table whose other tenants have `nn`-colliding sections; an unscoped read mirrors
+    their cards into Peter's Drive. `mcp__zynkr__list_kb_sections` is already workspace-scoped.
+  - ⚠️ The `google-workspace` MCP only accepts local paths under
+    `/Users/petertu/.workspace-mcp/attachments/` — stage rendered files there before uploading.
 - **Companion files**:
   - `references/intent-taxonomy.md` — intent categories, aliases, and the intent → section map
   - `references/entry-schema.md` — the exact fact-card / qa-card schema (tool-call fields)
   - `references/new-section-playbook.md` — how to add a **new section** for a new intent
+  - `references/drive-mirror.md` — the Drive backup: arrow of truth, Doc-ID registry, how to run
+    a mirror or a full reconcile, and how to restore from the snapshot
 
 ---
 
@@ -273,7 +305,36 @@ dangling cite means you wrote the qa before its fact — fix by writing the fact
 
 ---
 
-## Step 6: Mark ingested + report
+## Step 6: Mirror the change to the Google Drive backup
+
+Every approved write in Step 5 must reach the Drive mirror in the same run — a KB write that
+isn't mirrored is exactly the drift this step exists to prevent. Mirror **after** the writes
+land (it renders whatever the KB currently holds), and only for the sections you touched.
+
+Full mechanics, the Doc-ID registry, and the restore procedure live in
+`references/drive-mirror.md`. The short form:
+
+1. **Render** the touched sections —
+   `node scripts/kb-drive-mirror.mjs --out <staging> --workspace <Peter's uuid> --env <.env.local>
+   --sections <slug,slug>`. Omit `--sections` for a full reconcile (also refreshes the snapshot,
+   the manifest and the 00 INDEX Doc). The script is read-only and prints just a counts summary.
+2. **Stage** the rendered files into `/Users/petertu/.workspace-mcp/attachments/kb-mirror/`.
+3. **Upload in place** with `mcp__google-workspace__update_drive_file` — `file_id` from the
+   registry, `source_format: "md"`, and the AUTO-GENERATED MIRROR banner as `description`. Never
+   create a second Doc for a section that already has one.
+4. **Refresh `_KB-SNAPSHOT.json`** whenever any card changed — it is the only artifact with
+   enough fidelity to restore from (`fact_id`, `cites`, `keywords`, `version`, `source_*`).
+5. If Step 5d created a **new section**, the mirror gains a Doc: use
+   `mcp__google-workspace__import_to_google_doc` (`create_drive_file` leaves raw markdown, not a
+   Doc), then add its ID to the registry in `references/drive-mirror.md`.
+
+**Check before moving on:** the script's `sections` count must match
+`mcp__zynkr__list_kb_sections`, and `orphans` must be `0`. A larger `sections` number means the
+workspace filter was dropped — stop and fix it rather than uploading.
+
+---
+
+## Step 7: Mark ingested + report
 
 - Resolve the ledger label's **ID**: `mcp__google-workspace__list_gmail_labels` and find
   `KMS-ingested`. If it doesn't exist yet, create it with `manage_gmail_label`
@@ -296,10 +357,13 @@ KB updated — N cards from M threads:
   - [slug — title] (now in list_kb_sections + intent-taxonomy.md)
 ⏭️  Skipped (W):
   - [Subject] — [reason: holding reply / no answer yet / out of scope]
+💾 Mirrored to Drive (S sections + snapshot):
+  - [NN slug] … — or "full reconcile, N cards"
 ⚠️  For your attention:
   - [anything you want Peter to double-check]
 
 Browse: https://platform.zynkr.ai/kb
+Backup: https://drive.google.com/drive/folders/1LpymoVhy4YrxDBi81Sw6CRQQbZAiSLQ6
 ```
 
 If a new section was created, confirm it's added to `references/intent-taxonomy.md`.
@@ -310,8 +374,13 @@ If a new section was created, confirm it's added to `references/intent-taxonomy.
 
 - **Extraction, not generation.** Every fact in the KB must trace to something Peter wrote. Holding
   replies teach nothing — skip them.
-- **One source of truth: the platform KB.** Never write to the archived Google-Docs KB (folder
-  `1LpymoVhy4YrxDBi81Sw6CRQQbZAiSLQ6`) or cite it as current — it froze at the 2026-07-15 cutover.
+- **One source of truth: the platform KB.** Drive is a *backup*, not a second KB. Never author a
+  card in Drive, never cite the mirror as current, and never read a Drive edit back into the
+  platform. If the two disagree, the platform is right and the mirror is stale.
+- **A write that isn't mirrored is drift.** Step 6 runs in the same pass as Step 5, every time.
+  Leaving it for later is how the 2026-07-15 → 08-26 gap happened (22 cards in one store only).
+- **Never mirror unscoped.** `crm_kb_*` is shared/multi-tenant; always pass Peter's
+  `--workspace`. An unscoped run leaks other tenants' cards into Peter's Drive.
 - **Canonical numbers live once.** Pricing/policy/rates go in a `fact` card; qa cards **cite** it
   (`cites: ["<fact_id>"]`). Update the fact in one place rather than chasing numbers across cards.
 - **Write the fact before the citing qa card** — cites only resolve against existing facts.
