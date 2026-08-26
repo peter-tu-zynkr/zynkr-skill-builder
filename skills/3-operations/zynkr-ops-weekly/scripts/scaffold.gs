@@ -32,6 +32,18 @@ const DOC_ID  = 'PUT_A_DUPLICATE_DOC_ID_HERE_FIRST';
 const TAB_ID  = 't.0';              // 每週事項 2026
 const DRY_RUN = true;               // flip to false once verified
 
+/* WHEN IT RUNS — the trigger fires in TZ, regardless of the script project's own
+ * timezone. Note the Apps Script Triggers panel DISPLAYS times in the PROJECT's
+ * timezone (File > Project Settings), so if that is not TZ the row shows a
+ * different clock than the trigger actually uses. Set the project timezone to
+ * match TZ and the two agree.
+ * Apps Script schedules within the HOUR, not on the minute: hour 23 means the run
+ * lands somewhere in 23:00-24:00. Anything that must happen AFTER the scaffold has
+ * to allow for that whole window. */
+const TRIGGER_DAY  = 'THURSDAY';    // ScriptApp.WeekDay key
+const TRIGGER_HOUR = 23;            // 23 => fires in the 23:00-24:00 window
+const TZ           = 'Asia/Taipei';
+
 /** Matches the weekly date headings, e.g. "Aug 27, 2026" */
 const DATE_RE = /^([A-Z][a-z]{2})\s+(\d{1,2}),\s*(\d{4})$/;
 const MONTHS  = ['Jan','Feb','Mar','Apr','May','Jun',
@@ -156,11 +168,14 @@ function installTriggers() {
   });
   ScriptApp.newTrigger('scaffoldNextWeek')
     .timeBased()
-    .onWeekDay(ScriptApp.WeekDay.THURSDAY)
-    .atHour(18)
-    .inTimezone('Asia/Taipei')
+    .onWeekDay(ScriptApp.WeekDay[TRIGGER_DAY])
+    .atHour(TRIGGER_HOUR)
+    .inTimezone(TZ)
     .create();
-  Logger.log('Trigger installed: scaffoldNextWeek, Thursdays 18:00 Asia/Taipei.');
+  Logger.log('Trigger installed: scaffoldNextWeek, ' + TRIGGER_DAY + 's ' +
+             TRIGGER_HOUR + ':00-' + (TRIGGER_HOUR + 1) + ':00 ' + TZ +
+             '. (The Triggers panel shows this in the PROJECT timezone — set the ' +
+             'project timezone to ' + TZ + ' if the row disagrees.)');
 }
 
 /*

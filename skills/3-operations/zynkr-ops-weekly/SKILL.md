@@ -68,7 +68,7 @@ rewrites prose in a doc people are actively editing is a bot nobody trusts by we
 | Wed 17:00 | `agenda` | skill | Re-sweep for late arrivals, then carry-over · overdue · KPI · ≤3 decisions |
 | Thu (meeting) | — | team | Discuss exceptions and decisions only; edit the Doc live |
 | **Thu 18:00** | `decisions` | skill | Resolutions → space (3 lines) + recap mail + decisions register + **assert the send** |
-| Thu 18:00 | `scaffoldNextWeek` | **Apps Script** | Duplicate the newest week section, re-stamp next Thursday |
+| Thu 23:00 | `scaffoldNextWeek` | **Apps Script** | Duplicate the newest week section, re-stamp next Thursday. Runs **after** `decisions` — see Step 4.1 |
 
 `chase` must run **after** `rollup` — it cannot know who is missing until the roll-up has
 resolved who posted. Both beats sit on Tuesday morning so that the Doc's Thursday section is
@@ -199,6 +199,13 @@ Post the template from `references/message-templates.md` with those decisions qu
 and the Tue 09:00 cut-off stated. Reference last week's decisions so people report *against*
 something.
 
+**Then assert the scaffold fired.** Confirm a section for the *upcoming* Thursday exists. This
+is the "prove it fired" check for the Apps Script half. It lives here rather than in `decisions`
+because the scaffold trigger runs later on Thursday evening than `decisions` does — checking at
+that moment would fail every week for the wrong reason, and a notice that cries wolf weekly is
+worse than no notice. Missing → post a failure notice and stop; do **not** create the section
+here, because rebuilding it loses the owner person chips, which no API can recreate.
+
 ### 4.2 `rollup` (Tue 09:00)
 
 1. Parse the window (Step 3).
@@ -265,10 +272,11 @@ Runs **after** the meeting, against the section as the humans edited it live.
    consecutive weekly sends once failed unnoticed because nothing checked. A dead token must
    surface within a week, not five.
 5. Write the resolutions into the tracker's decisions register.
-6. **Check the scaffold.** Confirm a section for *next* Thursday now exists. If it does not by
-   the end of this run, the Apps Script trigger is not installed or not firing — post a notice.
-   Do not silently create the section here: rebuilding it from scratch would lose the owner
-   person chips, which cannot be recreated programmatically.
+6. **Do not check the scaffold here.** Apps Script fires within an *hour window*, and the
+   scaffold trigger runs later on Thursday evening than this mode does — so at this point next
+   week's section legitimately does not exist yet. Asserting it here produces a weekly false
+   alarm, which trains everyone to ignore the notice that matters. The check lives in `nudge`
+   (Step 4.1), which runs Monday: clear of the window, and a day before `rollup` needs it.
 
 ### 4.6 `status` (on demand)
 

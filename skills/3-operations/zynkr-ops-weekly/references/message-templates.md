@@ -138,6 +138,6 @@ Concrete cases that must produce one:
 |---|---|
 | Recap mail not found in `in:sent` after sending | 寄信失敗，決議只在大廳與 Doc |
 | Target Thursday section missing at rollup | 骨架沒開，Apps Script trigger 可能沒裝或沒跑 |
-| Next Thursday section missing after `decisions` | 下週骨架沒開 |
+| Upcoming Thursday section missing at `nudge` | 骨架沒開，Apps Script trigger 可能沒裝或沒跑 |
 | `unmapped_sender` in the sweep | 有人的 Chat id 不在對照表，週報沒被收進來 |
 | `unrouted_heading` in the Doc | 有部門標題沒有 owner chip，該段不會被寫入 |

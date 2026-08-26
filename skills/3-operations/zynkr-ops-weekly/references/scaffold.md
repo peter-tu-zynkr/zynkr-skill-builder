@@ -51,9 +51,18 @@ anything.
 
 ## Verify it fired
 
-`decisions` checks, at the end of its run, that a section for *next* Thursday exists. If not, it
-posts a failure notice to the space. That is the "prove it fired" check for this half — the
-script's own success is otherwise invisible until someone opens the Doc.
+Monday's `nudge` checks that a section for the upcoming Thursday exists and posts a failure
+notice to the space if not. That is the "prove it fired" check for this half — the script's own
+success is otherwise invisible until someone opens the Doc and finds nowhere to write.
+
+The check deliberately does **not** live in Thursday's `decisions`: Apps Script fires within an
+hour *window*, and the scaffold runs later in the evening than `decisions` does, so checking
+then would fail every week for the wrong reason. Monday clears the window and still precedes
+`rollup`, the first mode that needs the section.
+
+Schedule lives in three constants at the top of the script — `TRIGGER_DAY`, `TRIGGER_HOUR`,
+`TZ`. Change one and re-run `installTriggers()`; it deletes its own prior trigger first, so that
+is idempotent. **If you ever move the scaffold earlier than `decisions`, move the assertion back.**
 
 ## Known traps
 
@@ -64,3 +73,6 @@ script's own success is otherwise invisible until someone opens the Doc.
 | Double-run | Two sections for the same Thursday | Idempotency guard: bail if next Thursday's heading already exists |
 | Element types | A blind `copy()` loses list bullets and tables | Explicit branch on `PARAGRAPH` / `LIST_ITEM` / `TABLE` |
 | macOS TCC | Scripts under `~/Desktop` can trip permission prompts | Keep the canonical copy in the repo, paste into the Apps Script editor |
+| Panel shows the wrong time | The Triggers panel renders times in the **project** timezone, not the trigger's — a project set to another zone displays a different clock than `TZ` actually uses | Set the project timezone to `TZ` in Project Settings; the trigger itself is already correct |
+| Hour window, not a minute | `atHour(23)` fires anywhere in 23:00–24:00 | Anything that must run after the scaffold must clear the whole window |
+| Index shift on copy | Reading and writing in one loop re-reads the same element and duplicates it — seen live as ~100 copies of the date heading | Snapshot all source elements first; post-condition asserts dated sections rise by exactly 1 |
