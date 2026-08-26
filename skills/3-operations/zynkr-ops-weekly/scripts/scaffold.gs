@@ -51,6 +51,7 @@ function scaffoldNextWeek() {
     if (m) marks.push({ index: i, text: p.getText().trim(), date: parseDate_(m) });
   }
   if (marks.length < 2) throw new Error('Need >= 2 dated sections to infer the section range. Found ' + marks.length);
+  const before = marks.length;
 
   // 2. The newest section spans [marks[0], marks[1]).
   const from = marks[0].index;
@@ -70,10 +71,18 @@ function scaffoldNextWeek() {
              ', ' + (to - from) + ' elements) as "' + label + '"');
   if (DRY_RUN) { Logger.log('DRY_RUN — no changes written.'); return label; }
 
-  // 5. Copy the block, preserving order, inserting above the newest section.
+  // 5. SNAPSHOT the source elements BEFORE writing anything.
+  //     Every insert shifts the index of everything after it. Reading and writing in
+  //     the same loop therefore re-reads the SAME element each pass (i advances at the
+  //     same rate the insert pushes it forward) and duplicates it. Observed live: it
+  //     produced ~100 copies of the date heading instead of the section. Read first.
+  const copies = [];
+  for (let i = from; i < to; i++) copies.push(body.getChild(i).copy());
+
+  // 6. Insert the snapshot above the newest section, preserving order.
   let cursor = from;
-  for (let i = from; i < to; i++) {
-    const copy = body.getChild(i).copy();
+  for (let j = 0; j < copies.length; j++) {
+    const copy = copies[j];
     switch (copy.getType()) {
       case DocumentApp.ElementType.PARAGRAPH:
         body.insertParagraph(cursor++, copy.asParagraph()); break;
@@ -86,10 +95,32 @@ function scaffoldNextWeek() {
     }
   }
 
-  // 6. Re-stamp the copied date heading (it is the first element we inserted).
+  // 7. Re-stamp the copied date heading (it is the first element we inserted).
   body.getChild(from).asParagraph().setText(label);
-  Logger.log('Inserted section "' + label + '".');
+
+  // 8. Post-condition: exactly ONE new dated heading should exist. This is the guard
+  //    that would have caught the shift bug on its first run instead of by eye.
+  const after = countDateHeadings_(body);
+  if (after !== before + 1) {
+    throw new Error('Aborting: expected ' + (before + 1) + ' dated sections after insert, found ' +
+                    after + '. The document was modified — undo it (Ctrl/Cmd-Z in the doc, or ' +
+                    'File > Version history) before re-running.');
+  }
+  Logger.log('Inserted section "' + label + '". Dated sections: ' + before + ' -> ' + after + '.');
   return label;
+}
+
+/** Count top-level dated HEADING2 paragraphs — used as an insert post-condition. */
+function countDateHeadings_(body) {
+  let n = 0;
+  for (let i = 0; i < body.getNumChildren(); i++) {
+    const el = body.getChild(i);
+    if (el.getType() !== DocumentApp.ElementType.PARAGRAPH) continue;
+    const p = el.asParagraph();
+    if (p.getHeading() !== DocumentApp.ParagraphHeading.HEADING2) continue;
+    if (DATE_RE.test(p.getText().trim())) n++;
+  }
+  return n;
 }
 
 /** Resolve a tab's body — a tabbed doc's top-level getBody() is NOT the tab. */
