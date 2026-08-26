@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 171651,
-    "githubForks": 20399
+    "githubStars": 171661,
+    "githubForks": 20401
   },
   {
     "id": "1.29",
@@ -2402,7 +2402,7 @@
     "platform": "claude",
     "status": "WIP",
     "author": "Peter Tu",
-    "description": "The weekly operations loop that keeps a Google Chat space and a weekly operations Google Doc in sync. Five scheduled modes run one beat each: `nudge` (Mon 09:00 — post the four-line template plus last week's decisions), `rollup` (Tue 09:00 — read the week's `#週報` posts, route each one to its department heading using the owner person-chips already in the Doc, and write a clearly-marked auto-summary block), `chase` (Tue 09:30 — @ the owners who did not post), `agenda` (Wed 17:00 — re-sweep for late arrivals, then produce carry-over, overdue, KPI-off-target and the ≤3 decisions the Thursday meeting must actually make), and `decisions` (Thu 18:00 — post the resolutions back to the space, send the recap mail, write the decisions register, and assert the send actually happened). Routing is never hardcoded: it is read at run time from the Doc's own owner chips, so changing the Doc changes both the routing and the recap-mail recipient list. Trigger EAGERLY on \"/zynkr-ops-weekly\", \"營運週報\", \"週報彙整\", \"把大廳的週報整理進 Doc\", \"roll up the chat updates\", \"誰還沒回報\", \"補件提醒\", \"週四議程\", \"產週會議程\", \"會後回貼決議\", \"recap 信\", \"weekly ops loop\", \"ops weekly rollup\", or any ask to collect / chase / summarise the team's weekly updates, build the weekly meeting agenda, or publish the meeting's decisions. BOUNDARY — do NOT hijack: /zynkr-gm (the founder's own company-level Monday brief, reads this Doc but never writes it), /project-status-update (one project's status email from its own tracker), /planning-tracker-sync (the H2 tracker block and its own nudges), /consult-status-report (client-facing consulting status), /admin-meeting-prep (per-meeting packets for external meetings). This skill owns exactly one artefact — the weekly operations Doc's current week section — and one channel loop around it.",
+    "description": "The weekly operations loop that keeps a Google Chat space and a weekly operations Google Doc in sync. Five scheduled modes run one beat each: `nudge` (Mon 09:00 — post the four-line template plus last week's decisions), `rollup` (Tue 09:00 — read the week's `#週報` posts, route each one to its department heading using the owner person-chips already in the Doc, and write a clearly-marked auto-summary block), `chase` (Tue 09:30 — @ the owners who did not post), `agenda` (Wed 17:00 — re-sweep for late arrivals, then produce carry-over, overdue, KPI-off-target and the ≤3 decisions the Thursday meeting must actually make), and `decisions` (Thu 22:00 — post the resolutions back to the space, send the recap mail, write the decisions register, and assert the send actually happened). Routing is never hardcoded: it is read at run time from the Doc's own owner chips, so changing the Doc changes both the routing and the recap-mail recipient list. Trigger EAGERLY on \"/zynkr-ops-weekly\", \"營運週報\", \"週報彙整\", \"把大廳的週報整理進 Doc\", \"roll up the chat updates\", \"誰還沒回報\", \"補件提醒\", \"週四議程\", \"產週會議程\", \"會後回貼決議\", \"recap 信\", \"weekly ops loop\", \"ops weekly rollup\", or any ask to collect / chase / summarise the team's weekly updates, build the weekly meeting agenda, or publish the meeting's decisions. BOUNDARY — do NOT hijack: /zynkr-gm (the founder's own company-level Monday brief, reads this Doc but never writes it), /project-status-update (one project's status email from its own tracker), /planning-tracker-sync (the H2 tracker block and its own nudges), /consult-status-report (client-facing consulting status), /admin-meeting-prep (per-meeting packets for external meetings). This skill owns exactly one artefact — the weekly operations Doc's current week section — and one channel loop around it.",
     "input": "A mode (nudge | rollup | chase | agenda | decisions | status) and an optional 'as of' date; every identifier comes from the private config at ~/.config/zynkr/ops-weekly.json.",
     "process": "Anchor on today → resolve the target Thursday (Monday's posts belong to the NEXT Thursday) → load config → check idempotency → read routing from the Doc's owner chips → sweep Chat by createTime → parse the four lines → write a marked block → assert delivery.",
     "output": "Per mode: a Chat post, a marked 〔自動彙整〕 block under each department heading of the current week's Doc section, a Wednesday agenda block, and a Thursday recap email.",
@@ -3189,7 +3189,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 41354,
+    "githubStars": 41356,
     "githubForks": 2746
   },
   {
