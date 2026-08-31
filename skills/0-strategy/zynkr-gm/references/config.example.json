@@ -3,7 +3,8 @@
   "google_account": "gm@example.com",
   "recipients": ["gm@example.com", "ops@example.com"],
   "timezone": "Asia/Taipei",
-  "brief_language": "zh-TW",
+  "brief_language": "en",
+  "$brief_language_note": "The brief body is English prose. Strings copied from a source (tracker item names, 狀態 values, tab names, doc titles, column headers, people's names) stay VERBATIM in their original script and are glossed once — the reader has to match them in a Sheet. See references/brief-template.md § Language.",
   "sources": {
     "vms_v2": { "id": "<doc-id>", "type": "doc", "authoritative_section": "H2 2026 alignment" },
     "integrated_refresh": { "id": "<doc-id>", "type": "doc", "authoritative_section": "2026-07-28 Refresh (v2)" },
