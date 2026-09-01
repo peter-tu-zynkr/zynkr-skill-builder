@@ -199,11 +199,21 @@ These are the failure modes seen most often. Catching them at draft/edit time sa
 
 - **Lanes render flat.** The Standard-Import `swimLanes` container makes one flat band per lane — no nested sub-lanes. To keep the FE/BE/DB scaffold, use **one lane per sub-band** and encode the grouping in the title (`Front-end · External user`, `Front-end · Internal user`, `Backend · Manual process (HITL)`, `Backend · State machine / AI assistant`, …). Order stays FE → BE → DB top-to-bottom (V8).
 - **Types are lowercase** in the create-spec JSON: `terminator`, `process`, `decision`, `database`, `document`, `manualInput`, `manualOperation`, `offPageLink`. The `fetch` / `add_block` world uses `BlockClass` names (`ProcessBlock`, `DocumentBlock`, …) — don't mix the two vocabularies. `encoding-table.md` lists both.
+- **`lineType` is a THIRD vocabulary, and it is the easiest one to get wrong.** In the create-spec JSON a
+  line's `lineType` accepts only `straight` · `elbow` · `curved`. `lucid_edit_item`'s `line_shape` accepts a
+  *different* set — `curve` · `cyclical` · `diagonal` · `elbow`. **`diagonal` is edit-only**: putting it in a
+  create-spec returns a bare `400 Bad or malformed request` that names no field, so the whole create fails
+  with nothing to grep. Author diagonals as `straight` in the spec, or set them afterwards with
+  `line_shape: "diagonal"`.
 - **`vertical: false`** for horizontal rows; each lane's `width` is its row *height*, and the **widths must sum to the pool `boundingBox.h`**. Place each node with a `boundingBox.y` inside its band; use `assistedLayout: false` for deterministic placement.
 - **`fontSize` 10 on every node** (see §3). Short labels balloon otherwise. The create-spec does not reliably carry font size — pin every node after create via `lucid_edit_item` (`font_size: 10`).
 - **Colours via `style.fill.color`** — copy hexes from `encoding-table.md`. No emoji in text (renders as black boxes); `·`, `—`, `/`, `.` are fine.
 - **No native legend / "diagram key" primitive.** Build a legend as **filled rectangles whose own text is the label** (one colour chip per role). An empty rectangle shows a `Text` placeholder in exports — always put the label *inside* the chip, not in a separate text box beside an empty swatch.
-- **Pre-flight validate the JSON** (parse it; check lane-width sum, every line endpoint id exists, every node `y` in band) — cheap, and saves a bad create.
+- **Pre-flight validate the JSON** — cheap, and saves a bad create. Parse it, then check: lane-width sum
+  equals the pool dimension · every line endpoint id exists · every node `y` sits inside one band rather
+  than straddling two · no two nodes overlap · every `lineType` is one of the three legal values · **no
+  column holds more than 3 nodes counted across all lanes (V14)**. The last one is the check that catches
+  a matrix before it is drawn, which is the only cheap time to catch it.
 - **Then verify visually**: export a PNG, look, and nudge with `lucid_edit_item` (Capitalized styles — see §4). The create tool **keeps the shape `id`s you authored**, so you can target nodes by those ids afterward.
 
 ## 9) Two registers: audit-detail vs presentation-clean
