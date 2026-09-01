@@ -104,7 +104,11 @@ A full worked read example is in `references/worked-examples.md` (Example 1).
 3. **Place each step in a lane** using `references/scaffold.md`. If a step doesn't fit any lane cleanly, that's a smell — re-check step 1.
 4. **Pick shape + color** from `references/encoding-table.md`. Don't guess hex values; copy them from the table.
 5. **Build in stages — the 7-step layering protocol** (learned on `[1.6] Slide production`, 2026-06-12). Construct the chart in this fixed order; when the user is reviewing along, ship each structural stage for a look before adding the next:
-   1. **Draw the entire process** — every step Start → End in a single `Process` lane: process steps, decision gates, HITL sign-offs, alt paths. Use final shapes + colours from this first pass so later stages only add lanes, never recolour.
+   1. **Draw the entire process** — every step Start → End in a single `Process` lane: process steps,
+      decision gates, HITL sign-offs, alt paths. Use final shapes + colours from this first pass so later
+      stages only add lanes, never recolour. **Decide the spine here (V14):** one path runs left to right,
+      one node per column; every *other* path leaves as a labelled `offPageLink` exit with its own chart.
+      Choosing this late is a re-architecture, not a nudge — pick the path the skill spends its detail on.
    2. **Decouple human vs machine** — split into `Process · human (HITL)` above `Process · machine (AI + rules)`.
    3. **Ingest user input & output** — add the FE lane on top with the manual input/output touchpoints (red family; darker = input, lighter = output). Start/End move into this lane.
    4. **Ingest database & knowledge** — add `Data base · durable store` + `Knowledge base · RAG references` lanes below; wire the dashed grey plumbing (saves, retrievals) — one edge per RAG source into its consuming stage.
@@ -145,7 +149,7 @@ A worked draft example (CSV upload → AI extract → reviewer approve → Invoi
 ## 5) VALIDATE — lint against the convention
 
 1. **Read** the chart (§2).
-2. **Walk every rule** in `references/validation.md` (V1–V13; V11–V13 are soft readability checks).
+2. **Walk every rule** in `references/validation.md` (V1–V14; V11–V13 are soft readability checks, V14 is hard).
 3. **Output format**:
 
 ```
@@ -163,6 +167,8 @@ If clean, say so explicitly — don't pad. If violations, group by severity (har
 
 These are the failure modes seen most often. Catching them at draft/edit time saves a re-do:
 
+- **A matrix instead of a spine.** Stacking each alternative path as its own row inside one lane makes a grid
+  the reader has to scan in two dimensions. One path is the spine; the rest are off-page exits. See V14.
 - **Cylinders everywhere.** `DatabaseBlock` = durable system-of-record only. RAG / knowledge = green `DocumentBlock` (dark green). See V1.
 - **Decision colored dark-blue because "the LLM decides."** Wrong. LLM *suggests*, deterministic gate *enforces*. Decisions stay purple. See V3.
 - **Dropping the swimlane scaffold "because the flow is simple."** The scaffold is mandatory. Even tiny flows use it. See V8.
@@ -211,7 +217,7 @@ For the **clean register**, apply these moves (modelled on Lucid's stock "AI pro
 
 1. **Add a legend** (colour-chip key) — the single biggest readability win; viewers shouldn't have to memorise the colour code.
 2. **Add a one-paragraph "How to read this" panel** beside the flow.
-3. **One node per real step, generously spaced**, grid-aligned (sign-offs directly above their stage; stores directly below).
+3. **One node per real step, generously spaced**, grid-aligned (sign-offs directly above their stage; stores directly below) — **and ≤3 nodes per column, counted across all lanes (V14)**.
 4. **Short labels** (verb+noun, ≤4 words). Push detail into the legend / overview.
 5. **Label only decisions and gate outcomes.** Demote plumbing (saves / loads / consults) to thin **dashed grey** lines so they recede beneath the main flow.
 6. **Light lane headers with dark, legible titles, one strong colour per role, no empty lanes** (drop or merge a lane with nothing in it — e.g. collapse an empty `External user` band).

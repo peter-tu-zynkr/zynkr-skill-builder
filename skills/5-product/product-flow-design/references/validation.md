@@ -1,6 +1,6 @@
 # Validation / Lint Rules
 
-Thirteen rules (V1–V13). Each cites the underlying principle (from `architecture-principles.md`), how to detect it in Lucid-JSON terms, and how to fix it. Apply them on every read and as a self-check after every draft/edit.
+Fourteen rules (V1–V14). Each cites the underlying principle (from `architecture-principles.md`), how to detect it in Lucid-JSON terms, and how to fix it. Apply them on every read and as a self-check after every draft/edit.
 
 ---
 
@@ -41,6 +41,13 @@ Thirteen rules (V1–V13). Each cites the underlying principle (from `architectu
 - **Principle**: scaffold convention (see `scaffold.md`).
 - **Detect**: the three top swimlanes are not in this order from top to bottom.
 - **Fix**: reorder. Same content, but lanes vertically stacked FE → BE → DB.
+
+### V14 — One spine; at most 3 nodes per column
+
+- **Principle**: `SKILL.md` §9 ("One node per real step... grid-aligned — sign-offs directly above their stage, stores directly below"). That principle was always there; it had no rule and nothing checked it. **Owner ruling 2026-09-01** made it one.
+- **Detect**: any column (nodes sharing a centre-x band, counted **across all lanes**, not per lane) holding **4 or more** nodes; or one lane stacking three-plus parallel rows of process nodes, so the chart reads as a grid rather than a line.
+- **Fix**: pick **one** path as the spine and run it left to right, one node per column. Alternative paths leave the spine as labelled `offPageLink` exits — each gets its own chart, and rejoins (if it does) as a thin dashed grey edge, never as another row. Sign-offs (HITL) sit directly **above** the stage they gate; stores sit directly **below** the stage that writes them. That budget keeps a column at ≤3: spine node + one sign-off *or* store + one knowledge source.
+- **Why it's hard, not soft**: this is not cosmetics. A reader follows a process along one axis; parallel branch rows force them to read in two dimensions and the sequence is lost. Fixing it late means re-deciding what the chart is *about*, which is a re-architecture, not a nudge — so it belongs before the draft, not in the polish pass.
 
 ---
 
