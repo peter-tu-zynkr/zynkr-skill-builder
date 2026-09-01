@@ -1,0 +1,21 @@
+{
+  "name": "zynkr-content-writer",
+  "description": "Zynkr's article writing pipeline: an orchestrator plus seven stage agents, from ideation through drafting, editing, titles and CTA. Writing knowledge is read from the Drive folder [@] 寫作指南 at runtime; ./.claude/skills/write-article/references/ holds offline mirrors.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Peter Tu",
+    "email": "peter_tu@zynkr.ai"
+  },
+  "repository": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+  "keywords": ["content", "writing", "editorial", "zh-TW"],
+  "skills": ["./.claude/skills/"],
+  "agents": [
+    "./.claude/agents/content-idea.md",
+    "./.claude/agents/content-style-select.md",
+    "./.claude/agents/content-draft.md",
+    "./.claude/agents/content-editor.md",
+    "./.claude/agents/content-reader.md",
+    "./.claude/agents/content-title.md",
+    "./.claude/agents/content-cta.md"
+  ]
+}

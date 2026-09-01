@@ -4,6 +4,15 @@ description: "Orchestrates the full article writing pipeline — from ideation t
 user-invocable: true
 disable-model-invocation: false
 argument-hint: "[topic or stage]"
+category: brand-marketing
+project: zynkr-content-writer
+platform: claude
+status: Done
+author: Peter Tu
+sheetId: "1.01"
+input: "Article topic or idea — can be vague, an outline, a draft, or completed copy at any stage"
+process: "7-stage pipeline orchestrated by /zynkr-content-writer — ideation, style selection, drafting, editing, reader perspective scoring, title generation, CTA writing"
+output: "Publication-ready article with SEO-optimized title and CTA, produced incrementally stage by stage"
 ---
 
 # Article Pipeline Orchestrator
