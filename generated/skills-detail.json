@@ -19,7 +19,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "The GM operating-rhythm skill for a small company run from Google Docs/Sheets. Reads the source-of-record chain in precedence order (strategy alignment section → H2 project tracker (status SOR) → the ops team's weekly log → OKR & KPI tracker → per-function progress sheets), derives per-item state (ends-soon · overdue · undated · propose-done · direction-unlabelled), and produces a fixed-shape WEEKLY GM BRIEF: runway line first, the ≤3 things only the GM can unblock, two clocks, P0/P1 status by LOB, per-owner rollup, KPI off-target + asks, decisions register, deliberately-not-this-week, machine health. Delivers as a Gmail draft (interactive) or an auto-sent email (the Monday cloud routine rendered from this skill). Trigger EAGERLY on \"/zynkr-gm\", \"zynkr-gm week\", \"GM 週報\", \"這週重點\", \"本週 focus\", \"本月重點\", \"what should I focus on this week\", \"as a GM what will I do this week\", \"week focus\", \"month focus\", \"GM brief\", \"run the GM pass\", \"哪些 P0 delay 了\", \"KPI 有沒有 off target\", \"H2 進度盤點\", \"幫我盤一下 H2 專案\", or any ask for a company-level (not one project's) week/month focus, progress roll-up, or KPI variance. BOUNDARY — do NOT hijack: /project-status-update (one project's weekly status email from its own tracker), /consult-status-report and /consult-governance (consulting portfolio), /admin-governance (file-level Drive↔local index drift), /admin-meeting-prep (per-meeting packets), /skill-finder (which skill for a task), /planning-tracker-sync (the TEAM weekly tracker block, nudges and snapshots — it consumes this skill's derived-state rules, but the founder brief stays here), the rest of the planning suite 0.03-0.10 (a planning CYCLE: pre-work, offsite synthesis, tracker build, OKR reconcile), /curate-livestream-transcripts (it produces the notes this skill only health-checks). This skill reads broadly and writes narrowly: it never edits the tracker, the onboarding master doc, or another owner's doc.",
     "input": "Optional sub-command (week | progress [LOB] | send) and an optional 'as of' date; identifiers come from the private config (~/.config/zynkr/gm.json) or the rendered routine prompt.",
@@ -51,7 +51,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Build the BEFORE-THE-ROOM pack for a Zynkr planning session (H1 / H2 / YE): copy the session-workbook template Sheet and re-fill its five tabs for the new cycle (Read Me · Agenda 8 blocks · Pre-work by LOB 8 rows · Laundry List + Eisenhower seeds · Eisenhower Matrix) from the Main Tracker, the OKR tracker, the per-LOB plan Docs and the 1:1 Docs; write per-owner one-pager text blocks into a 「Pre-work — <cycle>」 Doc; hand a 16-slide template-fill request to /zynkr-slide (or print the slide text if it is not installed); and print a logistics checklist + calendar-invite text. Trigger on /planning-prework-pack or when Peter says \"準備 planning session 的會前資料\", \"做 H2/YE 規劃會的 workbook 跟 deck\", \"會前 pre-work\", \"出規劃會 agenda 跟 pre-work\", \"prep the offsite\", \"build the planning pre-work pack\". Shows the tab-by-tab plan first, writes only on confirmation, marks every number's source, never creates the calendar event or sends anything without an explicit yes. Distinct from planning-evidence-pack (numeric Scoreboard tab — consumed here), planning-1on1-annual-digest (one person's 年度計畫 Doc — only Top-3 lines lifted), planning-session-synth (AFTER the room), zynkr-slide (RENDERS the deck; this skill only writes the request) and project-status-update (the course-project weekly — bare 「週報」 stays there).",
     "input": "Cycle label (H1/H2/YE) + session date; optional start time, 1:1 look-back weeks (default 8), pasted runway/shipped numbers, ID overrides (tracker, plan Docs, 1:1 Docs, hub)",
@@ -83,7 +83,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Turn ONE teammate's shared 1:1 Doc (weekly WB entries), their LOB plan Doc and the tracker rows they own into a zh-TW 「年度計畫＿<name>」 Google Doc in the planning hub folder — six fixed sections (過去一年成果總覽 · 策略透鏡 C1–C4 · 復盤 放大／收割／停止或改造 · 年度計劃 3–5 主軸 · OKR · 接下來) with every claim tagged to its WB date, plus a 12-line slide summary block for that person's session one-pager. Trigger on /planning-1on1-annual-digest or when Peter says \"幫 <name> 整理年度計畫\", \"從 1:1 文件整理 <name> 的年度回顧\", \"把 <name> 的 1:1 筆記變成年度計畫\", \"做 年度計畫＿<name>\", \"annual digest for <name>\", or hands over a 1:1 Doc ID before a planning session. Distinct from planning-prework-pack (ALL owners → session workbook + deck; it CONSUMES this skill's slide block), from planning-evidence-pack (company-level numbers scoreboard), from planning-session-synth (digests the SESSION transcript, not 1:1 docs), and from project-status-update (the course-project WEEKLY — it owns bare 「週報」/「weekly report」). Not a performance review: it never grades the person, never invents metrics, never writes into the 1:1 Doc.",
     "input": "One person's name (→ 1:1 Doc via sources §B, or a Doc ID) · optional cycle H1/H2/YE (default YE) · optional window (default last 12 months) · optional LOB / plan Doc override",
@@ -115,7 +115,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "The \"looking back in numbers\" scoreboard for a Zynkr planning cycle (H1 / H2 / YE). Seeds KPIs from the session workbook's Pre-work by LOB tab + the OKR tracker's KRs, routes each to ONE readable source (Main Tracker 完成 counts · planning-tracker-sync's `tracker-snapshots` tab · OKR status · Calendar event counts by title pattern · Gmail Fireflies recap counts · numbers the user pastes; zynkr-gm's kpi-map.md when installed), writes a `Scoreboard` tab (KPI · source · <cycle>-start · <cycle>-end · Δ · note) into the cycle workbook or a new hub Sheet, plus the five-tile numbers-slide text. Unreadable → 「（待補）」+ the source needed; never estimates; read-only against every source. Trigger on /planning-evidence-pack or \"數字回顧\", \"把這個週期的數字拉出來\", \"做 scoreboard\", \"KPI 計分板\", \"上半年／全年數字\", \"evidence pack\", \"looking back in numbers\", \"pull the numbers for the offsite\". Distinct from planning-prework-pack (consumes the scoreboard), planning-tracker-sync (weekly agenda + snapshots — a source here), zynkr-gm (founder's weekly GM brief + KPI-variance asks; owns 「GM 週報 / 這週重點 / H2 進度盤點 / KPI 有沒有 off target」), planning-1on1-annual-digest (one person's year), and project-status-update (owns bare 「週報」).",
     "input": "Cycle label (H1/H2/YE) + as-of date; optional session-workbook Sheet ID; optional pasted numbers (Kit · LINE · marketplace · platform · cash/burn/runway) and ID overrides",
@@ -147,7 +147,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Same-day digestion of a Zynkr planning offsite (H1 / H2 / year-end): turn the session transcript + whiteboard photos into the Main Tracker's working tabs — verbatim 「② 白板原文」 (pen colour + 判讀信心 高/中/低), the MECE re-cut 「③ 去重與歸類決策」 + 「④ MECE 檢查」 with every merge/split/move ruling written down, the 「<cycle> 回顧總結」 retro table with 5 重點結論, the README tab, a normalized item list handed to planning-tracker-builder, and the recap mail as a Gmail DRAFT (never sent). Trigger on /planning-session-synth or when Peter says \"整理 offsite 白板\", \"白板轉 tracker\", \"整理 planning 逐字稿\", \"做回顧總結\", \"H2/年度 planning recap\", \"digest the planning session\", \"whiteboard to tracker\", or hands over an offsite transcript and/or board photos. Distinct from project-note-specialist / consult-session-notes (tidy ONE meeting into a Summary/Progress/Blockers/Next shape — no whiteboard, no MECE tabs), from curate-livestream-transcripts (weekly batch summaries of livestream Docs), from planning-tracker-builder (takes THIS skill's item list and adds owners / priority / the SOR tab), and from planning-prework-pack (before the room).",
     "input": "Cycle (H1/H2/YE) + transcript (Doc ID, pasted text or Fireflies recap) + whiteboard photo(s) (Drive image IDs or local files); optional speaker map, recap recipients, tracker ID",
@@ -179,7 +179,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Build or extend Zynkr's planning Main Tracker (the cycle's system of record) from a NORMALIZED item list — the planning-session-synth handoff or a pasted table. Fresh cycle: copy the template tracker (never edit it) → 「<year> <cycle> Planning Main Tracker」 → cycle-named tabs → fill the SOR tab with L1 header rows + N.NN numbering, 重要×緊急 → Priority formula, the 專案項目小記 pivot, 狀態 colours. Existing tracker: fill the empty SOR tab session-synth left, append rows under the right L1 block, or add a new tab — never overwrite the SOR tab in place, never renumber. Prints a LINT REPORT (P0 cap > 6 / > 25%, owner > 3 P0, items 掛 All, missing owners/dates, L2 off-taxonomy, duplicate 項目, P3 not 放棄) and the C1 cash pre-mortem before writing; lint warns, never blocks. Trigger on /planning-tracker-builder or \"建 tracker\", \"把項目清單做成 Main Tracker\", \"建立 YE Planning Main Tracker\", \"把正規化清單寫進 tracker\", \"把這些專案 項目排進 tracker\", \"build the planning tracker\", \"extend the tracker with these items\", \"lint the project list\". Distinct from planning-session-synth (upstream — transcript + whiteboard → normalized list), planning-tracker-sync (downstream weekly READ; never builds), planning-suite-reconciler (docs/OKR sheet reconcile TO the tracker) and project-status-update (course-project weekly; owns bare 「週報」).",
     "input": "A normalized item list (session-synth handoff or pasted rows: L1/L2 · 項目 · 重要 · 緊急 · 負責人 · dates · 備註) + owner/priority decisions · cycle (H1/H2/YE) · optional existing tracker ID",
@@ -211,7 +211,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Propagate a FINALIZED planning Main Tracker into Zynkr's satellite planning suite after an H1 / H2 / YE planning session: for the integrated plan Doc and every per-LOB plan Doc it composes and inserts a dated top-of-body Refresh addendum (thesis sharpened · what changed vs the previous plan · open decisions · the P0 list with owners · management fixes from the retro), and for the OKR & KPI Tracker it rebases the OKRs (Objective = 策略主軸, KR = P0 items with Owner + Tracker #) and mirrors P0+P1 Initiatives into NEW dated tabs. Prints every addendum and the tab plan, takes ONE confirmation for the whole batch, then writes — and never edits an existing body, never touches the tracker. Trigger on /planning-suite-reconciler or when Peter says \"同步計畫文件\", \"把 tracker 同步到各部門計畫\", \"更新計畫文件的 addendum\", \"把 OKR 對齊 tracker\", \"reconcile the planning suite\", \"write the plan addenda\", \"rebase the OKRs to the tracker\", \"propagate the tracker\". Distinct from planning-tracker-builder (BUILDS the tracker upstream — this skill only reads it), from planning-lob-gap-audit (a per-LOB report-only audit that READS the addendum this skill wrote), and from admin-governance (local _INDEX.md ↔ Drive index sync — index entries are its job, not this skill's).",
     "input": "The finalized Main Tracker (SOR tab) + cycle label; suite IDs come from ./references/planning-sources.md unless overridden; optional extra Docs/Sheets to include, 'overwrite' flag",
@@ -243,7 +243,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Team-side weekly heartbeat on the COMPANY Planning Main Tracker (SOR tab of the H1 / H2 / YE cycle) — zynkr-gm's record-side companion. Reads the `<cycle> 專案項目` tab, derives per-item state with zynkr-gm's rules VERBATIM (ENDS_SOON · OVERDUE · UNDATED · STALLED · PROPOSE_DONE · DIRECTION_UNLABELLED — its scripts when installed, else the copied rules) and prints the zh-TW Team Weekly agenda block in one fixed six-section shape (cadence → OVERDUE／ENDS_SOON → UNDATED／掛 All → 各 owner P0/P1 + Δ → PROPOSE_DONE／上週完成 → 還在摸索／已定案) plus per-owner nudge blocks (Gmail DRAFT only on request; never sends). Writes only the OKR-tracker snapshot tabs: `snapshot` refreshes `tracker-latest` and appends to `tracker-snapshots` in the OKR & KPI Tracker — never a Main Tracker cell. `--retro` prints a looking-back draft for planning-prework-pack. Ships no cron; documents a read-only /schedule string. Trigger on /planning-tracker-sync or \"H2 tracker 同步\", \"tracker 同步\", \"幫我出 Team Weekly 的 tracker 區塊\", \"tracker 上哪些項目缺日期要 nudge\", \"誰該被 nudge\", \"snapshot the tracker\", \"拍一張 tracker snapshot\", \"year-end retro draft\", \"從 tracker 出回顧草稿\". NOT the founder GM brief — zynkr-gm owns 「GM 週報 / 這週重點 / 本週 focus / 本月重點 / 哪些 P0 delay 了 / H2 進度盤點 / KPI off-target」 and every company-level focus / roll-up / variance ask. NOT bare 「週報」/\"weekly report\"/\"project weekly\" or the Monday cron — project-status-update owns those.",
     "input": "Cycle (H1/H2/YE) + as-of date (default today); optional: pasted last block, focus text, flags snapshot / --retro / --draft / --since / --force, --tracker / --okr ID overrides",
@@ -275,7 +275,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-17",
     "description": "Audit ONE line of business (an L1 LOB such as 3.0 Operations) after a planning cycle: inventory its Drive folder, read its plan Doc + Refresh addendum and its rows in the planning Main Tracker, and cross-check five gap classes — P0/P1 items with no doctrine/SOP or owner-named plan, role docs / SOPs that contradict the plan (stale tools, stale owners), docs the plan cites that do not exist, superseded snapshots without a [SUPERSEDED] banner, and open decisions the plan needs from the founder. Produces a wave-ordered heal list (SOR sync → banners → build missing doctrine → rewrites) with 可交 Claude flags and the owning skill per fix, written as a NEW report Doc 「[N.0.1] <LOB> — <cycle> Gap Audit & Heal Plan（YYYY-MM-DD）」 plus a NEW 「行動追蹤表」 Sheet in the LOB folder. Report-only: it never edits, renames or moves an existing Doc, and never executes a fix. Trigger on /planning-lob-gap-audit or when Peter says \"部門缺口稽核\", \"幫我做 3.0 的 gap audit\", \"檢查營運部門的文件有沒有跟計畫對齊\", \"文件缺口盤點\", \"做一份 heal plan\", \"哪些 SOP 過時了\", \"audit the ops docs against the H2 plan\", \"LOB gap audit\", \"gap audit and heal plan for <LOB>\". Distinct from admin-governance (local _INDEX.md ↔ Drive INDEX sync — metadata only, all LOBs, weekly), from consult-governance (the consulting ENGAGEMENT portfolio — a pattern source only), and from planning-suite-reconciler (WRITES the plan addendum this skill only READS — this skill writes no addenda).",
     "input": "One L1 LOB number + cycle label; plan Doc / tracker IDs from ./references/planning-sources.md; the LOB Drive folder ID (admin-governance's folder map if installed, else asked)",
@@ -307,7 +307,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "input": "The user provides an abstract philosophical question and answers assistant's prompts.",
     "process": "Use single-step Socratic questions, give a score and brief comment, add a short parable if shallow, and guide through ~5 rounds toward clarity.",
@@ -345,7 +345,7 @@
       "subagent",
       "0-optional"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "description": "Use this agent when you want to brainstorm, explore, or develop article ideas through guided Socratic dialogue. This agent acts as a thought partner to help you uncover angles, deepen concepts, and refine your ideas into compelling article premises.\\n\\n<example>\\nContext: The user wants to explore a vague topic and turn it into a concrete article idea.\\nuser: \"I want to write something about AI and creativity but I'm not sure what angle to take.\"\\nassistant: \"Let me bring in the Socratic ideation partner to help you explore this topic.\"\\n<commentary>\\nSince the user is trying to ideate and refine an article concept, use the Task tool to launch the content-idea agent to guide them through a Socratic dialogue.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user has a rough article idea and wants to stress-test or deepen it.\\nuser: \"I'm thinking about writing an article on why remote work is overrated. Can you help me think through it?\"\\nassistant: \"Great starting point. Let me use the Socratic ideation partner to help you pressure-test and develop this idea further.\"\\n<commentary>\\nSince the user wants to develop an existing article idea, use the Task tool to launch the content-idea agent to probe the idea with questions and help refine the core thesis.\\n</commentary>\\n</example>\\n\\n<example>\\nContext: The user is stuck and has no clear direction but knows they want to write something.\\nuser: \"I feel like I have something to say about leadership but I can't quite articulate it.\"\\nassistant: \"Let me use the Socratic ideation partner to help you surface and articulate what's on your mind.\"\\n<commentary>\\nSince the user has a latent idea they can't fully express, use the Task tool to launch the content-idea agent to use questioning techniques to draw out the core insight.\\n</commentary>\\n</example>",
     "input": "User gives article draft (topic + core ideas); templates and style guide are preloaded.",
@@ -385,7 +385,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Article fission — extract outline + summary from any popular article, then run 3 rounds of reflective dialogue to surface the writer's own refined take, ending with a new actionable outline ready for style + writing handoff.",
     "input": "User provides an article draft; a Style Guide exists in the knowledge base.",
@@ -417,7 +417,7 @@
       "subagent",
       "1"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when a user has an article draft (topic + initial thoughts) and needs help selecting a suitable article structure and mapping out section key points. Use this agent when the user says things like \"Help me pick a structure for my article\", \"I have a draft idea, what structure should I use?\", \"幫我選文章架構\", or \"我有初稿想法，幫我規劃結構\". <example> Context: The user has a topic and some initial thoughts and wants to structure their article. user: \"我想寫一篇關於如何利用 AI 提升內容創作效率的文章，有一些初步想法，幫我選一個合適的架構。\" assistant: \"Let me bring in the content-style-select agent to help you choose the best structure and plan out your section key points.\" <commentary> Since the user has a draft topic and wants structure guidance, use the Task tool to launch the content-style-select agent. </commentary> </example> <example> Context: The user wants to plan their article before writing. user: \"Help me pick a structure for my article about remote work productivity.\" assistant: \"I'll use the content-style-select agent to recommend the most fitting structures for your topic.\" <commentary> Since the user needs structure selection help, launch the content-style-select agent. </commentary> </example>",
     "input": "User provides an article for critique; limited Memory (SEO + style prefs) may be used.",
@@ -457,7 +457,7 @@
       "subagent",
       "2"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when the user has a confirmed article structure and section key points (typically from the content-style-select handoff summary) and is ready to draft the article paragraph by paragraph. Use this agent when the user says things like \"幫我開始撰寫文章\", \"I have my structure and key points ready, let's start drafting\", \"開始逐段撰寫\", or \"可以開始寫了\". <example> Context: The user has received a handoff summary from content-style-select and is ready to write. user: \"架構和要點都確認了，幫我開始撰寫文章。\" assistant: \"Let me bring in the content-draft agent to draft the article paragraph by paragraph.\" <commentary> Since the user has a confirmed structure and key points and wants to start writing, use the Task tool to launch the content-draft agent. </commentary> </example> <example> Context: The user wants to start drafting after planning is complete. user: \"I have my structure and key points ready, let's start drafting.\" assistant: \"I'll use the content-draft agent to draft your article section by section.\" <commentary> Since the user is ready to draft, launch the content-draft agent. </commentary> </example>",
     "input": "User provides an article, topic, or file; limited Memory (SEO + style preferences) may be referenced.",
@@ -497,7 +497,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Drafts Peter's weekly Chinese newsletter from the user's article outline or topic idea, shaping it into a structured handoff for the /zynkr-content-writer pipeline. Use this skill whenever Peter says \"幫我寫電子報\", \"來寫電子報\", \"寫newsletter\", \"電子報大綱\", or shares a topic/outline and wants it shaped into a newsletter. Trigger even if Peter only gives a rough idea — the skill will structure it into a full outline.",
     "input": "An article draft provided by the author.",
@@ -529,7 +529,7 @@
       "subagent",
       "3"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when the user has a completed article draft and wants editorial review and improvement suggestions. Use this agent when the user says things like \"幫我校稿\", \"review my article draft\", \"文章寫好了，幫我編輯\", \"check for edits\", or \"可以校稿了\". <example> Context: The user has a completed draft from content-draft and wants editorial review. user: \"初稿完成了，幫我校稿。\" assistant: \"Let me bring in the content-editor agent to review your draft and provide improvement suggestions.\" <commentary> Since the user has a completed draft and wants editorial review, use the Task tool to launch the content-editor agent. </commentary> </example> <example> Context: The user wants to check their article for edits. user: \"文章寫好了，幫我編輯一下。\" assistant: \"I'll use the content-editor agent to review your article and suggest edits.\" <commentary> Since the user wants editorial review of a completed draft, launch the content-editor agent. </commentary> </example>",
     "input": "Completed draft",
@@ -569,7 +569,7 @@
       "subagent",
       "35-optional"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when the user has a completed article and wants a reader's perspective review with scoring and critical analysis. Use this agent when the user says things like \"幫我審稿\", \"讀者視角分析\", \"reader review\", \"批判性評估\", \"幫我評分\", or \"以讀者角度來看\". <example> Context: The user has a completed article and wants critical feedback from a reader's perspective. user: \"文章寫好了，幫我做讀者審稿。\" assistant: \"Let me bring in the content-reader agent to analyze your article from a critical reader's viewpoint.\" <commentary> Since the user wants a reader's perspective review of their article, use the Task tool to launch the content-reader agent. </commentary> </example> <example> Context: The user wants to score and evaluate their article before publishing. user: \"幫我從反對者角度審視這篇文章。\" assistant: \"I'll use the content-reader agent to critically evaluate your article and provide a detailed score.\" <commentary> Since the user wants critical analysis from an opposition perspective, launch the content-reader agent. </commentary> </example>",
     "input": "A full or partial article text, optionally with a writing or critique goal.",
@@ -609,7 +609,7 @@
       "subagent",
       "4"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when the user has a completed article and wants SEO title suggestions, or when the user provides a topic and wants a full SEO content strategy. Use this agent when the user says things like \"幫我想標題\", \"SEO標題建議\", \"generate titles\", \"幫我做SEO\", \"文章標題\", \"SEO策略\", or \"幫我規劃關鍵字\". <example> Context: The user has a completed article and wants SEO title options. user: \"文章寫好了，幫我想10個SEO標題。\" assistant: \"Let me bring in the content-title agent to generate SEO-optimized titles for your article.\" <commentary> Since the user has a completed article and wants SEO titles, use the Task tool to launch the content-title agent. </commentary> </example> <example> Context: The user has a topic and wants a full SEO content strategy. user: \"我想寫關於外商面試的文章，幫我規劃SEO策略。\" assistant: \"I'll use the content-title agent to build a full SEO strategy for your topic.\" <commentary> Since the user wants an SEO strategy for a given topic, launch the content-title agent. </commentary> </example>",
     "input": "User provides text in English or another language.",
@@ -649,7 +649,7 @@
       "subagent",
       "5"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triggered when the user has a completed article and wants CTA (Call-To-Action) suggestions. Use this agent when the user says things like \"幫我寫CTA\", \"CTA建議\", \"write a CTA\", \"幫我加CTA\", \"文章結尾CTA\", or \"call to action\". <example> Context: The user has a completed article and wants CTA options to place at the end. user: \"文章寫好了，幫我想三個CTA。\" assistant: \"Let me bring in the content-cta agent to analyze your article and suggest the best CTAs.\" <commentary> Since the user has a completed article and wants CTA suggestions, use the Task tool to launch the content-cta agent. </commentary> </example> <example> Context: The user wants a CTA that matches the article's goal. user: \"幫我根據這篇文章選合適的CTA。\" assistant: \"I'll use the content-cta agent to read the article and generate three matched CTA options.\" <commentary> Since the user wants matched CTA suggestions for their article, launch the content-cta agent. </commentary> </example>",
     "input": "Unstructured user context (intent, knowledge, audience, workflow) plus two reference documents: AI rules (K1) and role distribution (K2).",
@@ -689,7 +689,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Put a newsletter in its proper place — reconcile it between Google Docs and the Notion Content DB in EITHER direction (Doc-first OR Notion-first), and file the Doc into the newsletter Drive folder. The goal is that the content ends up correctly placed and cross-linked regardless of which was created first. Use whenever the user shares a Google Doc and/or a Notion Content-DB page and wants them synced, filed, archived, or \"put in the right place\". Triggers on \"幫我放上 Notion\", \"sync to Notion\", \"同步到 Notion\", \"add this to Notion\", \"幫我歸檔電子報\", \"file this newsletter\", \"put this in the right place\", \"從 Notion 的想法建 Doc\", or any message pairing a Doc and/or a Notion page with sync / file / archive intent.",
     "input": "A Google Doc URL and/or a Notion Content-DB page (idea/stub) for a newsletter — in either order",
@@ -721,7 +721,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Translate English (or any source language) into natural, conversational Traditional Chinese using Taiwanese expressions and tone. Removes the 'translation smell' that comes from word-for-word renderings. Also supports a reverse zh-TW → English mode for producing English 'flagship' versions of SEO articles (used by seo-article-pipeline for AEO reach in English-dominant AI engines).",
     "input": "Text in English or another language (plain text, paragraph, document, or code-block-free passage)",
@@ -753,7 +753,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "The orchestrator for Zynkr SEO content production: it chains the stages of the v2 flowchart into one pipeline running from brand material all the way to a published article on the live website. The first half (persona → seed questions → angles → keyword map → intent classification → demand validation → Brief → outline/FAQ) calls each SEO skill; the second half (drafting → titling → proofreading) reuses the existing write-article sub-agents; then it does SEO setup (`seo-article-finalizer` produces a publish-ready Google Doc), publishes to the live website via `seo-publish-article` (which also archives the Doc + updates the SEO tracker), and optionally produces the EN flagship. Triggers when the user says 「跑 SEO 文章流程」, 「開始寫一篇 SEO 文章」, 「/seo-article-pipeline」, or hands over a brand/article material packet.",
     "input": "A brand material packet (first time) or an article material packet (per article); or a SEO_PACKET handoff packet from any stage",
@@ -785,7 +785,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "First leg of the SEO content pipeline: reads brand material (from the SEO knowledge-base folder or a brand-material pack) and builds personas / consumer profiles of the target readers and prospects, to serve as the basis for downstream keyword and topic work. Triggers when the user says '幫我建立 SEO 人物誌', '先做受眾輪廓', '開始 SEO 流程', or hands over a brand-material pack. Does personas only — no keyword work, no article writing.",
     "input": "Brand material (brand culture, website content, industry background, product lineup, best-selling products) — from the SEO knowledge-base Drive folder or a brand-material pack",
@@ -817,7 +817,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Second leg of the SEO pipeline: based on the persona, brainstorm the questions your target readers actually ask before buying, then work backward from those questions to seed keywords. Maps to the v2 flowchart step 'brainstorm common questions + interview-answer common questions and list keywords'. Triggers when the user hands over the persona handoff packet or says '發想常見問題' or '挖種子關鍵字'. Only brainstorms questions and seed keywords; it does not do difficulty analysis and does not write articles.",
     "input": "The SEO_PACKET ▸ Persona handoff packet from seo-persona-builder",
@@ -849,7 +849,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-29",
     "description": "Third leg of the SEO pipeline: working from an SEO expert's perspective plus competitor URLs, surface the content angles and differentiation opportunities for 'where we can do better.' Maps to the v2 flow diagram step 'think about strengthening from the SEO angle + reference competitor URLs to think about strengthening.' Triggers when the user hands over a Questions handoff packet, provides competitor URLs, or says 「找 SEO 切角」. It only finds angles — it does not build the keyword map and does not write the article.",
     "input": "The SEO_PACKET ▸ Questions from seo-question-miner; optional: known competitor URLs (article reference pack)",
@@ -881,7 +881,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Fourth leg of the SEO pipeline: use keyword tools (Ubersuggest / AnswerThePublic) to expand angles and seed terms into a complete keyword map. Maps to the v2 flow diagram's 'filter keywords to build the keyword map + compile the complete keyword map'. Triggers when the user hands over an Angles handoff packet, pastes a keyword-tool export, or says '做關鍵字地圖'. Builds the map only — it does not classify intent and does not write articles.",
     "input": "seo-angle-finder's SEO_PACKET ▸ Angles; a Ubersuggest / AnswerThePublic export pasted by the user (CSV/text)",
@@ -913,7 +913,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Fifth leg of the SEO pipeline: classify the keyword map \"by search intent\" (not by product category), and offer several grouping versions to choose from. Maps to the v2 flowchart step \"classify by different classification methods, provide different versions\". Triggers when the user hands over a KeywordMap handoff packet, or says '關鍵字分類' or '按意圖分群'. Only classifies — does not validate demand or difficulty, and does not write articles.",
     "input": "The SEO_PACKET ▸ KeywordMap from seo-keyword-mapper",
@@ -945,7 +945,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-29",
     "description": "Sixth stage of the SEO pipeline: validate the real demand and competitive difficulty of keywords, compare the common patterns across the current SERP, prune unnecessary terms, and consolidate a list of target keywords and topics. Corresponds to node (6) in the v2 flow diagram. Triggers when the user hands over a Classified handoff packet or says 「驗證需求」 (validate demand) or 「整理主題清單」 (organize the topic list). It only validates and converges — it does not write the Brief and does not write the article.",
     "input": "seo-keyword-classifier's SEO_PACKET ▸ Classified; manual Google/SERP observations and tool-based difficulty data",
@@ -977,7 +977,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-29",
     "description": "Seventh stage of the SEO pipeline: for one selected topic, find the value proposition and winning angle, and produce a complete SEO writing Brief. Corresponds to the v2 flowchart step 「選擇主題：設計 Brief」. Triggers when the user hands over a Topics handoff packet, provides reference articles/forums/expert opinions, or says 「寫 Brief」. Only writes the Brief — does not design the outline and does not write the article.",
     "input": "The SEO_PACKET ▸ Topics from seo-demand-validator; optional: reference articles / forum Q&A / expert opinions (an article reference pack)",
@@ -1009,7 +1009,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-29",
     "description": "Stage 8 of the SEO pipeline: turn the SEO Brief into an article outline and FAQ section, outputting a handoff summary compatible with content-draft. Corresponds to the v2 flow diagram's 'Structure article: outline design' and 'Build FAQ'. Triggers when the user hands over a Brief handoff packet and says '設計大綱' or '做 FAQ'. Only handles the outline and FAQ; the actual writing is handed off to content-draft.",
     "input": "seo-brief-writer's SEO_PACKET ▸ Brief; optional: whether to supplement information (other reference articles), client first-hand information",
@@ -1041,7 +1041,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-29",
     "description": "The final leg of the SEO pipeline: add internal/backlinks, a meta description, and structured data (schema) to an already-proofed article, then assemble it into a publish-ready Google Doc (article body + a 「SEO 交付物」block carrying slug/seo_title/meta_description/keywords/category + links/schema) for seo-publish-article. Corresponds to node (11) of the v2 flow diagram — 'list which paragraphs can take links + add the meta description' and 'article settings'. Triggers when the user hands over an already-proofed article and says '做 SEO 設定', '上 meta', '準備上架', or '產出可上架的 Google Doc'. Does pre-publish settings + assembles the Doc; does not rewrite content, and does not publish/move/track (that's seo-publish-article).",
     "input": "An article proofed by content-editor (including the SEO review rubric) + that article's SEO_PACKET ▸ Brief",
@@ -1073,7 +1073,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "The conductor of the slide relay (sitting above the three-stage relay): fires when the user says '做一份簡報／做個 deck／幫我把這些做成投影片／做季報簡報／all-hands 簡報／deep dive 簡報／pitch deck'. I do a one-shot intelligent intake — detecting which kind of deck this is (deep-dive / business-review / data-presentation / all-hands / planning / pitch / update / teach / fundraise), taking stock of the material and storyline the user has already given, proposing a page count for the user to confirm, and gathering the must-include material and mode — then assembling a SLIDE_PACKET ▸ Brief and driving slide-storyline-designer → slide-page-splitter → slide-visual-selector → the slide-pptx skill in sequence to render the .pptx. Defaults to express mode (ask everything up front once, only asking the user to sign off at two points: storyline finalization and final file); pass the guided parameter to retain each stage's own per-stage human review. Scope boundary: I only do intent detection, context convergence, ▸ Brief injection, and relay orchestration; I don't lay out the narrative arc, split pages, choose layouts, or render the .pptx myself — those belong to the three stages and the slide-pptx skill respectively. In addition, if the user gives a fixed template (charter / one-page QBR / an existing deck to be re-skinned) or asks for a deliverable that maps onto the template library, I take the template-fill branch (copy template → extract content → fill fixed fields → recolor external templates to Zynkr brand colors by default) instead of the three-stage relay.",
     "input": "Raw slide material / topic + the message you want to convey (scattered notes, bullets, an old deck, data, or verbal key points all work), optionally with cues about the deck's...",
@@ -1105,7 +1105,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Leg 1 of the three-leg slide relay: take the raw slide material / topic + the message you want to land, and shape it into a logically smooth storyline — confirm the presentation's goal and audience, fix the core claim that runs through the whole talk, lay out an ordered narrative arc (beats), and check each transition one by one for leaps or gaps, producing the SLIDE_PACKET ▸ Storyline narrative skeleton that gets handed to slide-page-splitter for paging. Trigger me proactively when the user says '幫我設計簡報故事線', '順一下這份簡報的邏輯', '這個 deck 的敘事怎麼排', '我要做提案／募資／培訓簡報，先把骨架抓出來', '檢查我的簡報流暢度', or hands you a pile of scattered slide material wanting to clarify the structure first. Scope boundary: I only handle the storyline and logical skeleton — I don't split slide pages, don't write per-page copy, and don't pick layouts or visuals. Paging is leg 2 slide-page-splitter's job, visual specs are leg 3 slide-visual-selector's job, and rendering the .pptx is the slide-pptx skill's job.",
     "input": "Raw slide material / topic + the message you want to land (scattered notes, bullets, an old deck, or verbal key points all welcome)",
@@ -1137,7 +1137,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-02",
     "description": "The second leg of the slide-assistant three-leg relay: take the storyline approved by the previous leg (SLIDE_PACKET ▸ Storyline) and, following paging principles, slice it into a page-by-page slide list — deciding which beat each page maps to, what title it carries, how many bullet points it holds, and how dense its information should be. Trigger me immediately when the user hands over a ▸ Storyline handoff packet, or says 「幫我分頁」, 「把故事線切成投影片」, 「每頁放什麼」, 「規劃投影片頁數」, 「slide 分頁設定」. I only handle paging and per-page content allocation, handing off once ▸ Pages is produced; I do not design layout or visuals, nor render .pptx (that's slide-visual-selector and the slide-pptx skill), and I do not go back and rewrite the storyline (that's slide-storyline-designer).",
     "input": "The SLIDE_PACKET ▸ Storyline handoff packet from slide-storyline-designer (presentation goal, audience and context, core claim through-line, narrative arc beats, logic check)",
@@ -1169,7 +1169,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-02",
     "description": "The third leg of the slide-assistant three-leg relay (picks up after slide-page-splitter, then hands off to the slide-pptx skill for rendering): once it has the SLIDE_PACKET ▸ Pages, it decides page by page \"what is the most effective visual treatment for this page?\" (chart / bullets / diagram / image / comparison / big statement…), and converges each page into a render-ready per-page visual spec SLIDE_PACKET ▸ Visuals, handing it off to the installed slide-pptx skill to render into a .pptx. Trigger proactively when the user hands over a ▸ Pages handoff packet, or says 「挑視覺呈現」「選版式」「決定每頁要用什麼圖」「把分頁變成可算繪的視覺規格」「準備餵 slide-pptx」. Scope boundary: it only does the visual mapping and layout of 'content → layout archetype → pptxgenjs primitive'; it does not rewrite the storyline (that is slide-storyline-designer), does not re-paginate (that is slide-page-splitter), and does not actually generate the .pptx file (that is the slide-pptx skill).",
     "input": "slide-page-splitter's SLIDE_PACKET ▸ Pages handoff packet (already paginated, with each page carrying page number / corresponding beat / page type / title / content points /...",
@@ -1201,12 +1201,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 172988,
-    "github_forks": 20537,
+    "github_stars": 173251,
+    "github_forks": 20565,
     "first_seen": "2026-06-03",
     "description": "The 'rendering engine' that comes after the three-stage slide relay (the fourth stage, maintained by Anthropic): it takes the SLIDE_PACKET ▸ Visuals handed off by slide-visual-selector and renders it page by page into a real .pptx file, and can also read, parse, and edit existing decks in reverse. This is Anthropic's official slide-pptx skill; Zynkr does not redistribute its code — this card is only a reference and a hand-off pointer, so install it from the Anthropic source.",
     "input": "The SLIDE_PACKET ▸ Visuals per-page visual spec (handed off by slide-visual-selector), or an existing .pptx file.",
@@ -1238,7 +1238,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-14",
     "description": "Publishes a finalized post to your SOCIAL channels — Facebook, Threads & Instagram — via the Buffer API, with per-channel formatting, Instagram image support, and a preview-confirm gate before anything posts. Use when you say 'publish my post', 'post this to Threads/IG/FB', 'push this draft live to social', or 'schedule this post'. The SOCIAL publisher — not the website/blog one (seo-publish-article).",
     "input": "A finalized post/caption (plus a public image URL for Instagram), which channels to target, and whether to draft, post now, or schedule",
@@ -1270,7 +1270,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-15",
     "description": "Publishes a FINISHED SEO blog article to the live website (e.g. zynkr.ai/blog) by writing it straight into the CMS's Supabase `articles` table — the fast path, because the CMS admin page (e.g. cms.zynkr.ai/content) is an auth-gated dashboard, not a write API. Reads the article from a Google Doc (body + the embedded 「SEO 交付物」block for slug/seo_title/meta_description/keywords/category), converts it to CMS-safe Tiptap JSON + content_html (tables→lists, ▋ headings, schema-validated so it never corrupts on a later in-CMS edit), shows a preview, and on your explicit confirm publishes it live (status=published + published_at) then verifies the public URL renders. Use whenever the user already has a finished/proofed article and says 上架文章 / 發佈到網站 / 把這篇放到部落格 / 上線這篇文章 / publish this article to the blog / push this post live on the site / put this on the web — or hands over a finished article Doc and wants it on the web. Boundaries — this is the WEB/CMS publisher and should win against, but NOT be confused with: /publish-article (posts to SOCIAL channels like Threads/IG/FB via Buffer), /seo-article-finalizer (only adds meta/links/schema, does NOT publish), article DRAFTING (the SEO pipeline / zynkr-content-writer write the article), and /skill-publish (ships a SKILL to the marketplace, not an article). Trigger eagerly whenever a finished, proofed article needs to go live on the website.",
     "input": "A finished SEO article (Google Doc or markdown) with its 「SEO 交付物」metadata block, plus the local CMS repo for its Supabase URL + service-role key.",
@@ -1302,7 +1302,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-21",
     "description": "The Stage-0 program-scale SEO strategy planner for any Zynkr product or website — it sits UPSTREAM of seo-article-pipeline and turns 'plan the whole product/site's SEO' into a repeatable, callable orchestration. It reuses the existing single-topic seo-* strategy skills at program scale (seo-persona-builder → seo-question-miner → seo-angle-finder → seo-keyword-mapper → seo-keyword-classifier → seo-demand-validator) AND adds the program-level synthesis those skills never do — defining content pillars, IA decisions (CMS articles + an existing /free-resource + a new category → /blog/<slug> SSR, no microsite), money pages + tech-SEO indexability recon, an AEO citation-gap pass, a CTA ladder + KPIs, governance guardrails, a topic backlog with win-first ordering, a month-by-month calendar, and the two durable deliverables: a 14-section plan Doc (imported to the '00 SEO Strategy & Plans' Drive bucket) and a 9-tab keyword/topic Sheet (built with openpyxl, imported to '01 Keyword Maps'). On finish it hands the backlog to seo-article-pipeline, which picks one topic and writes it end-to-end. Worked examples it mirrors: the Zynkr CRM product SEO plan (Doc 1Zbw3zpnA_ev5M2Kt0fLCW-cj-_sOQhYQtB9mB6krzro + 9-tab Sheet 11W4L-iZZ0Z9pqIhPp4x6iCGCJoI4-N_zwZrWcXPR5XY) and the Zynkr AI skills-marketplace SEO plan (Doc 1X-yWQ6OXhkBS-n1MgUnNHntZrGmvcuU0HrHeLPumKPY + Sheet 17f4wSRTyHsBHjsjH4-TK1geWZab_dvMCVlhLhQIzROs). Triggers when the user says 「做 SEO 策略規劃」, 「我要一份完整的 SEO 計畫」, 「建立關鍵字庫」, 「建立關鍵字地圖」, 「規劃整個網站的 SEO」, 「plan the SEO program for this product」, 「build an SEO keyword map + content plan」, or 「/seo-program-planner」, or hands over a product/site and wants its whole-program SEO strategy. BOUNDARY — this is NOT seo-article-pipeline (that writes ONE article from an already-chosen topic; this is upstream of it and produces the backlog it draws from); it is NOT seo-keyword-mapper (that only expands keywords for a SINGLE topic; this builds the program-wide keyword pool + pillar map + IA + governance). This is the project/site-scale strategy + execution-plan producer; when done it hands the backlog to seo-article-pipeline.",
     "input": "A product/website intake (what it is, what's shipped, the live URL + money pages, target audience, the category POV to own); or a partial PROGRAM_PACKET ▸ X handoff to resume",
@@ -1334,7 +1334,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-12",
     "description": "Turn an ideated business workflow into a slide-ready FE/BE/DB architecture diagram: three horizontal lanes (前端 Front End · 後端 Back End · 資料庫 Database) with the workflow's IPO units stitched LEFT→RIGHT across them — human inputs drop ↓ from the FE lane into dark octagon process nodes chained → across the BE lane, stored knowledge feeds ↑ from the DB lane, and the output document rises ↑ back to FE at the far right, closed by exactly ONE orange 'law line' verdict bottom-right. Trigger when the user hands over a workflow (free text, an IPO breakdown, or a SLIDE_PACKET ▸ Pages entry) and says 'draw this as an architecture diagram', 'draw the FE/BE/DB view', 'architecture slide for this workflow', '畫成架構圖', '畫 FE/BE/DB', '前後端架構圖', '工作流架構圖', '把這個流程畫上簡報', or when slide-visual-selector routes an architecture-flavoured process-diagram page here. Boundaries: renders HTML/CSS slide pages (artifact decks) — for the same FE/BE/DB convention drawn into Lucid charts use product-flow-design; for generic per-page layout selection use slide-visual-selector; this skill does not write storylines, paginate, or render .pptx.",
     "input": "One ideated workflow: free text, a structured Input/Process/Output breakdown, or a SLIDE_PACKET ▸ Pages entry flagged as an architecture-style process page",
@@ -1366,7 +1366,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "9-step sales client sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag.",
     "input": "Job description or application link (or minimal role/company details).",
@@ -1398,7 +1398,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
@@ -1430,7 +1430,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Writes a personalized follow-up email for a business contact using their card info and company research. Used as a subagent in the sales-specialist pipeline.",
     "input": "Candidate CV plus target role context and prior discussion insights",
@@ -1463,7 +1463,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Turn this week's inbound \"AI 顧問服務\" consulting inquiries (the website discovery-call emails from website@zynkr.ai) into tracked work: for each real lead it creates a CRM deal in Supabase, a numbered Google Drive project folder, and a kickoff doc inside that folder. Use this skill whenever Peter runs /consult-intake or says things like \"process this week's consult inbounds\", \"處理本週顧問諮詢\", \"有沒有新的顧問諮詢\", \"check for new consulting leads\", \"turn the discovery-call inquiries into deals\", \"intake the consult requests\", or otherwise asks to triage / log inbound AI-consulting requests — even if he doesn't name the CRM, the Drive folder, or the exact phrase. It is also the skill a scheduled weekly consult-intake run should invoke. When Peter mentions consult inbounds, discovery-call inquiries, or new 顧問 leads and wants them logged, prefer this skill.",
     "input": "User’s resume content and prior contextual analysis from earlier phases.",
@@ -1495,7 +1495,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Turn a single sales / consulting meeting into tracked work. Give it a meeting transcript or notes — pasted text, a Google Doc, or a Gemini Notes link — and it produces a structured Weekly Project Update, then lays down the three things the engagement needs: a numbered Google Drive project folder, a kickoff/context Doc inside it, and a CRM deal in Supabase with a meeting + links-note + one task per \"What's Next\" item. Trigger on /consult-project-specialist or when Peter says \"turn this meeting into a project\", \"建立顧問專案\", \"把這次會議建成 deal\", \"log this engagement into the CRM\", \"document this consult\", \"建專案資料夾 + CRM\", or hands over a meeting transcript / Gemini Notes about a sales or consulting engagement and wants it tracked end-to-end. This is the document-one-engagement skill — distinct from project-note-specialist (which ONLY tidies notes into a Weekly Update and writes NO folder or CRM record) and from consult-intake (which sweeps the week's inbound website consult EMAILS in batch). When Peter has ONE meeting/debrief he wants captured as a project + deal, prefer this skill.",
     "input": "Existing resume content, prior optimization insights, and a fixed CV template",
@@ -1527,7 +1527,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Two-stage consulting discovery — pain-point intake then company vision exploration — to produce a needs definition and strategic discovery summary before any solution work.",
     "input": "Resume or key experiences, job description, interview stage, and company context (inferred if missing).",
@@ -1560,7 +1560,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Consulting Assistant ─ Company Future Vision Discovery — agent of consult-discovery",
     "input": "Resume, job description, interview stage, and company interview criteria or culture (if unavailable, inferred from public sources with disclosure).",
@@ -1593,7 +1593,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Consulting Assistant ─ Pain Point Analysis — agent of consult-discovery",
     "input": "User shares business context, team structure, challenges, and goals through guided Q&A.",
@@ -1627,7 +1627,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-27",
     "description": "Turn a pasted outreach conversation into a tracked lead AND a ready-to-send reply. Give it a copied DM / chat thread (Threads, IG, LINE, FB Messenger, WhatsApp, email — wherever a prospect showed interest), optionally with the person's profile link, and it does two things in one pass: (1) collects who they are — parsing the thread and enriching from any social/profile URL — and writes the client context into the Zynkr platform CRM (find-or-create company + contact, a new deal, a verbatim conversation note, and a follow-up task for the agreed next step); (2) drafts the outbound reply as a Gmail DRAFT in Peter's inbox (never sends), in the same language as the conversation and in Peter's voice, reflecting whatever was agreed (a demo, a call, sending info). Trigger on /sales-outbound or when Peter pastes a DM / outreach exchange and says \"draft a reply\", \"draft an outbound mail\", \"回這個\", \"幫我擬回覆\", \"把這個 lead 建進 CRM 並擬信\", \"log this lead and draft the email\", \"turn this DM into a draft\", or otherwise hands over a back-and-forth where someone agreed to a demo / call / next step and wants both the CRM record and the reply prepared. Distinct from consult-intake (a weekly BATCH sweep of inbound website consult EMAILS) and consult-project-specialist (documents ONE sales/consulting MEETING transcript into a project + Drive folder + deal): this one takes ONE short outreach/DM conversation and produces a lead record + a drafted reply, no Drive folder, no meeting parsing.",
     "input": "A pasted outreach / DM conversation (any channel), optionally the counterparty's profile URL and the email address they gave.",
@@ -1659,7 +1659,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-07-03",
     "description": "Turn a finished sales DEMO / discovery call into a converting follow-up — the post-meeting counterpart to sales-outbound. Give it the demo transcript (a Google Doc URL or pasted notes) and it does two things in one pass: (1) drafts a pre-sales follow-up reply as a threaded Gmail DRAFT in Peter's inbox (never sends), in the prospect's language and Peter's voice — opening by mirroring the exact pain points they raised, mapping each to the matching Zynkr AI 平台 capability (zynkr.ai/ai-platform), and moving them toward adopting the solution, with a \"sales kit attached manually\" line; (2) syncs the EXISTING CRM deal — finds the deal / contact / company, logs the demo as a note activity, refreshes the deal summary, nudges the stage if warranted, closes the now-stale scheduling task, and creates the agreed follow-up task. Trigger on /sales-follow-up or when Peter hands over a demo / meeting transcript after a call and says \"draft a follow-up\", \"draft the pre-sales follow-up\", \"follow up on this demo\", \"寫跟進信\", \"擬一封 demo 後的跟進信\", \"幫這場 demo 寫追蹤信並更新 CRM\", \"log the demo and draft the follow-up\", or otherwise wants the post-demo email plus the deal updated. Distinct from sales-outbound (a PRE-meeting DM → new lead + first reply) and consult-project-specialist (documents a meeting into a NEW project + Drive folder): this one takes ONE completed demo transcript on an EXISTING deal and produces a conversion follow-up draft + a light deal update — no new lead, no Drive folder, no meeting-to-project.",
     "input": "A completed sales demo / discovery-call transcript (Google Doc URL or pasted) for a prospect who already has a CRM deal + email thread. Optionally the deal URL and thread subject.",
@@ -1691,7 +1691,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-07-08",
     "description": "Runs AI background research on a company (and optionally a contact) in the Zynkr platform CRM and writes a concise, sales-context zh-TW brief into the company's 備註/description field. This is a Claude Code stand-in for the platform's own \"AI 背景研究\" button (app/lib/ai/research.ts) — that feature only exists in the platform.zynkr.ai web UI and is NOT exposed through the connected `zynkr` MCP server, which only offers CRUD tools (create_company, create_contact, update_company, etc.), so there is no MCP call to trigger it directly. This skill closes that gap by doing the same job — targeted web research (what the company does, industry, size/HQ, notable facts, and why they might need Zynkr) — then writing the result back via update_company / create_company. Trigger EAGERLY whenever Peter says \"trigger company research\", \"research this company\", \"研究這間公司\", \"查一下這間公司背景\", \"幫我查一下[公司名]\", \"look into [company]\", \"跑一下背景研究\", or asks to research/enrich/look up a company or contact that is or is about to be in the Zynkr CRM — even if he only names the company and doesn't spell out \"research.\" Also fire immediately after a company/contact gets created in this conversation if he asks for research on it in the same breath (e.g. \"create a company for X, also trigger company research\"). Do NOT fire automatically after every company/contact creation on your own initiative — only when asked, in this call or the next.",
     "input": "User shares business context, team structure, challenges, and goals through guided Q&A.",
@@ -1723,7 +1723,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Turn a consulting engagement's raw discovery material — consult-discovery summaries, shadowing transcripts / recording notes, process findings — into a client-grade requirements document as a Google Doc in the client's numbered [N] Drive project folder, backlinked to the CRM deal. Two modes: BRD (default — business-facing, zh-TW) and PRD (an SDD-conformant buildable spec with a per-client spec ID, EARS-lite ACs and Verify lines). Trigger on /consult-brd-writer or when Peter says \"幫我寫 BRD\", \"把訪談整理成需求文件\", \"寫 PRD\", \"把 shadowing 筆記變成 spec\", \"draft the BRD\", \"write the PRD for this client\", \"make this buildable\", or hands over discovery notes or a transcript wanting a requirements document out of it — fire eagerly even if he never says the letters \"BRD\". Distinct from consult-discovery (CONDUCTS the interviews; this skill consumes their output), from consult-project-specialist (logs ONE meeting as a project + deal, writes no requirements doc), and from consult-uat-writer (runs downstream, consuming THIS skill's PRD to produce UAT scripts).",
     "input": "Strategic context from founders or senior managers about vision, products, organization, and decision dynamics.",
@@ -1755,7 +1755,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Close the shadowing-scheduling admin loop for a consulting deal in one pass: read the CRM deal, resolve the client's existing [N] Drive project folder from the deal notes, check Peter's calendar free/busy, propose 3–5 candidate slots, and on Peter's confirm lay down the whole kit — a calendar hold, a \"Shadowing — YYYY-MM-DD\" subfolder inside the project folder, a client logistics Gmail DRAFT (never sent), a CRM follow-up task, and a deal-notes backlink. Trigger EAGERLY on /consult-shadowing-scheduler or whenever Peter says \"排 shadowing 時間\", \"約跟拍\", \"安排現場觀察\", \"幫我跟 <client> 約 shadowing\", \"schedule the shadowing\", \"book the shadowing session\", \"find time to shadow the client\", or otherwise wants an on-site observation session scheduled for a consulting engagement — even if he only names the company. Distinct from consult-intake and consult-project-specialist (they CREATE the project folder and the deal — this skill REUSES those artifacts and never creates a new top-level folder or a new deal). Distinct from consult-brd-writer (which consumes the shadowing transcript AFTER the session happens — this skill only gets the session onto the calendar and preps the client).",
     "input": "A CRM deal (URL or company name), optionally a preferred date window and session duration",
@@ -1787,7 +1787,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Turn a consulting engagement's PRD (the SDD-shaped spec Doc written by consult-brd-writer) plus the deployed assistant's facts into a client-facing zh-TW UAT testing guide — a Google Doc in the client's numbered [N] Drive folder with a scenario table (one client-runnable scenario per AC), pass/fail checkboxes, bug-report instructions, and a sign-off block — plus a CRM task so the acceptance round is tracked. Trigger on /consult-uat-writer or when Peter says \"寫 UAT 指南\", \"產驗收測試文件\", \"幫客戶寫測試指引\", \"驗收清單\", \"write the UAT guide\", \"make the acceptance test doc\", \"testing guide for the client\", or hands over a PRD wanting the client to run acceptance — fire eagerly even if he never says the letters \"UAT\". Distinct from consult-brd-writer (WRITES the PRD this skill consumes — route there when the spec itself is missing or malformed) and from consult-bug-ticket (handles the bug mails the UAT round produces — this skill's 問題回報方式 section is exactly what shapes those mails).",
     "input": "A client’s description of an inefficient or unclear business process",
@@ -1819,7 +1819,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Pull a consulting client's AI-assistant usage out of platform telemetry (crm_ai_usage, READ-ONLY), compute adoption metrics — WAU, actions per user per week, week-over-week trend, top features, at-risk users — and render a zh-TW \"[Adoption] {{COMPANY}} — YYYY-MM\" report Doc into the client's [N] Drive folder, backlinked to the CRM deal, plus an optional ask-only Gmail draft. Trigger on /consult-adoption-reporter or when Peter says \"客戶用量報告\", \"採用率追蹤\", \"這個客戶有沒有在用\", \"使用狀況分析\", \"adoption report for <client>\", \"pull usage for this client\", \"how is the assistant being used\", or otherwise asks whether a consulting client is actually using what we delivered — fire eagerly even without the word \"adoption\". Distinct from project-status-update (the INTERNAL tracker-Sheet weekly for a course/project — no client telemetry), from consult-uat-writer (proves the delivery WORKS once, at handoff; THIS skill measures whether the client keeps USING it after go-live), and from consult-status-report (the client-facing weekly EMAIL — it can embed this skill's usage block, but the telemetry analysis happens here).",
     "input": "SIPOC-style process steps and contextual details (frequency, objectivity, decision rules).",
@@ -1851,7 +1851,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Turn a client bug report — a Gmail thread, a forwarded mail, or pasted text — into tracked work in one pass: a well-formed GitHub issue in the right repo (routed via a local bug-routing-config.md), a CRM follow-up task on the client's deal, and a threaded acknowledgment reply left as a Gmail DRAFT (never sent). Trigger on /consult-bug-ticket or when Peter says \"開 bug 單\", \"把這封信開成 issue\", \"回報這個 bug\", \"客戶回報問題\", \"file this bug\", \"turn this bug mail into a ticket\", \"log this defect and reply\", or hands over a client mail describing something broken and wants it tracked — fire eagerly even when he never says the word \"bug\". Distinct from zynkr-support (drafts KB-based ANSWERS to product questions; when a support mail turns out to be a DEFECT in a delivered assistant or product, THIS skill is the write-side that takes over), from skill-sourcer (files skill IDEAS as proposals, not defects), and from consult-uat-writer (upstream of this one: its UAT guide's 問題回報方式 section shapes the very mails this skill parses).",
     "input": "Diagnosed process steps with automation readiness scores",
@@ -1883,7 +1883,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Turn a consulting engagement recording — a discovery call or an on-site shadowing session — into a clean zh-TW transcript filed straight into the client's numbered [N] Drive project folder and linked on the CRM deal. A thin delegation wrapper: it invokes the installed training-srt-transcriber (local Whisper → timestamped .srt; transcribe or retime mode) and training-srt-optimizer (minimal-edit zh-TW cleanup) for ALL transcription/cleanup mechanics, adding only engagement context, filing, and CRM linkage. Fire eagerly on /consult-transcriber or whenever a CLIENT/engagement recording needs a transcript — \"把這通訪談錄音轉成逐字稿\", \"處理 shadowing 錄音\", \"客戶錄音轉逐字稿\", \"整理客戶訪談錄音\", \"transcribe this client call\", \"process the shadowing recording\", \"transcript for the engagement\". Distinct from training-srt-transcriber / training-srt-optimizer used directly (they produce raw/clean .srt for the TRAINING business and file into the training Drive folder — no engagement context, no CRM; use them for course/livestream material) and from consult-session-notes (downstream — structures the TRANSCRIPT this skill produces into a session summary + pain-point ledger).",
     "input": "One recording of an engagement session (discovery call or shadowing), the engagement (deal URL / company), and the phase; optional: an existing transcript for retime mode",
@@ -1915,7 +1915,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Turn a consulting-session transcript or messy notes — a discovery call or a shadowing observation — into the four-section session summary (Summary Update · Progress · Blockers · What's Next) PLUS a 痛點 ledger (one row per pain actually voiced or observed), filed as a [Notes] Google Doc into the engagement's EXISTING numbered [N] Drive folder with a note on the CRM deal; the ledger is the raw material /consult-brd-writer consumes. Trigger on /consult-session-notes or when Peter says \"整理這次客戶訪談筆記\", \"整理 shadowing 紀錄\", \"把逐字稿變成會議摘要\", \"整理客戶會議筆記\", \"structure this client session\", \"tidy the shadowing notes\", \"session summary for the client project\" — fire eagerly whenever session material belongs to a CLIENT engagement. Distinct from project-note-specialist (the generic source skill — ONLY tidies text, files nothing, touches no CRM; for non-engagement notes), consult-project-specialist (creates a NEW deal + folder from a sales meeting; THIS skill updates an EXISTING engagement, never creates either), consult-transcriber (upstream — produces the transcript this skill structures), and consult-brd-writer (downstream — consumes the ledger).",
     "input": "A consulting-session transcript or messy notes (pasted text, a Google Doc link, or the transcript consult-transcriber just filed) + the engagement (deal URL / company name)",
@@ -1947,7 +1947,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
@@ -1984,7 +1984,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Visualize a consulting engagement's operations on Lucid as a paired AS-IS / TO-BE process chart set — drawn from the engagement's own documents (session notes, 痛點 ledgers, [Plan] docs, BRD) and recorded back on the CRM deal. ALL drawing, editing, and lint mechanics are delegated to the installed product-flow-design skill; this wrapper adds engagement resolution, the as-is/to-be pairing discipline, chart naming, and CRM linkage. Trigger on /consult-flow-design or when Peter says \"畫客戶的 as-is/to-be 流程\", \"客戶流程圖\", \"幫這個案子畫流程\", \"把客戶流程視覺化\", \"map the client's operations on Lucid\", \"visualize the engagement workflow\", or \"draw the as-is and to-be for this client\". Distinct from product-flow-design (the generic Lucid specialist — any chart, no engagement context; a pasted Lucid URL with no client context still routes THERE), from consult-solution-planning (produces the [Plan] narrative this skill draws), and from operations-flow-optimization / operations-transformation (they design the flow's CONTENT; this skill only visualizes what the engagement documents already say).",
     "input": "The engagement (deal URL / company name) — source docs are gathered from its [N] folder; optionally an existing Lucid URL to update",
@@ -2016,7 +2016,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Draft the go-to-market communications for a consulting engagement's rollout — the client-internal 上線公告 (rollout announcement) and the 說明會 invite, written in the client sponsor's voice, filed as [Comms] Google Docs in the client's numbered [N] Drive project folder and backlinked to the CRM deal — plus an optional, ask-only ANONYMIZED case-study seed handed to the public content pipeline. Trigger on /consult-launch-comms or when Peter says \"寫導入上線公告\", \"幫客戶寫內部宣布信\", \"上線溝通信\", \"寫說明會邀請\", \"draft the rollout comms\", \"write the launch announcement for the client\", or \"internal rollout email\". Distinct from content-newsletter-draft (Peter's OWN weekly newsletter to his audience), from consult-info-session (RUNS the 說明會 this skill's invite announces — event ops live there), and from social-publish-article / zynkr-content-writer (generic public publishers — the optional public leg HANDS OFF to them; this skill never posts). Drafting job only: it produces Docs and handoff packets, runs no event and publishes nothing itself.",
     "input": "The engagement (deal URL / company name) + the shipped outcome (or the [N] folder's [BRD]/[Plan]/[UAT] docs), optionally the 說明會 date",
@@ -2048,7 +2048,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Run a client info session (說明會) for a consulting engagement end to end on the D-14 → D+3 checklist — schedule and invite, prep, run and record, then produce the client-facing five-section recap — with every artifact filed in the client's numbered [N] Drive folder and noted on the CRM deal. Re-entrant: each run shows the checklist with today's position and advances the due stage. Trigger on /consult-info-session or when Peter says \"幫客戶辦說明會\", \"導入說明會\", \"說明會回顧\", \"安排 kickoff 說明會\", \"run the client info session\", \"prep the rollout session\", \"write the session recap\". Distinct from guest-lecturer-program (PUBLIC ticketed lecturer events with contracts, settlement and revenue splits — none of that applies to a free, internal, contract-less client 說明會), from training-lecture-recap (recaps for the TRAINING business's students), from consult-launch-comms (DRAFTS the invite this skill sends through the checklist — drafting lives there, event ops live here), and from consult-transcriber (D+1 transcription delegates to it).",
     "input": "The engagement (deal URL / company name) + session facts (date, audience, 現場/線上) — or just 'advance the checklist' for an in-flight session",
@@ -2080,7 +2080,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Generate the weekly CLIENT-FACING status email for ONE consulting engagement. Reads the CRM deal's tasks / activities / notes plus the newest [Notes] / [Plan] / [BRD] / [UAT] docs in the client's numbered [N] Drive folder, derives health / progress / blockers / next milestone, renders the 專案狀態看板-style HTML dashboard, and creates a Gmail DRAFT addressed to the deal's client contact — NEVER auto-sends. Trigger on /consult-status-report or when Peter says \"客戶週報\", \"顧問案週報\", \"寫給客戶的進度報告\", \"客戶進度信\", \"draft the client status update\", \"status email for <client>\", \"engagement weekly for the client\" — any weekly/status ask that NAMES a client or engagement. Distinct from consult-session-notes (files ONE session into a [Notes] Doc; this skill READS those docs as evidence), from consult-adoption-reporter (post-go-live usage TELEMETRY report as a Doc, not a weekly email), and from consult-governance (may flag that the client weekly is DUE — the drafting happens here). BOUNDARY: bare \"週報\" / \"weekly report\" / \"project weekly update\" WITHOUT client context stays with project-status-update (the internal tracker-Sheet weekly), which also owns ALL scheduled / cron / recurring weekly runs — this skill is Peter-invoked per engagement and must not hijack those triggers.",
     "input": "The engagement (deal URL / company name); optional 'as of' date and language override",
@@ -2112,7 +2112,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "The weekly hygiene sweep across the WHOLE consulting portfolio — inventory every numbered [N] engagement folder under the consult Drive parent AND every open consult deal in the CRM, diff the two against six invariants (deal↔folder backlink, kickoff-doc presence, session-note recency, [N] numbering continuity, activity pulse, artifact chain), and emit a zh-TW ready-to-apply changelist in the chat. Strictly READ-ONLY — it proposes fixes named to the owning skill but never applies one: no Doc creation, no folder moves, no CRM writes, not even a deal-note append. Trigger on /consult-governance or when Peter says \"顧問案健檢\", \"檢查顧問專案\", \"顧問 portfolio 盤點\", \"案子有沒有漏\", \"consult drift check\", \"audit the engagement folders\", or \"portfolio hygiene sweep\". Distinct from admin-governance (local _INDEX.md ↔ Drive KNOWLEDGE governance — a different universe), from consult-status-report (ONE engagement, client-facing, writes a Gmail draft; this is ALL engagements, internal, writes nothing), and from consult-intake / consult-project-specialist (they OWN the fixes this report proposes — folder creation, numbering, backlinks).",
     "input": "Optional: look-back windows (notes-recency days, activity-pulse days), or a single company to spot-check; defaults 21 / 14, whole portfolio",
@@ -2144,7 +2144,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "The READ half of Peter's support loop (formerly support-reply-drafter). Parses Peter's Gmail support + inbound-sales queues, detects unreplied inquiries, identifies each inquirer's intent, and matches it against the **Zynkr platform 知識庫** (platform.zynkr.ai/kb — the single source of truth since 2026-07-15, accessed via the `zynkr` MCP server's search_kb / get_kb_article) to draft a safe reply on the thread. Drafts match the inbound language (zh-TW or EN). When the KB has no confident answer it does NOT guess — it leaves a holding reply with an inline `[[NEEDS PETER: ...]]` block flagging exactly what's missing and notifies Peter. Once Peter supplies the real answer, this skill hands the resolved thread off to /zynkr-kms, which writes it into the platform KB so the next identical question resolves automatically. Trigger whenever Peter says '/zynkr-support', 'draft support replies', 'process support inbox', '回覆 support 信箱', '清 support queue', '幫我回 support 信', '回覆 inbound sales', '清 sales inbox', '處理詢價信', or otherwise asks to handle the support / inbound-sales inbox.",
     "input": "Unreplied Support / Inbound-Sales / website-form threads in Gmail; the KB is the Zynkr platform 知識庫 (platform.zynkr.ai/kb) — sections + fact/qa cards, accessed through the...",
@@ -2176,7 +2176,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "The knowledge-curator (WRITE) half of Peter's support loop: it turns resolved support threads into KB cards in the Zynkr platform 知識庫 (the source of truth), then mirrors every change to a Google Drive backup. After a support / inbound-sales ticket is resolved, zynkr-kms reads the thread, learns Peter's actual answer, and writes it as a clean, LLM-friendly card into the **Zynkr platform 知識庫** (platform.zynkr.ai/kb, via the `zynkr` MCP server) — the single source of truth since the 2026-07-15 cutover. Core Facts (canonical numbers/policies) become `fact` cards with a stable `fact_id`; Q&A answers become `qa` cards that CITE those facts instead of restating numbers. It reasons like a KMS specialist (intent taxonomy → which KB section → how to structure for retrieval), proposes entries, and only writes after Peter approves. /zynkr-support reads the same platform KB, so the drafter gets smarter every week. It also GOVERNS BOTH STORES: after every approved write it mirrors the change to the Google Drive backup (`[3.2] 客服知識庫 (KMS)`) — one Doc per section plus a full-fidelity JSON snapshot — so the knowledge survives a Supabase incident and stays human-readable. The mirror is one-way (platform → Drive) and never authoritative. Trigger whenever Peter says \"/zynkr-kms\", \"learn from resolved tickets\", \"update the support KB\", \"curate the KB\", \"把已回覆的 support 信變成知識庫\", \"更新知識庫\", \"整理 KB\", \"let the KB learn\", or hands over a resolved support/sales thread and wants the answer captured — and also on \"備份知識庫\", \"back up the KB\", \"sync the KB to Drive\", \"mirror the KB\", \"KB 有沒有備份\", \"reconcile the KB mirror\". This is the WRITE side; /zynkr-support is the READ side.",
     "input": "Resolved Support／Inbound-Sales Gmail threads (or one Peter specifies); the KB is the Zynkr platform 知識庫 (SOT), mirrored one-way to a Google Drive backup",
@@ -2208,7 +2208,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "A scheduled, auto-running admin-meeting-prep assistant: every day at 9 AM it scans meetings within the next 7 days and sends action reminders; every day at 3 PM it sends a full briefing for the next day's meetings. Notifications are sent to yourself via Google Chat. No manual trigger needed; does not handle post-meeting follow-up.",
     "input": "A proposed project, initiative, or problem the user wants to validate before execution.",
@@ -2240,7 +2240,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "Project Assistant — Organize Meeting Notes (專案助理 ─ 整理會議筆記) — agent of admin-meeting-prep",
     "input": "Raw meeting notes, transcripts, or unstructured updates.",
@@ -2273,7 +2273,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "Weekly hygiene ritual for Zynkr's local↔cloud knowledge governance. Lists Google Drive Docs modified in the last N days across the 8 LOB folders (and Drive root), diffs against local `_INDEX.md` entries in `~/Desktop/Claude/zynkr/`, and proposes specific index edits: new entries to add, broken/renamed links to fix, deleted Docs to remove. Triggers on phrases like 'drift check', 'weekly hygiene', 'sync indexes', 'check cloud changes', 'what changed in cloud this week', '/admin-governance', or when the user pastes nothing but asks to reconcile local/cloud state. Should fire eagerly when the user references the weekly hygiene ritual from the Zynkr knowledge-governance model.",
     "input": "Optional: number of days to look back (default 7). Optional: LOB scope as either an LOB number ('2.0', '7.1') or 'all' (default 'all'). Optional: Google account override...",
@@ -2305,7 +2305,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "Files loose meeting recordings sitting in a Google Drive recording inbox into the right category sub-folder, with an approval gate. For each loose video it groups the same-prefix siblings (the ` - Notes by Gemini` Doc, ` - Chat` .txt, any .srt) into one unit, reads the Gemini Notes to classify which sub-folder it belongs in, shows the user a filing plan to approve, then moves the whole group and logs the move to a `Video Index` sheet. If nothing fits it proposes a new sub-folder. Trigger on /admin-video-document, '整理錄影檔', '歸檔錄影', '歸檔影片到資料夾', '整理錄影資料夾', 'file my recordings', 'sort the recording folder', 'organise the recordings folder', or when the user points at the recording inbox and wants the videos filed.",
     "input": "Raw meeting notes, transcripts, or unstructured updates.",
@@ -2337,7 +2337,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Stress-test and refine a project idea before execution via a 7-stage Socratic facilitation — WHY (5 Whys) → WHAT → HOW → WHO (RACI) → WHEN (Gantt) → MEASURES → RISKS — producing an execution-ready project charter.",
     "input": "Bi-weekly meeting document with weekly summaries and sectioned updates.",
@@ -2369,10 +2369,11 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Turn raw meeting notes, transcripts, voice memos, or messy unstructured updates into a clean structured Weekly Project Update (Summary · Progress · Blockers · What's Next). Trigger whenever the user pastes meeting notes/transcripts and asks to 'organize my notes', 'tidy up these notes', 'turn this into a weekly update', '整理會議筆記', '整理一下筆記', '幫我寫週報摘要', or shares messy meeting/voice-memo text wanting it cleaned into an internal-stakeholder update. Source: admin-meeting-prep agent (sheetId 3.04).",
     "input": "Raw meeting notes, transcripts, voice memos, or unstructured updates.",
+    "process": "Verify the knowledge pack sha → read the raw notes → sort every line into the four sections pack §7 fixes → keep what is supportable, leave the rest empty → render newest-first.",
     "output": "A structured \"Weekly Project Update\" featuring Summary, Progress, Blockers, and What's Next.",
     "kind": "skill",
     "synergy": [
@@ -2400,12 +2401,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-27",
     "description": "Generates a weekly project status update for a project tracked in a Google Sheet. Reads the live 「專案管理總表」 task tab of a project-tracker Google Sheet you configure, reasons over task status + dates against today to derive project health, blockers, this-week actions, % complete, next milestone, recent decisions and a timeline (the 「專案狀態看板」 dashboard format), renders it as a styled HTML email, and creates a Gmail DRAFT (never auto-sends) to a configurable recipient list. Trigger this skill EAGERLY whenever the user says \"週報\", \"專案週報\", \"weekly report\", \"project weekly update\", \"draft the weekly status\", \"更新專案狀態\", \"PM 進度\", \"進度更新\", \"週進度更新\", \"跑一下專案看板\", \"update the dashboard\", \"draft the project dashboard\", \"寄週報給團隊\", \"/project-status-update\", or otherwise asks for a weekly / status / progress update or dashboard on a project — even if they don't name the sheet, name a recipient instead of the project, or just say \"the weekly\". This is also the skill a scheduled / recurring / cron weekly run should invoke. When in doubt about a project status or weekly-update request, prefer this skill.",
-    "input": "A project-tracker Google Sheet (a 專案管理總表 task tab) you configure, plus a recipient list. Optionally an explicit 'as of' date.",
-    "process": "Anchor on today → read the tracker tab → diff against last week's report → reason over status/dates to derive health, blockers, this-week actions, % complete, next milestone, decisions, timeline → render styled HTML → create a Gmail draft (never send).",
-    "output": "A Gmail DRAFT (never auto-sent) containing the 專案狀態看板 weekly dashboard as a styled HTML email, addressed to a configurable recipient list.",
+    "input": "A project slug resolved through ~/.config/zynkr/pm.json (tracker Sheet ID, Google account, recipients, delivery spine, health thresholds). Optionally an explicit 'as of' date.",
+    "process": "Verify pack + config → detect the 管控表 version → read the tracker by header name → bucket Status into Done/WIP/Not started/Drop (illegal literals stay counted and named) → score the configured spine → derive health → draft a Gmail HTML email, never send.",
+    "output": "A Gmail DRAFT (never auto-sent): the 專案狀態看板 weekly dashboard as styled HTML, including the dropped-task list and any Status data errors, to a configurable recipient list.",
     "kind": "skill",
     "synergy": [
       "3.09"
@@ -2432,7 +2433,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Three-stage operations transformation pipeline — process discovery (SIPOC), digital transformation assessment, then automation-ready process redesign — to turn pain points into builder-ready blueprints.",
     "input": "A client-described inefficient or unclear business process, ideally with prior discovery context from consult-discovery",
@@ -2466,7 +2467,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-05",
     "description": "Operations Assistant — Process Discovery — agent of operations-transformation",
     "input": "A client's description of an inefficient or unclear business process.",
@@ -2500,7 +2501,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-05",
     "description": "Operations Assistant — Digital Transformation Assessor — agent of operations-transformation",
     "input": "SIPOC-style process steps and contextual details (frequency, objectivity, data digitization, risk).",
@@ -2534,7 +2535,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-06",
     "description": "Operations Manager ─ Process Redesign — agent of operations-transformation",
     "input": "Diagnosed process steps with automation readiness scores.",
@@ -2569,7 +2570,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-15",
     "description": "Streamline and re-sequence a business process into a clean 'ideal flow' before it gets built or automated. Canonical slot (course Ch5 §5.5.2): run it right AFTER the as-is→to-be redesign re-chains the flow — polishing the redesigned ordering — though it also works standalone on any messy as-is map. Runs a lean optimization pass: validate Input→Process→Output on every step, map dependencies, eliminate friction (duplicative / looping / missing steps), then apply disciplined re-sequencing only where it buys less rework, lower risk, or higher throughput. Use it whenever a process feels bloated, out of order, or 不順暢 — when someone says '幫我把流程理順', '這流程可以更精簡嗎', 'streamline this workflow', 'is my process in the right order', or right after FE/BE/DB redesign (operations-transformation Stage 3) and before drawing on Lucid. Enforces 'eliminate before you automate.' Does NOT do automation-feasibility scoring or FE/BE/DB layer assignment — hand off to operations-transformation for that.",
     "input": "A process step list — ideally the redesigned to-be flow (operations-transformation Stage 3 blueprint), or a SIPOC / as-is map — plus the outcome the process must deliver",
@@ -2601,7 +2602,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-24",
     "description": "The weekly operations loop that keeps a Google Chat space and a weekly operations Google Doc in sync. Five scheduled modes run one beat each: `nudge` (Mon 09:00 — post the four-line template plus last week's decisions), `rollup` (Tue 09:00 — read the week's `#週報` posts, route each one to its department heading using the owner person-chips already in the Doc, and write a clearly-marked auto-summary block), `chase` (Tue 09:30 — @ the owners who did not post), `agenda` (Wed 17:00 — re-sweep for late arrivals, then produce carry-over, overdue, KPI-off-target and the ≤3 decisions the Thursday meeting must actually make), and `decisions` (Thu 22:00 — post the resolutions back to the space, send the recap mail, write the decisions register, and assert the send actually happened). Routing is never hardcoded: it is read at run time from the Doc's own owner chips, so changing the Doc changes both the routing and the recap-mail recipient list. Trigger EAGERLY on \"/zynkr-ops-weekly\", \"營運週報\", \"週報彙整\", \"把大廳的週報整理進 Doc\", \"roll up the chat updates\", \"誰還沒回報\", \"補件提醒\", \"週四議程\", \"產週會議程\", \"會後回貼決議\", \"recap 信\", \"weekly ops loop\", \"ops weekly rollup\", or any ask to collect / chase / summarise the team's weekly updates, build the weekly meeting agenda, or publish the meeting's decisions. BOUNDARY — do NOT hijack: /zynkr-gm (the founder's own company-level Monday brief, reads this Doc but never writes it), /project-status-update (one project's status email from its own tracker), /planning-tracker-sync (the H2 tracker block and its own nudges), /consult-status-report (client-facing consulting status), /admin-meeting-prep (per-meeting packets for external meetings). This skill owns exactly one artefact — the weekly operations Doc's current week section — and one channel loop around it.",
     "input": "A mode (nudge | rollup | chase | agenda | decisions | status) and an optional 'as of' date; every identifier comes from the private config at ~/.config/zynkr/ops-weekly.json.",
@@ -2612,6 +2613,70 @@
       "3.19"
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/zynkr-ops-weekly/SKILL.md"
+  },
+  "3.20": {
+    "id": "3.20",
+    "sheet_id": "3.20",
+    "slug": "project-init",
+    "name": "project-init",
+    "summary": "Stands up a new project from the PMO template set — resolves the filing home from the engagement type, copies the five templates into a new project folder, creates the four sub-folders, clears the example rows (鐵律 2), fi",
+    "category": "operations",
+    "project": "project-init",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-init/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.20.md -o ~/.claude/skills/project-init.md",
+    "tags": [
+      "project-init",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-02",
+    "first_seen": "2026-09-02",
+    "description": "Stands up a new project from the PMO template set — resolves the filing home from the engagement type, copies the five templates into a new project folder, creates the four sub-folders, clears the example rows (鐵律 2), fills the Kickoff header, seeds 管控表 tab 1 with the five delivery-stage rows, writes the backlinks both ways and prints the pm.json entry to paste (spine + report recipients included). Trigger on /project-init or when the user says 「開新專案」「建立專案資料夾」「幫我開一個案子」「set up a new project」「複製專案模板」「開案」「新專案要什麼檔案」, or hands over a project name plus a 專案類型 (客戶案／課程案／內部案) and wants the PMO file set laid down. Distinct from project-planning (which fills the WBS this skill deliberately leaves empty) and from consult-project-specialist (which owns 客戶案 folder numbering and the CRM deal — this skill routes to it instead of duplicating it).",
+    "input": "專案名稱 · 專案類型 (客戶案／課程案／內部案) · Sponsor · PM · 目標完成日 · 一行核心目標; plus ~/.config/zynkr/pm.json for the filing home",
+    "process": "Verify the pack sha → collect six inputs → resolve filing_home from the adapter → pre-flight for duplicates → copy 5 templates + 4 sub-folders → change 核心目標 and CLEAR example rows → seed five X.0 stage rows → backlink → print the pm.json snippet",
+    "output": "A project folder holding [Business Case] · [Charter] · [Kickoff] · [專案管控表] · [復盤] plus sub-folders [1]–[4], tab 1 seeded with five stage rows and no tasks, and a pm.json snippet",
+    "kind": "skill",
+    "synergy": [
+      "3.20"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/project-init/SKILL.md"
+  },
+  "3.21": {
+    "id": "3.21",
+    "sheet_id": "3.21",
+    "slug": "project-minutes-sync",
+    "name": "project-minutes-sync",
+    "summary": "Close the 會議記錄 → 管控表 loop for one meeting: parse a [會議記錄] Doc's four tables (進度更新 · 提醒與阻礙 · 決議 · Action Items), then append-or-patch three 管控表 tabs — Action Items into 專案管理總表, 決議 影響 ≠ 無 into Change & Decision Log, Blocke",
+    "category": "operations",
+    "project": "project-minutes-sync",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/3-operations/project-minutes-sync/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/3.21.md -o ~/.claude/skills/project-minutes-sync.md",
+    "tags": [
+      "project-minutes-sync",
+      "operations",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-02",
+    "first_seen": "2026-09-02",
+    "description": "Close the 會議記錄 → 管控表 loop for one meeting: parse a [會議記錄] Doc's four tables (進度更新 · 提醒與阻礙 · 決議 · Action Items), then append-or-patch three 管控表 tabs — Action Items into 專案管理總表, 決議 影響 ≠ 無 into Change & Decision Log, Blocker 阻礙 unresolved ≥ 7 days into Risk Register — and print a diff of what moved. Trigger on /project-minutes-sync or 「同步會議記錄」「把會議記錄同步到管控表」「會議決議同步」「Action Items 進管控表」「阻礙開成 Risk」「sync the minutes」「把這場會的決議寫進 Change Log」. NOT project-note-specialist (3.08), which reshapes raw notes into the 4-section weekly update and touches no Sheet; NOT project-status-update (3.09), which READS the tabs this skill feeds and drafts the weekly mail; NOT project-init (3.20), which creates a project.",
+    "input": "A [會議記錄] Doc (URL or id) or a project slug that resolves via pm.json; the tracker Sheet id always comes from the adapter.",
+    "process": "知識來源 + pm.json check → parse the Doc's four tables per-table → detect the 管控表 version with pm-schema.py → Action Items append-or-patch tab 1 → 決議 → Change & Decision Log → 阻礙 → Risk Register → VALUES-ONLY write-back → diff report.",
+    "output": "Three 管控表 tabs updated by value only, the Doc's 已同步 checkboxes ticked on explicit go-ahead, and a chat diff report — appended · patched · skipped · unparsed · needs a human.",
+    "kind": "skill",
+    "synergy": [
+      "3.21"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/3-operations/project-minutes-sync/SKILL.md"
   },
   "4.01": {
     "id": "4.01",
@@ -2633,7 +2698,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "description": "Polish long video lecture transcripts into lecturer-friendly readout scripts in Traditional Chinese.",
     "input": "User-provided video file or the transcript.",
@@ -2665,7 +2730,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "description": "Post-process a livestream transcript into four parallel workstreams: an event recap Google Doc, a Q&A knowledge base diff, course lecture note proposals, and marketing content idea seeds.",
     "input": "Raw livestream transcript text and a stream-config.md file identifying the training stream",
@@ -2701,7 +2766,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -2733,7 +2798,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -2765,7 +2830,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -2797,7 +2862,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -2829,7 +2894,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "kind": "subagent",
     "synergy": [
@@ -2862,7 +2927,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-09",
     "description": "Turn a video file or transcript into a reader-friendly lecture recap structured into five fixed sections — Summary, Theme, Q&A, Tools, Call to Action — while strictly avoiding any reference-outline detail leakage.",
     "input": "A user-provided video file, a video URL, or the verbatim transcript of a recorded lecture/livestream",
@@ -2894,7 +2959,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-15",
     "description": "Weekly transcript curation. Sweeps the 直播筆記 livestream-note Google Docs across N upstream Drive folders, extracts each doc's 逐字稿 (verbatim transcript) tab, and writes one structured zh-TW summary Doc per source into the destination SOT folder. Fully idempotent — skips any source whose target already exists. Trigger on /curate-livestream-transcripts, '整理直播逐字稿', 'curate the livestream transcripts', 'process this week's 直播筆記', or the weekly Monday routine.",
     "input": "None — all source/destination folder IDs are constants below. Reads 直播筆記 Docs from the upstream folders.",
@@ -2926,7 +2991,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Minimally clean subtitle .srt files into readable Traditional Chinese while preserving original wording, cue timing, and subtitle alignment.",
     "input": "One .srt subtitle file containing raw speech-to-text output",
@@ -2958,7 +3023,7 @@
       "multi",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-07-06",
     "description": "Turn an audio/video file (.m4a/.mp3/.wav/.mp4…) into a timestamped .srt using local Whisper. Two modes: transcribe (fresh speech-to-text with audio-accurate timestamps) or retime (keep an existing transcript's exact wording and re-derive every timestamp from the audio via forced alignment). Use when the user says 'turn this m4a into an srt', 'transcribe this audio to subtitles', '把這段錄音轉成字幕', '幫我做 srt', 'the srt wording is right but the timing is wrong, realign it', or hands over an audio file wanting subtitles. This is the FIRST step before training-srt-optimizer — it produces the raw-STT .srt; the optimizer then cleans the text. It does NOT edit/clean subtitle wording (that is training-srt-optimizer) and does NOT summarize into a recap (that is training-lecture-recap).",
     "input": "One audio or video file (e.g. .m4a). Optional: an existing reference .srt/.txt when re-timing known wording.",
@@ -2990,7 +3055,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Recommend the right Zynkr assistant(s) for a user's task. Interprets intent, matches against the structured assistant index, filters to usable entries, and either recommends or asks a single clarifying question.",
     "input": "A user inquiry describing a task, problem, or workflow they want help with",
@@ -3022,7 +3087,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "upstream_repo": "https://github.com/MrPM-Stanley/product-planning-skill",
     "original_source_url": "https://github.com/MrPM-Stanley/product-planning-skill/blob/main/README.md",
     "original_author": "MrPM-Stanley",
@@ -3059,7 +3124,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "Read, draft, edit, and lint Lucid charts using Peter's FE/BE/DB three-layer architecture convention. Triggers whenever the user shares a `lucid.app` URL with no further direction, asks to diagram/chart/visualize a process or workflow, asks to 'read' or 'summarize' an existing Lucid diagram, asks to add/modify nodes on a Lucid chart, or asks whether a chart follows the Zynkr convention. Should fire eagerly on phrases like '幫我畫流程圖', 'draw this workflow', 'diagram this', 'visualize this process', 'turn this into a Lucid chart', '/product-flow-design', or any pasted Lucid URL. Bridges the human-facing Shape × Color principles (`5.0 product/architecture_principles_guidebook.md`, `5.0 product/color-shape-principles.md`) to the Lucid MCP tools (`mcp__lucid__fetch`, `mcp__lucid__lucid_create_diagram_from_specification`, `mcp__lucid__lucid_add_block`, `mcp__lucid__lucid_add_line`, `mcp__lucid__lucid_edit_item`). Use even when the user does not name 'Lucid' explicitly — if they want a process flow drawn or interpreted, this skill applies.",
     "input": "A Lucid document URL/id, OR a natural-language process description, OR a chart-edit request.",
@@ -3091,7 +3156,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-25",
     "description": "Refactor a prompt (or prompt idea) into a production-ready package via 4 phases — GUIDE intake → diagnosis → structured refactor with explicit IPO sections + system/developer/user layers → optional multi-turn conversation blueprint.",
     "input": "User provides a prompt to optimize.",
@@ -3123,12 +3188,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "upstream_repo": "https://github.com/vercel-labs/skills",
     "original_source_url": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "original_author": "vercel-labs",
-    "github_stars": 30186,
-    "github_forks": 2584,
+    "github_stars": 30249,
+    "github_forks": 2593,
     "first_seen": "2026-06-09",
     "description": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
     "input": "A user query about an unmet capability (e.g., 'how do I make my React app faster?', 'can you help with PR reviews?')",
@@ -3160,7 +3225,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "The front-door router for the Zynkr assistant ecosystem. Takes ANY input from the user — a URL, a file path, a slug, a vague idea, a question about pipeline state — figures out which Zynkr skill it belongs to, reads the relevant state across GitHub Project / issues / on-disk / live marketplace, and either auto-invokes the right sub-skill or asks one targeted clarifying question. Use this skill whenever the user drops something into the conversation without specifying which skill should handle it — every undirected URL, file mention, idea, status question, or 'what should I do with this?' is a candidate. Especially fire on phrases like 'I found this', 'I just built X', 'where am I with Y', 'what's in my queue', 'I have an idea about', '幫我看一下這個', '/zynkr-skills', or when the user pastes a link with no further direction. Triggers MORE eagerly than the specific skills below it — when in doubt, route through /zynkr-skills rather than asking the user to remember the right slash command. Also fire on deck / 簡報 requests — 'make me a deck', '幫我做簡報', '做投影片', 'pitch deck', 'deep dive 簡報', 'all-hands 簡報', '把這份資料做成簡報' — and route them to /zynkr-slide (the slide-relay orchestrator).",
     "input": "Anything: a URL, local file path, skill slug, free-text idea, status question, or pasted content. The skill classifies the input shape before doing anything else.",
@@ -3192,7 +3257,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Aggregate skill candidates from any source, classify against the Zynkr taxonomy, check for duplicates in the GitHub Project pipeline, and propose new skills as issues for review.",
     "input": "GitHub link, URL, file path, or pasted raw text describing a potential skill",
@@ -3231,7 +3296,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Map an extracted skill to the Zynkr taxonomy category (0–9)",
     "kind": "subagent",
@@ -3268,7 +3333,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Check an incoming skill against the Zynkr Skills Pipeline GitHub Project for duplication or semantic overlap",
     "kind": "subagent",
@@ -3305,7 +3370,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Parse raw input (text, URL, file) and extract structured skill intent",
     "kind": "subagent",
@@ -3342,7 +3407,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-12",
     "description": "Propose a verified-new skill by opening an issue in zynkr-skill-idea and adding it to the skills pipeline GitHub Project. The triage-ready label is added only on approval.",
     "kind": "subagent",
@@ -3380,7 +3445,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Triage the queue of approved skill proposals in peter-tu-zynkr/zynkr-skill-idea (label: triage-ready), present each as a one-screen review packet, and on assign-build fire a repository_dispatch event to zynkr-skill-builder so the pickup-approved-issue workflow scaffolds the SKILL.md. The DevOps-admin middle layer of the skill pipeline. Trigger on phrases like 'triage skills', 'review skill queue', 'skill triage', or '/skill-triager'.",
     "input": "None (reads triage-ready issues from peter-tu-zynkr/zynkr-skill-idea) — or a specific issue number",
@@ -3411,7 +3476,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-12",
     "description": "Quality-gate a SKILL.md before it ships — runs the shared validate-skill.ts engine (frontmatter + body structure + absolute-path leak scan + synergy + IPO length + downloadability) and renders a per-check ✅/⚠️/❌ report with file:line and fix suggestions, optionally auto-fixing mechanical issues (strip leaked machine paths, repair the install snippet) with confirmation, then emits a PASS/FAIL verdict gated on ERROR-tier checks. The QA tollgate of the skill pipeline, between /skill-creator and /skill-publish — and the ad-hoc health-check /zynkr-skills routes to. Trigger on 'qa this skill', 'check this SKILL.md', 'is this skill ready to ship', 'lint the skill', '健檢', 'does <slug> pass QA', or '/skill-qa'.",
     "input": "A target SKILL.md: a file path, a skill folder, a skill/<slug> branch, or a bare slug to resolve under skills/**.",
@@ -3443,7 +3508,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-05-12",
     "description": "Land a freshly-built SKILL.md into the Zynkr skills pipeline — the closing step of the canonical chain (/skill-sourcer → /skill-triager → /skill-creator → /skill-qa → /skill-publish). Attaches the artifact to the existing pipeline issue, fires the publish-skill workflow to open a PR, and hands off to /skill-triager confirm-ship for closure. Trigger on phrases like 'publish this skill', 'land this skill', 'I finished building, push it', 'register this skill', 'add this built skill', 'check category and dedup before upload', or '/skill-publish'. Use whenever the user has a finished SKILL.md and wants it landed in zynkr-skill-builder — whether it came from /skill-creator (happy path) or from elsewhere (fresh intake fallback).",
     "input": "A path to the finished SKILL.md (folder or file), a GitHub URL to a SKILL.md, or pasted content. Optionally an existing pipeline issue number — if not given, the skill tries to...",
@@ -3479,12 +3544,12 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "upstream_repo": "https://github.com/vercel-labs/agent-browser",
     "original_source_url": "https://github.com/vercel-labs/agent-browser/blob/main/README.md",
     "original_author": "Vercel Labs",
-    "github_stars": 41703,
-    "github_forks": 2778,
+    "github_stars": 41799,
+    "github_forks": 2786,
     "first_seen": "2026-05-12",
     "description": "Give AI agents full browser control via CDP — navigate pages, click, fill forms, screenshot, and run multi-step web workflows without Playwright or Node.js",
     "input": "CLI instructions — URLs to open, actions to perform, element selectors or ref IDs, data to extract, or screenshots to capture",
@@ -3520,7 +3585,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "5-phase CV optimization workflow — job analysis, story extraction, fit scoring, career progression analysis, and CV rewrite with Google Doc output.",
     "input": "Hiring manager provides rough notes or ideas about the role.",
@@ -3556,7 +3621,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Analyzes a job description to extract role context, prioritized skills (MECE + 80/20), success metrics, and ATS keywords. Used as a subagent in the CV customizer workflow.",
     "input": "JD criteria, one or more candidate resumes, optional company culture notes, and optional desired shortlist size.",
@@ -3592,7 +3657,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Surfaces underrepresented skills by comparing the candidate's CV with the job requirements from phase 1, then guides the candidate to articulate strong, job-aligned stories using the SCQA framework. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "input": "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).",
@@ -3628,7 +3693,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Scores the candidate's CV against the job across four dimensions (Relevance, Value, Narrative, ATS), benchmarks against top-performing peers in similar roles, and recommends concrete improvements. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "input": "Interview transcripts, interviewer scorecards, Assistant A’s question set and scoring standards, and hiring manager/HR inputs.",
@@ -3664,7 +3729,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Automatically analyzes the career skill progression in a candidate's CV, checking for role-skill alignment, depth vs breadth, progression signals, and leadership framing. No user interaction required.",
     "input": "Candidate information, hiring stage, interview details (if applicable), and any specific instructions regarding tone or language preference.",
@@ -3700,7 +3765,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Rewrites the candidate's CV section by section (Accept / Modify / Skip per section) using insights from phases 1–4, fully aligned with the CV template and optimized for recruiter readability and ATS logic. Prompt reference — runs in the orchestrator's main conversation due to multi-turn user interaction.",
     "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
@@ -3737,7 +3802,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "End-to-end recruiting pipeline — JD authoring, resume screening, interview design with scorecard, and calibration / final decision — bilingual (Chinese-English) outputs throughout.",
     "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
@@ -3772,7 +3837,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Recruiting assistant — align role requirements (招募助理 ─ 對齊職務需求) — agent of zynkr-recruiter",
     "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
@@ -3807,7 +3872,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "招募助理 ─ 履歷篩選 — agent of zynkr-recruiter",
     "input": "Student questions or answers about AI writing concepts from the course, or a request to be quizzed or taught.",
@@ -3842,7 +3907,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Recruiting Assistant ─ Interview Question & Scorecard Designer — agent of zynkr-recruiter",
     "input": "JD Blueprint, competency requirements, role context, and candidate risk insights (from resume screening).",
@@ -3878,7 +3943,7 @@
       "claude",
       "orchestrator"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Anticipates likely interview questions for a specific role by analyzing the job description, the candidate's resume, the interview stage, and company context from an interviewer's perspective. Returns a prioritized question map with rationale and evaluation signals. Use when a candidate is preparing for an upcoming interview and needs to know what's coming — strictly prediction, not coaching or model answers.",
     "input": "User’s career-related question or unclear bottleneck tied to the course content.",
@@ -3910,7 +3975,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Mock Interview (模擬面試) — agent of recruiter-interview-question-customize",
     "input": "User’s career background, constraints, goals, preferences, and reflections provided through guided questions.",
@@ -3942,7 +4007,7 @@
       "claude",
       "subagent"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-09",
     "description": "Recruiting assistant — interview score calibration and decision (招募助理 ─ 面試評分校準與決策) — agent of zynkr-recruiter",
     "input": "Interview transcripts, interviewer scorecards, Assistant A's question set and scoring standards, and hiring manager/HR inputs.",
@@ -3978,7 +4043,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-18",
     "description": "Prepare Peter for an inbound PAID career / résumé consultation before it happens. Give it the booking — a Gmail thread, the appointment email, or just the client's name — and it reads the client's pre-consult reply + CV + LinkedIn, then builds a ready-to-use prep Doc in Peter's 職涯諮詢 folder: the GROW-model intake (Goal / Reality / Options / Will / Story / Summary) prefilled from the client's own words, an opener checklist of the make-or-break facts to confirm first (visa/work-rights for overseas moves, CV-vs-email inconsistencies), the client's own questions regrouped under GROW, a consultant-side CV health-check, and a 60-minute agenda. Trigger on /career-consult, \"prep for my consult\", \"幫我準備諮詢\", \"準備職涯諮詢\", \"prep the career consultation\", \"我等等有一場付費諮詢\", or whenever Peter forwards / points at a \"職涯、履歷付費諮詢\" appointment booking and wants something prepared ahead — even if he only gives the client's name or the calendar subject line. This is the PREP skill (build the briefing before the call). Distinct from cv-customizer (rewrites a CV against one specific job description) and from consult-project-specialist / consult-intake (which track SALES / advisory engagements as CRM deals, not 1-on-1 career coaching clients). When Peter has a career-coaching session coming up and wants to walk in prepared, prefer this skill.",
     "input": "A career-consult booking — a Gmail thread / appointment email ('職涯、履歷付費諮詢 (Name)'), pasted text, or just the client's name. The CV is usually a PDF attachment on the thread.",
@@ -4009,7 +4074,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-06-15",
     "description": "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statutory tax withholding. Use when the user says '外部講師', '講師合作', '講師結算', '講師合約', 'guest lecturer', or asks to run any stage of the lecturer program (接洽新講師 / 上架講師活動 / 月末結算). Commercial terms (revenue split, thresholds, penalty caps) come from a local program-config.md — they are never hardcoded in this skill.",
     "input": "The lifecycle stage to run (intake / contract / event ops / settlement) plus the lecturer or event in question; commercial parameters from a local program-config.md",
@@ -4040,7 +4105,7 @@
       "claude",
       "skill"
     ],
-    "updated_at": "2026-09-01",
+    "updated_at": "2026-09-02",
     "first_seen": "2026-08-02",
     "description": "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow-up checklist. Use when the user says '我要上架活動', '上架活動通', '填活動通', '活動上架', 'accupass', '幫我填模板', or '活動資訊填寫'. Does not publish to Accupass directly (the platform has no API) — it produces the filled template for manual entry.",
     "input": "Event seed material (existing event description, outline, or a past event listing) plus the event format (online / in-person / hybrid)",
