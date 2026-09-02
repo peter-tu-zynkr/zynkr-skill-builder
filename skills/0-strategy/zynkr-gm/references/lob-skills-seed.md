@@ -49,7 +49,7 @@ Category 0 now has two weeklies, and they are not the same artifact. Do not answ
 |---|---|
 | 「GM 週報 / 這週重點 / 本週 focus / 本月重點 / 哪些 P0 delay 了 / H2 進度盤點 / KPI off-target」, runway, the founder brief | **zynkr-gm** (this skill) |
 | 「tracker 同步 / Team Weekly 的 tracker 區塊 / 誰該被 nudge / snapshot the tracker」 | `planning-tracker-sync` (0.09) |
-| 「週報」 bare, "weekly report", the Monday cron on the course project | `project-status-update` (3.07) |
+| 「週報」 bare, "weekly report", the Monday cron on the course project | `project-status-update` (3.09) |
 
 `planning-tracker-sync` derives per-item state with **this skill's rules** — it holds a verbatim copy
 of `derived-state-rules.md` and calls `scripts/derive_state.py` when zynkr-gm is installed. That

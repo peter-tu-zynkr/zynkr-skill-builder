@@ -1,0 +1,7 @@
+{
+  "_note": "Covers the width-only branch: 所有檔案 declares `column_count: 12` and `headers: null`, because the live header strings were never captured. These twelve names are DELIBERATELY not real header text — the schema asserts nothing but the width, and inventing plausible names here would quietly become a fourth source of truth.",
+  "tab": "所有檔案",
+  "expect": 0,
+  "headers": ["col-1", "col-2", "col-3", "col-4", "col-5", "col-6",
+              "col-7", "col-8", "col-9", "col-10", "col-11", "col-12"]
+}

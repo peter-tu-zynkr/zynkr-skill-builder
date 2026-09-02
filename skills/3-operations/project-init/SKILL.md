@@ -1,0 +1,246 @@
+---
+name: project-init
+category: operations
+project: project-init
+platform: claude
+status: WIP
+author: Peter Tu
+sheetId: "3.20"
+description: "Stands up a new project from the PMO template set — resolves the filing home from the engagement type, copies the five templates into a new project folder, creates the four sub-folders, clears the example rows (鐵律 2), fills the Kickoff header, seeds 管控表 tab 1 with the five delivery-stage rows, writes the backlinks both ways and prints the pm.json entry to paste (spine + report recipients included). Trigger on /project-init or when the user says 「開新專案」「建立專案資料夾」「幫我開一個案子」「set up a new project」「複製專案模板」「開案」「新專案要什麼檔案」, or hands over a project name plus a 專案類型 (客戶案／課程案／內部案) and wants the PMO file set laid down. Distinct from project-planning (which fills the WBS this skill deliberately leaves empty) and from consult-project-specialist (which owns 客戶案 folder numbering and the CRM deal — this skill routes to it instead of duplicating it)."
+input: "專案名稱 · 專案類型 (客戶案／課程案／內部案) · Sponsor · PM · 目標完成日 · 一行核心目標; plus ~/.config/zynkr/pm.json for the filing home"
+process: "Verify the pack sha → collect six inputs → resolve filing_home from the adapter → pre-flight for duplicates → copy 5 templates + 4 sub-folders → change 核心目標 and CLEAR example rows → seed five X.0 stage rows → backlink → print the pm.json snippet"
+output: "A project folder holding [Business Case] · [Charter] · [Kickoff] · [專案管控表] · [復盤] plus sub-folders [1]–[4], tab 1 seeded with five stage rows and no tasks, and a pm.json snippet"
+synergy: [project-status-update, project-planning, project-minutes-sync, consult-project-specialist]
+---
+
+# project-init
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill project-init
+```
+
+開一個新專案，今天是手工做的：找模板資料夾、複製五份檔案、改名、開四個子資料夾、把表頭填一填、把範例列刪掉。Playbook §7 把「建案時複製管控表 v2 ＋子資料夾」列為缺的那一塊，而 **鐵律 2**（「模板只從 `[3.3]/[1]` 複製，複製後第一件事：改核心目標、清空範例列」）管的正是這個動作——它也是實務上最常被漏掉的半句：範例列沒清，之後每一份週報都會把範例資料當成真任務讀進去。這個技能把整串動作跑完，並且**只跑到 Gate 1 為止**：它交出一副乾淨的骨架，不替任何人規劃任務。
+
+---
+
+## 這個技能讀什麼（固定事實，不要再推導）
+
+- 知識來源：references/pm-knowledge-pack.md · v1 · sha256 15640433fbee
+- `references/pm-sources.md` §1 — 八個 PMO 正本 ID 與模板資料夾的正確名稱；§2 — `~/.config/zynkr/pm.json` adapter 契約；§2.1 — 逐鍵說明；§3 — 可直接複製的 `pm.json.example`
+- `references/pm-sheet-schema.json`（管控表分頁與標頭）· `references/pm-status-crosswalk.json`（五個軸），兩者都透過技能自帶的 `scripts/pm-schema.py` 讀，不用眼睛比對
+
+**所有路徑都以技能資料夾為根。** 安裝指令 只裝這一個資料夾，所以這五份東西（`references/` 四份 ＋ `scripts/pm-schema.py`）都隨技能一起發佈，`scripts/check-pm-refs.sh` 保證它們與 repo 的 `docs/pm-shared/` 逐位元組相同。**執行時不要去 repo 根目錄找 `docs/pm-shared/` 或根目錄的 `scripts/`**——安裝後的環境裡沒有那些路徑，指過去只會拿到 `No such file`。呼叫 CLI 時把 seed 明給：`--schema ./references/pm-sheet-schema.json` · `--crosswalk ./references/pm-status-crosswalk.json`（CLI 的內建預設指向 repo 版面）。
+- 知識包裡與本技能最相關的段：§1 五條鐵律 · §3 管控表 v2 tab 1 十四欄 · §4 編號與日期 · §5 Gate 與核准 · §9 四條鐵律
+
+**模板正本（committed literal，見 `pm-sources.md` §1「Use them verbatim; do not re-derive them from a Drive search」）**——本技能複製其中五份：
+
+| 複製成 | 類型 | 正本 ID |
+|---|---|---|
+| `[Business Case] <專案名稱>` | Doc | `1jwiSK3nsHQV-HZkc6eDv3IktdfvVcmO1WxiLTUFwDI4` |
+| `[Charter] <專案名稱>` | Slides | `1SWgWed9hIjLrux8mJnff95nFPMPGEO-HNi8yQ8LiBUs` |
+| `[Kickoff] <專案名稱>` | Doc | `1W1DAVTFmsuhuDPznN8EicoltxfdyqJ1jegBCIjuVrg0` |
+| `[專案管控表] <專案名稱>` | Sheet | `1Pc1YT4z6LdU9JjVSPT_ESN7DCa7aL8DhOD1IOpGiuvQ` |
+| `[復盤] <專案名稱>` | Doc | `1mHrs1M_hasg9mjIeuiJDWBsoXx_d0-GjLCPt9YvnveY` |
+
+`[會議記錄]` 是**每場會議一份**，不在開案時複製——那是 `/project-minutes-sync` 的事。TEMPLATE-INDEX 只有在模板本身被改動時才需要更新，開案不動它。
+
+**資料夾名稱一律以 `[3.3]` 為準**：Drive 上的真正名稱是 `[3.3] 專案管理 PMO｜Playbook & Templates`，模板只從 `[3.3]/[1] Templates 模板庫` 複製。
+
+> 2026-09-02：五份 PMO Doc 裡殘留的 17 處 `[3.4]` 已全部更正為 `[3.3]`（Playbook 12 · Business Case 1 · Kickoff 1 · 會議記錄 1 · 復盤 2）。鐵律 2 的**原文現在就寫 `[3.3]`**，引用時照抄即可——不要再「保留 `[3.4]`」、不要再加漂移註記。這是一則已完成的更正紀錄，不是還在生效的警告。
+
+---
+
+## 一眼看完流程
+
+0. 驗知識包 sha ＋ 載入 adapter
+1. 收齊六個輸入
+2. 解析歸檔家（客戶案先繞道 `/consult-project-specialist`）
+3. Pre-flight：同名專案已存在就停
+4. 複製五份模板 ＋ 開四個子資料夾 ＋ **改核心目標、清空範例列**
+5. 填 Kickoff 表頭（依案型）＋ Charter 首頁
+6. 管控表 tab 1 播下五列交付階段列，不編任務
+7. 雙向回連 ＋ 印出 `pm.json` 片段
+8. 交付清單 ＋ 唯一的下一步
+
+---
+
+## Step 0 — 驗知識來源，再載入設定
+
+先驗知識包，再做任何事：
+
+```bash
+shasum -a 256 references/pm-knowledge-pack.md | cut -c1-12   # 或 scripts/check-pm-refs.sh --print-sha
+```
+
+比對結果與上面「知識來源」那行宣告的 sha256。**不吻合就停**，回報 `知識包已變動：宣告 <declared> · 實際 <actual>`，並請維護者在 `zynkr-skill-builder` repo 裡跑 `scripts/check-pm-refs.sh --sync` 後重新發佈這個技能（那支 gate 住在 repo，不隨技能安裝，所以這一句是給維護者的，不是叫使用者在自己機器上跑）。這裡刻意不做「先跑再說」的降級路徑：知識包變過而技能沒跟上，代表它正拿舊規則在做不可逆的建檔動作，停下來比跑完便宜。
+
+接著依 `pm-sources.md` §2 載入 `~/.config/zynkr/pm.json`（可用環境變數 `ZYNKR_PM_CONFIG` 覆寫路徑）。檔案不存在就停，並把 §3 的 `pm.json.example` 指給使用者。
+
+本技能全程遵守知識包 §9 的四條鐵律：只出草稿永不寄送 · 讀不到就回報永不猜測 · Sheet 回寫只寫值 · 永不自行發明 `no.`。
+
+## Step 1 — 收齊六個輸入
+
+| 輸入 | 說明 |
+|---|---|
+| 專案名稱 | 進入所有檔名與資料夾名，之後不建議改 |
+| 專案類型 | 必須是 `pm.json` `engagement_types` 的**字面鍵**：`客戶案` / `課程案` / `內部案`（`pm-sources.md` §2.1） |
+| Sponsor | 出資／裁決的人 |
+| PM | 專案負責人；同時是五列階段列的 `Owner` |
+| 目標完成日 | **含年份** `YYYY/M/D`（知識包 §4）；沒有年份的日期視為不可讀 |
+| 核心目標 | 一行話，會被寫進管控表 tab 1 第 1 列與 Charter 首頁 |
+
+缺任何一項就**問**，不要替使用者填。特別是核心目標：一句想當然耳的漂亮話會被寫進三份檔案，之後沒人記得那不是使用者說的。`內部案` 另外要問所屬 LOB（Step 2 會用到）。
+
+## Step 2 — 解析歸檔家，解析不出來就停
+
+從 adapter 讀 `engagement_types[<專案類型>].filing_home`：
+
+- `folder_id` 有值 ⇒ 那就是新專案資料夾的父層（`客戶案` `[2.2]` · `課程案` `[4.3]`）。
+- `內部案` 的 `folder_id` 是 `null`，改用 `filing_home.by_lob[<LOB>]` 解析——`內部案` 歸在自己的 LOB 資料夾，沒有單一的家。LOB 不在 `by_lob` 裡就停。
+- 找不到 `pm.json`、找不到這個案型的鍵、或解出來的值仍是 `<...>` 佔位字串 ⇒ **停**，並把缺的鍵路徑原樣說出來，例如 `config: engagement_types.內部案.filing_home.by_lob.3.0 unset`（`pm-sources.md` §2 的 fail-loud 規則）。
+
+**絕不猜資料夾**：不用 Drive 搜尋標題去找「看起來像的那個」，不沿用上次跑到的 ID，不退回任何寫死的預設值。建錯地方的專案，錯誤會一路長進權限與歸檔。
+
+### 2.1 · 客戶案：先走 /consult-project-specialist，不要重做它的事
+
+`客戶案` 的 `creates_crm_deal` 是 `true`。**建案自動化在 `客戶案` 這條線上屬於 `/consult-project-specialist`**：`[N] Company（Project）` 的編號規則、CRM deal、活動時間軸都由它負責，本技能不重新實作，也不平行再建一個資料夾。
+
+- 該專案的 `[N]` 資料夾與 CRM deal **還不存在** ⇒ 停，明講一句「客戶案的資料夾與 deal 由 `/consult-project-specialist` 建立，請先跑它，再回來跑 `/project-init` 補 PMO 模板組」。
+- **已存在** ⇒ 把那個資料夾當成本次的專案資料夾，只往裡面補 Step 4 的五份模板與四個子資料夾。全程不碰 CRM。
+
+## Step 3 — Pre-flight：同名就停，不要建第二份
+
+列出 Step 2 解析出來的父資料夾內容，比對專案名稱。命中同名（或明顯同一個案子的變體）時**停**，並把既有的東西印出來：
+
+| 已存在 | 類型 | URL |
+|---|---|---|
+
+然後問一句：是要續建缺少的檔案，還是這其實是另一個案子、要改名？兩份同名專案資料夾一旦出現，之後每一個讀 `folder_id` 的技能都會開始讀錯——重複比缺漏難修得多。
+
+## Step 4 — 複製模板、開子資料夾、清空範例列
+
+### 4.1 · 建資料夾並複製五份模板
+
+在解析出來的歸檔家底下建立專案資料夾，複製上面表格的五個正本進去並照 `[前綴] <專案名稱>` 改名。**只從 `[3.3]/[1] Templates 模板庫` 的正本複製**（鐵律 2），不從別的專案複製、不從零產生一份「差不多的」模板。
+
+### 4.2 · 建四個子資料夾
+
+`[1] 會議` · `[2] 素材` · `[3] 交付物` · `[4] 封存`（`pm-sources.md` §1 結尾）。四個都要建，即使這個案子暫時用不到 `[4] 封存`——結案檢查表會來找它。
+
+### 4.3 · 鐵律 2 的第二半：改核心目標、清空範例列
+
+**這是最常被跳過的一步，所以它自己一個編號。** 複製完成後、還沒有任何人開始用之前，立刻做兩件事：
+
+1. **改核心目標** — 管控表 tab 1 第 1 列的核心目標欄、Business Case 表頭、Kickoff 表頭、Charter 首頁，全部換成 Step 1 收到的那一行。
+2. **清空範例列** — 管控表每一個分頁的示範資料都要清掉：tab 1 的範例 `X.Y` 任務列、`Stakeholders & RACI` · `Risk Register` · `Budget` · `Prerequisite Checklist` · `Change & Decision Log` · `所有檔案` · `Comms Plan` 的範例列，以及 BC／Charter／Kickoff／復盤 裡的示範段落。
+
+沒清乾淨的下場很具體：範例任務會被 `/project-status-update` 當成真任務算進完成度分母，範例風險會被當成未關閉風險回報，第一份週報就開始說謊。
+
+**這是本技能唯一一次會刪掉內容的寫入**，而且發生在這份 Sheet 還沒有被任何人使用之前。從 Step 6 起這份 Sheet 就是使用中的表，之後一律**只寫值（VALUES ONLY）**：不重新轉檔、不改格式、不動欄寬、不重排列序（知識包 §9）。
+
+## Step 5 — 填 Kickoff 表頭 ＋ Charter 首頁
+
+Kickoff 表頭欄位依案型而異，**從 adapter 讀 `engagement_types[<專案類型>].kickoff_fields_omitted`，不要把差異寫死在這裡**——`內部案` 免填 `主要窗口`、`CRM Deal` 只有 `客戶案` 有，這些是 adapter DATA，改一次設定就要三個案型都跟著對（`pm-sources.md` §2.1）。
+
+- 該填的：專案類型 · 客戶／對象 · PM · Sponsor · 目標完成日 · 核心目標 · 專案資料夾與三份檔案的 URL（Step 7 補上）。
+- 在 `kickoff_fields_omitted` 名單裡的欄位：留白並標「（本案免填）」，不要刪掉欄位本身，也不要拿別的值去填。
+- Kickoff 內建的四段週報區塊（`1 Summary Update` / `2 Progress` / `3 Blockers/Challenges` / `4 What's Next`）**留空**，第一份內容由 `/project-note-specialist` 或 `/project-status-update` 產生（知識包 §7）。
+
+Charter 首頁只放：專案名稱 · 核心目標 · Sponsor／PM · 目標完成日。**里程碑、KPI、RAPID、RACI、範疇 in／out、前三大風險一律留白**——那是 Charter 核准前要由人談出來的內容，`/project-planning` 才是它的產出者。
+
+## Step 6 — 管控表 tab 1 播下五列交付階段列，不編任務
+
+**先偵測版本，不要假設**（知識包 §3）：讀第 1 列標頭，`K1` 命中 `前置任務` ⇒ v2，讀寫 `A:N`；`K1` 命中 `Reference` ⇒ legacy v1，讀寫 `A:M`；兩者都不吻合 ⇒ 回報而不是猜。剛複製出來的正本應該是 v2，仍然要驗——寫死範圍正是現行 `project-status-update` 讀錯欄位的原因。
+
+播下五列 `X.0` 階段列——Playbook §4 流程骨架裡的**五個交付階段**，它們就是這個專案的交付脊椎（delivery spine）：
+
+| `no.` | `里程碑 Stage` |
+|---|---|
+| `1.0` | 啟動 Initiation |
+| `2.0` | 規劃 Planning |
+| `3.0` | 執行 Execution |
+| `4.0` | 監控 Monitoring & Control |
+| `5.0` | 結案 Closing |
+
+**不要播 `跨階段 Cross-Cutting`。** 它是一條與五個交付階段**並行**的軌，不是脊椎上的一站：把它播成第六列，`/project-status-update` 就會把它算成分母的 1/6，於是每個新專案的第一份週報，完成度都先被一條「永遠不會 done 的軌」稀釋一格。跨階段的工作照樣可以進管控表——掛在它實際發生的那個階段底下；真的必須獨立成列時，在報告裡標明它是並行軌。它不進 spine，也不進完成度分母。
+
+**這五個名字就是 Step 7 要寫進 `pm.json` 的 `spine`，兩邊必須一字不差。** `/project-status-update` 拿 spine 去對映活表上的 `X.0` 列；名字對不上，它就會印「專案結構已變動」，而那句話本來是要用來抓真的結構變動的。日後有人在管控表上改了階段名或增刪階段，`spine` 要同步改——它是設定，不是猜出來的。
+
+每一列只寫這幾欄：`no.` · `里程碑 Stage` · `Owner`＝PM · `Status`＝`Not started`（鐵律 3 的四值之一）。`End` 只有 `5.0 結案` 這一列填 Step 1 的目標完成日，其餘日期**全部留白**——那是目標完成日唯一站得住腳的落點，其他階段的起訖日要由人排。
+
+**不要編任何 `X.Y` 任務列。** 這裡沒有任何資訊可以推導出任務，憑空生出來的任務會立刻變成分母、變成週報上的落後項。WBS 是 `/project-planning` 的產出。同理，Gate 列的核准人與日期（知識包 §5：`Owner` 欄＝核准人、`End` 欄＝核准日期）**只能由核准的人補**，本技能不預先簽名。
+
+寫入方式：只寫值，日期含年份，`no.` 依知識包 §4 的規則取號，不自行發明。
+
+## Step 7 — 雙向回連，並印出 pm.json 片段
+
+**回連要兩邊都有**，只有單向的連結在第三週就會斷：
+
+- 專案資料夾 URL、管控表 URL、Business Case URL、Charter URL ⇒ 寫進 Kickoff 表頭對應欄位。
+- 五份檔案的名稱與 URL ⇒ **這一版不寫 `所有檔案` 分頁**，改成印在對話裡讓使用者自己貼。原因很硬：`references/pm-sheet-schema.json` 對這個分頁誠實地記著 `"headers": null`（只知道 12 欄，2026-09-02 的實測沒抓到標頭字串），沒有標頭就沒有依據決定「一列一份」該落在哪幾欄；而 §4.3 剛把這張表的範例列清掉，也沒有現成的範例列可以照抄。**不要自己補那 12 個標頭**——猜出來的欄序寫進去，比留白難修得多（知識包 §9：讀不到就回報，不猜）。
+  交付清單裡照實報一句：`所有檔案 未寫入 — 該分頁標頭尚未擷取（TODO: references/pm-sheet-schema.json → tabs.所有檔案.headers 仍為 null）`。
+
+**註冊到 adapter：印出片段，不要代寫。** `~/.config/zynkr/pm.json` 是使用者的私有設定檔，裡面有其他專案的機密 ID，本技能不改它。把下面這段印出來請使用者貼進 `projects`：
+
+```json
+"<project-slug>": {
+  "tracker_sheet_id": "<新管控表 Sheet ID>",
+  "minutes_doc_id": null,
+  "folder_id": "<新專案資料夾 ID>",
+  "engagement_type": "<專案類型>",
+  "spine": [
+    "啟動 Initiation",
+    "規劃 Planning",
+    "執行 Execution",
+    "監控 Monitoring & Control",
+    "結案 Closing"
+  ],
+  "report_recipients": ["<週報收件人 email>", "<週報收件人 email>"]
+}
+```
+
+兩個新鍵，兩件不同的事：
+
+- **`spine`** — Step 6 播下去的那五個 `里程碑 Stage`，順序即交付順序，逐字照抄。`/project-status-update` 讀它來算完成度；沒有這個鍵時它會退回這五個預設值並印一行警告，而不是沿用別的專案的階段名。`跨階段 Cross-Cutting` 不在裡面。
+- **`report_recipients`** — 這個專案的週報要寄給誰。**本技能一個 email 都不填**：上面印的是佔位字串，由使用者換成真的收件人。收件人是 adapter data，不是技能常數——寫死在技能裡，等於把某一個專案的名單套到所有專案上。缺這個鍵時 `/project-status-update` 應該 fail loud，而不是寄給預設名單。
+
+`<project-slug>` 用 kebab-case，取定之後就是之後所有 PM 技能呼叫這個專案的名字，不要再改。`minutes_doc_id` 先留 `null`，等 `/project-minutes-sync` 建出第一份 `[會議記錄]` 再補（`pm-sources.md` §2.1）。提醒使用者：貼完之前，`/project-status-update` 對這個專案只會 fail loud，那是預期行為，不是壞掉。
+
+## Step 8 — 交出清單與唯一的下一步
+
+印出交付清單：
+
+| 名稱 | 類型 | URL | 下一個 Gate |
+|---|---|---|---|
+| `[Business Case] <專案名稱>` | Doc | … | 核准後才進入 Charter |
+| `[Charter] <專案名稱>` | Slides | … | 核准後才進入 Planning |
+| `[Kickoff] <專案名稱>` | Doc | … | — |
+| `[專案管控表] <專案名稱>` | Sheet | … | WBS 待 `/project-planning` |
+| `[復盤] <專案名稱>` | Doc | … | 結案時才動 |
+
+外加：專案資料夾 URL · 四個子資料夾 · 依案型被略過的 Kickoff 欄位 · Step 7 那句 `所有檔案 未寫入` 的說明 · 那段還沒貼進 `pm.json` 的片段（含 `spine` 與 `report_recipients`）。
+
+**下一步只有一個：完成 `[Business Case]` §1–§6 並送核准**，因為「核准後才進入 Charter」（`pm-sources.md` §1 Business Case 那列）。鐵律 4 說得更硬：Gate 沒過不進下一階段。所以不要在報告裡同時列三件「接下來可以做的事」——現在能做的就這一件，其餘都在 Gate 後面。
+
+---
+
+## 界線與守則
+
+- **只出草稿，永不寄送** — 本技能完全不碰郵件。開案通知要不要發、由誰發，是人的決定。
+- **絕不在解析出來的歸檔家之外建資料夾** — `filing_home` 解析失敗就停，不建「暫時放這裡」的資料夾。
+- **絕不發明任務** — 五列階段列是上限。沒有輸入就沒有任務，寧可交出一張空表。
+- **絕不發明日期** — 目標完成日以外的日期一律留白；沒有年份的日期回報而不是補（知識包 §4）。
+- **客戶案不重做 CRM** — 路由到 `/consult-project-specialist`，並把這件事說出來，而不是安靜地跳過或偷偷再實作一次。
+- **讀不到就回報** — 設定缺鍵、標頭不吻合、模板正本開不起來，一律據實回報缺漏，不以合理推測填補（知識包 §9）。
+- **絕不憑空補標頭** — `pm-sheet-schema.json` 記 `null` 的分頁就是還沒擷取，報 TODO，不寫入。
+- **絕不寫死收件人** — 週報名單只住 `pm.json` 的 `report_recipients`，本檔只印佔位字串。
+- **不代寫使用者的私有設定** — `pm.json` 由使用者自己貼。
+
+## 交棒
+
+| 接手的技能 | 什麼時候 |
+|---|---|
+| `/project-planning` | Charter 核准後，把五列階段列展開成 WBS |
+| `/project-minutes-sync` | 第一場會議之後，建 `[會議記錄]` 並把 Action Items 對回管控表 `no.` |
+| `/project-status-update` | `pm.json` 片段貼好之後的第一個週報週期 |
+| `/consult-project-specialist` | `客戶案` 的資料夾編號與 CRM deal（在本技能之前） |

@@ -121,9 +121,25 @@ client** is an incident. Peter reviews, edits, and hits send himself.
 - **Meetings / notes** — recent `crm_activities` rows (newest first) plus
   `crm_deals.notes`, the running engagement log the whole 2.x suite appends to.
 - **Normalize status before reasoning** (source-skill discipline): trim +
-  lowercase, map onto `Done`（`完成`/`✓`）· `WIP`（`進行中`）· `Not started`
-  (blank/`未開始`/`todo`). Anything unmappable counts as `Not started` for the
-  % math but is flagged to Peter — not guessed, not shown raw to the client.
+  lowercase, map onto FOUR buckets — `Done`（`完成`/`✓`）· `WIP`（`進行中`）·
+  `Not started`（blank/`未開始`/`todo`）· `Drop`（`放棄`/`dropped`）. `Drop` is a
+  bucket of its own, not a flavour of `Not started`: a dropped task leaves the
+  % denominator in step 5 instead of inflating it. `取消` is **not** a fifth
+  value and **not** a synonym for `Drop` — 鐵律 3 pins the vocabulary at four —
+  so a task carrying it is a data error: flag the row to Peter, keep it counted
+  as unresolved (inside the denominator, outside `done`) until the CRM row is
+  corrected to `Drop`, and never promote it to a drop on your own reading.
+  Anything else unmappable gets the same treatment — flagged to Peter, not
+  guessed, not shown raw to the client.
+  **Upstream authority for this whole bucket step**:
+  `docs/pm-shared/pm-knowledge-pack.md` **§2.2 裁決二** — it fixes the four legal
+  values (`Done` / `WIP` / `Not started` / `Drop`), rules that **only `dropped`
+  leaves the denominator**, and rules that an illegal value such as `取消` is a
+  **data error** that stays *inside* the denominator, *outside* `done`, and is
+  named in the report. Machine-readable as `rules.percent_complete` +
+  `rejected_values` in `docs/pm-shared/pm-status-crosswalk.json`. This skill is
+  deliberately **not** in the PM family: it keeps no copy of the pack, follows
+  the rule, and cites it.
 
 ### 3 · Read the [N] folder's recent docs
 
@@ -157,9 +173,25 @@ discipline is inherited from the source skill, reshaped for CRM data:
   not started, the engagement stalled since the last report, or progress
   blocked on a client-side ask. 🟢 `ON_TRACK`: nothing overdue, current-phase
   tasks moving. The `summary` names its evidence (task, doc, date) — auditable.
-- **% complete** — Done tasks / all tasks on the deal; phase-weight if the
-  `[Plan]` defines phases (a half-finished phase contributes its true
-  fraction, never rounded up). No CRM tasks yet ⇒ omit the stage card.
+- **% complete** — `% = done / (total − dropped)`. Dropped tasks (the `Drop`
+  bucket from step 2) leave the denominator; counting them as `Not started` is
+  the bug this replaces — it inflated the denominator and understated the
+  client's progress. Phase-weight if the `[Plan]` defines phases (a
+  half-finished phase contributes its true fraction, never rounded up).
+  Dropped items are **listed separately, never silently gone**: one
+  `decisions[]` entry each（範圍調整：<任務> 本期不做）with the date and the
+  reason it was dropped, plus a line in the step-9 report to Peter. A `取消`
+  or otherwise illegal status is the mirror case and is **not** symmetric with
+  a drop: it stays in `total`, never counts toward `done`, and is named in the
+  step-9 report — removing it would flatter the number the same way the old
+  `Drop → Not started` fold understated it. No CRM tasks yet, or
+  `total − dropped = 0` ⇒ omit the stage card (never divide by zero, never
+  print a silent 0%). Upstream rule for **both** halves — the dropped-leaves
+  rule and the illegal-value-stays rule — is
+  `docs/pm-shared/pm-knowledge-pack.md` §2.2 裁決二, machine-readable as
+  `rules.percent_complete` + `rejected_values` in
+  `docs/pm-shared/pm-status-crosswalk.json` — this skill is not in the PM
+  family and keeps no copy of that pack; it follows the rule and cites it.
 - **Next milestone** — the nearest unmet dated commitment: earliest open task
   due date, or the UAT / go-live date from the docs.
 - **Blockers** — only from evidence (task notes, `[Notes]` blockers, deal
@@ -221,9 +253,11 @@ via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)` —
 escape single quotes by doubling them (`O'Brien` → `O''Brien`).
 
 Then report to Peter: the health verdict + one-line reason, what moved vs last
-week, the draft's subject + recipient, and **what needs his edit before
-sending** (資料不足 sections, excluded dates, tone judgment calls). Then stop —
-Peter sends.
+week, the draft's subject + recipient, which tasks were dropped out of the %
+denominator (and whether each has a Change & Decision Log record), any `取消`
+or otherwise unmappable status left sitting in the denominator as a data error,
+and **what needs his edit before sending** (資料不足 sections, excluded dates,
+tone judgment calls). Then stop — Peter sends.
 
 ---
 

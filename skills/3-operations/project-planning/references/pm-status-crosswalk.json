@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "verified": "2026-09-02",
+  "premise": "The PMO's status drift is not one vocabulary drifting — it is FIVE DIFFERENT AXES being read as one. Each artefact column below belongs to exactly one axis. Never map a value across axes without saying so.",
+  "axes": {
+    "lifecycle": {
+      "canonical": ["not_started", "in_progress", "paused", "done", "dropped"],
+      "scope": "task and project",
+      "surfaces": {
+        "管控表 tab1 Status": {
+          "Not started": "not_started",
+          "WIP": "in_progress",
+          "Done": "done",
+          "Drop": "dropped"
+        },
+        "Main Tracker 專案項目": {
+          "未開始": "not_started",
+          "進行中": "in_progress",
+          "暫停": "paused",
+          "完成": "done",
+          "放棄": "dropped"
+        }
+      },
+      "note": "管控表 tab 1 carries no paused value — 鐵律 3 fixes it at four. The Main Tracker's 暫停 is therefore a project-level reading and never maps onto a 管控表 row. See rules.paused_is_project_level_only."
+    },
+    "health": {
+      "canonical": ["on_track", "at_risk", "delayed"],
+      "derived": true,
+      "typed": false,
+      "surfaces": {
+        "會議記錄 進度更新": {
+          "On track": "on_track",
+          "At risk": "at_risk",
+          "Delayed": "delayed",
+          "Done": "lifecycle:done"
+        },
+        "週報 RAG": {
+          "🟢": "on_track",
+          "🟡": "at_risk",
+          "🔴": "delayed"
+        },
+        "dashboard health": {
+          "ON_TRACK": "on_track",
+          "AT_RISK": "at_risk",
+          "DELAYED": "delayed"
+        }
+      },
+      "cross_axis": {
+        "會議記錄 進度更新 · Done": {
+          "sits_on": "health",
+          "means": "lifecycle:done",
+          "note": "會議記錄's 進度更新 column offers On track／At risk／Delayed／Done in one list, but Done is not a health reading — it is the lifecycle value. Resolve it to lifecycle `done` and read health for that row as `on_track` only if the derivation says so. Recorded here explicitly so no reader silently folds a lifecycle value into the health axis."
+        }
+      },
+      "derivation": {
+        "delayed": "End < today AND lifecycle != done",
+        "at_risk": "(End <= today+3 AND lifecycle = not_started) OR an open blocker older than 7 days",
+        "on_track": "neither delayed nor at_risk applies",
+        "evaluation_order": ["delayed", "at_risk", "on_track"],
+        "note": "health is always computed from lifecycle plus dates plus open blockers. It is never typed by a human and never written back to a Status column. See rules.health_never_written_to_status."
+      }
+    },
+    "risk": {
+      "canonical": ["open", "monitoring", "closed"],
+      "surfaces": {
+        "管控表 Risk Register 狀態": {
+          "Open": "open",
+          "Monitoring": "monitoring",
+          "Closed": "closed"
+        }
+      },
+      "note": "A 阻礙 that survives one week must be escalated into a Risk Register row with Owner and 狀態 filled (會議記錄 header rule)."
+    },
+    "decision": {
+      "canonical": ["proposed", "approved", "rejected"],
+      "surfaces": {
+        "管控表 Change & Decision Log 狀態": {
+          "提案": "proposed",
+          "核准": "approved",
+          "駁回": "rejected"
+        }
+      },
+      "note": "A 決議 touching 範疇／時程／預算 must be synced here, and every Drop on tab 1 must leave a row here."
+    },
+    "closure": {
+      "canonical": ["passed", "passed_with_conditions", "not_delivered"],
+      "surfaces": {
+        "復盤 §1 結案確認": {
+          "通過": "passed",
+          "有條件通過": "passed_with_conditions",
+          "未交付": "not_delivered"
+        }
+      },
+      "note": "Closure is a verdict on the project, taken once. 管控表 reaching 100% or the project being stopped is the trigger; the project is not finished until 復盤 is written and 封存 is filed (鐵律 5)."
+    }
+  },
+  "vocabularies": {
+    "lifecycle_sheet": {
+      "axis": "lifecycle",
+      "surface": "管控表 tab1 Status",
+      "values": ["Not started", "WIP", "Done", "Drop"]
+    },
+    "lifecycle_tracker": {
+      "axis": "lifecycle",
+      "surface": "Main Tracker 專案項目",
+      "values": ["未開始", "進行中", "暫停", "完成", "放棄"]
+    },
+    "health_meeting": {
+      "axis": "health",
+      "surface": "會議記錄 進度更新",
+      "values": ["On track", "At risk", "Delayed", "Done"]
+    },
+    "health_rag": {
+      "axis": "health",
+      "surface": "週報 RAG",
+      "values": ["🟢", "🟡", "🔴"]
+    },
+    "health_dashboard": {
+      "axis": "health",
+      "surface": "dashboard health",
+      "values": ["ON_TRACK", "AT_RISK", "DELAYED"]
+    },
+    "risk": {
+      "axis": "risk",
+      "surface": "管控表 Risk Register 狀態",
+      "values": ["Open", "Monitoring", "Closed"]
+    },
+    "decision": {
+      "axis": "decision",
+      "surface": "管控表 Change & Decision Log 狀態",
+      "values": ["提案", "核准", "駁回"]
+    },
+    "closure": {
+      "axis": "closure",
+      "surface": "復盤 §1 結案確認",
+      "values": ["通過", "有條件通過", "未交付"]
+    }
+  },
+  "rejected_values": {
+    "取消": {
+      "reason": "not in any surface vocabulary on any axis — the 管控表 word for this is `Drop`, the Main Tracker word is `放棄`",
+      "did_you_mean": ["Drop", "放棄"],
+      "handling": "data error, not a fifth bucket: the row STAYS in the % denominator, never counts as done, is never folded into a legal bucket, and is named in data_errors with its no. and the offending literal. See rules.illegal_status_literal.",
+      "history": "project-status-update silently folded 取消 into `Not started`. The arithmetic happened to land in the right place — an unclassifiable row does belong in the denominator — but the silence did not: nobody reading the report knew a row was unreadable. The fix is the naming, not a change of bucket."
+    },
+    "暫停": {
+      "reason": "project-level only — 管控表 tab 1 has no paused value because 鐵律 3 fixes it at four (Done / WIP / Not started / Drop)",
+      "valid_on": ["Main Tracker 專案項目"],
+      "invalid_on": ["管控表 tab1 Status"],
+      "did_you_mean": ["WIP + a Note explaining the pause", "Drop + a Change & Decision Log entry"],
+      "handling": "on 管控表 tab 1 it is a data error and is handled exactly like 取消 — stays in the denominator, outside done, named in data_errors. On Main Tracker 專案項目 it is a legal PROJECT-level lifecycle value and no error at all."
+    }
+  },
+  "rules": {
+    "paused_is_project_level_only": true,
+    "paused_is_project_level_only_note": "管控表 tab 1 has no paused value (鐵律 3 fixes four values). A paused TASK is recorded as `WIP` plus a Note, or as `Drop` with a Change & Decision Log entry. The Main Tracker's 暫停 therefore maps to a project, never to a 管控表 row.",
+    "percent_complete": {
+      "formula": "done / (total - dropped)",
+      "total": "every task row in scope, INCLUDING rows whose Status literal is illegal",
+      "excluded_from_denominator": ["dropped"],
+      "only_dropped_leaves_the_denominator": true,
+      "was": "two bugs at once — real `Drop` rows were left in the denominator (inflating it), and the illegal literal 取消 was silently folded into `Not started` instead of being named",
+      "reporting": "dropped rows are listed separately in the report, never silently discarded; a non-empty data_errors list makes the percent provisional and the summary must say so",
+      "empty_denominator": {
+        "when": "counted(s) - dropped(s) = 0 for a stage — the stage has no task rows at all, or every row is Drop",
+        "do": "remove that stage from the spine for the percent maths (total_spine_stages drops by 1) and name it in data_errors",
+        "never": ["divide by zero", "silently score the stage 0%"],
+        "why": "0% would let a stage that was entirely cancelled drag the whole report down forever"
+      },
+      "mirrors": "pm-knowledge-pack.md §2.2 裁決二"
+    },
+    "illegal_status_literal": {
+      "definition": "a 管控表 tab 1 Status value outside the four legal literals Done / WIP / Not started / Drop (鐵律 3)",
+      "is": "a data error, not a fifth bucket",
+      "stays_in_denominator": true,
+      "counts_as_done": false,
+      "folded_into_a_legal_bucket": false,
+      "reported_as": "a data_errors entry naming the row's no. and the offending literal",
+      "why": "a row you cannot classify is work you cannot claim is finished — taking it out of the denominator flatters the number, which is the same class of bug as the dropped-counted-as-not_started fold this change exists to fix. Only `dropped` leaves the denominator.",
+      "mirrors": "pm-knowledge-pack.md §2.2 裁決二"
+    },
+    "meeting_done_is_lifecycle": true,
+    "meeting_done_is_lifecycle_note": "會議記錄's 進度更新 column lists On track／At risk／Delayed／Done in one list, but Done is the lifecycle value, not a health reading. Resolve it to lifecycle `done`; that row's health is still derived from dates × lifecycle. Full record in axes.health.cross_axis; mirrored in pm-knowledge-pack.md §2.",
+    "health_never_written_to_status": true,
+    "health_never_written_to_status_note": "會議記錄's On track／At risk／Delayed is a health reading, not a lifecycle status. It must never be written back into 管控表 `Status`, and 管控表 `Status` must never be surfaced as a RAG colour without running the derivation. Mirrors pm-knowledge-pack.md §2.2 裁決三.",
+    "not_in_this_file": {
+      "delivery_spine": "adapter DATA — ~/.config/zynkr/pm.json → projects.<slug>.spine, an ordered array of stage names. project-init seeds the five delivery phases 啟動 · 規劃 · 執行 · 監控 · 結案 as X.0 rows; a skill that cannot read it falls back to those five and prints a warning. 跨階段 Cross-Cutting is a PARALLEL TRACK, never a spine stage and never in the denominator.",
+      "report_recipients": "adapter DATA — ~/.config/zynkr/pm.json → projects.<slug>.report_recipients. No recipient literal belongs in any SKILL.md; a missing key fails loud.",
+      "mirrors": "pm-knowledge-pack.md §10"
+    }
+  }
+}

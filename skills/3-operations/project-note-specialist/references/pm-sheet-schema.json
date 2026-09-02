@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "sheet": "管控表 v2",
+  "spreadsheet_id": "1Pc1YT4z6LdU9JjVSPT_ESN7DCa7aL8DhOD1IOpGiuvQ",
+  "verified": "2026-09-02",
+  "conventions": {
+    "enum_column_key_matching": "prefix",
+    "enum_column_key_matching_note": "管控表 v2 header cells embed the enum in the cell text (e.g. `狀態 Open/Monitoring/Closed`). An `enum_columns` key is the column-name prefix; match it against the start of the verbatim header string, not by equality.",
+    "tab_order_note": "Keys appear in sheet order as read on 2026-09-02.",
+    "crosswalk": "pm-status-crosswalk.json — every `enum_columns` value resolves there, via `vocabularies` first and `axes` second."
+  },
+  "tabs": {
+    "專案管理總表": {
+      "version": "v2",
+      "headers": [
+        "no.",
+        "里程碑 Stage",
+        "任務描述 Task",
+        "Priority",
+        "Owner",
+        "Facilitator",
+        "Agent",
+        "Status",
+        "Start (YYYY/M/D)",
+        "End (YYYY/M/D)",
+        "前置任務 Depends on",
+        "Reference 連結",
+        "Note",
+        "DOD 完成定義／交付物"
+      ],
+      "legacy": {
+        "v1": {
+          "headers": [
+            "no.",
+            "里程碑 Stage",
+            "任務描述 Task",
+            "Priority",
+            "Owner",
+            "Facilitator",
+            "Agent",
+            "Status",
+            "Start (YYYY/M/D)",
+            "End (YYYY/M/D)",
+            "Reference 連結",
+            "Note",
+            "DOD 完成定義／交付物"
+          ],
+          "range": "A1:M44",
+          "note": "13 cols A-M; project-status-update read A1:M44 and mis-mapped K"
+        }
+      },
+      "range": "A1:N44",
+      "enum_columns": {
+        "Status": "lifecycle_sheet"
+      },
+      "note": "The only SOT for progress (五條鐵律 1). Gate rows overload two columns: Owner = 核准人, End = 核准日期. Priority has no enumerated set — only `High` observed."
+    },
+    "Stakeholders & RACI": {
+      "headers": [
+        "角色",
+        "姓名",
+        "組織/部門",
+        "Interest H/M/L",
+        "Influence H/M/L",
+        "溝通需求",
+        "備註"
+      ],
+      "enum_columns": {},
+      "note": "A stakeholder register only — there is no per-deliverable RACI grid here, despite the tab name and Playbook §4."
+    },
+    "Risk Register": {
+      "headers": [
+        "風險描述",
+        "類別 時程/範疇/資源/技術/外部",
+        "機率 1-3",
+        "衝擊 1-3",
+        "分數",
+        "緩解措施",
+        "應變計畫",
+        "Owner",
+        "狀態 Open/Monitoring/Closed",
+        "最後檢視日"
+      ],
+      "enum_columns": {
+        "狀態": "risk"
+      },
+      "note": "A 阻礙 that cannot be cleared within one week must open a row here with Owner and 狀態 filled (會議記錄 header rule)."
+    },
+    "Budget": {
+      "headers": [
+        "科目",
+        "類別 人力/外包/工具/行銷/其他",
+        "預算",
+        "實際",
+        "差異"
+      ],
+      "enum_columns": {},
+      "note": "Seeded with a 應急準備金 row at 10–15%."
+    },
+    "Prerequisite Checklist": {
+      "headers": [
+        "類別",
+        "確認事項",
+        "負責部門 Engineering/Marketing/Product",
+        "內部 Owner",
+        "對口窗口",
+        "狀態 已確認/未確認/已知背景/N.A.",
+        "needed-by",
+        "卡哪個任務 no.",
+        "客戶回答／決定",
+        "備註"
+      ],
+      "enum_columns": {},
+      "note": "Its 狀態 column (已確認/未確認/已知背景/N.A.) is a confirmation vocabulary, not one of the five axes — see `unmapped_enums`. The seeded rows are EDM/CSRC-specific, not generic prerequisites."
+    },
+    "Change & Decision Log": {
+      "headers": [
+        "日期",
+        "類型 變更/決策",
+        "內容",
+        "原因",
+        "影響 範疇/時程/預算/無",
+        "提出人",
+        "核准人",
+        "狀態 提案/核准/駁回",
+        "關聯任務 no."
+      ],
+      "enum_columns": {
+        "狀態": "decision"
+      },
+      "note": "A 決議 affecting 範疇／時程／預算 must land here; every Drop on tab 1 must leave a row here. 週報 RECENT DECISIONS reads from this tab."
+    },
+    "所有檔案": {
+      "headers": null,
+      "column_count": 12,
+      "enum_columns": {},
+      "note": "12 columns; the header strings were not captured in the 2026-09-02 live read, so none are asserted here rather than invented. Its status vocabulary is Active / Reference / Archive / 待清理 — see `unmapped_enums`."
+    },
+    "Comms Plan": {
+      "headers": [
+        "對象",
+        "目的",
+        "內容",
+        "頻率",
+        "管道 Email/LINE/會議/HTML週報",
+        "負責人",
+        "格式／模板"
+      ],
+      "enum_columns": {},
+      "note": "Cadence lives here, and it forks by engagement type: 內部團隊 weekly HTML 週報 · 客戶窗口 雙週 Email."
+    }
+  },
+  "unmapped_enums": [
+    {
+      "tab": "Prerequisite Checklist",
+      "column": "狀態",
+      "values": ["已確認", "未確認", "已知背景", "N.A."],
+      "reason": "A per-item confirmation state, not a lifecycle/health/risk/decision/closure value. Deliberately left off the five axes."
+    },
+    {
+      "tab": "所有檔案",
+      "column": "status",
+      "values": ["Active", "Reference", "Archive", "待清理"],
+      "reason": "A filing state for documents, not a work state. Deliberately left off the five axes."
+    }
+  ]
+}

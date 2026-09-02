@@ -590,3 +590,151 @@ waivers for the five non-★ skills until YE · pipeline field drift (Intake Sou
 Artifact options) · optional hub-skill hoist · pack §2 5.0/8.0 vs 2026-08 taxonomy at YE.
 
 Spec `docs/specs/SKB-007-planning-skill-family.md` → **Shipped 2026-08-17**.
+
+## 2026-09-02 — SKB-011: PM knowledge leaves the skill bodies — one pack, five skills, a gate that has to be seen red
+
+Opened spec `docs/specs/SKB-011-pm-shared-cohort.md` (Active, L/D3). Five skills already
+touched the PMO's artefacts and each carried its own private copy of the rules, so nothing
+about 管控表 / 週報 / 結案 could be true in one place. This lands the shared seed
+`docs/pm-shared/` (`pm-knowledge-pack.md` · `pm-sources.md` · `pm-sheet-schema.json` ·
+`pm-status-crosswalk.json` · `README.md` · `pm.json.example`), the stdlib validator
+`scripts/pm-schema.py` (`headers` · `values` · `mirrors` · `--self-test`; exit `0` valid ·
+`1` invalid · `2` legacy v1 · `3` cannot run), the identity+declared-sha guard
+`scripts/check-pm-refs.sh` (`--sync` · `--print-sha`), `tests/pm-fixtures/`, and a `push:`
+trigger plus a `shared-refs` job on `.github/workflows/qa.yml` — the SKB-007 follow-up
+「CI step for `check-planning-refs.sh`」, closed here.
+
+**Five axes, not one vocabulary (D5 — the core content ruling).** The PMO's eight surface
+status vocabularies were being read as dialects of one word; they are not, they sit on five
+independent axes — **lifecycle** (`not_started` `in_progress` `paused` `done` `dropped`) ·
+**health/RAG** (derived, never typed) · **risk lifecycle** · **decision lifecycle** ·
+**closure verdict** — and a value may never be carried across one. Three consequences are
+now rules rather than habits: `paused` is project-level only (a paused *task* is `WIP` + a
+Note, or `Drop` + a Change & Decision Log entry), **only `dropped` leaves the percent
+denominator**, and health is always derived from 日期 × lifecycle and never written back
+into `Status`.
+
+**Two new skills, no third (D6).** `project-init` (**3.20**) stands a project up from the
+PMO template set — resolves the filing home by 專案類型, copies the five templates, creates
+`[1]`–`[4]`, clears the 範例列 (鐵律 2), seeds 管控表 tab 1 with the **five** delivery-stage
+`X.0` rows (`啟動 · 規劃 · 執行 · 監控 · 結案`), writes both backlinks and prints the
+`pm.json` snippet to paste; it stops at Gate 1 and plans nothing. `project-minutes-sync`
+(**3.21**) closes the 會議記錄 → 管控表 loop: four tables routed to tab 1 · Change &
+Decision Log · Risk Register, VALUES-ONLY writes, diff report. The three existing members
+— `project-planning` (3.07) · `project-note-specialist` (3.08) · `project-status-update`
+(3.09) — gained a Step 0 pack check and a `知識來源 … sha256 <12 hex>` declaration.
+`consult-status-report` (**2.44**) is deliberately **outside** the family: it reads the CRM,
+not the 管控表, so it follows the rule and cites it and keeps no copy.
+
+**The copy set is five artefacts, and an installed skill is self-contained.** A verifier
+proved the first cut broke on install: steps marked 強制 pointed at repo-root
+`scripts/pm-schema.py` and `docs/pm-shared/*.json`, which `npx skills add` never delivers.
+`check-pm-refs.sh` now copies all five artefacts byte-identically into every family skill —
+`references/pm-knowledge-pack.md` · `references/pm-sources.md` ·
+`references/pm-sheet-schema.json` · `references/pm-status-crosswalk.json` ·
+`scripts/pm-schema.py` — and every skill calls its **own** skill-folder-relative copy, the
+same way it already called `render_dashboard_email.py`. One root, no split; the gate keeps
+the 25 copies identical.
+
+**Drift fixed, and named so a reader diffing old output knows why:**
+- **13-vs-14 columns.** `project-status-update` hardcoded `專案管理總表!A1:M44`, so on a v2
+  sheet it read `前置任務 Depends on` as `Reference 連結` and shifted every column after it.
+  Version is now **detected before mapping** (`pm-schema.py headers`, exit `2` = legacy v1
+  continues with a warning), and columns are addressed by header name.
+- **`取消` folded into `Not started`.** Ruled the other way and fleet-wide: an illegal
+  literal is a **data error** that stays *in* the denominator, counts toward neither `done`
+  nor `dropped`, and is named in `data_errors`. Removing it would flatter the percent the
+  same way the old fold understated it. This makes `consult-status-report` (2.44) the skill
+  that was already right; `project-status-update` (3.09) was corrected to match. The
+  zero-denominator boundary is explicit too: `counted(s) − dropped(s) = 0` drops that stage
+  out of the spine and into `data_errors` — never a divide-by-zero, never a silent 0%.
+- **`[3.4]` → `[3.3]` in the live Docs.** 鐵律 2 quotes the template folder, and the five
+  PMO Docs spelled it `[3.4]` while Drive says `[3.3] 專案管理 PMO｜Playbook & Templates`.
+  On **2026-09-02 all 17 occurrences were corrected in the Docs themselves** — Playbook 12 ·
+  Business Case 1 · Kickoff 1 · 會議記錄 1 · 復盤 2 — so 鐵律 2's 原文 now genuinely reads
+  `[3.3]` and is quoted verbatim. Every "preserve `[3.4]` when quoting" instruction is gone;
+  what remains is a dated correction note, not a live drift warning.
+- **Hardcoded instance data removed.** The tracker Sheet ID, the Google account, the weekly
+  **recipients** (`projects.<slug>.report_recipients`) and the **delivery spine**
+  (`projects.<slug>.spine`) are adapter DATA in `~/.config/zynkr/pm.json`, fail-loud on a
+  missing key; the placeholders in the skills are documentation of the shape, never
+  fallbacks. `spine` is the one soft key — absent ⇒ the five delivery phases **with a
+  printed warning**. `跨階段 Cross-Cutting` is a parallel track and never occupies a spine
+  slot or enters a denominator.
+- **週報 label change.** Pack §7 is now the single home of the four section labels, and it
+  prints `1 Summary Update` / `2 Progress` / `3 Blockers/Challenges` / `4 What's Next` —
+  no trailing period, and section 3 gained `/Challenges`. `project-note-specialist`'s
+  example was made byte-identical to the pack and carries a line pointing this out, because
+  anything matching the old `3. Blockers` string sees a real output change.
+- **Planning family.** `planning-knowledge-pack.md` gained the cross-axis note (the planning
+  `狀態` vocabulary *is* the lifecycle axis; `暫停` is project-level; health is never written
+  back) and was re-synced to all eight copies.
+
+**D4 is parked, deliberately.** Whether a human edits the Google Doc Playbook or this repo
+seed is undecided, so the build takes the only posture that survives either answer: the seed
+is the working master today, `pm-knowledge-pack.md` opens with
+`<!-- pack_version: 1 · direction pending D4 -->`, and no file claims either surface is
+generated from the other. What D4 gates is exactly one line — a Doc→seed pull in front of
+`check-pm-refs.sh --sync`. Everything downstream (copy step, byte-identical `references/`,
+declared sha, Step 0 refusal, CI gate) is identical either way. No Doc→seed generator ships
+here; adding one would pre-decide it.
+
+**Verification (pre-push, in the build worktree — AC ids per the spec's AC-1…AC-14):**
+- **AC-4 · PASS** — `pm-schema.py headers` on the three fixtures returned `0` / `2` / `1`
+  for `headers-v2-good` / `headers-v1-legacy` / `headers-bad`.
+- **AC-5 · PASS** — `values-good` → `0`; `values-bad` → `1`, naming both `取消` and `暫停`.
+- **AC-6 · PASS (stronger than the spec's wording)** — `pm-schema.py --self-test` → exit 0,
+  `7 fixture(s) · 5/5 (mode, verdict) pairs covered · mirrors OK · 0 unexpected`. The
+  fixture set grew to 7 and the gate now also proves per-`(mode, verdict)` coverage and the
+  three-copy column-map mirror, closing two holes a verifier walked through (a dead
+  validator staying "covered" by another mode's fixture; a `*-bad` fixture quietly declaring
+  `"expect": 0`). The spec's literal expected string `5 fixture(s) · 0 unexpected` is stale
+  and should be restated at close-out. The deliberate weaken-and-observe-red half of AC-6 is
+  **outstanding**.
+- **AC-3 · PASS** — `PM_FAMILY=(…)` is an explicit five-line list (`grep -c` = 5), and
+  `git diff --stat origin/main -- skills/3-operations/zynkr-ops-weekly` is empty: 3.19 is
+  frozen behind a live launchd plist and is untouched.
+- **AC-7 · PASS** — `A1:M44` survives only in the legacy branch of Step 2, the
+  `_source_columns_note` range map and the renderer's mirror; `pm-schema.py headers` runs
+  before any column mapping.
+- **AC-11 · PASS** — no `/Users/` path and no live tracker Sheet ID anywhere in
+  `docs/pm-shared`, `scripts/pm-schema.py`, `scripts/check-pm-refs.sh`, `project-init` or
+  `project-minutes-sync`.
+- **AC-14 · PASS** — `bash scripts/check-planning-refs.sh` → exit 0, 8 copies of both
+  planning artefacts byte-identical.
+- **AC-8 · PARTIAL** — the denominator rule and the `取消`-as-data-error rule are present
+  and cited in `project-status-update`, `consult-status-report` (SKILL.md + its
+  `dashboard_schema.json`) and `rules.percent_complete`. The spec's literal grep
+  (`total − dropped`) no longer matches `project-status-update`, which was rewritten to the
+  per-stage form `stage_fraction(s) = done(s) / (counted(s) − dropped(s))`; the AC's verify
+  string needs restating at close-out.
+- **AC-1 / AC-2 · OUTSTANDING** — the run made in this worktree was **RED** by design and
+  by construction: `DRIFT` ×5 on the pack copies, `MISSING` ×20 on the four newly-copied
+  artefacts, `SHA-MISMATCH` ×5 (`declared=e4d74ef4ac4d actual=15640433fbee` at the time of writing —
+  the seed's sha moves with every seed edit). That is the
+  expected pre-`--sync` state after the copy set grew from one artefact to five, and it is
+  itself the evidence the guard cannot pass vacuously. Both ACs must be re-driven on the
+  landing tree after `--sync`: exit 0 naming the copy count, then a seeded wrong sha failing
+  with `SHA-MISMATCH` and `--sync` restoring it.
+- **AC-9 · OUTSTANDING** — the renderer has not been exercised on a payload carrying both
+  `dropped` and `data_errors`.
+- **AC-10 · OUTSTANDING** — `validate-skill.ts` per new skill, tree-wide duplicate-sheetId
+  sweep and the local `ingest.ts` dry-run (`✓ 3.20` / `✓ 3.21`, no redirect-prune line) have
+  not been run; this worktree has no `scripts/node_modules`.
+- **AC-12 / AC-13 · OUTSTANDING (the D3 bar)** — no `qa.yml` run exists yet for the landing
+  push, so the new `push:` trigger has not been observed producing a real `diff range:` line,
+  and the seeded-drift branch has not been pushed and seen RED. SDD §5.4: a gate never seen
+  red is not wired. Both run URLs and an SDD §6.3 ledger row are required before this can be
+  called D3.
+- **Not claimed:** `~/.config/zynkr/pm.json` is not populated by this change, so no PM-family
+  run has resolved a real project end-to-end; neither new skill has written to a live Sheet;
+  and no install-and-trigger has been performed.
+
+**Follow-ups (local tracker `to-do.md`):** D2 triggers per new skill · the D3 green-push and
+seeded-red runs (AC-12 / AC-13) + SDD §6.3 gate-ledger row · restate AC-6's and AC-8's stale
+verify strings · **ATL-040** in `zynkr-atlas` — `pm.*` **pointer** nodes carrying repo path,
+`pack_version` and declared sha256 (Atlas registers, never serves the bytes; the id is
+claimed by pushing, so derive it fresh) · D4 when it lands.
+
+Spec `docs/specs/SKB-011-pm-shared-cohort.md` → **Active (D1)** — not shipped; D2 and D3
+above are the gate.

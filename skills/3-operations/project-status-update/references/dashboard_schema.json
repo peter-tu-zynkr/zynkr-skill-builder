@@ -1,13 +1,27 @@
 {
   "_comment": "This is the contract between your reasoning and scripts/render_dashboard_email.py. Produce a JSON file matching this shape, then pass it to the renderer. All text is rendered verbatim (HTML-escaped), so write final, reader-facing zh-TW copy. Omit optional sections by leaving them out or empty.",
+  "_pack": "Vocabulary and rules come from references/pm-knowledge-pack.md (the PM shared pack, SKB-011), copied into this skill folder byte-identically by scripts/check-pm-refs.sh alongside pm-sources.md, pm-sheet-schema.json, pm-status-crosswalk.json and scripts/pm-schema.py. lifecycle = Done / WIP / Not started / Drop (pack §2.1) · health is DERIVED from dates x lifecycle and never typed (pack §2.2 裁決三) · ONLY dropped rows leave the percent denominator, and they get their own block (pack §2.2 裁決二) — an illegal Status literal stays counted, outside done, and is named in data_errors. Do not restate those rules here — cite them.",
+  "_source_columns_v2": [
+    "no.", "里程碑 Stage", "任務描述 Task", "Priority", "Owner", "Facilitator", "Agent",
+    "Status", "Start (YYYY/M/D)", "End (YYYY/M/D)", "前置任務 Depends on", "Reference 連結",
+    "Note", "DOD 完成定義／交付物"
+  ],
+  "_source_columns_v1_legacy": [
+    "no.", "里程碑 Stage", "任務描述 Task", "Priority", "Owner", "Facilitator", "Agent",
+    "Status", "Start (YYYY/M/D)", "End (YYYY/M/D)", "Reference 連結", "Note",
+    "DOD 完成定義／交付物"
+  ],
+  "_source_columns_note": "v2 = 14 cols A-N, range 專案管理總表!A1:N44 · legacy v1 = 13 cols A-M, range A1:M44. Detect BEFORE mapping, from the skill folder: `python3 scripts/pm-schema.py headers --file <tmp>/headers.json --schema references/pm-sheet-schema.json --crosswalk references/pm-status-crosswalk.json` (exit 0 = v2 · 2 = legacy v1 · 1 = mismatch, stop). Every path is skill-folder-relative, because an installed skill has no repo root; --file is the family convention because --headers is comma-separated. Map by header NAME, never by column letter. This list is mirrored in SKILL.md Step 2 and in scripts/render_dashboard_email.py; copies do not guarantee themselves, so `python3 scripts/pm-schema.py mirrors` is what proves the three still agree.",
 
   "title": "string — project name as it should appear in the header, e.g. 'Claude Code 課程（課程名稱待定）'",
   "update_date": "string — the run date, YYYY/MM/DD",
   "week_range": "string — the current week window shown in THIS WEEK, e.g. '6/1 - 6/7'",
+  "sheet_version": "string — which 管控表 shape Step 2 detected: 'v2' | 'v1'. Rendered in the footer so the report records what it read. Omit only if genuinely undetected.",
 
   "health": {
     "status": "one of: DELAYED | AT_RISK | ON_TRACK",
-    "summary": "one-line zh-TW reason, '・' separated, e.g. 'Stage Gate 1 已逾期（原訂 5/30）・課綱 2.3 尚未定稿・進度受阻'"
+    "_status_help": "DERIVED, never copied from a cell. Per row, in order: DELAYED = End < today - delayed_after_days AND lifecycle != done · AT_RISK = (End <= today + at_risk_within_days AND lifecycle = not_started) OR an open blocker older than blocker_stale_days · ON_TRACK otherwise. Project verdict = the worst row reading. Thresholds come from ~/.config/zynkr/pm.json defaults.health_thresholds (documented defaults 0 / 3 / 7). dropped rows carry no reading. Never write this back into 管控表 Status.",
+    "summary": "one-line zh-TW reason, '・' separated, e.g. 'Stage Gate 1 已逾期（原訂 5/30）・課綱 2.3 尚未定稿・進度受阻'. Append 「（含 N 列狀態值不合法，數字待確認）」 when data_errors is non-empty."
   },
 
   "weekly_diff": [
@@ -15,22 +29,41 @@
   ],
 
   "blockers": [
-    {"title": "short blocker name", "detail": "why it blocks / impact"}
+    {"title": "short blocker name", "detail": "why it blocks / impact. Add 「(尚未登錄 Risk Register)」 when a blocker older than blocker_stale_days has no Risk Register row (pack §6)."}
   ],
 
   "this_week": [
     {"task": "actionable task for this week", "note": "OPTIONAL context / why it matters"}
   ],
 
+  "dropped": [
+    {
+      "no": "the row's WBS number, e.g. '3.4'",
+      "task": "the task description, one line",
+      "reason": "OPTIONAL — the reason from the Note column, or 「（待補充）」",
+      "logged": "boolean — true when a Change & Decision Log row references this no. A false renders 「(Change & Decision Log 無對應紀錄)」, because a Drop without a logged decision is an incomplete action (pack §5)."
+    }
+  ],
+  "_dropped_help": "OPTIONAL block, omit when empty. Every Status = Drop row goes here. Dropped rows are the ONLY rows that leave a percent denominator (pack §2.2 裁決二) — see current_stage._percent_help for the per-stage formula the number is actually computed with — but they must stay visible in the report, never silently discarded.",
+
+  "data_errors": [
+    {
+      "no": "the offending row's WBS number, e.g. '2.7'",
+      "value": "the literal found in Status, e.g. '取消' or '暫停'",
+      "message": "zh-TW one-liner naming the row and the fix, e.g. '「取消」不是管控表 tab 1 的合法值，請改為 Drop 並在 Change & Decision Log 補一筆'"
+    }
+  ],
+  "_data_errors_help": "OPTIONAL block, omit when empty. A Status literal outside Done / WIP / Not started / Drop is a data error, NOT a fourth bucket. The row STAYS IN the percent denominator, sits outside done, is never counted as dropped, and is named here: only Drop leaves a denominator (pack §2.2 裁決二), and removing an unreadable row would flatter the number exactly as folding it into Not started used to inflate it. 取消 is illegal on every axis (use Drop / 放棄); 暫停 is project-level only — a paused TASK is WIP + a Note, or Drop + a Change & Decision Log entry (pack §2.2 裁決一). This block ALSO carries spine stages removed for an empty denominator: no = the stage X.0, value = e.g. '(no task rows)' or '(every row is Drop)'.",
+
   "current_stage": {
     "percent": 25,
-    "_percent_help": "NUMBER (unquoted) 0-100, computed via the formula in SKILL.md. Emit a bare number like 25, NOT a string \"25\".",
+    "_percent_help": "NUMBER (unquoted) 0-100, computed via the formula in SKILL.md Step 5. Emit a bare number like 25, NOT a string \"25\". The number is the MEAN of the per-stage completion fractions, not one global done/total ratio — the rendered footer says exactly that, and the two must never disagree. counted(s) = every child task row of s INCLUDING rows whose Status is illegal (only Drop leaves a denominator, pack §2.2 裁決二); done(s) never includes an illegal literal; stage_fraction(s) = done(s) / (counted(s) − dropped(s)); percent = round(Σ stage_fraction over the surviving spine / total_stages * 100). BOUNDARY: when counted(s) − dropped(s) = 0 the stage LEAVES the spine and is named in data_errors — never divide by zero, never score it 0. That covers both a stage with no task rows and a stage whose every row is Drop. A stage of 1 Drop + 1 illegal literal is NOT that case: the denominator is 1 and the stage stays at 0/1. If the spine empties entirely, omit current_stage altogether and say so in health.summary.",
     "stage_index": 2,
     "_stage_index_help": "integer — the leading-edge spine stage (1-based). Must match the 'now' stage's position.",
     "total_stages": 6,
-    "_total_stages_help": "integer — number of stages on the delivery spine. The 'stages' array below should have exactly this many entries so the header and per-row numbering agree.",
+    "_total_stages_help": "integer — number of stages on the delivery spine that survived the counted−dropped=0 rule. The spine itself is adapter DATA: read it from ~/.config/zynkr/pm.json → projects.<slug>.spine (an ordered array of stage names), falling back to the five delivery phases 啟動 · 規劃 · 執行 · 監控 · 結案 WITH a printed warning. 跨階段 Cross-Cutting is a parallel track, never a spine stage and never in a denominator. The 'stages' array below should have exactly this many entries so the header and per-row numbering agree.",
     "stages": [
-      {"name": "stage display name", "state": "done | now | todo"}
+      {"name": "stage display name", "state": "done | now | todo", "_state_help": "done = every NON-DROPPED child task is Done · now = work underway · todo = nothing started"}
     ]
   },
 
@@ -38,7 +71,7 @@
     "name": "milestone / stage-gate name",
     "due": "YYYY/MM/DD",
     "overdue": "boolean — true if due < today and not yet met",
-    "criteria": "completion criteria, zh-TW. Use ✅ inline for already-met parts."
+    "criteria": "completion criteria, zh-TW. Use ✅ inline for already-met parts. A Gate row is only passed when it carries 核准人 (Owner) and 核准日期 (End) — 鐵律 4."
   },
 
   "overview": {
@@ -51,6 +84,7 @@
   "decisions": [
     {"date": "YYYY/MM/DD", "decision": "what was decided", "reason": "why"}
   ],
+  "_decisions_help": "Read from the 管控表 Change & Decision Log tab — a 決議 touching 範疇／時程／預算 is required to land there (pack §6). The 專案狀態看板 tab is carry-forward wording only.",
 
   "timeline": [
     {"date": "YYYY/MM/DD", "state": "done | overdue | todo | target", "label": "milestone label"}
