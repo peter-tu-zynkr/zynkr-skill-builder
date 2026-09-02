@@ -1,14 +1,36 @@
 name: QA skills
 
-# Hard QA gate on every PR to main that touches a skill. Closes the bypass that
-# the dispatch-only workflows (publish-skill.yml / pickup-approved-issue.yml)
-# leave open: hand-pushed branches and hand-opened PRs run this too. Make it a
-# REQUIRED status check in branch protection so it cannot be merged around.
+# Hard QA gate on every PR to main that touches a skill, AND on every push that lands
+# on main. Closes the bypass that the dispatch-only workflows (publish-skill.yml /
+# pickup-approved-issue.yml) leave open: hand-pushed branches, hand-opened PRs and
+# direct-to-main pushes all run this too. Make it a REQUIRED status check in branch
+# protection so it cannot be merged around.
+#
+# Two jobs, in parallel:
+#   qa           — validate-skill.ts over every SKILL.md changed in the PR / push range.
+#   shared-refs  — the shared-seed guards: planning-* copies match docs/planning-shared
+#                  (SKB-007 AC-4), PM-family copies and their declared sha match
+#                  docs/pm-shared (SKB-011), and pm-schema.py --self-test proves the
+#                  管控表 validator still fires on the bad and legacy fixtures.
 on:
   pull_request:
     branches: [main]
     paths:
       - 'skills/**'
+      - 'docs/pm-shared/**'
+      - 'docs/planning-shared/**'
+      - 'scripts/**'
+      - 'tests/pm-fixtures/**'
+      - '.github/workflows/qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'docs/pm-shared/**'
+      - 'docs/planning-shared/**'
+      - 'scripts/**'
+      - 'tests/pm-fixtures/**'
+      - '.github/workflows/qa.yml'
 
 permissions:
   contents: read
@@ -31,10 +53,32 @@ jobs:
         working-directory: scripts
         run: npm ci
 
-      - name: QA changed skills (ERROR-tier blocks the PR)
+      - name: QA changed skills (ERROR-tier blocks the merge)
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
         run: |
-          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
-          FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- 'skills/**/SKILL.md' || true)
+          # A pull_request diffs against its base branch. A push has NO base_ref, so it diffs
+          # against the pushed range instead (github.event.before, falling back to HEAD~1, and
+          # to the whole tree if neither resolves). Left unfixed this is worse than no gate:
+          # an empty base makes the diff empty, so the push case would pass every single time.
+          if [ -n "$BASE_REF" ]; then
+            git fetch --no-tags --depth=1 origin "$BASE_REF"
+            RANGE="origin/$BASE_REF...HEAD"
+          else
+            BASE="$BEFORE"
+            if [ -z "$BASE" ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+              BASE="$(git rev-parse --verify --quiet HEAD~1 || true)"
+            fi
+            RANGE="${BASE:+$BASE..HEAD}"
+          fi
+          if [ -n "$RANGE" ]; then
+            echo "diff range: $RANGE"
+            FILES=$(git diff --name-only "$RANGE" -- 'skills/**/SKILL.md' || true)
+          else
+            echo "No usable base commit — QA every SKILL.md in the tree."
+            FILES=$(git ls-files 'skills/**/SKILL.md')
+          fi
           if [ -z "$FILES" ]; then echo "No changed SKILL.md — nothing to QA."; exit 0; fi
           echo "QA-checking changed skills:"; echo "$FILES"
           fail=0
@@ -46,3 +90,51 @@ jobs:
           done <<< "$FILES"
           if [ "$fail" -ne 0 ]; then echo "::error::QA failed — fix the ERROR-tier findings above."; exit 1; fi
           echo "All changed skills passed QA."
+
+  shared-refs:
+    # Independent of `qa` (no `needs:`) so a broken seed and a broken SKILL.md surface in the
+    # same run instead of one hiding behind the other. Node is not needed here — the three
+    # guards are bash + stdlib python3.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: planning-* copies are byte-identical to docs/planning-shared (SKB-007 AC-4)
+        run: bash scripts/check-planning-refs.sh
+
+      - name: PM-family copies and declared sha match docs/pm-shared (SKB-011)
+        run: bash scripts/check-pm-refs.sh
+
+      - name: 管控表 validator still fires — every fixture must return its declared verdict
+        run: python3 scripts/pm-schema.py --self-test
+
+      # --self-test calls `mirrors` transitively. Running it standalone too means that if the
+      # self-test's mirrors call is ever made conditional, CI loses the mirror gate loudly
+      # rather than silently.
+      - name: Column map has not drifted between the seed, the renderer and the dashboard schema
+        run: python3 scripts/pm-schema.py mirrors
+
+      - name: Every shared JSON parses
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            python3 -m json.tool "$f" > /dev/null || { echo "::error file=$f::invalid JSON"; fail=1; }
+          done < <(git ls-files 'docs/pm-shared/*.json' 'docs/pm-shared/*.example' 'tests/pm-fixtures/*.json' \
+                                'skills/**/references/dashboard_schema.json' \
+                                'skills/**/references/pm-*.json')
+          [ "$fail" -eq 0 ] || exit 1
+
+      - name: Every shipped python file compiles
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            python3 -m py_compile "$f" || { echo "::error file=$f::does not compile"; fail=1; }
+          done < <(git ls-files 'scripts/*.py' 'skills/**/scripts/*.py')
+          find . -name __pycache__ -type d -prune -exec rm -rf {} +
+          [ "$fail" -eq 0 ] || exit 1

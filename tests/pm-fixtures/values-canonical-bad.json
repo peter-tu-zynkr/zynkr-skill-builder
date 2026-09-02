@@ -1,0 +1,6 @@
+{
+  "_note": "The canonical vocabulary typed INTO a surface column. `done` is a real lifecycle value, so a checker that only tested membership in the axis would wave it through — but 管控表 tab 1 spells it `Done`, and writing canonical strings back into the sheet is how the axes started merging. Covers explain()'s canonical branch.",
+  "axis": "lifecycle_sheet",
+  "expect": 1,
+  "values": ["Done", "in_progress", "not_started"]
+}

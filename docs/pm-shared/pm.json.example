@@ -1,0 +1,92 @@
+{
+  "$comment": "PM-family PRIVATE runtime config (SKB-011). Copy to ~/.config/zynkr/pm.json and NEVER commit the filled-in copy. Every id below is an obvious fake — a real Google id is 44 chars of base64ish noise, never <angle-bracket-prose> — and a skill that reads one of these verbatim must fail loud. These bytes are the same JSON as pm-sources.md §3: edit both or neither.",
+  "google_account": "pm@example.com",
+  "language": "zh-TW",
+
+  "defaults": {
+    "timezone": "Asia/Taipei",
+    "week_start": "MON",
+    "health_thresholds": {
+      "delayed_after_days": 0,
+      "at_risk_within_days": 3,
+      "blocker_stale_days": 7
+    },
+    "$health_note": "These three numbers are the ONLY tunables in the health derivation. health is DERIVED, never typed — see pm-status-crosswalk.json."
+  },
+
+  "engagement_types": {
+    "$note": "Keys are the literal 專案類型 values in the Business Case / Kickoff header, so a run reads the field and looks the key up directly. Adding a fourth type is a config change, not a code change.",
+
+    "客戶案": {
+      "filing_home": { "folder_id": "<folder-id-client-projects>", "label": "[2.2]" },
+      "creates_crm_deal": true,
+      "kickoff_fields_omitted": [],
+      "closure_extra_steps": ["CRM deal 關閉", "客戶版連結權限"],
+      "comms_cadence": "biweekly"
+    },
+
+    "課程案": {
+      "filing_home": { "folder_id": "<folder-id-course-projects>", "label": "[4.3]" },
+      "creates_crm_deal": false,
+      "kickoff_fields_omitted": ["CRM Deal"],
+      "closure_extra_steps": [],
+      "comms_cadence": "weekly"
+    },
+
+    "內部案": {
+      "filing_home": {
+        "folder_id": null,
+        "label": "[N.0] 該 LOB 資料夾",
+        "by_lob": {
+          "1.0": "<folder-id-lob-1>",
+          "2.0": "<folder-id-lob-2>",
+          "3.0": "<folder-id-lob-3>",
+          "4.0": "<folder-id-lob-4>"
+        },
+        "$note": "內部案 has no single home — it files into its own LOB folder. folder_id stays null; a run resolves by_lob[<lob>] and fails loud if the LOB is unknown."
+      },
+      "creates_crm_deal": false,
+      "kickoff_fields_omitted": ["主要窗口", "CRM Deal"],
+      "closure_extra_steps": [],
+      "comms_cadence": "weekly"
+    }
+  },
+
+  "projects": {
+    "$note": "slug → the instance ids plus the two adapter arrays. engagement_type MUST be a key of engagement_types above. spine is the ordered delivery-phase names (array index + 1 IS the X.0 number); 跨階段 is a PARALLEL track and is never listed. A missing spine falls back to the five delivery phases 啟動·規劃·執行·監控·結案 with a printed warning; a missing report_recipients FAILS LOUD (config: projects.<slug>.report_recipients unset) — never guess who gets a status mail.",
+
+    "course-production": {
+      "tracker_sheet_id": "<sheet-id-course-tracker>",
+      "minutes_doc_id": "<doc-id-course-minutes>",
+      "folder_id": "<folder-id-course-project>",
+      "engagement_type": "課程案",
+      "spine": [
+        "專案啟動",
+        "課程定位與課綱規劃",
+        "教學教材開發",
+        "錄製與後製",
+        "課程包組裝",
+        "上架完成與上線後追蹤"
+      ],
+      "report_recipients": ["pm@example.com", "sponsor@example.com", "producer@example.com"]
+    },
+
+    "example-client-rollout": {
+      "tracker_sheet_id": "<sheet-id-client-tracker>",
+      "minutes_doc_id": "<doc-id-client-minutes>",
+      "folder_id": "<folder-id-client-project>",
+      "engagement_type": "客戶案",
+      "spine": ["啟動", "規劃", "執行", "監控", "結案"],
+      "report_recipients": ["pm@example.com", "account-lead@example.com"]
+    },
+
+    "example-internal-tooling": {
+      "tracker_sheet_id": "<sheet-id-internal-tracker>",
+      "minutes_doc_id": "<doc-id-internal-minutes>",
+      "folder_id": "<folder-id-internal-project>",
+      "engagement_type": "內部案",
+      "spine": ["啟動", "規劃", "執行", "監控", "結案"],
+      "report_recipients": ["pm@example.com"]
+    }
+  }
+}

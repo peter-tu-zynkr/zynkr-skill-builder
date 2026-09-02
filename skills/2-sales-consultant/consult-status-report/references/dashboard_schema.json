@@ -1,5 +1,5 @@
 {
-  "_provenance": "Copied from skills/3-operations/project-status-update/references/ @ e35a1f57 (2026-08-03) for consult-status-report — re-sync if the source schema changes.",
+  "_provenance": "Copied from skills/3-operations/project-status-update/references/ @ e35a1f57 (2026-08-03) for consult-status-report — re-sync if the source schema changes. UPSTREAM (2026-09-02, SKB-011): the status buckets and the percent rule now have a home above both skills — docs/pm-shared/pm-knowledge-pack.md §2.2 裁決二 and rules.percent_complete in docs/pm-shared/pm-status-crosswalk.json. Two halves of 裁決二 apply here, not one: the Drop bucket + `% = done / (total − dropped)` fix, AND the rule that an illegal status (`取消`, `rejected_values` in the crosswalk) is a data error that STAYS in the denominator and outside `done`. Neither came from the source skill; reconcile against the pack first, then the source schema.",
   "_comment": "This is the contract between your reasoning and scripts/render_dashboard_email.py. Produce a JSON file matching this shape, then pass it to the renderer. All text is rendered verbatim (HTML-escaped), so write final, reader-facing zh-TW copy. Omit optional sections by leaving them out or empty.",
 
   "title": "string — project name as it should appear in the header, e.g. 'Claude Code 課程（課程名稱待定）'",
@@ -25,7 +25,8 @@
 
   "current_stage": {
     "percent": 25,
-    "_percent_help": "NUMBER (unquoted) 0-100, computed via the formula in SKILL.md. Emit a bare number like 25, NOT a string \"25\".",
+    "_percent_help": "NUMBER (unquoted) 0-100, computed as done / (total - dropped) per SKILL.md step 5 and pack §2.2 裁決二. Emit a bare number like 25, NOT a string \"25\".",
+    "_dropped_help": "Upstream authority: docs/pm-shared/pm-knowledge-pack.md §2.2 裁決二 (machine-readable: rules.percent_complete + rejected_values in docs/pm-shared/pm-status-crosswalk.json). ONLY dropped leaves the denominator: dropped tasks (the Drop bucket) are OUT of the denominator, never folded into Not started, and never silently discarded — give each one a decisions[] entry with its date and reason. `取消` is NOT a Drop value and NOT a fifth bucket — it is a data error that STAYS IN the denominator, counts toward neither `done` nor a drop, and is named in the step-9 report to Peter; removing it would flatter the percent. If total - dropped = 0, omit this whole current_stage block — never divide by zero, never emit a silent 0.",
     "stage_index": 2,
     "_stage_index_help": "integer — the leading-edge spine stage (1-based). Must match the 'now' stage's position.",
     "total_stages": 6,
@@ -50,7 +51,7 @@
   },
 
   "decisions": [
-    {"date": "YYYY/MM/DD", "decision": "what was decided", "reason": "why"}
+    {"date": "YYYY/MM/DD", "decision": "what was decided — also the home for a dropped task, e.g. '範圍調整：<任務> 本期不做'", "reason": "why"}
   ],
 
   "timeline": [

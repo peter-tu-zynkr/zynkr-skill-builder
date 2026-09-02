@@ -1,0 +1,4 @@
+{
+  "axis": "lifecycle_sheet",
+  "values": ["Done", "取消", "WIP", "暫停", "Not started"]
+}

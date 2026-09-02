@@ -1,0 +1,18 @@
+{
+  "tab": "專案管理總表",
+  "headers": [
+    "no.",
+    "里程碑 Stage",
+    "任務描述 Task",
+    "Priority",
+    "Owner",
+    "Facilitator",
+    "Agent",
+    "Status",
+    "Start (YYYY/M/D)",
+    "End (YYYY/M/D)",
+    "Reference 連結",
+    "Note",
+    "DOD 完成定義／交付物"
+  ]
+}
