@@ -12,6 +12,7 @@ input: "Raw slide material / topic + the message you want to land (scattered not
 process: "Clarify goal and audience → fix the core claim → lay out the narrative arc beats → logic-flow check → human review (HITL) → hand off and save"
 output: "SLIDE_PACKET ▸ Storyline narrative skeleton, handed to slide-page-splitter (1.26) for paging"
 synergy: ["slide-page-splitter"]
+handoff: ["slide-page-splitter"]
 ---
 
 # slide-storyline-designer

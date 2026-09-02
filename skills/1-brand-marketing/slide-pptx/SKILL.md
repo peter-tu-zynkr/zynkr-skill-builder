@@ -15,6 +15,8 @@ upstream_repo: https://github.com/anthropics/skills
 original_source_url: https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md
 original_author: Anthropic, PBC
 install_command: npx skills add https://github.com/anthropics/skills --skill slide-pptx
+handoff: []
+execution_mode: deterministic
 ---
 
 # slide-pptx — Anthropic's Official Slide-Rendering Skill (reference card)

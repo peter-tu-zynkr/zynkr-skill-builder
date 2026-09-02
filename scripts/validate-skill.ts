@@ -50,6 +50,24 @@ export const SkillFrontmatter = z.object({
   process: z.string().optional(),
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
+  // ── SKB-012 · the picture keys (consumed by zynkr-atlas ATL-043) ──────────
+  // A skill may declare the shapes and lines of its own internal flow, which
+  // Atlas composes over the real graph to draw the FE/BE/DB canvas. Typed as
+  // string arrays because that is exactly what a block sequence of quoted
+  // scalars yields in every parser that reads these files — this repo's
+  // gray-matter, Atlas's subset parser, and Atlas's importer. The interior of
+  // each item is pipe-delimited and is checked by `steps.*` below at WARN tier,
+  // not by the schema: a malformed step must not fail the whole object and
+  // block a PR (the ipo.length precedent).
+  //
+  // `handoff` is the real, ORDERED spine. Its presence — even as `[]` — tells
+  // Atlas to stop deriving edges from `synergy`, which is symmetric and
+  // therefore draws a relay in both directions.
+  handoff: z.array(z.string()).optional(),
+  steps: z.array(z.string()).optional(),
+  flow: z.array(z.string()).optional(),
+  executed_by: z.enum(["external-user", "internal-user"]).optional(),
+  execution_mode: z.enum(["llm", "deterministic", "hitl"]).optional(),
   upstream_repo: z.string().optional(),
   original_source_url: z.string().url().optional(),
   original_author: z.string().min(1).optional(),
@@ -387,6 +405,104 @@ function checkSynergy(file: string, info: SkillInfo): QaFinding[] {
   return out;
 }
 
+// ── SKB-012 · the picture keys ───────────────────────────────────────────────
+// Grammar (zynkr-atlas ATL-043 §3.1):
+//   steps:  "<id> | <kind> | <title>[ | k=v]*"
+//   flow:   "<from> -> <to>[ | <label>]"   spine
+//           "<from> ~> <to>[ | <label>]"   plumbing
+// Every finding here is WARN, deliberately: an unreadable step costs a shape on
+// a diagram, and that must never block a skill from shipping. Atlas re-reports
+// the same problems as parse warnings on the version, so a mistake is visible in
+// two places and fatal in neither.
+const STEP_KINDS = new Set([
+  "start", "end", "input", "output", "hitl", "llm", "deterministic",
+  "gate", "store", "artifact", "knowledge", "offpage",
+]);
+const STEP_ID_RE = /^[a-z][a-z0-9_]{0,31}$/;
+const MAX_STEPS = 40;
+const MAX_FLOW = 80;
+
+function checkSteps(file: string, info: SkillInfo): QaFinding[] {
+  const out: QaFinding[] = [];
+  const steps = Array.isArray(info.data.steps) ? info.data.steps : [];
+  const flow = Array.isArray(info.data.flow) ? info.data.flow : [];
+  if (steps.length === 0 && flow.length === 0) return out;
+
+  const warn = (check: string, message: string) =>
+    out.push({ check, tier: "WARN" as const, file, line: 1, message });
+
+  if (steps.length > MAX_STEPS) {
+    warn("steps.too_many", `steps has ${steps.length} items (> ${MAX_STEPS}); Atlas will draw the first ${MAX_STEPS}.`);
+  }
+  if (flow.length > MAX_FLOW) {
+    warn("steps.flow_too_many", `flow has ${flow.length} lines (> ${MAX_FLOW}); Atlas will draw the first ${MAX_FLOW}.`);
+  }
+  if (flow.length > 0 && steps.length === 0) {
+    warn("steps.flow_without_steps", "flow is declared but steps is not — every flow line names step ids, so nothing can be drawn.");
+  }
+
+  const names = steps.length > 0 ? skillNameSet() : new Set<string>();
+  const ids = new Set<string>();
+  const gates = new Set<string>();
+
+  for (const raw of steps) {
+    if (typeof raw !== "string") continue;
+    const parts = raw.split("|").map((s) => s.trim());
+    if (parts.length < 3) {
+      warn("steps.malformed", `step "${raw}" needs at least "<id> | <kind> | <title>".`);
+      continue;
+    }
+    const [id, kind, title, ...opts] = parts;
+    if (!STEP_ID_RE.test(id)) {
+      warn("steps.id_invalid", `step id "${id}" must match ${STEP_ID_RE} (lowercase, starts with a letter).`);
+    }
+    if (ids.has(id)) warn("steps.id_duplicate", `step id "${id}" is declared more than once.`);
+    ids.add(id);
+    if (!STEP_KINDS.has(kind)) {
+      warn("steps.kind_unknown", `step "${id}" has kind "${kind}"; expected one of ${[...STEP_KINDS].join(", ")}.`);
+    }
+    if (kind === "gate") gates.add(id);
+    if (!title) warn("steps.title_empty", `step "${id}" has no title.`);
+    if (title.length > 60) {
+      warn("steps.title_long", `step "${id}" title is ${title.length} chars (> 60); Atlas truncates it on the card.`);
+    }
+    for (const opt of opts) {
+      const eq = opt.indexOf("=");
+      if (eq < 1) { warn("steps.opt_malformed", `step "${id}" option "${opt}" is not k=v.`); continue; }
+      const k = opt.slice(0, eq), v = opt.slice(eq + 1);
+      if (!["ref", "by", "col"].includes(k)) {
+        warn("steps.opt_unknown", `step "${id}" has unknown option "${k}"; expected ref, by or col.`);
+      }
+      // A bare `ref=` names a SKILL in this repo and is checkable here. Anything
+      // that exists only in Atlas — a connector, a knowledge node — carries the
+      // `atlas:` prefix and is deliberately NOT checked from this side: this repo
+      // cannot see that graph, and a check that cannot fail is worse than none.
+      // Atlas verifies those at parse time and drops an unbacked one with its own
+      // warning (ATL-043 AC-4), so the ref is checked exactly once, where the
+      // answer is actually known.
+      if (k === "ref" && !v.startsWith("atlas:") && !names.has(v)) {
+        warn("steps.refs_exist", `step "${id}" has ref="${v}", which is not an existing skill name under skills/**. If it names an Atlas connector or knowledge node, write it as ref=atlas:${v}.`);
+      }
+    }
+  }
+
+  for (const raw of flow) {
+    if (typeof raw !== "string") continue;
+    const [edge, ...rest] = raw.split("|").map((s) => s.trim());
+    const m = /^(\S+)\s*(->|~>)\s*(\S+)$/.exec(edge);
+    if (!m) { warn("steps.flow_malformed", `flow line "${raw}" is not "<from> -> <to>" or "<from> ~> <to>".`); continue; }
+    const [, from, arrow, to] = m;
+    for (const end of [from, to]) {
+      if (!ids.has(end)) warn("steps.flow_unknown_step", `flow line "${raw}" names "${end}", which is not a declared step id.`);
+    }
+    // V6 — a branch leaving a gate must say which branch it is.
+    if (arrow === "->" && gates.has(from) && !rest.join("|").trim()) {
+      warn("steps.gate_branch_unlabeled", `flow line "${raw}" leaves the gate "${from}" with no label; a reader cannot tell the branches apart.`);
+    }
+  }
+  return out;
+}
+
 function checkIpo(file: string, info: SkillInfo): QaFinding[] {
   const out: QaFinding[] = [];
   const checks: [string, number][] = [
@@ -462,6 +578,7 @@ export function runChecks(filePath: string): QaFinding[] {
     ...checkPaths(filePath, info),
     ...checkPii(filePath, info),
     ...checkSynergy(filePath, info),
+    ...checkSteps(filePath, info),
     ...checkIpo(filePath, info),
     ...checkAttribution(filePath, info),
     ...checkDownload(filePath, info),

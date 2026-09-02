@@ -11,6 +11,49 @@ input: "Raw slide material / topic + the message you want to convey (scattered n
 process: "Detect intent + take stock of existing context → single intelligent intake (confirm purpose, audience/occasion, proposed page count, must-include material, mode) → load the use-case playbook to assemble the SLIDE_PACKET ▸ Brief → create a shared working subfolder to store the ▸ Brief → drive the three-stage relay in sequence (carrying the ▸ Brief) → hand ▸ Visuals to the slide-pptx skill to render → deliver the .pptx"
 output: "A finished .pptx (produced via the three-stage relay + pptx-skill rendering), plus the complete SLIDE_PACKET (▸ Brief / ▸ Storyline / ▸ Pages / ▸ Visuals) stored in the same working subfolder."
 synergy: ["slide-storyline-designer", "slide-page-splitter", "slide-visual-selector", "slide-pptx"]
+handoff: ["slide-storyline-designer", "slide-page-splitter", "slide-visual-selector", "slide-pptx"]
+executed_by: internal-user
+steps:
+  - "start | start | Start"
+  - "input | input | Provide material + intake answers"
+  - "brief | llm | Detect type + build Brief | ref=zynkr-slide"
+  - "gate | gate | Relay or template-fill?"
+  - "storyline | llm | Write storyline | ref=slide-storyline-designer"
+  - "signoff1 | hitl | Sign off storyline"
+  - "pages | llm | Split pages | ref=slide-page-splitter"
+  - "visuals | llm | Pick visuals | ref=slide-visual-selector"
+  - "render | deterministic | Render .pptx + QA | ref=slide-pptx"
+  - "tf | deterministic | Fill fixed template (alt path)"
+  - "db_artifact | artifact | Final .pptx artifact"
+  - "signoff2 | hitl | Approve final deck"
+  - "output | output | Receive final deck"
+  - "end | end | End"
+  - "db_packet | store | SLIDE_PACKET store (Drive) | ref=atlas:google-drive"
+  - "k_playbooks | knowledge | [RAG] Use-case playbooks | ref=atlas:zynkr-slide.use-case-playbooks"
+  - "k_templates | knowledge | [RAG] Template library + index | ref=atlas:slide-template-library"
+  - "k_brand | knowledge | [RAG] Brand guide (voice + colours) | ref=atlas:zynkr-brand-guide"
+  - "k_visual | knowledge | [RAG] Visual-decision framework | ref=atlas:slide-visual-selector.visual-decision-framework"
+flow:
+  - "start -> input"
+  - "input -> brief"
+  - "brief -> gate"
+  - "gate -> storyline | relay"
+  - "gate -> tf | template-fill"
+  - "storyline -> signoff1"
+  - "signoff1 -> pages | approved"
+  - "pages -> visuals"
+  - "visuals -> render"
+  - "render -> db_artifact"
+  - "tf -> db_artifact"
+  - "db_artifact -> signoff2"
+  - "signoff2 -> output | approved"
+  - "output -> end"
+  - "brief ~> k_playbooks"
+  - "tf ~> k_templates"
+  - "storyline ~> db_packet | saves each stage"
+  - "storyline ~> k_brand | voice"
+  - "visuals ~> k_brand | colours"
+  - "visuals ~> k_visual"
 ---
 
 # zynkr-slide
@@ -27,13 +70,13 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill zyn
 zynkr-slide  ← you are here (conductor)
    │  one intake → SLIDE_PACKET ▸ Brief (deck purpose / audience & occasion / working subfolder / page budget / must-include material / mode / brand application / per-stage emphasis)
    ▼
-slide-storyline-designer (1.12)
+slide-storyline-designer (1.25)
    │  SLIDE_PACKET ▸ Storyline
    ▼
-slide-page-splitter (1.13)
+slide-page-splitter (1.26)
    │  SLIDE_PACKET ▸ Pages
    ▼
-slide-visual-selector (1.14)
+slide-visual-selector (1.27)
    │  SLIDE_PACKET ▸ Visuals (render-ready)
    ▼
 slide-pptx skill  → renders into a .pptx
@@ -257,9 +300,9 @@ A finished `.pptx`, plus the complete `SLIDE_PACKET` (▸ Brief / ▸ Storyline 
 
 `zynkr-slide` is a **thin orchestration layer**. What I **do**: intent detection, single-pass context convergence, ▸ Brief assembly and injection, driving the three stages and slide-pptx in order, and guarding the two human gates of express/guided. What I do **not** do:
 
-- **I don't lay out the narrative arc or set the core thesis myself**: that's stage 1 `slide-storyline-designer` (1.12); I only feed it the purpose/occasion/directives.
-- **I don't split pages or decide how much goes on each page myself**: that's stage 2 `slide-page-splitter` (1.13); the page budget is a target I give, but the actual page cutting is its judgment.
-- **I don't pick the layout archetype or write the layout or pptxgenjs primitives myself**: that's stage 3 `slide-visual-selector` (1.14).
+- **I don't lay out the narrative arc or set the core thesis myself**: that's stage 1 `slide-storyline-designer` (1.25); I only feed it the purpose/occasion/directives.
+- **I don't split pages or decide how much goes on each page myself**: that's stage 2 `slide-page-splitter` (1.26); the page budget is a target I give, but the actual page cutting is its judgment.
+- **I don't pick the layout archetype or write the layout or pptxgenjs primitives myself**: that's stage 3 `slide-visual-selector` (1.27).
 - **I don't render the `.pptx` myself or vendor the slide-pptx skill**: rendering and render-QA are handled by the installed slide-pptx skill; this skill only calls it.
 - **I don't bundle brand content**: brand is always loaded at runtime per `./references/brand-source.md`; this public skill library holds no internal IP.
 - **template-fill only fills, doesn't redesign**: the template-fill branch only **fills the fixed fields of an existing template + does visual treatment**, it doesn't re-lay-out or design a new narrative — to redesign, take the three-stage relay.

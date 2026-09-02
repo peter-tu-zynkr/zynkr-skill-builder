@@ -12,6 +12,7 @@ input: "slide-page-splitter's SLIDE_PACKET ▸ Pages handoff packet (already pag
 process: "For each page, pick the layout using the 'content characteristics → layout archetype' decision rule → map the title and content points to pptxgenjs primitives (addText/bullets/addTable/addChart/addShape/addImage) and write out the layout → human review keep/adjust → hand off"
 output: "A render-ready per-page visual spec SLIDE_PACKET ▸ Visuals, handed to the installed slide-pptx skill (Create from scratch / pptxgenjs.md) to render into a .pptx"
 synergy: ["slide-page-splitter", "slide-pptx"]
+handoff: ["slide-pptx"]
 ---
 
 # Slide Visual Selector

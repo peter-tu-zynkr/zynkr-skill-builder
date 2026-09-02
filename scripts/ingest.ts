@@ -65,6 +65,19 @@ const SkillFrontmatter = z.object({
   process: z.string().optional(),
   output: z.string().optional(),
   synergy: z.array(z.string()).default([]),
+  // SKB-012 — the picture keys. Mirrors scripts/validate-skill.ts, which is the
+  // authoring gate; the two schemas are separately maintained copies and must be
+  // changed together (ingest is not imported there because it runs main() on
+  // import). Declared here so a file carrying them still validates during
+  // ingest; they are deliberately NOT added to the published `normalized`
+  // allowlist below, because Atlas reads the repo file over GitHub raw, not the
+  // marketplace copy — publishing them would put the same declaration in two
+  // places with no gate keeping them equal.
+  handoff: z.array(z.string()).optional(),
+  steps: z.array(z.string()).optional(),
+  flow: z.array(z.string()).optional(),
+  executed_by: z.enum(["external-user", "internal-user"]).optional(),
+  execution_mode: z.enum(["llm", "deterministic", "hitl"]).optional(),
   sheetId: z.string().regex(/^\d+\.\d+$/, "sheetId must look like N.NN, e.g. 2.06").optional(),
   upstream_repo: z.string().optional(),
   original_source_url: z.string().url().optional(),

@@ -12,6 +12,7 @@ input: "The SLIDE_PACKET ▸ Storyline handoff packet from slide-storyline-desig
 process: "Expand each beat into one or more pages per paging principles → for each page set a title (carrying its own conclusion), content bullets, page type, and information density → enforce the per-page information cap → human review to keep/delete/merge → hand off"
 output: "An ordered page list SLIDE_PACKET ▸ Pages, handed to slide-visual-selector to choose layout and visuals"
 synergy: ["slide-storyline-designer", "slide-visual-selector"]
+handoff: ["slide-visual-selector"]
 ---
 
 # Slide Page Splitter

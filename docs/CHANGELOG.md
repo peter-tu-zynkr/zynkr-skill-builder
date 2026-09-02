@@ -738,3 +738,51 @@ claimed by pushing, so derive it fresh) · D4 when it lands.
 
 Spec `docs/specs/SKB-011-pm-shared-cohort.md` → **Active (D1)** — not shipped; D2 and D3
 above are the gate.
+
+---
+
+## 2026-09-03 — the picture declarations: a skill can describe its own flow (Spec: SKB-012)
+
+**A skill can now say what its own flow looks like, and Atlas draws it.** Five optional frontmatter
+keys — `handoff` · `steps` · `flow` · `executed_by` · `execution_mode` — let a SKILL.md declare the
+shapes of its internal process (the branch, the human sign-offs, the terminals, the durable store)
+and the lines between them. They change nothing about how a skill runs. A file that declares none of
+them behaves and renders exactly as before.
+
+**The problem they solve is a vocabulary problem, not a bug.** Atlas derives its 流程圖 canvas from
+what the graph already knows — an artifact's type, a node's kind, the edges between them — and that
+vocabulary cannot express "a person approves here" or "this is where the branch is". For
+`zynkr-slide`, ten of the nineteen shapes in the chart that documents it had no way to exist. The
+four that did came from `synergy:`, which means "these go together" and is symmetric — so Atlas had
+to guess a direction and drew the relay **backwards**. `handoff:` is the fix: an ordered list, and
+its presence tells Atlas to stop guessing for that file.
+
+**The encoding is a pipe-delimited quoted string, and that is the whole trick.** A block sequence of
+quoted scalars is the one shape that survives every parser that reads these files — this repo's
+`gray-matter`, Atlas's deliberately-small subset parser, and Atlas's separate importer parser —
+**with no change to any of them**. A YAML list of maps would have needed all three widened, and the
+importer's copy has already rotted silently once (`ATL-036` defect 1). So the format is ugly on
+purpose and free in exchange.
+
+**A new WARN-tier check, `steps.*`, and it stays WARN by design** — mirroring `ipo.length`: a
+malformed step costs a shape on a diagram, and that must never block a skill from shipping. A `ref=`
+naming a skill is checked here; one prefixed `atlas:` names a connector or knowledge node this repo
+cannot see, and is checked by Atlas instead — a check that cannot fail is worse than none.
+
+**The keys are deliberately NOT published.** They are absent from ingest's `normalized` allowlist, so
+they never reach `content/<id>.md` or the marketplace. Atlas reads the repo file over GitHub raw;
+publishing them would put one declaration in two places with no gate keeping them equal.
+
+Also fixed here because a new blob sha was being minted anyway, and `ATL-026` ruled the fix belongs
+upstream: `zynkr-slide`'s body cited **three dead sheetIds** (`1.12`/`1.13`/`1.14`) for its own relay
+stages; the real ids are `1.25`/`1.26`/`1.27`. Six occurrences corrected.
+
+**Verification (D2, SKB-012 AC-1…AC-6):** `validate-skill.ts` on the pilot — **1/1 pass, 0 errors**;
+on all six slide skills — **6/6 pass, 0 errors** · a seeded file with 9 defects raised **9 distinct
+`steps.*` warnings and 0 errors**, which is the 「prove it fired」 evidence for the new check ·
+`npx tsx scripts/ingest.ts .` then grep for the five keys in `content/skills/1.24.md` — **no match**,
+and the sheetId fix present in the published body · build artifacts reverted after the local run, CI's
+push backstop regenerates them.
+
+Spec `docs/specs/SKB-012-picture-declarations.md` → **Shipped 2026-09-03**. Consumer:
+`zynkr-atlas` `ATL-043`, which cannot build without this half landing first.

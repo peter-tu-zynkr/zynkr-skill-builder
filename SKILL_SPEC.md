@@ -86,6 +86,46 @@ Allocation & gotchas (policy source: `catalog/sheet-map.json` → `_meta.id_poli
 - **Duplicates are NOT caught by the PR check.** `qa.yml` runs `validate-skill.ts`, which does not inspect `sheetId`; malformed/duplicate ids only throw inside `ingest.ts` — i.e. AFTER merge, in the push-time ingest workflow. Until spec `SKB-001` adds a cross-file catalog check, validate the whole tree (or dry-run ingest) before pushing a new id.
 - Renumbered/renamed ids redirect via `generated/id-redirects.json`; never reuse a retired id.
 
+### The picture fields — `handoff` · `steps` · `flow` *(documented 2026-09-03, `SKB-012`)*
+
+These five are read by **Zynkr Atlas** (`atlas.zynkr.ai`), which draws a skill's flow chart on its
+流程圖 canvas. They are optional everywhere and change nothing about how the skill runs; a skill with
+none of them behaves and renders exactly as before. Atlas parses the file in this repo over GitHub
+raw, so — unlike almost everything else here — these are **deliberately not published** to the
+marketplace copy (`content/<id>.md`): one declaration, one home.
+
+| Field | Type | Rule |
+|---|---|---|
+| `handoff` | string[] | The **ordered** skills this one hands off to. Prefer it over `synergy` for a relay: `synergy` means "these go together" and is symmetric, so Atlas has to guess a direction and draws the chain **both ways**. Declaring `handoff` — even as `[]` — stops that guess for this file. |
+| `steps` | string[] | The shapes of this skill's internal flow, one per line (grammar below). |
+| `flow` | string[] | The lines between those shapes. |
+| `executed_by` | `external-user` \| `internal-user` | Who sits at the front end. Places this file's `input`/`output`/`start`/`end` steps in the external or internal sub-lane. It does **not** move the skill itself — a skill always executes in the backend lane. |
+| `execution_mode` | `llm` \| `deterministic` \| `hitl` | How this skill executes, when the type alone does not say. Ignored on a router (a gate is always deterministic) and on a connector. |
+
+**Grammar** — every item is a double-quoted string with pipe-separated fields:
+
+```yaml
+steps:
+  - "<id> | <kind> | <title>[ | <key>=<value>]*"
+flow:
+  - "<from> -> <to>[ | <label>]"      # sequence — a solid arrow
+  - "<from> ~> <to>[ | <label>]"      # context  — a dashed arrow (reads / writes / consults)
+```
+
+- `id` — lowercase, starts with a letter, unique in the file (`^[a-z][a-z0-9_]{0,31}$`).
+- `kind` — one of `start` `end` `input` `output` `hitl` `llm` `deterministic` `gate` `store`
+  `artifact` `knowledge` `offpage`.
+- `title` — what the box says, ≤ 60 chars. No `|` or `"` (they delimit).
+- `ref=<skill-slug>` binds the step to a real skill; `ref=atlas:<slug-or-key>` binds it to something
+  that lives only in Atlas (a connector, a knowledge node). Bare refs are checked here; `atlas:` ones
+  are checked by Atlas, which drops an unbacked one rather than drawing a line that isn't there.
+- `by=external|internal` overrides `executed_by` for one step; `col=<n>` nudges a column.
+- Caps: 40 steps, 80 flow lines. A branch leaving a `gate` should carry a label, or a reader cannot
+  tell the branches apart.
+
+Everything here is checked at **WARN** tier (`steps.*`) — a malformed step costs a shape on a diagram
+and must never block a skill from shipping. Worked example: `skills/1-brand-marketing/zynkr-slide`.
+
 ### Optional fields
 
 - `disable-model-invocation: true` — opt the skill out of automatic triggering (rare; used when the skill is meant to be called by another skill, not the model).

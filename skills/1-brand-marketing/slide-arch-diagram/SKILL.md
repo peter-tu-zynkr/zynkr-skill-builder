@@ -11,6 +11,7 @@ input: "One ideated workflow: free text, a structured Input/Process/Output break
 process: "Decompose into IPO elements → place each in FE/BE/DB via the canonical decision questions and golden rules → stitch left→right (FE inputs ↓, BE chain →, DB feeds ↑, output ↑) → render the .arch component with runtime brand tokens → run the QA checklist"
 output: "A slide-ready .arch diagram block (plus per-deck CSS) with a conclusion-bearing title and one orange law-line verdict, dropped into the target artifact deck page"
 synergy: ["slide-visual-selector", "zynkr-slide", "product-flow-design"]
+handoff: []
 ---
 
 # Slide Arch Diagram
