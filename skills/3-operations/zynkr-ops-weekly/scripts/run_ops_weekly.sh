@@ -12,8 +12,17 @@
 #
 # WHY IT IS SAFE TO RUN 48x A DAY
 #   No beat due => exits in milliseconds without starting Claude. A beat runs at most once per
-#   ISO week (stamp files in STATE_DIR); the stamp is written ONLY on a clean exit, so a failed
-#   run retries on the next tick while its window is still open.
+#   ISO week (stamp files in STATE_DIR). The stamp is written only when the run RECEIPTS itself
+#   as ok, so a failed run retries on the next tick while its window is still open, and gives up
+#   after MAX_ATTEMPTS so a permanently-broken beat cannot burn an invocation every 30 minutes.
+#
+# WHY THE EXIT CODE IS NOT TRUSTED
+#   `claude -p` exits 0 even when its answer is "I could not do this". On 2026-08-31 the nudge
+#   hit an MCP connection timeout, said so in plain English, and was stamped done 33 minutes
+#   later with its window still wide open -- so it never retried and the team got no Monday
+#   post. On 2026-09-02 the agenda wrote the Doc, failed its Chat post with a 404, and was also
+#   stamped done. Both were recorded as successes. The beat therefore has to say, in a line this
+#   script can parse, what it actually delivered; see SKILL.md Step 5.
 #
 # Usage: run_ops_weekly.sh [--dry-run] [--mode=nudge|rollup|chase|agenda|decisions|status]
 set -uo pipefail
@@ -23,6 +32,7 @@ export HOME="/Users/petertu"
 STATE_DIR="$HOME/.local/state/zynkr/ops-weekly"
 LOG="$HOME/Library/Logs/zynkr-ops-weekly.log"
 CFG="${ZYNKR_OPS_WEEKLY_CONFIG:-$HOME/.config/zynkr/ops-weekly.json}"
+MAX_ATTEMPTS=3        # give up after this many non-ok runs in one window
 mkdir -p "$STATE_DIR" "$(dirname "$LOG")"
 
 DRY=0; FORCE=""
@@ -45,7 +55,13 @@ force, state = sys.argv[1], sys.argv[2]
 now = datetime.datetime.now(zoneinfo.ZoneInfo("Asia/Taipei"))
 y, w, dow = now.isocalendar()
 week = f"{y}-W{w:02d}"
-done = lambda m: os.path.exists(os.path.join(state, f"{week}.{m}.done"))
+done    = lambda m: os.path.exists(os.path.join(state, f"{week}.{m}.done"))
+gaveup  = lambda m: os.path.exists(os.path.join(state, f"{week}.{m}.gaveup"))
+# Settled = succeeded OR exhausted its retries, so a broken beat stops being selected.
+# The prerequisite check below accepts ONLY a real .done: `chase` must never run off
+# the back of a `rollup` that gave up, or it will name people whose posts were never
+# parsed at all.
+settled = lambda m: done(m) or gaveup(m)
 if force:
     print(f"{force}|{week}|forced (--mode)"); raise SystemExit
 hm = now.strftime("%H:%M")
@@ -56,7 +72,7 @@ BEATS = [("nudge",     1, "09:00", "20:00", None),
          ("agenda",    3, "17:00", "23:00", None),
          ("decisions", 4, "22:00", "23:59", None)]
 for mode, d, s, e, req in BEATS:
-    if dow != d or not (s <= hm <= e) or done(mode):
+    if dow != d or not (s <= hm <= e) or settled(mode):
         continue
     if req and not done(req):
         print(f"|{week}|{mode} held: {req} has not run this week"); raise SystemExit
@@ -96,14 +112,40 @@ if [ "$DRY" = 1 ]; then
 fi
 
 log "START mode=$MODE week=$WEEK model=$MODEL ($WHY)"
-claude -p "/zynkr-ops-weekly $MODE" --model "$MODEL" --allowedTools "$TOOLS" >> "$LOG" 2>&1
+OUT="$(mktemp -t zynkr-ops-weekly.XXXXXX)"
+claude -p "/zynkr-ops-weekly $MODE" --model "$MODEL" --allowedTools "$TOOLS" >"$OUT" 2>&1
 STATUS=$?
+cat "$OUT" >> "$LOG"
 
-if [ $STATUS -eq 0 ]; then
-  # Stamp ONLY on success, so a failure retries while the window is still open.
+# ── Assert the side effect; do not trust the exit code ───────────────────────
+# The beat ends its report with a machine-readable receipt (SKILL.md Step 5):
+#   ZYNKR-OPS-WEEKLY-RESULT: mode=<mode> week=<week> status=ok|partial|failed delivered=<what>
+# Only status=ok stamps. A missing receipt is a failure too: it means the run never got far
+# enough to report, which is exactly the case the old exit-code check waved through.
+RECEIPT="$(grep -a -o 'ZYNKR-OPS-WEEKLY-RESULT:.*' "$OUT" | tail -1)"
+rm -f "$OUT"
+
+case "$RECEIPT" in
+  *status=ok*) VERDICT="ok" ;;
+  "")          VERDICT="no-receipt (claude exit=$STATUS)" ;;
+  *)           VERDICT="receipt not ok: $RECEIPT" ;;
+esac
+
+if [ "$VERDICT" = "ok" ] && [ $STATUS -eq 0 ]; then
   date '+%Y-%m-%dT%H:%M:%S%z' > "$STATE_DIR/$WEEK.$MODE.done"
-  log "OK    mode=$MODE week=$WEEK"
-else
-  log "FAIL  mode=$MODE week=$WEEK exit=$STATUS (will retry next tick inside the window)"
+  rm -f "$STATE_DIR/$WEEK.$MODE.attempts"
+  log "OK    mode=$MODE week=$WEEK  $RECEIPT"
+  exit 0
 fi
-exit $STATUS
+
+ATT="$STATE_DIR/$WEEK.$MODE.attempts"
+N=$(( $(cat "$ATT" 2>/dev/null || echo 0) + 1 ))
+echo "$N" > "$ATT"
+
+if [ "$N" -ge "$MAX_ATTEMPTS" ]; then
+  printf 'gave up after %s attempts: %s\n' "$N" "$VERDICT" > "$STATE_DIR/$WEEK.$MODE.gaveup"
+  log "GIVEUP mode=$MODE week=$WEEK attempts=$N — $VERDICT (no further retries this week)"
+else
+  log "FAIL  mode=$MODE week=$WEEK attempt=$N/$MAX_ATTEMPTS — $VERDICT (retry next tick inside the window)"
+fi
+exit 1

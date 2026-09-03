@@ -30,12 +30,35 @@ LABELS = [
 # --accept-untagged so the first roll-up has real data to work with; the Monday nudge
 # is what migrates everyone onto the tagged format. Colon optional -- these were
 # written as bare headings with the items on following lines.
+# Legacy (pre-`#週報`) shapes. Two properties are load-bearing and were both learned
+# the hard way against the real space:
+#
+#   1. CASE-INSENSITIVE. The team writes 本週Focus, 本週 focus and 本週focus
+#      interchangeably. Without re.I the capital-F spellings match nothing, so
+#      `legacy_hit` stays False and the whole post is discarded as non-report — which
+#      then makes `chase` publicly name people who did in fact post. Confirmed live
+#      2026-09-03 on W36: Peggy, Bicky and Jane were all silently dropped, and the
+#      run only looked correct because the model re-read the raw chat by hand.
+#   2. FOCUS ALTERNATIVES COME FIRST. Alternation is ordered, so a bare 這週 placed
+#      ahead of 這週focus would match first and leave the literal word "focus" to be
+#      parsed as this week's first work item.
+#
+# The 我的 infix is optional throughout: 本週我的 focus / 這個禮拜我的 focus both occur.
+_FOCUS_THIS = r"(?:這個禮拜|這禮拜|這週|本週|本周)(?:我的)?\s*focus"
+_FOCUS_LAST = r"(?:上個禮拜|上禮拜|上週|上周)(?:我的)?\s*focus"
+
 LEGACY_LABELS = [
-    ("last_week", re.compile(r"^\s*(上禮拜進度|上週進度|上周進度|上禮拜|上星期)\s*[:：]?\s*(.*)$")),
-    ("this_week", re.compile(r"^\s*(這禮拜待辦|這週待辦|本週待辦|本周待辦|這禮拜|這週|"
-                             r"這個禮拜我的\s*focus|本週\s*focus|這週\s*focus)\s*[:：]?\s*(.*)$")),
+    ("last_week", re.compile(
+        r"^\s*(" + _FOCUS_LAST + r"|上禮拜進度|上週進度|上周進度|上星期|上禮拜)"
+        r"\s*[:：]?\s*(.*)$", re.I)),
+    ("this_week", re.compile(
+        r"^\s*(" + _FOCUS_THIS + r"|這禮拜待辦|這週待辦|本週待辦|本周待辦|這禮拜|這週)"
+        r"\s*[:：]?\s*(.*)$", re.I)),
 ]
-BULLET_RE = re.compile(r"^\s*(?:[-*・‧•]|\d+[.)])\s*(.+?)\s*$")
+# 、 and ． are the enumerators the team actually types on a zh-TW keyboard ("1、事項").
+# Without them the number stays glued to the item text and every rendered block needs
+# hand-cleaning before it goes into the Doc.
+BULLET_RE = re.compile(r"^\s*(?:[-*・‧•]|\d+[.)、．])\s*(.+?)\s*$")
 STATUS_RE = re.compile(
     r"(?:\b(done|wip|blocked|not\s*started|in\s*progress)\b|(完成|進行中|已完成|未開始|卡關中|放棄))", re.I)
 STATUS_CANON = {
