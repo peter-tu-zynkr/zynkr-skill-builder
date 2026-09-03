@@ -16,6 +16,8 @@
   "Input",
   "Process",
   "Output",
+  "Skills md",
+  "Knowledge files",
   "Knowledge source",
   "Live-read",
   "Connected solution",
@@ -33,7 +35,8 @@
   "Provenance",
   "Install",
   "Source path",
-  "Updated"
+  "Updated",
+  "Skill folder"
  ],
  "Knowledge Sources": [
   "Scope",

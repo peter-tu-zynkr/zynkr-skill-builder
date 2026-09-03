@@ -6402,6 +6402,191 @@
    ],
    "gotchas": "Report-only by design. It never edits an existing Doc, so a superseded snapshot gets a heal-list item saying it needs a [SUPERSEDED] banner rather than the banner itself.",
    "confidence": "high"
+  },
+  {
+   "id": "3.20",
+   "slug": "project-init",
+   "one_liner_zh": "依專案類型複製 PMO 五份模板、建好子資料夾、清空範例列，並種下五個交付階段",
+   "one_liner_en": "Stands up a new project from the PMO template set — resolves the filing home, copies five templates, clears the example rows (鐵律 2) and seeds the five delivery stages",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/pm-knowledge-pack.md",
+     "id_or_url": "docs/pm-shared/pm-knowledge-pack.md (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "The shared PM rules: 五條鐵律, the five axes (lifecycle · health · risk · decision · closure), gate, escalation and closure. Gated byte-identical across the 5 PM-family skills by scripts/check-pm-refs.sh"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-sources.md",
+     "id_or_url": "docs/pm-shared/pm-sources.md (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "PMO artefact IDs + the ~/.config/zynkr/pm.json adapter contract"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-sheet-schema.json",
+     "id_or_url": "docs/pm-shared/pm-sheet-schema.json (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "管控表 v2 tab headers (v2 + legacy v1) — read by ./scripts/pm-schema.py before any column is mapped"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-status-crosswalk.json",
+     "id_or_url": "docs/pm-shared/pm-status-crosswalk.json (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "The five axes and their surface mappings; why 進度更新 is a health reading, never a lifecycle status"
+    },
+    {
+     "type": "local-file",
+     "name": "~/.config/zynkr/pm.json (private config)",
+     "id_or_url": "~/.config/zynkr/pm.json",
+     "runtime_read": true,
+     "purpose": "engagement_types.<type>.filing_home · projects.<slug>.{spine, report_recipients} — the run STOPS if the key is missing, never guesses a folder"
+    },
+    {
+     "type": "drive-folder",
+     "name": "[3.3] 專案管理 PMO｜Playbook & Templates → [1] Templates 模板庫",
+     "id_or_url": "https://drive.google.com/drive/folders/1nnoKI115tWCMPOXTuWCbCW445v3BJZy6",
+     "runtime_read": true,
+     "purpose": "The five templates copied on every run: Business Case · Charter · Kickoff · 管控表 v2 · 復盤"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "mcp__google-workspace__copy_drive_file",
+    "mcp__google-workspace__create_drive_folder",
+    "mcp__google-workspace__modify_sheet_values",
+    "mcp__google-workspace__search_drive_files"
+   ],
+   "external_services": [
+    "Google Drive",
+    "Google Docs",
+    "Google Sheets",
+    "Google Slides"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "New project folder with the 5 PMO artefacts + sub-folders [1]–[4]",
+    "管控表 tab 1 seeded with five X.0 stage rows and no tasks",
+    "A pm.json snippet carrying spine + report_recipients (printed, never written)",
+    "An artefact table naming the next gate"
+   ],
+   "setup_required": [
+    "~/.config/zynkr/pm.json with engagement_types.<type>.filing_home (run stops if missing)",
+    "google-workspace MCP authed as peter_tu@zynkr.ai"
+   ],
+   "human_gate": "Pre-flights the target folder and STOPS if a project of the same name exists; prints the pm.json entry for the user to paste rather than writing their private config. Never sends mail.",
+   "gotchas": "Seeds stages only — the WBS is deliberately left empty for /project-planning. 跨階段 Cross-Cutting is a parallel track and is NOT seeded as a stage row, so it never enters the % denominator. 客戶案 routes to /consult-project-specialist for folder numbering and the CRM deal rather than duplicating it. Cannot write the 所有檔案 tab yet — its headers are not captured in pm-sheet-schema.json.",
+   "trigger_phrases": [
+    "/project-init",
+    "開新專案",
+    "建立專案資料夾",
+    "幫我開一個案子",
+    "set up a new project",
+    "複製專案模板",
+    "開案"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "3.21",
+   "slug": "project-minutes-sync",
+   "one_liner_zh": "把會議記錄的四張表同步進管控表三個分頁，只寫值並印出差異報告",
+   "one_liner_en": "Closes the 會議記錄 → 管控表 loop: parses the Doc's four tables and append-or-patches Action Items, Change & Decision Log and Risk Register, then prints a diff",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "./references/pm-knowledge-pack.md",
+     "id_or_url": "docs/pm-shared/pm-knowledge-pack.md (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "The shared PM rules: 五條鐵律, the five axes (lifecycle · health · risk · decision · closure), gate, escalation and closure. Gated byte-identical across the 5 PM-family skills by scripts/check-pm-refs.sh"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-sources.md",
+     "id_or_url": "docs/pm-shared/pm-sources.md (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "PMO artefact IDs + the ~/.config/zynkr/pm.json adapter contract"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-sheet-schema.json",
+     "id_or_url": "docs/pm-shared/pm-sheet-schema.json (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "管控表 v2 tab headers (v2 + legacy v1) — read by ./scripts/pm-schema.py before any column is mapped"
+    },
+    {
+     "type": "repo-file",
+     "name": "./references/pm-status-crosswalk.json",
+     "id_or_url": "docs/pm-shared/pm-status-crosswalk.json (seed) — byte-identical copy shipped in the skill",
+     "runtime_read": true,
+     "purpose": "The five axes and their surface mappings; why 進度更新 is a health reading, never a lifecycle status"
+    },
+    {
+     "type": "local-file",
+     "name": "~/.config/zynkr/pm.json (private config)",
+     "id_or_url": "~/.config/zynkr/pm.json",
+     "runtime_read": true,
+     "purpose": "projects.<slug>.tracker_sheet_id and minutes_doc_id — never a literal in the skill file"
+    },
+    {
+     "type": "google-doc",
+     "name": "The project's [會議記錄] Doc",
+     "id_or_url": "resolved per run from pm.json or the user's URL",
+     "runtime_read": true,
+     "purpose": "The four tables parsed every run: 進度更新 · 提醒與阻礙 · 決議 · Action Items"
+    },
+    {
+     "type": "google-sheet",
+     "name": "The project's [專案管控表] — tabs 專案管理總表 · Change & Decision Log · Risk Register",
+     "id_or_url": "resolved per run from pm.json",
+     "runtime_read": true,
+     "purpose": "Read the header row to detect v1/v2, then append-or-patch by value only"
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "google-workspace"
+   ],
+   "mcp_tools": [
+    "mcp__google-workspace__get_doc_as_markdown",
+    "mcp__google-workspace__read_sheet_values",
+    "mcp__google-workspace__modify_sheet_values",
+    "mcp__google-workspace__batch_update_doc"
+   ],
+   "external_services": [
+    "Google Docs",
+    "Google Sheets"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "管控表 tab 1 rows appended or patched (Owner/End/Status only on a patch)",
+    "Change & Decision Log rows (狀態 = 提案)",
+    "Risk Register rows (Owner + 狀態 = Open; 機率/衝擊 left blank for a human)",
+    "A diff report: appended · patched · conflicts skipped · tables that failed to parse"
+   ],
+   "setup_required": [
+    "~/.config/zynkr/pm.json with projects.<slug>.tracker_sheet_id (run stops if missing)",
+    "google-workspace MCP authed as peter_tu@zynkr.ai"
+   ],
+   "human_gate": "Writes by VALUE only and never overwrites an existing task no. — a conflict is reported, not resolved. Ticking the Doc's 已同步 checkboxes needs explicit confirmation. Nothing is ever sent anywhere.",
+   "gotchas": "進度更新 is a HEALTH reading and is reported but NEVER written into tab 1 Status — the exact mistake the five-axes ruling exists to prevent. Stops if pm-schema.py reports a header mismatch; a legacy v1 sheet is reported and read with the v1 map. Never invents a task no. 機率/衝擊 on a new risk are left blank rather than guessed.",
+   "trigger_phrases": [
+    "/project-minutes-sync",
+    "同步會議記錄",
+    "把會議記錄同步到管控表",
+    "會議決議同步",
+    "Action Items 進管控表",
+    "阻礙開成 Risk",
+    "sync the minutes"
+   ],
+   "confidence": "high"
   }
  ],
  "subagents": [

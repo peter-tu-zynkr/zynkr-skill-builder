@@ -4597,5 +4597,129 @@
    "planning-knowledge-pack.md",
    "planning-sources.md"
   ]
+ },
+ {
+  "id": "3.19",
+  "slug": "zynkr-ops-weekly",
+  "name": "zynkr-ops-weekly",
+  "category": "operations",
+  "kind": "skill",
+  "status": "WIP",
+  "author": "Peter Tu",
+  "summary": "The weekly ops loop: five scheduled beats keep a Google Chat space and the weekly ops Doc in sync.",
+  "description": null,
+  "input": "A mode (nudge | rollup | chase | agenda | decisions | status) and an optional 'as of' date; every identifier comes from the private config at ~/.config/zynkr/ops-weekly.json.",
+  "process": "Anchor on today → resolve the target Thursday (Monday's posts belong to the NEXT Thursday) → load config → check idempotency → read routing from the Doc's owner chips → sweep Chat by createTime → parse the four lines → write a marked block → assert delivery.",
+  "output": "Per mode: a Chat post, a marked 〔自動彙整〕 block under each department heading of the current week's Doc section, a Wednesday agenda block, and a Thursday recap email.",
+  "synergy": [
+   "zynkr-gm",
+   "project-status-update",
+   "planning-tracker-sync",
+   "operations-flow-optimization",
+   "admin-governance"
+  ],
+  "tags": [
+   "zynkr-ops-weekly",
+   "operations",
+   "claude",
+   "skill"
+  ],
+  "install_command": "curl -sL zynkr.ai/s/3.19.md -o ~/.claude/skills/zynkr-ops-weekly.md",
+  "github_url": null,
+  "source_path": "skills/3-operations/zynkr-ops-weekly/SKILL.md",
+  "updated_at": "2026-09-03",
+  "first_seen": "2026-09-03",
+  "upstream_repo": null,
+  "original_source_url": null,
+  "is_agent": false,
+  "local_md": "/Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skill-builder/skills/3-operations/zynkr-ops-weekly/SKILL.md",
+  "parent_slug": null,
+  "agents": [],
+  "support_files": [
+   "references",
+   "scripts"
+  ]
+ },
+ {
+  "id": "3.20",
+  "slug": "project-init",
+  "name": "project-init",
+  "category": "operations",
+  "kind": "skill",
+  "status": "WIP",
+  "author": "Peter Tu",
+  "summary": "Stands up a new project from the PMO template set: resolves the filing home, copies the five templates, creates the sub-folders, clears the example rows and seeds the five delivery stages.",
+  "description": null,
+  "input": "專案名稱 · 專案類型 (客戶案／課程案／內部案) · Sponsor · PM · 目標完成日 · 一行核心目標; plus ~/.config/zynkr/pm.json for the filing home",
+  "process": "Verify the pack sha → collect six inputs → resolve filing_home from the adapter → pre-flight for duplicates → copy 5 templates + 4 sub-folders → change 核心目標 and CLEAR example rows → seed five X.0 stage rows → backlink → print the pm.json snippet",
+  "output": "A project folder holding [Business Case] · [Charter] · [Kickoff] · [專案管控表] · [復盤] plus sub-folders [1]–[4], tab 1 seeded with five stage rows and no tasks, and a pm.json snippet",
+  "synergy": [
+   "project-status-update",
+   "project-planning",
+   "project-minutes-sync",
+   "consult-project-specialist"
+  ],
+  "tags": [
+   "project-init",
+   "operations",
+   "claude",
+   "skill"
+  ],
+  "install_command": "curl -sL zynkr.ai/s/3.20.md -o ~/.claude/skills/project-init.md",
+  "github_url": null,
+  "source_path": "skills/3-operations/project-init/SKILL.md",
+  "updated_at": "2026-09-03",
+  "first_seen": "2026-09-03",
+  "upstream_repo": null,
+  "original_source_url": null,
+  "is_agent": false,
+  "local_md": "/Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skill-builder/skills/3-operations/project-init/SKILL.md",
+  "parent_slug": null,
+  "agents": [],
+  "support_files": [
+   "references",
+   "scripts"
+  ]
+ },
+ {
+  "id": "3.21",
+  "slug": "project-minutes-sync",
+  "name": "project-minutes-sync",
+  "category": "operations",
+  "kind": "skill",
+  "status": "WIP",
+  "author": "Peter Tu",
+  "summary": "Closes the 會議記錄 → 管控表 loop: parses the Doc's four tables and append-or-patches three 管控表 tabs, then prints a diff of what moved.",
+  "description": null,
+  "input": "A [會議記錄] Doc (URL or id) or a project slug that resolves via pm.json; the tracker Sheet id always comes from the adapter.",
+  "process": "知識來源 + pm.json check → parse the Doc's four tables per-table → detect the 管控表 version with pm-schema.py → Action Items append-or-patch tab 1 → 決議 → Change & Decision Log → 阻礙 → Risk Register → VALUES-ONLY write-back → diff report.",
+  "output": "Three 管控表 tabs updated by value only, the Doc's 已同步 checkboxes ticked on explicit go-ahead, and a chat diff report.",
+  "synergy": [
+   "project-status-update",
+   "project-note-specialist",
+   "project-init",
+   "admin-meeting-prep"
+  ],
+  "tags": [
+   "project-minutes-sync",
+   "operations",
+   "claude",
+   "skill"
+  ],
+  "install_command": "curl -sL zynkr.ai/s/3.21.md -o ~/.claude/skills/project-minutes-sync.md",
+  "github_url": null,
+  "source_path": "skills/3-operations/project-minutes-sync/SKILL.md",
+  "updated_at": "2026-09-03",
+  "first_seen": "2026-09-03",
+  "upstream_repo": null,
+  "original_source_url": null,
+  "is_agent": false,
+  "local_md": "/Users/petertu/Desktop/Claude/zynkr/6.0 tech/zynkr-skill-builder/skills/3-operations/project-minutes-sync/SKILL.md",
+  "parent_slug": null,
+  "agents": [],
+  "support_files": [
+   "references",
+   "scripts"
+  ]
  }
 ]
