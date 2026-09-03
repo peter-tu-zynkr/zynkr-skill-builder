@@ -10,7 +10,7 @@ Layout deliberately mirrors "[3.3] PM Flow x Skill Portfolio Assessment" (Sheet 
 Brand tokens copied from 6.0 tech/zynkr-website-fe/styles.css :root (sync 2026-08-17).
 Orange (#F26B1F) is the decision colour - used once, on the WIP status flag.
 """
-import json, os, sys, collections, datetime
+import json, os, sys, collections, datetime, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 J = os.path.join(HERE, 'data')
@@ -425,7 +425,7 @@ def tab_overview(wb, ctx):
                          'run without that server; in the matrix ✓ = the skill calls that server itself, (✓) = inherited from a '
                          'sub-skill it invokes. Ready to run is the prerequisite gate: Just invoke = no dependencies · Local '
                          'config = a config file or key · Cloud docs = the Drive/DB sources must exist · MCP auth = needs an MCP '
-                         'server · MCP + cloud docs = both.'),
+                         'server · MCP + cloud docs = both. Skills md names the skill’s own entry file; Knowledge files counts the git-tracked files it ships BESIDES that SKILL.md (blank = none), and Skill folder is the directory under skills/<n-category>/ — a └ sub-skill row leaves all three blank because it is filed inside its parent.'),
         ('KV', 'Links', 'Underlined sage text is a live link. On Skill Index the skill name opens its SKILL.md on GitHub; on '
                         'Knowledge Sources the ID / URL column opens the actual Doc, folder, repo file or dashboard. A link is '
                         'only generated when it can be stood behind — every GitHub link was checked to resolve against the repo '
@@ -536,16 +536,77 @@ def readiness(e):
 HEADERS = [
     'No.', 'Category', 'Skill', '', 'Kind', 'Status', 'Ready to run',
     'What it does', 'Triggers', 'Input', 'Process', 'Output',
+    'Skills md', 'Knowledge files',
     'Knowledge source', 'Live-read', 'Connected solution', 'Solution touchpoint',
     'MCP required', 'MCP servers', 'Key MCP tools', 'External services',
     'Write impact', 'Human gate', 'Artifacts', 'Setup required', 'Caveats',
     'Related skills', 'Provenance', 'Install', 'Source path', 'Updated',
+    'Skill folder',
 ]
+
+# `Skills md` · `Knowledge files` · `Skill folder` were added to the live Sheet BY HAND and were
+# never emitted here, which is why `data/live-headers.json` did not know about them and the parity
+# guard compared 30 against 30 while the live tab had 33. Emitting them closes that.
+#
+# The hand-filled `Knowledge files` values were not reproducible: content-fission and
+# content-newsletter-draft ship identical folders (SKILL.md only) yet read 0 and 1. No rule
+# recovers that, so this column now has ONE stated definition — the number of git-tracked files
+# the skill ships BESIDES its SKILL.md — and some rows will change value on the next publish.
+# The definition is stated in the Overview legend so it travels with the data.
+
+# 1-based column index by header name. Every styling/width decision below keys off this instead of
+# a literal, because the two literals that used to be here (18 for 'MCP required', 15 for
+# 'Live-read') were already off by one and had silently stopped highlighting anything.
+COL = {h: i + 1 for i, h in enumerate(HEADERS) if h}
+COL['SubSkill'] = 5 - 1  # the unnamed column 4 that carries the └ child slug
+
+WIDTHS = {
+    'No.': 5, 'Category': 24, 'Skill': 34, 'SubSkill': 34, 'Kind': 13, 'Status': 8,
+    'Ready to run': 17, 'What it does': 50, 'Triggers': 32, 'Input': 46, 'Process': 40,
+    'Output': 46, 'Skills md': 12, 'Knowledge files': 15, 'Knowledge source': 62,
+    'Live-read': 11, 'Connected solution': 22, 'Solution touchpoint': 44, 'MCP required': 14,
+    'MCP servers': 22, 'Key MCP tools': 40, 'External services': 22, 'Write impact': 22,
+    'Human gate': 34, 'Artifacts': 34, 'Setup required': 32, 'Caveats': 46,
+    'Related skills': 26, 'Provenance': 16, 'Install': 52, 'Source path': 56, 'Updated': 11,
+    'Skill folder': 22,
+}
+WRAP_COLS = ('Category', 'What it does', 'Triggers', 'Input', 'Process', 'Output',
+             'Knowledge source', 'Connected solution', 'Solution touchpoint', 'Key MCP tools',
+             'External services', 'Write impact', 'Human gate', 'Artifacts', 'Setup required',
+             'Caveats', 'Related skills', 'Install', 'Source path')
+MONO_COLS = ('No.', 'Skill', 'SubSkill', 'Skills md', 'Knowledge files', 'Source path',
+             'Updated', 'Skill folder')
+
+
+def support_file_count(source_path, tracked):
+    """Files the skill ships besides its SKILL.md. Counts only git-tracked files, so an
+    ignored artifact or a stray local file never inflates the number."""
+    d = os.path.dirname(source_path or '')
+    if not d:
+        return 0
+    pre = d + '/'
+    return sum(1 for f in tracked
+               if f.startswith(pre) and not f.rsplit('/', 1)[-1] == 'SKILL.md')
+
+
+def files_label(n):
+    return '' if not n else ('1 file' if n == 1 else f'{n} files')
+
+
+def tracked_files():
+    try:
+        out = subprocess.run(['git', 'ls-files', 'skills'], cwd=REPO_ROOT,
+                             capture_output=True, text=True, check=True).stdout
+        return set(out.split('\n')) - {''}
+    except Exception as exc:                       # not a git checkout, or git missing
+        print(f'  WARN  git ls-files failed ({exc}) — Knowledge files will read 0')
+        return set()
 
 
 def tab_index(wb, inv, sx, ax):
     ws = wb.create_sheet('Skill Index')
     ws.append(HEADERS)
+    tracked = tracked_files()
     kids = collections.defaultdict(list)
     for r in inv:
         if r['is_agent'] and r['parent_slug']:
@@ -569,6 +630,7 @@ def tab_index(wb, inv, sx, ax):
             e.get('one_liner_en') or (p.get('summary') or ''),
             bullets(e.get('trigger_phrases') or []),
             p.get('input') or '', p.get('process') or '', p.get('output') or '',
+            'SKILL.md', files_label(support_file_count(p.get('source_path'), tracked)),
             ks_render(ks, os.path.dirname(p.get('source_path') or '') or None),
             ('TRUE' if any(k.get('runtime_read') for k in ks) else ('FALSE' if ks else '—')),
             jl(sorted({c.get('solution', '') for c in cs})),
@@ -581,6 +643,7 @@ def tab_index(wb, inv, sx, ax):
             bullets(e.get('setup_required') or []), e.get('gotchas') or '',
             jl(sorted(p.get('synergy') or [])), prov,
             p.get('install_command') or '', p.get('source_path') or '', p.get('updated_at') or '',
+            os.path.basename(os.path.dirname(p.get('source_path') or '')),
         ])
         parent_rows.append(ws.max_row)
         u = source_url(p.get('source_path'))
@@ -597,11 +660,13 @@ def tab_index(wb, inv, sx, ax):
                 (f"[stage {order}] " if order else '') + (ae.get('role_en') or k.get('summary') or ''),
                 '',
                 ae.get('input') or k.get('input') or '', '', ae.get('output') or k.get('output') or '',
+                '', '',                       # Skills md · Knowledge files stay blank on a └ row
                 jl(ae.get('knowledge_sources') or [], '\n'), '', '', '',
                 'Yes' if ae.get('requires_mcp') else 'No',
                 jl(sorted(ae.get('mcp_servers') or [])), '', '',
                 '', '', '', '', '',
                 '', 'First-party', '', k.get('source_path') or '', k.get('updated_at') or '',
+                '',                           # Skill folder stays blank on a └ row
             ])
             child_rows.append(ws.max_row)
             u = source_url(k.get('source_path'))
@@ -612,20 +677,22 @@ def tab_index(wb, inv, sx, ax):
 
     n = len(HEADERS)
     style_header(ws, n, freeze='E2', height=46)
-    wrapc = {2, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30}
-    style_body(ws, n, mono={1, 3, 4, 29, 30}, wrap=wrapc)
-    set_widths(ws, [5, 24, 34, 34, 13, 8, 17, 50, 32, 46, 40, 46, 40,
-                    62, 11, 22, 44, 9, 22, 40, 22, 24, 34, 34, 32, 46, 16, 26, 52, 56, 11])
+    wrapc = {COL[c] for c in WRAP_COLS}
+    style_body(ws, n, mono={COL[c] for c in MONO_COLS}, wrap=wrapc)
+    # by name, and asserted — the old literal list carried 31 widths for 30 columns, so every
+    # width from 'Knowledge source' rightward was applied to the wrong column.
+    assert len(WIDTHS) == n, f'WIDTHS has {len(WIDTHS)} entries for {n} columns'
+    set_widths(ws, [WIDTHS[h if h else 'SubSkill'] for h in HEADERS])
     for r in range(2, ws.max_row + 1):
         set_row_height(ws, r, 58)
-        ws.cell(row=r, column=1).font = Font(name=FONT_MONO, size=9, bold=True, color=MUTE)
-        m = ws.cell(row=r, column=18)
+        ws.cell(row=r, column=COL['No.']).font = Font(name=FONT_MONO, size=9, bold=True, color=MUTE)
+        m = ws.cell(row=r, column=COL['MCP required'])
         if m.value == 'Yes':
             m.font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
-        lr = ws.cell(row=r, column=15)
+        lr = ws.cell(row=r, column=COL['Live-read'])
         if lr.value == 'TRUE':
             lr.font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
-        rr = ws.cell(row=r, column=7)
+        rr = ws.cell(row=r, column=COL['Ready to run'])
         if rr.value == 'Just invoke':
             rr.font = Font(name=FONT_ZH, size=9, bold=True, color=SAGE_DEEP)
         elif rr.value == '(via parent)':
@@ -644,7 +711,7 @@ def tab_index(wb, inv, sx, ax):
             ws.cell(row=r, column=c).fill = PatternFill('solid', fgColor=PAPER)
         set_row_height(ws, r, 40)
     for r in wip:
-        ws.cell(row=r, column=6).font = Font(name=FONT_ZH, size=9, bold=True, color=ORANGE)
+        ws.cell(row=r, column=COL['Status']).font = Font(name=FONT_ZH, size=9, bold=True, color=ORANGE)
     # applied last so it survives the parent/child font passes above
     for r, col, u in srclinks:
         c = ws.cell(row=r, column=col)
