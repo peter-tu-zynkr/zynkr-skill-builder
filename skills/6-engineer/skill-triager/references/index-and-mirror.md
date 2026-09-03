@@ -49,24 +49,42 @@ category folder under `1 Skills/` first, named to match the pattern above.
 ## What gets created
 
 - **Always** — `1 Skills/<category folder>/<slug>/` holding `SKILL.md` (raw, `text/markdown`).
-- **Only when the skill ships knowledge** — `2 Knowledge/<slug>/` holding every other
-  git-tracked file in the skill directory, **flattened**: `references/foo.md` becomes
-  `references__foo.md`, `scripts/bar.py` becomes `scripts__bar.py`.
+- **When the skill ships knowledge** — `2 Knowledge/<slug>/` holding every other git-tracked
+  file in the skill directory, **flattened**: `references/foo.md` becomes `references__foo.md`,
+  `scripts/bar.py` becomes `scripts__bar.py`.
 
-A skill whose directory contains nothing but `SKILL.md` gets **no** knowledge folder, and its
-Sheet cell `N` stays blank. That is the normal case for roughly a third of the portfolio — an
-empty knowledge folder is worse than none, because `N` would then link to nothing.
+### ⚠️ Column `N` has two competing definitions in play — know which you are writing
+
+The 2026-08-28 pass created a `2 Knowledge/<slug>/` folder for **most** skills, including ones
+that ship nothing but a `SKILL.md`; those folders hold a single generated `_SOURCES.md` and
+nothing else. The hand-filled `N` values count **the Drive folder's contents**, so
+`skill-publish` and `skill-qa` both read `1 file` while shipping **zero** knowledge files.
+
+The generator (`scripts/skills-index/build_index_sheet.py`, since `a6179a0f`) states the other
+definition: **git-tracked files the skill ships besides its `SKILL.md`**. That is the one written
+into the Overview legend, and a full republish will rewrite roughly two-thirds of the column to
+match it.
+
+**Write the generator's definition.** It is the only one that is documented and reproducible.
+Accept that a freshly written row will disagree with its untouched neighbours until the tab is
+republished — that gap is the known correction, not a mistake you introduced.
+
+Concretely:
+
+- Skill ships knowledge files ⇒ create/refresh `2 Knowledge/<slug>/`, mirror them, label `N`
+  with that count.
+- Skill ships only `SKILL.md` ⇒ **do not create** a knowledge folder, and leave `N` blank. If a
+  legacy `_SOURCES.md`-only folder already exists for it, **leave the folder alone** — do not
+  delete it and do not point `N` at it.
 
 ## Deciding "is there knowledge" — one command, not a judgement call
 
 ```bash
-git ls-tree -r --name-only origin/main -- "skills/<N-cat>/<slug>" \
-  | grep -v '/SKILL\.md$' | grep -v '^skills/<N-cat>/<slug>/SKILL\.md$'
+git ls-tree -r --name-only origin/main -- "skills/<N-cat>/<slug>" | grep -v '/SKILL\.md$'
 ```
 
 The count of those lines is both the answer and the label for column `N`
-(`1 file` / `<n> files`; blank when zero). This is the column's stated definition —
-git-tracked files the skill ships **besides** its `SKILL.md`.
+(`1 file` / `<n> files`; blank when zero).
 
 ## The Sheet contract
 
