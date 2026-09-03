@@ -18,7 +18,7 @@ disable-model-invocation: true
 The **gate** of the skill-authoring chain — runs twice:
 
 - **Option A `assign-build`** (front-gate): the second-look approval right after `/skill-sourcer`. Fires `skill-build-request` → `pickup-approved-issue.yml` opens a `skill/<slug>` PR with a stub for `/skill-creator` to fill.
-- **Option D `confirm-ship`** (back-gate): the audit closer after `/skill-publish` lands the SKILL.md and `ingest-skills.yml` publishes it live. Three read-only checks, then flips the issue to `shipped`.
+- **Option D `confirm-ship`** (back-gate): the audit closer after `/skill-publish` lands the SKILL.md and `ingest-skills.yml` publishes it live. Three read-only checks, a Sheet + Drive documentation pass, then flips the issue to `shipped`.
 
 ```
 /skill-sourcer  →  /skill-triager  →  /skill-creator  →  /skill-qa  →  /skill-publish  →  /skill-triager
@@ -182,22 +182,35 @@ The artifact is **already built and committed** (typical for `/skill-publish` in
      | python3 -c "import sys,json; print(any(s.get('slug')=='<slug>' or s.get('name')=='<slug>' for s in json.load(sys.stdin)))"
    ```
    If `False`: the Supabase mirror hasn't synced yet — usually <30 s after ingest. Worth re-checking before flipping status.
-5. **Post the verification receipt** as an issue comment — the confirmed GitHub URL plus the marketplace URL, so the shipped state is self-evidencing from the issue:
+5. **Document it in the Sheet and the Drive mirror** — the two surfaces CI never touches. `ingest-skills.yml` stops at git → Supabase → marketplace; the portfolio index and the Drive library are written by hand or not at all. Read `./references/index-and-mirror.md` for the committed folder IDs, the column contract and the staging rules. The shape of the work:
+   - **Drive — always:** create `1 Skills/<category folder>/<slug>/` and upload the merged `SKILL.md` as `text/markdown`.
+   - **Drive — only when the skill ships knowledge:** if
+     ```bash
+     git ls-tree -r --name-only origin/main -- "skills/<N-cat>/<slug>" | grep -v '/SKILL\.md$'
+     ```
+     lists anything, create `2 Knowledge/<slug>/` and upload those files **flattened** (`references/foo.md` → `references__foo.md`). A SKILL.md-only skill gets **no** knowledge folder and leaves column `N` blank — an empty folder is worse than none, because `N` would link to nothing.
+   - **Sheet:** find the row by its `sheetId` in column `C` (append one if the skill is new), then write the four link cells — `C` → GitHub blob, `M` → the Drive `SKILL.md` file, `N` → the knowledge folder, `AG` → the skill folder — as `=HYPERLINK("<url>","<label>")` with `value_input_option="USER_ENTERED"`.
+
+   Verify before moving on: re-read `M`/`N`/`AG` and confirm each returns a hyperlink rather than plain text, and that the uploaded file's frontmatter `name` matches the slug — a mis-parented file looks correct in the Sheet and opens the wrong skill.
+
+   **This step does not gate the ship.** The skill is already live on the marketplace by the time you get here, so a Drive or Sheets failure is a bookkeeping debt, not a broken release: say exactly what is missing, name it again in the Step 5 report, and continue to the next step rather than leaving the issue open.
+
+6. **Post the verification receipt** as an issue comment — the confirmed GitHub URL plus the marketplace URL, so the shipped state is self-evidencing from the issue:
    ```bash
    gh issue comment <num> --repo peter-tu-zynkr/zynkr-skill-idea \
-     --body "confirm-ship: in main at \`<path>\` · live at https://zynkr.ai/s/<sheetId>"
+     --body "confirm-ship: in main at \`<path>\` · live at https://zynkr.ai/s/<sheetId> · indexed in the Skills Index Sheet + Drive [6.2]"
    ```
-6. **Label swap on issue:**
+7. **Label swap on issue:**
    ```bash
    gh issue edit <num> --repo peter-tu-zynkr/zynkr-skill-idea \
      --remove-label triage-ready --add-label shipped
    ```
-7. **Close the issue:**
+8. **Close the issue:**
    ```bash
    gh issue close <num> --repo peter-tu-zynkr/zynkr-skill-idea \
      --comment "Triage decision: confirm-ship. Live at https://www.zynkr.ai/ai-skills-marketplace (slug: <slug>). Verified via gh contents + skills-index + /api/skills."
    ```
-8. **Offer to install it into the local runtime (author convenience — closes the publish↔invoke gap).** Shipping publishes the skill to the *marketplace*; it does **not** install it into your own `~/.claude/skills/`, so it is **not invocable in your Claude Code session** until added. Offer to run it now — use `npx skills add` (not the single-file `curl …/s/<id>.md` install) so multi-file skills bring their `references/` along:
+9. **Offer to install it into the local runtime (author convenience — closes the publish↔invoke gap).** Shipping publishes the skill to the *marketplace*; it does **not** install it into your own `~/.claude/skills/`, so it is **not invocable in your Claude Code session** until added. Offer to run it now — use `npx skills add` (not the single-file `curl …/s/<id>.md` install) so multi-file skills bring their `references/` along:
    ```bash
    npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill <slug>
    ```
@@ -224,6 +237,7 @@ When the session ends, summarise:
 - Triaged: N
 - Dispatched to build: M (with workflow run URLs)
 - Confirmed-shipped: S (with marketplace URLs)
+- Indexed: the Sheet rows and Drive folders written — and any skill left undocumented, with the reason
 - Deferred: D
 - Rejected: R
 
@@ -237,6 +251,8 @@ When the session ends, summarise:
 - [ ] `gh api contents` confirmed the SKILL.md is in `main`
 - [ ] `generated/skills-index.json` contains the slug
 - [ ] `/api/skills` returns the slug
+- [ ] Drive mirror written — `1 Skills/<cat>/<slug>/SKILL.md`, plus `2 Knowledge/<slug>/` **only if** the skill ships files besides its SKILL.md
+- [ ] Skills Index Sheet row present and columns `C`/`M`/`N`/`AG` re-read as live hyperlinks (or the gap named in the report)
 - [ ] Issue label swapped to `shipped` (the label is the status of record)
 - [ ] Marketplace URL posted on the issue if it wasn't already
 - [ ] Issue closed with verification comment

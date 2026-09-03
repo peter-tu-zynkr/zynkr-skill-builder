@@ -250,6 +250,33 @@ Append a row in `peter-tu-zynkr/zynkr-skill-idea/SOURCED.md` with `Intake Source
 
 Same `Pipeline Status` / `Build Status` two-track model as `/skill-sourcer`. After the PR merges and ingest fires, the artifact is live but the Project still says `Build Status=ready-to-ship`. **`/skill-triager` Option D `confirm-ship` is the closer** — see Step 7.
 
+### D — Skills Index Sheet + Drive `[6.2]` mirror
+
+`ingest-skills.yml` carries the skill to git, Supabase and the marketplace. It stops there. Two
+human-facing surfaces sit outside that chain and **no script in the repo writes them**: the
+**Skills Index Sheet** (the portfolio index) and the **Drive `[6.2]` Skills & Knowledge Library**
+mirror that the Sheet's link columns point at.
+
+`/skill-publish` deliberately does **not** do this work, for the same reason it does not flip the
+issue to `shipped`: it returns before the PR merges, and the Drive mirror copies files from
+`main` — there is nothing to copy yet. **`/skill-triager` Option D `confirm-ship` owns it**, and
+carries the procedure in `references/index-and-mirror.md`.
+
+What you *can* do here is hand the closer its inputs. Print them with the PR URL:
+
+```bash
+# knowledge files = everything the skill ships besides its SKILL.md.
+# Non-empty ⇒ confirm-ship also creates 2 Knowledge/<slug>/. Empty ⇒ it does not.
+git ls-tree -r --name-only origin/main -- "skills/<N-cat>/<slug>" | grep -v '/SKILL\.md$'
+```
+
+Report it as one line — `Knowledge: 5 files (2 Knowledge/<slug> required)` or
+`Knowledge: none (SKILL.md only — no knowledge folder)` — so the closer does not re-derive it.
+
+> ⚠️ Until `confirm-ship` runs, the skill is **live on the marketplace but absent from the Sheet
+> and Drive**. That is the normal window, not a bug — but it is also how rows end up with dead
+> plain-text link columns if the loop is never closed.
+
 ---
 
 ## Step 7 — Hand off to `/skill-triager` (the closer)
@@ -262,7 +289,7 @@ Same `Pipeline Status` / `Build Status` two-track model as `/skill-sourcer`. Aft
 
 When you're done with `/skill-publish`, tell the user:
 
-> "Published via dispatch. PR opened (URL: <pr_url>). After the PR merges, run `/skill-triager` and pick **Option D — `confirm-ship`** on this issue to close the loop. The triager will run three read-only verifications (`gh api contents`, `skills-index.json`, `/api/skills`) before flipping `Pipeline Status=shipped`, then offer to install it into your local `~/.claude/skills/` via `npx skills add … --skill <slug>` — publishing to the marketplace alone does **not** make the skill invocable in your own Claude Code session."
+> "Published via dispatch. PR opened (URL: <pr_url>). After the PR merges, run `/skill-triager` and pick **Option D — `confirm-ship`** on this issue to close the loop. The triager will run three read-only verifications (`gh api contents`, `skills-index.json`, `/api/skills`), then document the skill in the Skills Index Sheet and the Drive `[6.2]` mirror (a knowledge folder only if it ships files besides its SKILL.md), before flipping `Pipeline Status=shipped` and offering to install it into your local `~/.claude/skills/` via `npx skills add … --skill <slug>` — publishing to the marketplace alone does **not** make the skill invocable in your own Claude Code session."
 
 **Completion checklist (mode-dependent):**
 
@@ -273,6 +300,7 @@ Continuation mode (happy path):
 - [ ] Category cross-check passes (or mismatch resolved)
 - [ ] `publish-skill` dispatch fired
 - [ ] `publish-skill.yml` run observed
+- [ ] Knowledge-file count reported for the closer (`n files` or `none`)
 - [ ] PR URL surfaced and posted as a comment on the existing issue
 - [ ] Project item updated: `Build Status=ready-to-ship`, `Artifact=skill-md-only`
 - [ ] User reminded to run `/skill-triager confirm-ship` after PR merges
