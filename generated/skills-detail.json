@@ -2124,6 +2124,38 @@
     ],
     "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/consult-governance/SKILL.md"
   },
+  "2.46": {
+    "id": "2.46",
+    "sheet_id": "2.46",
+    "slug": "sales-manager",
+    "name": "sales-manager",
+    "summary": "The conductor of the Zynkr sales family — it decides which sales skill a given input needs, chains them when a job takes more than one, and reads the CRM across deals to say which ones need attention now.",
+    "category": "sales-consultant",
+    "project": "sales-manager",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/sales-manager/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.46.md -o ~/.claude/skills/sales-manager.md",
+    "tags": [
+      "sales-manager",
+      "sales-consultant",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-04",
+    "first_seen": "2026-09-04",
+    "description": "The conductor of the Zynkr sales family — it decides which sales skill a given input needs, chains them when a job takes more than one, and reads the CRM across deals to say which ones need attention now. It owns the deal lifecycle; the five skills under it each own one step. Three modes: ROUTE (one input → the right child skill), SEQUENCE (a job that needs two or more, e.g. triage a whole event survey with sales-client-sourcing then run sales-outbound on each Hot Lead row), and REVIEW (deal-level pipeline sweep — what is stalled, what has no next step, whose follow-up task is overdue, whose draft is still unsent). It may write to the CRM, but never silently: every change is proposed as one batch and applied only on a single confirmation. Trigger on /sales-manager or when Peter says \"什麼 deal 該追\", \"業務進度盤點\", \"pipeline review\", \"這週業務要做什麼\", \"幫我看一下 CRM 有什麼卡住\", \"handle this lead\" without naming a skill, or hands over sales input and wants the whole job done rather than one step of it. Distinct from zynkr-gm (the company-level GM brief across every LOB — this one is the sales pipeline only, and never writes a weekly narrative), consult-status-report and consult-governance (the consulting portfolio), and zynkr-skills (which routes the whole skill ecosystem, not within sales).",
+    "input": "A sales input with no skill named (signal · survey sheet · card · transcript · company), or a pipeline question like 「什麼 deal 該追」. Optional: guided.",
+    "process": "Classify into ROUTE / SEQUENCE / REVIEW → delegate to the child skills, never inline their logic → for REVIEW read the CRM across deals → propose every CRM write as ONE batch → apply on one confirmation → report.",
+    "output": "Whatever the delegated children produced (CRM records · Gmail drafts · enriched sheet), plus for REVIEW a deal-level attention list and one confirmed batch of CRM writes.",
+    "kind": "skill",
+    "synergy": [
+      "2.46"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/2-sales-consultant/sales-manager/SKILL.md"
+  },
   "3.01": {
     "id": "3.01",
     "sheet_id": "3.01",

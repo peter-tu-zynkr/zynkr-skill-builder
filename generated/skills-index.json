@@ -1479,6 +1479,29 @@
     "first_seen": "2026-08-02"
   },
   {
+    "id": "2.46",
+    "sheet_id": "2.46",
+    "slug": "sales-manager",
+    "name": "sales-manager",
+    "summary": "The conductor of the Zynkr sales family — it decides which sales skill a given input needs, chains them when a job takes more than one, and reads the CRM across deals to say which ones need attention now.",
+    "category": "sales-consultant",
+    "project": "sales-manager",
+    "platform": "claude",
+    "status": "Done",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/2-sales-consultant/sales-manager/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/2.46.md -o ~/.claude/skills/sales-manager.md",
+    "tags": [
+      "sales-manager",
+      "sales-consultant",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-04",
+    "first_seen": "2026-09-04"
+  },
+  {
     "id": "3.01",
     "sheet_id": "3.01",
     "slug": "zynkr-support",
