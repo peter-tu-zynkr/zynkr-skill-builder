@@ -828,7 +828,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 174024,
+    "github_stars": 174029,
     "github_forks": 20632,
     "first_seen": "2026-06-03"
   },
@@ -2468,6 +2468,29 @@
     "github_stars": 41946,
     "github_forks": 2797,
     "first_seen": "2026-05-12"
+  },
+  {
+    "id": "6.12",
+    "sheet_id": "6.12",
+    "slug": "skill-author",
+    "name": "skill-author",
+    "summary": "Fill a scaffolded Zynkr skill stub into a shippable SKILL.md — claim the sheetId, write frontmatter that satisfies SKILL_SPEC.md, replace every <!-- TODO --> marker with real steps, and self-check against the same valida",
+    "category": "engineer",
+    "project": "skill-author",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/6-engineer/skill-author/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/skill-author.md",
+    "tags": [
+      "skill-author",
+      "engineer",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-04",
+    "first_seen": "2026-09-04"
   },
   {
     "id": "7.01",

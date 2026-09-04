@@ -1205,7 +1205,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 174024,
+    "github_stars": 174029,
     "github_forks": 20632,
     "first_seen": "2026-06-03",
     "description": "The 'rendering engine' that comes after the three-stage slide relay (the fourth stage, maintained by Anthropic): it takes the SLIDE_PACKET ▸ Visuals handed off by slide-visual-selector and renders it page by page into a real .pptx file, and can also read, parse, and edit existing decks in reverse. This is Anthropic's official slide-pptx skill; Zynkr does not redistribute its code — this card is only a reference and a hand-off pointer, so install it from the Anthropic source.",
@@ -3564,6 +3564,38 @@
       "socket": "pending",
       "snyk": "pending"
     }
+  },
+  "6.12": {
+    "id": "6.12",
+    "sheet_id": "6.12",
+    "slug": "skill-author",
+    "name": "skill-author",
+    "summary": "Fill a scaffolded Zynkr skill stub into a shippable SKILL.md — claim the sheetId, write frontmatter that satisfies SKILL_SPEC.md, replace every <!-- TODO --> marker with real steps, and self-check against the same valida",
+    "category": "engineer",
+    "project": "skill-author",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/6-engineer/skill-author/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/skill-author.md",
+    "tags": [
+      "skill-author",
+      "engineer",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-04",
+    "first_seen": "2026-09-04",
+    "description": "Fill a scaffolded Zynkr skill stub into a shippable SKILL.md — claim the sheetId, write frontmatter that satisfies SKILL_SPEC.md, replace every <!-- TODO --> marker with real steps, and self-check against the same validate-skill.ts engine /skill-qa will run. The build stage of the skill pipeline, between /skill-triager and /skill-qa. Trigger on 'write this skill', 'fill the stub', 'author the SKILL.md', 'finish skill <slug>', '把這個 skill 寫完', '填 stub', or '/skill-author'.",
+    "input": "A scaffolded stub: a `skill/<slug>` branch, a folder under `skills/**`, a path to a SKILL.md, or the approved proposal issue the stub came from.",
+    "process": "Locate the stub → read the contract (SKILL_SPEC.md + taxonomy) → claim the next free sheetId → write frontmatter → replace every TODO marker with real steps → run validate-skill.ts → hand off to /skill-qa.",
+    "output": "A completed SKILL.md on the working branch: schema-valid frontmatter, a real body with no `<!-- TODO -->` markers left, and a green local validator run.",
+    "kind": "skill",
+    "synergy": [
+      "6.12"
+    ],
+    "github_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder/blob/main/skills/6-engineer/skill-author/SKILL.md"
   },
   "7.01": {
     "id": "7.01",

@@ -1100,7 +1100,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 174024,
+    "githubStars": 174029,
     "githubForks": 20632
   },
   {
@@ -3252,6 +3252,35 @@
     },
     "githubStars": 41946,
     "githubForks": 2797
+  },
+  {
+    "id": "6.12",
+    "name": "skill-author",
+    "category": "engineer",
+    "project": "skill-author",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu",
+    "description": "Fill a scaffolded Zynkr skill stub into a shippable SKILL.md — claim the sheetId, write frontmatter that satisfies SKILL_SPEC.md, replace every <!-- TODO --> marker with real steps, and self-check against the same validate-skill.ts engine /skill-qa will run. The build stage of the skill pipeline, between /skill-triager and /skill-qa. Trigger on 'write this skill', 'fill the stub', 'author the SKILL.md', 'finish skill <slug>', '把這個 skill 寫完', '填 stub', or '/skill-author'.",
+    "input": "A scaffolded stub: a `skill/<slug>` branch, a folder under `skills/**`, a path to a SKILL.md, or the approved proposal issue the stub came from.",
+    "process": "Locate the stub → read the contract (SKILL_SPEC.md + taxonomy) → claim the next free sheetId → write frontmatter → replace every TODO marker with real steps → run validate-skill.ts → hand off to /skill-qa.",
+    "output": "A completed SKILL.md on the working branch: schema-valid frontmatter, a real body with no `<!-- TODO -->` markers left, and a green local validator run.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "6.12",
+    "sheetId": "6.12",
+    "kind": "skill",
+    "synergy": [
+      "6.12"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/6.12.md -o ~/.claude/skills/skill-author.md",
+    "updatedAt": "2026-09-04",
+    "firstSeen": "2026-09-04",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "6-engineer/skill-author/SKILL.md"
   },
   {
     "id": "7.01",
