@@ -1,7 +1,7 @@
 ---
 name: sales-specialist
 sheetId: "2.02"
-description: "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting."
+description: "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting. Takes business-card IMAGES specifically — the OCR pass is the point. When the lead signal already arrives as text (a DM thread, an event feedback row, a website enquiry), use sales-outbound instead; for a WHOLE event survey sheet, use sales-client-sourcing."
 category: sales-consultant
 project: sales-specialist
 platform: claude
@@ -20,6 +20,12 @@ npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sal
 ```
 
 Automate the full post-trade-show workflow: extract contact info from business card images, land them on the Zynkr platform, research each company, and draft personalized follow-up emails. Use this skill after a conference, expo, or networking event where you've collected business cards and want them turned into working CRM records plus drafts ready to send before context fades.
+
+**Not this skill when — the signal is already text.** What this skill owns is the OCR pass
+from a photographed card. A DM thread, an event feedback row or a website enquiry goes to
+`/sales-outbound`; a WHOLE event survey sheet goes to `/sales-client-sourcing`. Everything
+downstream (CRM write, research, follow-up draft) is the same either way — only the parser
+differs.
 
 ---
 
