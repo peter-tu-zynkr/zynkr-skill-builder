@@ -6587,6 +6587,76 @@
     "sync the minutes"
    ],
    "confidence": "high"
+  },
+  {
+   "id": "6.12",
+   "slug": "skill-author",
+   "one_liner_zh": "把 scaffold 出來的 skill stub 寫成可上架的 SKILL.md",
+   "one_liner_en": "Build stage of the skill pipeline: fills a scaffolded stub — sheetId, frontmatter, body — and self-checks before QA",
+   "knowledge_sources": [
+    {
+     "type": "repo-file",
+     "name": "SKILL_SPEC.md (the authoring contract)",
+     "id_or_url": "zynkr-skill-builder/SKILL_SPEC.md",
+     "runtime_read": true,
+     "purpose": "Required frontmatter, taxonomy keys, attribution rules, the picture fields"
+    },
+    {
+     "type": "repo-file",
+     "name": "skills/6-engineer/skill-sourcer/references/taxonomy.md",
+     "id_or_url": "zynkr-skill-builder/skills/6-engineer/skill-sourcer/references/taxonomy.md",
+     "runtime_read": true,
+     "purpose": "Which of the ten categories the skill belongs in"
+    },
+    {
+     "type": "repo-file",
+     "name": "generated/id-redirects.json + generated/skills-index.json",
+     "id_or_url": "zynkr-skill-builder/generated/",
+     "runtime_read": true,
+     "purpose": "Which sheetIds are already spoken for, including burned ones"
+    },
+    {
+     "type": "repo-file",
+     "name": "scripts/validate-skill.ts (the shared validation engine CI also runs)",
+     "id_or_url": "zynkr-skill-builder/scripts/validate-skill.ts",
+     "runtime_read": true,
+     "purpose": "Self-check before handing off to /skill-qa"
+    }
+   ],
+   "connected_solutions": [
+    {
+     "solution": "zynkr-skill-builder",
+     "touchpoint": "skills/**/<slug>/SKILL.md on branch skill/<slug>",
+     "direction": "read-write"
+    }
+   ],
+   "requires_mcp": false,
+   "mcp_servers": [],
+   "mcp_tools": [],
+   "external_services": [
+    "GitHub"
+   ],
+   "side_effect_level": "creates-local-files",
+   "artifacts_produced": [
+    "A completed SKILL.md on the skill/<slug> branch",
+    "A local validate-skill.ts run with zero ERROR-tier findings"
+   ],
+   "setup_required": [
+    "Local zynkr-skill-builder checkout with npx tsx available",
+    "A scaffolded stub from /skill-triager's repository_dispatch"
+   ],
+   "human_gate": "Step 7 — the author reviews the filled body; it never publishes, and hands to /skill-qa rather than gating itself",
+   "gotchas": "sheetId duplicates are NOT caught by the PR check — they only throw inside ingest.ts after merge, so the whole tree must be checked before claiming one. Burned ids in generated/id-redirects.json stay burned. The category: value is the taxonomy key, not the folder name.",
+   "trigger_phrases": [
+    "write this skill",
+    "fill the stub",
+    "author the SKILL.md",
+    "finish skill <slug>",
+    "把這個 skill 寫完",
+    "填 stub",
+    "/skill-author"
+   ],
+   "confidence": "high"
   }
  ],
  "subagents": [
