@@ -812,3 +812,33 @@ the `origin/main` copy (same 4). `ingest.ts` against the tree: `✓ 6.12 skill-a
 duplicate-id throw — the pre-push check CLAUDE.md requires for a new `sheetId`. `generated/` and
 `content/` deliberately not committed. **Not proven:** `skill-author` has not been run against a real
 stub; first real use is its own D2 evidence. Spec: `docs/specs/SKB-013-skills-pipeline-package.md`.
+
+## 2026-09-04 — SKB-013 amended: `confirm` stops binding a row a second time
+
+One line of `zynkr-skills`' `steps:` block. `confirm` declared
+`ref=skill-triager`, which `triage` had already bound — the confirm-ship loop,
+the same skill at two moments of the process — and `parseStepBlock` refuses a
+duplicate bound ref by design (a bound step's canvas key **is** the row's key,
+so two of them would collide in `stepIdByKey`).
+
+The consequence was invisible and total. Atlas drew **16 of the 17 steps** this
+file declares and **16 of its 19 lines** — `publish -> confirm`,
+`confirm -> live` and `confirm ~> board` went with the step — while the canvas
+reported `dropped: 0`, because those lines were gone before the backing check
+that `dropped` counts ever ran. `parse_report.warnings` was `[]` too: the
+importer never runs `parseStepBlock` at all, so no imported version has ever
+carried a picture warning.
+
+`confirm` is now an **inline** step titled `Confirm ship + close issue
+(skill-triager)` — the moment is drawn and named, without a second claim on the
+row. The row-level `skill-publish → skill-triager` handoff is unaffected and
+still in the graph; Atlas now counts it under 「另有 N 條關聯未繪出」, which is
+true and, as of `ATL-047`, said on screen.
+
+Validator: **0 errors**, the same 4 warnings `SKB-013` recorded as pre-existing.
+
+Paired with **`ATL-047`** in `zynkr-atlas`, which fixes the half that is not a
+declaration problem: the column pass was a longest-path relaxation, so the retry
+loop in this same file (`qagate -> author | FAIL`) laid the picture out **55
+columns / 16,204 px** wide. Neither repo's gates could see any of it —
+`validate-skill.ts` does not read `flow:`, and Atlas had no cyclic-flow test.

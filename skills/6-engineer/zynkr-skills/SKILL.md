@@ -27,7 +27,7 @@ steps:
   - "qa | deterministic | Quality gate | ref=skill-qa"
   - "qagate | gate | PASS?"
   - "publish | deterministic | Land in repo + marketplace | ref=skill-publish"
-  - "confirm | deterministic | Confirm ship, close the issue | ref=skill-triager"
+  - "confirm | deterministic | Confirm ship + close issue (skill-triager)"
   - "find | llm | Which skill do I use for this? | ref=skill-finder"
   - "board | store | Pipeline board + issue labels"
   - "live | artifact | Live on the zynkr.ai marketplace"

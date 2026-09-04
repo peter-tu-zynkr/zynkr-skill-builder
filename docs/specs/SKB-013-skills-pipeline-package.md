@@ -1,6 +1,7 @@
 # SKB-013 — the skills pipeline becomes a package, and its missing stage gets written
 
-- **Status:** Shipped 2026-09-04
+- **Status:** Shipped 2026-09-04 · **amended same day** — `confirm` bound `skill-triager` a
+  second time, which cost the picture a step and three lines in silence (see 「Amendment」 below)
 - **Size / DoD:** M / D2 *(cross-repo consumer — `zynkr-atlas`; no secret, no workflow, no schema here)*
 - **Created:** 2026-09-04 · **Repo(s):** `zynkr-skill-builder` (consumer: `zynkr-atlas`)
 - **Links:** `SKILL_SPEC.md` §1 (package fields) · `SKB-012` (picture declarations) ·
@@ -85,3 +86,30 @@ verb: the stage *authors a body*, it does not create the skill (the scaffold alr
 `validate-skill.ts`'s `body.h1_present` check does not strip fenced code blocks, so a shell comment at
 column 0 inside a ```bash fence is counted as a second H1. It cost one false WARN while writing
 `skill-author`; the workaround (end-of-line comments) is documented in that skill's Step 5.
+
+## Amendment — 2026-09-04 · `confirm` stops binding a row a second time
+
+The `steps:` block shipped above declared `ref=skill-triager` twice: `triage`
+(approve the build) and `confirm` (confirm the ship). That is the process as
+written — the confirm-ship loop is real — but `parseStepBlock` refuses a
+duplicate bound ref, because a bound step's canvas key **is** the row's key and
+two of them collide in `stepIdByKey`. So `confirm` was skipped, and the three
+`flow:` lines naming it went with it: Atlas drew **16 / 17 steps and 16 / 19
+lines**, reported `dropped: 0`, and stored `parse_report.warnings = []`.
+
+`confirm` is now inline, titled `Confirm ship + close issue (skill-triager)`.
+The moment is drawn and attributed without a second claim on the row.
+
+**What this cost, and what it did not.** The `skill-publish → skill-triager`
+handoff is a declared row-level edge and is untouched; it simply is not drawn as
+a line, so Atlas counts it under `hiddenEdges` — honest, and now visible, since
+`ATL-047` puts omissions and hidden relations on the canvas.
+
+**The deeper limit is unfixed and deliberate:** the picture model cannot show
+one row at two moments of a process. Lifting it means making `stepIdByKey`
+one-to-many, which is a model change, not a patch — recorded here rather than
+smuggled into a one-line fix.
+
+**The finding this file already carried got a sibling.** `validate-skill.ts`
+does not parse `flow:` at all, so neither the duplicate ref nor the retry loop
+that `ATL-047` fixes could have been caught on this side.
