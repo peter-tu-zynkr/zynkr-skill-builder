@@ -786,3 +786,29 @@ push backstop regenerates them.
 
 Spec `docs/specs/SKB-012-picture-declarations.md` → **Shipped 2026-09-03**. Consumer:
 `zynkr-atlas` `ATL-043`, which cannot build without this half landing first.
+
+## 2026-09-04 — SKB-013 The skills pipeline becomes a package, and its missing stage gets written
+
+The chain every skill file documents ran through `/skill-creator` — a Claude Code plugin skill, **not
+a file in this repo**. So the pipeline depended on a stage Zynkr neither owned nor versioned, and
+`skill-publish` carried a `synergy` reference that could never resolve.
+
+- **`skills/6-engineer/skill-author/` added** (`sheetId 6.12`) — the build stage. It fills the
+  CI-scaffolded stub on `skill/<slug>`: frontmatter contract, sheetId rules, taxonomy keys, body
+  structure, and a self-check against the same `validate-skill.ts` engine `/skill-qa` and CI run. The
+  `skill-creator` plugin may still be called for prose — as a tool, not as a stage.
+- **The chain declares itself** via `SKB-012`'s `handoff:`, in the `zynkr-slide` shape (orchestrator
+  lists all stages in order; a stage lists only its next). Because `handoff:` demotes `synergy:` per
+  file, the symmetric arrows those lists were inventing retire with it — including the unresolvable
+  `skill-creator` reference.
+- **`zynkr-skills` becomes a package** — `type: agent` + `skills: [...]`. Type and membership are
+  different claims from sequence; all three are now declared rather than inferred.
+- **`SKILL_SPEC.md` documents `type` and `skills`** (§1, the package fields). Both were already read
+  by Zynkr Atlas and documented nowhere.
+
+**Verification** — `validate-skill.ts --tier=all` over all 7 changed/added files: 7/7 pass, 0 errors;
+`skill-author` 0 errors 0 warnings. `zynkr-skills`' 4 warnings are pre-existing, proven by validating
+the `origin/main` copy (same 4). `ingest.ts` against the tree: `✓ 6.12 skill-author`, 124 skills, no
+duplicate-id throw — the pre-push check CLAUDE.md requires for a new `sheetId`. `generated/` and
+`content/` deliberately not committed. **Not proven:** `skill-author` has not been run against a real
+stub; first real use is its own D2 evidence. Spec: `docs/specs/SKB-013-skills-pipeline-package.md`.

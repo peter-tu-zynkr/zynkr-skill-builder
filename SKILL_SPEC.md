@@ -126,6 +126,24 @@ flow:
 Everything here is checked at **WARN** tier (`steps.*`) — a malformed step costs a shape on a diagram
 and must never block a skill from shipping. Worked example: `skills/1-brand-marketing/zynkr-slide`.
 
+### The package fields — `type` · `skills` *(documented 2026-09-04, `SKB-013`)*
+
+Also read by **Zynkr Atlas**, and like the picture fields they change nothing about how the skill
+runs and are **not published** to the marketplace copy.
+
+| Field | Type | Rule |
+|---|---|---|
+| `type` | enum | `skill` (default) · `agent` · `router` · `workflow` · `sop` · `connector`. What Atlas files this row as. **Omit it unless the file is genuinely not a plain skill** — Atlas mirrors what upstream declares, and a type asserted anywhere else regrows on every re-import. |
+| `skills` | string[] | For a `type: agent` only — the skills this package **wraps**. Each becomes a `depends_on` edge from the package to the member, which is what the 代理 detail page renders as its wiring card. |
+
+`type: agent` means *one installable unit* — a package that bundles skills, in the sense
+「a department is the shipped package」. A front door that dispatches to a family qualifies; a single
+stage in a relay does not. Declare `skills:` alongside it, or the package lists nothing.
+
+Membership and sequence are **different claims**: `skills:` says what is inside, `handoff:` says what
+follows what. An orchestrator normally declares both. Worked example:
+`skills/6-engineer/zynkr-skills`.
+
 ### Optional fields
 
 - `disable-model-invocation: true` — opt the skill out of automatic triggering (rare; used when the skill is meant to be called by another skill, not the model).

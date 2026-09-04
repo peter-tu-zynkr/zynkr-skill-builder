@@ -12,6 +12,7 @@ input: "A user inquiry describing a task, problem, or workflow they want help wi
 process: "Interpret intent, match against the structured assistant index using functional descriptions, filter to usable entries, decide whether to recommend or ask one clarification"
 output: "A concise recommendation of the most relevant assistant(s), or a clear single-question clarification request, or an honest 'no match' response"
 synergy: []
+handoff: []
 ---
 
 # Skill Finder

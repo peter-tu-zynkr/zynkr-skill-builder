@@ -12,6 +12,7 @@ input: "A target SKILL.md: a file path, a skill folder, a skill/<slug> branch, o
 process: "Locate target → run validate-skill.ts --tier=all --json → render a tiered report → offer HITL auto-fixes for mechanical findings → emit PASS (0 errors) / FAIL verdict and hand off to /skill-publish."
 output: "A QA report (✅/⚠️/❌ per check with file:line + fix), a PASS/FAIL verdict gated on ERROR-tier checks, and optional confirmed auto-fixes applied to the working tree."
 synergy: ["skill-publish", "skill-triager", "zynkr-skills"]
+handoff: ["skill-publish"]
 ---
 
 # skill-qa

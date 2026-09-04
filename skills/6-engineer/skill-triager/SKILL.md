@@ -10,6 +10,7 @@ author: Peter Tu
 input: "None (reads triage-ready issues from peter-tu-zynkr/zynkr-skill-idea) — or a specific issue number"
 output: "Issue labels swapped (triage-ready → building/parked/rejected/shipped), build target posted as an issue comment, and on assign-build a repository_dispatch to zynkr-skill-builder"
 synergy: ["skill-sourcer"]
+handoff: ["skill-author"]
 disable-model-invocation: true
 ---
 

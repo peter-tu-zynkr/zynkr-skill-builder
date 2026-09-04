@@ -11,6 +11,48 @@ input: "Anything: a URL, local file path, skill slug, free-text idea, status que
 process: "Classify input shape → look up state across the four signals (Project / issues / on-disk / live API) when the input references a skill-pipeline item → route to the right sub-skill via the Skill tool when confidence is high, or ask one targeted clarifying question when ambiguous. Surfaces queue / dashboard views on read-only queries."
 output: "Either: (a) an auto-invocation of the right Zynkr sub-skill (most common); (b) one targeted clarifying question when intent is genuinely ambiguous; (c) a compact state table when the user asks 'what's in my queue' / 'where is X'."
 synergy: ["skill-sourcer", "skill-triager", "skill-publish", "skill-finder", "content-newsletter-draft", "training-lecture-transcript", "sales-specialist", "cv-customizer", "zynkr-support", "content-governance", "zynkr-content-writer", "training-srt-optimizer", "zynkr-slide"]
+type: agent
+skills: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish", "skill-finder"]
+handoff: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish"]
+executed_by: internal-user
+steps:
+  - "start | start | Start"
+  - "input | input | Any input: URL, path, slug, idea, question"
+  - "classify | llm | Classify the input shape"
+  - "route | gate | Which stage does this belong to?"
+  - "source | llm | Source, dedup, propose as issue | ref=skill-sourcer"
+  - "triage | hitl | Review the queue, approve the build | ref=skill-triager"
+  - "dispatch | deterministic | repository_dispatch scaffolds the stub | ref=atlas:github"
+  - "author | llm | Fill the stub into a real SKILL.md | ref=skill-author"
+  - "qa | deterministic | Quality gate | ref=skill-qa"
+  - "qagate | gate | PASS?"
+  - "publish | deterministic | Land in repo + marketplace | ref=skill-publish"
+  - "confirm | deterministic | Confirm ship, close the issue | ref=skill-triager"
+  - "find | llm | Which skill do I use for this? | ref=skill-finder"
+  - "board | store | Pipeline board + issue labels"
+  - "live | artifact | Live on the zynkr.ai marketplace"
+  - "output | output | A shipped skill"
+  - "end | end | End"
+flow:
+  - "start -> input"
+  - "input -> classify"
+  - "classify -> route"
+  - "route -> source | new candidate"
+  - "route -> find | which skill?"
+  - "source -> triage"
+  - "triage -> dispatch | approved"
+  - "dispatch -> author"
+  - "author -> qa"
+  - "qa -> qagate"
+  - "qagate -> author | FAIL"
+  - "qagate -> publish | PASS"
+  - "publish -> confirm"
+  - "confirm -> live"
+  - "live -> output"
+  - "find -> output"
+  - "output -> end"
+  - "triage ~> board"
+  - "confirm ~> board"
 ---
 
 # Zynkr Skills

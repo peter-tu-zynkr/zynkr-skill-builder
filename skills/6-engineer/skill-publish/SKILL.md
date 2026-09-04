@@ -10,6 +10,7 @@ author: Peter Tu
 input: "A path to the finished SKILL.md (folder or file), a GitHub URL to a SKILL.md, or pasted content. Optionally an existing pipeline issue number — if not given, the skill tries to match by slug + category against the GitHub Project."
 output: "Either (a) continuation mode: existing Project item updated (Build Status=ready-to-ship, Built Skill URL=PR URL, Artifact=skill-md-only), publish-skill.yml dispatched, PR opened, comment posted on the existing issue, or (b) fresh-intake mode: new GitHub issue + Project item created (Intake Source=skill-publish), then same dispatch + PR + comment."
 synergy: ["skill-sourcer", "skill-triager", "skill-creator"]
+handoff: ["skill-triager"]
 disable-model-invocation: true
 security_audits:
   gen_agent_trust_hub: pending

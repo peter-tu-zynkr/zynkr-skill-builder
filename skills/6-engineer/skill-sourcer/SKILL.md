@@ -10,6 +10,7 @@ author: Peter Tu
 input: "GitHub link, URL, file path, or pasted raw text describing a potential skill"
 output: "Issue created in peter-tu-zynkr/zynkr-skill-idea (label skill-proposal) and added to the skills pipeline GitHub Project with Pipeline Status=proposed, Keep=?. On approval the issue gets the triage-ready label."
 synergy: []
+handoff: ["skill-triager"]
 disable-model-invocation: true
 security_audits:
   gen_agent_trust_hub: pending
