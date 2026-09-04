@@ -1,22 +1,204 @@
 ---
 name: sales-manager
+sheetId: "2.46"
+description: >-
+  The conductor of the Zynkr sales family — it decides which sales skill a given
+  input needs, chains them when a job takes more than one, and reads the CRM
+  across deals to say which ones need attention now. It owns the deal lifecycle;
+  the five skills under it each own one step. Three modes: ROUTE (one input →
+  the right child skill), SEQUENCE (a job that needs two or more, e.g. triage a
+  whole event survey with sales-client-sourcing then run sales-outbound on each
+  Hot Lead row), and REVIEW (deal-level pipeline sweep — what is stalled, what
+  has no next step, whose follow-up task is overdue, whose draft is still
+  unsent). It may write to the CRM, but never silently: every change is proposed
+  as one batch and applied only on a single confirmation. Trigger on
+  /sales-manager or when Peter says "什麼 deal 該追", "業務進度盤點", "pipeline
+  review", "這週業務要做什麼", "幫我看一下 CRM 有什麼卡住", "handle this lead"
+  without naming a skill, or hands over sales input and wants the whole job done
+  rather than one step of it. Distinct from zynkr-gm (the company-level GM brief
+  across every LOB — this one is the sales pipeline only, and never writes a
+  weekly narrative), consult-status-report and consult-governance (the
+  consulting portfolio), and zynkr-skills (which routes the whole skill
+  ecosystem, not within sales).
 category: sales-consultant
 project: sales-manager
 platform: claude
-status: Not started
+status: Done
 author: Peter Tu
-description: "2 — sales-manager (orchestrator over the sales family)"
-input: "TODO"
-process: "TODO"
-output: "TODO"
-synergy: []
+input: "A sales input with no skill named (signal · survey sheet · card · transcript · company), or a pipeline question like 「什麼 deal 該追」. Optional: guided."
+process: "Classify into ROUTE / SEQUENCE / REVIEW → delegate to the child skills, never inline their logic → for REVIEW read the CRM across deals → propose every CRM write as ONE batch → apply on one confirmation → report."
+output: "Whatever the delegated children produced (CRM records · Gmail drafts · enriched sheet), plus for REVIEW a deal-level attention list and one confirmed batch of CRM writes."
+synergy: ["sales-client-sourcing", "sales-specialist", "sales-outbound", "sales-follow-up", "sales-research"]
 ---
-# sales-manager
 
-> Scaffolded from [issue](https://github.com/peter-tu-zynkr/zynkr-skill-idea/issues/128) via `/skill-triager` (mode: rescaffold). Status: `Not started`.
+# Sales Manager
 
-<!-- TODO: implement steps. Spec from skill-sourcer below for reference. -->
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sales-manager
+```
 
-## Spec (from skill-sourcer)
+The sales family has five good single-step skills and nobody holding them together.
+Each one takes one input shape and does one job well; none of them knows what happened
+before it, what should happen next, or that a deal has been sitting untouched for three
+weeks. `sales-manager` is that missing layer — the same relationship `/zynkr-slide` has
+to the three slide skills.
 
-_No spec md found at `skills/approved/<slug>.md` in the idea repo._
+It does three things, and **delegates everything else**:
+
+1. **ROUTE** — one input arrives with no skill named; decide which child it belongs to.
+2. **SEQUENCE** — the job needs more than one child; run them in order and carry context.
+3. **REVIEW** — read the CRM *across* deals and say which need attention now.
+
+## The family it conducts
+
+| Child | id | Owns | Never |
+|---|---|---|---|
+| `sales-client-sourcing` | 2.01 | A WHOLE event survey Sheet → enriched columns + Hot Lead flags | writes CRM · sends mail |
+| `sales-specialist` | 2.02 | A business-card IMAGE → OCR → contact + company + 名片 note + draft | text-only signals |
+| `sales-outbound` | 2.09 | ONE lead signal → CRM lead + Gmail draft (+ three 台北時間 slots) | batches |
+| `sales-follow-up` | 2.10 | A completed demo transcript → threaded follow-up + deal sync | new leads |
+| `sales-research` | 2.11 | A company → background brief written back to the CRM | contacts |
+
+**Delegate, never inline.** If you find yourself writing CRM SQL, parsing a card, or
+drafting an email body in this skill, stop — that belongs to a child. This skill's own
+output is routing decisions, sequencing, the attention list, and the batch gate.
+
+## How this differs from its neighbours
+
+- **`/zynkr-gm`** — the founder's company-level weekly brief across every LOB, with
+  runway, KPI variance and a decisions register. `sales-manager` is the **sales pipeline
+  only** and deliberately writes **no weekly narrative**: two skills narrating the same
+  week is the failure mode. When Peter wants "這週公司要幹嘛", that is `/zynkr-gm`.
+- **`/consult-status-report`, `/consult-governance`** — the consulting portfolio and its
+  hygiene sweep. Different pipeline, different objects.
+- **`/zynkr-skills`** — routes the whole skill ecosystem. This one routes *within* sales.
+- **The five children** — each is still a first-class entry point. When Peter names a
+  skill, run that skill; don't insist on going through the conductor.
+
+## Fixed facts (don't re-derive these)
+
+- **CRM reads** use the `zynkr` MCP server: `list_deals` (optional `stage` filter),
+  `list_deal_stages`, `list_tasks`, `list_contacts`, `get_deal`, `get_company`.
+- **CRM writes** use `move_deal_stage` (stage changes — never `update_deal` for stage,
+  the pipeline side-effects must fire), `update_deal`, `set_task_status`, `create_task`.
+  Every `zynkr` write tool is a two-call handshake: `confirm:false` previews,
+  `confirm:true` applies.
+- **Record URLs** for the report: `https://platform.zynkr.ai/deals/{id}` · `.../contacts/{id}`.
+- **Google account** for anything Gmail/Calendar: `peter_tu@zynkr.ai`.
+- Peter's calendar is `Europe/Amsterdam`; prospects are almost always `Asia/Taipei`.
+
+---
+
+## Workflow
+
+### 1 · Classify the request
+
+| What arrived | Mode |
+|---|---|
+| One person's signal — DM, feedback row, enquiry, card, transcript, a company name | **ROUTE** |
+| A job that plainly needs two or more children (a whole survey sheet; "research them then write") | **SEQUENCE** |
+| A question about the pipeline — 「什麼 deal 該追」, "what's stalled", "業務進度盤點" | **REVIEW** |
+| Genuinely unclear | Ask **one** question, then default to ROUTE |
+
+Say which mode you picked in one sentence before acting.
+
+### 2 · ROUTE — one input, one child
+
+| The input is | Send it to |
+|---|---|
+| A photographed business card | `/sales-specialist` |
+| A DM, feedback-form row, website enquiry, or card **text** | `/sales-outbound` |
+| A completed demo / discovery-call transcript on an existing deal | `/sales-follow-up` |
+| A company name, or a deal lacking background | `/sales-research` |
+| A WHOLE survey sheet of many people | `/sales-client-sourcing` |
+
+Invoke via the **Skill** tool and let the child drive. Report what it produced.
+
+### 3 · SEQUENCE — carry context across children
+
+Run the children in order, feeding each the previous one's output. The two established chains:
+
+1. **Event survey → funnel.** `/sales-client-sourcing` enriches the whole sheet and flags
+   Hot Leads, then `/sales-outbound` runs **per Hot Lead row** to create the CRM lead and
+   the draft. Confirm the row count with Peter before fanning out — this creates one deal
+   and one Gmail draft each, and ten rows means ten drafts.
+2. **Card → informed draft.** `/sales-specialist` lands the contact, then `/sales-research`
+   fills the company background, and only then is the follow-up draft written — so it
+   opens with something true about their business rather than a generic line.
+
+Never run a child twice on the same object in one pass. If a chain fails halfway, report
+what landed and what didn't; do not silently retry a CRM write.
+
+### 4 · REVIEW — the deal-level attention list
+
+Read the pipeline and classify every open deal into exactly one bucket:
+
+| Bucket | Test |
+|---|---|
+| **卡住** | No activity for 21+ days and stage is not `won`/`lost` |
+| **沒有下一步** | Open deal with no open task attached |
+| **逾期追蹤** | Has an open task whose `due_at` is in the past |
+| **草稿未寄** | A Gmail draft exists for the contact but nothing was ever sent |
+| **健康** | None of the above — do not list these individually, just count them |
+
+Render the four live buckets as one table (deal · owner · days idle · the one thing to do).
+Keep it **deal-level**. Do not roll up by LOB, do not write a weekly narrative, do not
+compute revenue forecasts — that is `/zynkr-gm`'s job and duplicating it is the one
+outcome this skill was explicitly scoped to avoid.
+
+### 5 · The batch gate (this is the safety rule — do not soften it)
+
+`sales-manager` **may** write to the CRM. It **may never** write silently.
+
+Collect every intended change from step 4 into ONE batch, show it in full, and apply it
+only after a single explicit confirmation:
+
+```
+我打算做這些（一次確認全部）：
+
+移到 lost      · 3 個 deal   — 90 天無任何往來
+關掉過期 task  · 8 個        — 早已完成或已無意義
+建立追蹤任務   · 2 個 deal   — 開著但沒有下一步
+
+要我執行嗎？
+```
+
+Rules:
+- **One confirmation for the whole batch**, not one per row — the point is to clear a
+  week's accumulation in a single click.
+- **Nothing outside the batch.** If you discover more work mid-apply, finish the batch,
+  then propose a second one.
+- **Never auto-close a deal as `won`.** Money is Peter's call, always.
+- **Stage changes go through `move_deal_stage`**, never `update_deal`.
+- On refusal, change nothing and keep the list — he may want it as a to-do instead.
+
+### 6 · Report
+
+State the mode, what each child produced (with record URLs), and — for REVIEW — the
+bucket counts plus exactly what the confirmed batch changed. If the batch was declined,
+say so plainly and leave the list.
+
+---
+
+## Modes
+
+- **express** (default) — gather context once at the top, then run without stopping,
+  surfacing only the batch gate and any genuine fork. Follows `/zynkr-slide`'s precedent.
+- **guided** — pause for review between children. Use when a chain will fan out over
+  many rows, or when Peter says so.
+
+## Why it's built this way
+
+- **A conductor, not a sixth sibling.** The five children were already good; what was
+  missing was someone holding the baton. So this skill adds no new sales capability — it
+  adds routing, sequencing and the cross-deal view, and delegates the actual work.
+- **Batch-preview writes, not read-only and not autonomous.** Read-only was rejected
+  because a review nobody executes is a review that didn't happen — Peter stays the
+  bottleneck. Fully-autonomous was rejected because the CRM is the single source of truth
+  on customers, and a deal wrongly marked `lost` has nothing to raise its hand. One batch,
+  one confirmation keeps the speed and keeps the veto. It mirrors what `sales-outbound`
+  already does with email: prepare, don't send.
+- **Deal-level only, by decision.** The portfolio view lives here rather than in a
+  separate skill (a second skill would likely never get built, and "I forgot to chase that
+  deal" is the pain that motivated this one) — but it is fenced to deal-level facts so it
+  cannot grow into a rival `/zynkr-gm`.
