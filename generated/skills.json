@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 173914,
-    "githubForks": 20617
+    "githubStars": 174024,
+    "githubForks": 20632
   },
   {
     "id": "1.29",
@@ -1227,7 +1227,7 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "9-step sales client sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag.",
+    "description": "9-step sales client sourcing pipeline — turn a workshop/event satisfaction survey into an enriched outbound funnel with company website, background, tailored 陌生開發 strategy, Hot Lead flag, and Well-Known firm flag. Operates in BATCH on a WHOLE survey sheet and writes back only new columns — it creates no CRM records and drafts no email. For ONE person's row — or a single DM, website enquiry, or business card — hand that signal to sales-outbound instead, which creates the contact + deal and drafts the reply. Natural pairing: run this skill to triage the sheet, then sales-outbound on each Hot Lead row.",
     "input": "Job description or application link (or minimal role/company details).",
     "process": "Decode hiring intent, role context, priorities, success metrics, and ATS filters using structured analysis (MECE, 80/20).",
     "output": "Clear role summary, prioritized skills, success KPIs, and ATS-ready keywords for CV tailoring and interview prep.",
@@ -1256,7 +1256,7 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting.",
+    "description": "Business card pipeline — OCR extraction, schema normalization, Zynkr platform contact + company creation, company research, and personalized follow-up email drafting. Takes business-card IMAGES specifically — the OCR pass is the point. When the lead signal already arrives as text (a DM thread, an event feedback row, a website enquiry), use sales-outbound instead; for a WHOLE event survey sheet, use sales-client-sourcing.",
     "input": "User’s CV, target job requirements, and past experience descriptions",
     "process": "Identify skill gaps, guide structured SCQA storytelling, probe for clarity, and refine impact-focused narratives",
     "output": "Clear, job-aligned skill stories ready for CV bullets, interviews, or fit assessment",
@@ -2940,8 +2940,8 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 30379,
-    "githubForks": 2602
+    "githubStars": 30403,
+    "githubForks": 2606
   },
   {
     "id": "6.02",
@@ -3250,8 +3250,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 41929,
-    "githubForks": 2796
+    "githubStars": 41946,
+    "githubForks": 2797
   },
   {
     "id": "7.01",
