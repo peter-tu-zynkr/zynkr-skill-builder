@@ -59,13 +59,19 @@ LEGACY_LABELS = [
 # Without them the number stays glued to the item text and every rendered block needs
 # hand-cleaning before it goes into the Doc.
 BULLET_RE = re.compile(r"^\s*(?:[-*・‧•]|\d+[.)、．])\s*(.+?)\s*$")
+# The nudge template teaches 完成 / 進行中 / 卡住, so those must parse on the way back in.
+# English stays accepted -- older posts use it and there is no reason to reject them.
+# Longer alternatives come first: 還沒開始 must be tried before 開始 can match anything else.
+# NOTE: bare 卡關 is deliberately NOT a status word -- it is the name of the fourth field,
+# so matching it here would tag every blocker line as BLOCKED.
 STATUS_RE = re.compile(
-    r"(?:\b(done|wip|blocked|not\s*started|in\s*progress)\b|(完成|進行中|已完成|未開始|卡關中|放棄))", re.I)
+    r"(?:\b(done|wip|blocked|not\s*started|in\s*progress)\b"
+    r"|(還沒開始|未開始|已完成|完成|進行中|卡關中|卡住|放棄))", re.I)
 STATUS_CANON = {
     "done": "DONE", "已完成": "DONE", "完成": "DONE",
     "wip": "WIP", "in progress": "WIP", "進行中": "WIP",
-    "blocked": "BLOCKED", "卡關中": "BLOCKED",
-    "not started": "NOT_STARTED", "未開始": "NOT_STARTED",
+    "blocked": "BLOCKED", "卡關中": "BLOCKED", "卡住": "BLOCKED",
+    "not started": "NOT_STARTED", "未開始": "NOT_STARTED", "還沒開始": "NOT_STARTED",
     "放棄": "ABANDONED",   # matches the H2 tracker's status vocab (未開始/進行中/放棄)
 }
 EMPTY = {"", "-", "—", "–", "無", "无", "沒有", "没有", "n/a", "na", "none"}

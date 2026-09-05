@@ -124,6 +124,7 @@ stop resolving.
 | `references/routing.md` | Always — how to read owner chips out of the Doc, and the off-by-one |
 | `references/doc-write-rules.md` | Any mode that writes — marked blocks, tab targeting, idempotency |
 | `references/message-templates.md` | Composing any Chat post or the recap mail |
+| `references/wording.md` | **Always, before writing any zh-TW the team will read** — house voice, per `/content-translator` |
 | `references/scaffold.md` | Installing or debugging the Apps Script half |
 
 ---
@@ -344,6 +345,12 @@ silent Monday and a half-failed Wednesday in W36 before this line existed.
 - **Never invent a metric.** Cite the cell, or leave the slot empty.
 - **Never treat mail as an input.** Every mode reads state from the Doc and the tracker.
 - **Fail loud on config.** Placeholder id → stop; a wrong id writes into someone else's file.
+- **Write like a colleague, not a report generator.** Every published line is zh-TW that six
+  people read in a chat room. No 官腔 (`徵集`/`產出`/`決議候選`), no half-translated lines
+  (`KPI off-target`, `carry-over`, `Not started`), no internal mode names (`rollup`, `骨架`)
+  and no parenthetical explanations of your own filtering. `references/wording.md` carries
+  the rules and the frozen strings; it applies to the free text you compose at run time,
+  not just to the templates.
 
 ## Limitations
 

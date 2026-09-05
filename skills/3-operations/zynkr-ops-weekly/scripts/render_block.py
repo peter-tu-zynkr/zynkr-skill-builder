@@ -16,9 +16,15 @@ import json
 import re
 import sys
 
+# The stamp is the idempotency key -- `rollup` searches the section for `〔自動彙整 W<week>`
+# before writing. Do not reword it, ever.
 STAMP = "〔自動彙整 {week} · {stamp}〕"
-STATUS_LABEL = {"DONE": "Done", "WIP": "WIP", "BLOCKED": "Blocked",
-                "NOT_STARTED": "Not started", "ABANDONED": "放棄", "UNSET": "狀態未填"}
+
+# zh-TW throughout: the team writes Chinese, and a block that reads "事項 Not started" makes
+# the reader code-switch mid-line for no reason. `parse_reports.py` accepts both spellings on
+# the way in, so this only changes what gets written to the Doc.
+STATUS_LABEL = {"DONE": "完成", "WIP": "進行中", "BLOCKED": "卡住",
+                "NOT_STARTED": "還沒開始", "ABANDONED": "放棄", "UNSET": "沒寫狀態"}
 
 
 def norm_key(text):
@@ -61,7 +67,7 @@ def render(record, carries):
 
     if record["missing_lines"]:
         zh = {"last_week": "上週", "this_week": "本週", "numbers": "數字", "blocker": "卡關"}
-        lines.append("· 未填 — " + "／".join(zh[k] for k in record["missing_lines"]))
+        lines.append("· 沒寫 — " + "、".join(zh[k] for k in record["missing_lines"]))
 
     return lines
 
