@@ -828,7 +828,7 @@
     "upstream_repo": "https://github.com/anthropics/skills",
     "original_source_url": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "original_author": "Anthropic, PBC",
-    "github_stars": 174310,
+    "github_stars": 174314,
     "github_forks": 20647,
     "first_seen": "2026-06-03"
   },
@@ -2135,6 +2135,34 @@
     ],
     "updated_at": "2026-09-05",
     "first_seen": "2026-07-06"
+  },
+  {
+    "id": "4.12",
+    "sheet_id": "4.12",
+    "slug": "eli5",
+    "name": "eli5",
+    "summary": "Explain any topic, code, concept or error message at the exact level the listener can absorb — adapting vocabulary, analogy, tone, depth and framing to who is listening.",
+    "category": "training",
+    "project": "eli5",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu (derivative of DreambigOu)",
+    "repo_url": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "source_path": "skills/4-training/eli5/SKILL.md",
+    "install_command": "curl -sL zynkr.ai/s/4.12.md -o ~/.claude/skills/eli5.md",
+    "tags": [
+      "eli5",
+      "training",
+      "claude",
+      "skill"
+    ],
+    "updated_at": "2026-09-05",
+    "upstream_repo": "https://github.com/DreambigOu/ELI5",
+    "original_source_url": "https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md",
+    "original_author": "DreambigOu",
+    "github_stars": 905,
+    "github_forks": 37,
+    "first_seen": "2026-09-05"
   },
   {
     "id": "5.01",

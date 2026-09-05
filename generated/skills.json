@@ -1100,7 +1100,7 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 174310,
+    "githubStars": 174314,
     "githubForks": 20647
   },
   {
@@ -2816,6 +2816,40 @@
     "firstSeen": "2026-07-06",
     "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
     "sourceFile": "4-training/training-srt-transcriber/SKILL.md"
+  },
+  {
+    "id": "4.12",
+    "name": "eli5",
+    "category": "training",
+    "project": "eli5",
+    "platform": "claude",
+    "status": "WIP",
+    "author": "Peter Tu (derivative of DreambigOu)",
+    "description": "Explain any topic, code, concept or error message at the exact level the listener can absorb — adapting vocabulary, analogy, tone, depth and framing to who is listening. Use this skill whenever the user says 'ELI5', 'explain like I am 5', 'explain this to my manager', 'break this down for a 5th grader', 'dumb it down', 'simplify this for a designer', '解釋給我媽聽', '講給五歲小孩聽', '用白話講', '講人話', '這個要怎麼跟老闆講', '幫我解釋給客戶聽', '講給學員聽', or asks to explain something to a named person or audience type. Also fires when the user pastes an error message or a block of code and asks what it means. Explains at a level; it does not translate between languages (that is content-translator) and does not build teaching material from a recording (that is training-lecture-recap).",
+    "input": "A topic, code, concept or error message plus an audience cue — 'ELI5 this', 'explain to my manager', '解釋給我媽聽'. Defaults to age 5 if no audience is named.",
+    "process": "Identify the audience against the taxonomy (age · education · job role · relationship · Zynkr roles), read the source for purpose before mechanism, then explain on a fixed spine: what, analogy, layered detail, so-what.",
+    "output": "Prose pitched at that audience, in the language the request was made in — vocabulary, analogy source, tone, depth and framing all matched. Length scales with the audience.",
+    "ipoProvenance": {
+      "input": "frontmatter",
+      "process": "frontmatter",
+      "output": "frontmatter"
+    },
+    "legacyIpoId": "4.12",
+    "sheetId": "4.12",
+    "kind": "skill",
+    "synergy": [
+      "4.12"
+    ],
+    "installCommand": "curl -sL zynkr.ai/s/4.12.md -o ~/.claude/skills/eli5.md",
+    "updatedAt": "2026-09-05",
+    "firstSeen": "2026-09-05",
+    "sourceRepo": "https://github.com/peter-tu-zynkr/zynkr-skill-builder",
+    "sourceFile": "4-training/eli5/SKILL.md",
+    "upstreamRepo": "https://github.com/DreambigOu/ELI5",
+    "originalSourceUrl": "https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md",
+    "originalAuthor": "DreambigOu",
+    "githubStars": 905,
+    "githubForks": 37
   },
   {
     "id": "5.01",
