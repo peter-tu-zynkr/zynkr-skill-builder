@@ -842,3 +842,47 @@ declaration problem: the column pass was a longest-path relaxation, so the retry
 loop in this same file (`qagate -> author | FAIL`) laid the picture out **55
 columns / 16,204 px** wide. Neither repo's gates could see any of it —
 `validate-skill.ts` does not read `flow:`, and Atlas had no cyclic-flow test.
+
+## 2026-09-05 — new skill: eli5 (audience-calibrated explainer) · `SKB-014`
+
+`eli5` (sheetId `4.12`, category `4-training`) — explains a topic, code, concept or
+error message at the level the listener can actually absorb, adapting vocabulary,
+analogy, tone, depth and framing to who is listening. First net-new-prose skill in
+`4-training`, whose six other members are all transcript/recording processors.
+
+Adopted from **[DreambigOu/ELI5](https://github.com/DreambigOu/ELI5)** (904★, MIT) —
+sourced via `/zynkr-skills` → `/skill-sourcer` as `zynkr-skill-idea#129`, dedup
+verdict `new` against 112 board items / 122 issues / 88 on-disk skills. Nothing in
+the catalog took "a topic + an audience level" and returned a calibrated
+explanation; `content-translator` shifts **language**, this shifts **comprehension
+level**.
+
+Triaged `assign-build` with mode **`rescaffold`, not the `lift-and-shift` the
+triager recommends for external repos** — mirroring upstream would have shipped an
+English, US-centric skill (county fairs, phone books) to a zh-TW teaching audience.
+Attribution is therefore SKILL_SPEC §6 **Case C** (derivative), with the full trio
+declared and an `## Attribution` section naming what changed:
+
+- Localised analogy banks (便利商店 · 夜市 · 捷運 · LINE · 健保卡) and an
+  answer-in-the-language-asked rule.
+- Four Zynkr-specific audience rows upstream lacks — 老闆 · 學員 · 客戶窗口 ·
+  中小企業主 — which are what it is actually used for.
+- A Step 4 pre-send check (upstream drafts and stops).
+- An accuracy carve-out: the "simplify ruthlessly" instruction is suspended for
+  legal, medical, financial and safety-critical topics.
+- Scope boundaries against `content-translator` and `training-lecture-recap`.
+
+Declares the `SKB-012` picture fields (`steps`/`flow`, 8 shapes incl. the
+`check -> draft` redraft loop) so Atlas can draw it, and `handoff: []` since it is
+a leaf, not a relay stage.
+
+**Verification**: `validate-skill.ts --tier=all` → **0 errors, 0 warnings** (one
+INFO: live download is a post-ship check) · `SKB-001` duplicate-id gap covered by a
+pre-push ingest dry-run invoked the way CI does (`ingest.ts <root>/skills`) →
+**126 ingested, 0 skipped, no throw**, `4.12` unique and absent from
+`id-redirects.json`; `4.03`–`4.07` are NOT free, they are held by agent files ·
+`generated/skills-index.json` emitted `id 4.12 · slug eli5 · category training` ·
+build artifacts discarded, not committed (CI owns `content/` + `generated/`).
+Note: invoking `ingest.ts` against the repo ROOT instead of `skills/` walks the
+committed `content/` artifacts and throws a spurious `Duplicate skill name:
+zynkr-gm` — pre-existing, unrelated, and not what CI does.

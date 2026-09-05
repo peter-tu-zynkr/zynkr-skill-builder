@@ -1,0 +1,206 @@
+---
+name: eli5
+sheetId: "4.12"
+description: "Explain any topic, code, concept or error message at the exact level the listener can absorb — adapting vocabulary, analogy, tone, depth and framing to who is listening. Use this skill whenever the user says 'ELI5', 'explain like I am 5', 'explain this to my manager', 'break this down for a 5th grader', 'dumb it down', 'simplify this for a designer', '解釋給我媽聽', '講給五歲小孩聽', '用白話講', '講人話', '這個要怎麼跟老闆講', '幫我解釋給客戶聽', '講給學員聽', or asks to explain something to a named person or audience type. Also fires when the user pastes an error message or a block of code and asks what it means. Explains at a level; it does not translate between languages (that is content-translator) and does not build teaching material from a recording (that is training-lecture-recap)."
+category: training
+project: eli5
+platform: claude
+status: WIP
+author: Peter Tu (derivative of DreambigOu)
+input: "A topic, code, concept or error message plus an audience cue — 'ELI5 this', 'explain to my manager', '解釋給我媽聽'. Defaults to age 5 if no audience is named."
+process: "Identify the audience against the taxonomy (age · education · job role · relationship · Zynkr roles), read the source for purpose before mechanism, then explain on a fixed spine: what, analogy, layered detail, so-what."
+output: "Prose pitched at that audience, in the language the request was made in — vocabulary, analogy source, tone, depth and framing all matched. Length scales with the audience."
+synergy: ["content-translator", "training-lecture-recap", "zynkr-support", "consult-brd-writer"]
+handoff: []
+executed_by: internal-user
+execution_mode: llm
+steps:
+  - "req | input | Topic plus an audience cue"
+  - "aud | gate | Is an audience named"
+  - "fallback | deterministic | Default to age 5"
+  - "match | llm | Match the cue to the taxonomy"
+  - "read | llm | Read the source for purpose first"
+  - "draft | llm | What, analogy, detail, so-what"
+  - "check | gate | Would that audience actually follow it"
+  - "out | output | Calibrated explanation"
+flow:
+  - "req -> aud"
+  - "aud -> match | named"
+  - "aud -> fallback | not named"
+  - "fallback -> read"
+  - "match -> read"
+  - "read -> draft"
+  - "draft -> check"
+  - "check -> out | passes"
+  - "check -> draft | too dense or too thin"
+upstream_repo: https://github.com/DreambigOu/ELI5
+original_source_url: https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md
+original_author: DreambigOu
+---
+
+# ELI5
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill eli5
+```
+
+Explain anything to anyone, at the level they can actually absorb. Give it a topic — a concept, a file of code, an error message, a contract clause — plus a hint about who is listening, and it re-pitches the explanation for that person: the words they know, an analogy from their world, the depth they want, and the reason they should care. It is for the moment when you understand something perfectly and still cannot get it across: to a client's non-technical window person, to a 學員 three lessons behind, to a 老闆 who only wants the cost and the risk, or to your mother.
+
+The difference from asking a model to "explain simply" is that simply is not one setting. A five-year-old and a busy 老闆 both need short — but the child needs a story and the 老闆 needs a number. This skill picks which kind of short.
+
+---
+
+## Step 1 — Identify the audience
+
+Read the request for who is listening. Match it to one row below. **If no audience is named, default to age 5** — that is the classic ELI5 reading and it is what a bare "ELI5 this" means.
+
+The cue is often indirect: "my mom doesn't get it", "the client keeps asking", "我老闆問我這什麼意思" all name an audience. Take the nearest row rather than asking — a wrong guess is cheap to correct, a clarifying question stalls the answer.
+
+### Ages
+
+| Audience | How to pitch it |
+|---|---|
+| Age 5 | Very simple words, one idea per sentence. Analogies from toys, snacks, animals, the playground, 便利商店, 扭蛋. |
+| Age 10 | Elementary school. Basic cause and effect is fine. School, sports, video games, YouTube. |
+| Age 15 | Some abstraction is fine. Phones, social media, games. Slightly casual, never trying to sound young. |
+| Age 20–30 | Direct and clear. Analogies from work, rent, money, commuting, 手搖飲 queues. |
+| Age 40+ | Respectful, no condescension. Home ownership, career, managing a family, 健保 and 報稅 style admin. |
+
+### Education level
+
+| Audience | How to pitch it |
+|---|---|
+| 5th grade | Concrete examples only. No jargon at all. "Think of it like…" |
+| Middle school | Introduce a term, then define it immediately. Step-by-step logic. |
+| Senior high | Moderate complexity. Proper terms, each explained once. |
+| College | Academic framing. Technical terms with brief context. Theory plus application. |
+| Graduate | Assume the foundation. Spend the words on nuance, trade-offs, edge cases. Be precise. |
+
+### Job roles
+
+| Audience | They care about | Frame it around |
+|---|---|---|
+| Manager | Impact, timeline, risk, cost | Business outcome, team load, the decision now needed |
+| Engineer | Mechanism, architecture, trade-offs | Implementation, performance, maintainability |
+| Designer | The user's experience | Interaction, flow, accessibility, what the user sees |
+| Director | Strategy, ROI, position | Big picture, resource allocation, competitive angle |
+| Product manager | User value, scope | Feature impact, what to build versus skip |
+| Colleague | Shared work | What changes for them, what they must know to collaborate |
+
+### Relationships
+
+| Audience | Tone | Analogy source |
+|---|---|---|
+| Partner | Warm, patient, conversational | Household routines, shared plans, money decisions |
+| Parents | Respectful, never condescending | Technology they already use — LINE, 電視盒, ATM, 健保卡 |
+| Kids | Playful, encouraging, short | Games, cartoons, school, animals, snacks |
+| Friend | Casual, some humour | Pop culture, shared interests, "you know how…" |
+
+### Zynkr-specific audiences
+
+These are the four that come up most in Peter's actual work. They are the reason this skill exists in `4-training` rather than as a generic explainer.
+
+| Audience | They care about | Frame it around |
+|---|---|---|
+| 老闆 / SME owner | Cash, headcount, whether it breaks | Cost this month, who has to run it, what happens if we do nothing. No architecture. |
+| 學員 (course student) | Being able to do it next | One worked example they can copy, then the rule behind it. Name the tool by the button they click. |
+| 客戶窗口 (client contact) | Not looking uninformed internally | Give them language they can forward — a clean two-line version they can paste to their own boss. |
+| 中小企業主 evaluating AI | Whether it is real or hype | Concrete before/after on a task they recognise. Time saved, in hours, on work they already do. |
+
+---
+
+## Step 2 — Read the source before explaining
+
+Understand the thing properly first. A confident wrong explanation is worse than a hedged right one, and simplification multiplies any error you start with.
+
+- **Code** — read the relevant files. Get the purpose before the mechanism; nobody cares about syntax until they know why it exists.
+- **An error message** — find the root cause, not the surface text. The surface text is usually the symptom.
+- **A concept** — break it into its parts and find which one the listener is actually missing. Usually it is one part, not all of them.
+- **A document** — extract only the points that matter to this audience. The rest is noise for them.
+
+If you genuinely cannot verify something, say so in the explanation rather than smoothing over it. "I am not sure why it does that" is a legitimate sentence.
+
+---
+
+## Step 3 — Draft on the spine
+
+Every explanation, at every level, uses the same four moves. Only the filling changes.
+
+1. **The what** — one sentence capturing the essence. No preamble, no "great question".
+2. **The analogy** — anchor it to something the audience already knows. This is the load-bearing move; a bad analogy is worse than none.
+3. **The detail** — add layers, but only as many as this audience wants.
+4. **The so-what** — why it matters *to them specifically*. An explanation that stops before this leaves the listener informed and unmoved.
+
+### Calibration
+
+**Simple audiences** (young, non-technical, family): zero jargon — if a term is unavoidable, define it in the same breath. One idea per sentence. Concrete over abstract: "the server is like a waiter taking your order to the kitchen" beats "the server handles client-server communication". Use "you" and "your".
+
+**Technical audiences** (engineers, graduate level): use the proper terms — they feel patronised without them. Spend the words on the interesting part: trade-offs, edge cases, why it was designed that way. Compare to what they know: "it is a hash map, but the keys expire." Be brief; respect what they already have.
+
+**Business audiences** (manager, director, 老闆): lead with impact. Quantify where you honestly can. Skip implementation unless asked. Frame it as a decision: "so we should either X or Y, and I would pick X because…"
+
+### Language
+
+**Answer in the language the request was made in.** A question asked in Chinese gets a Chinese answer, and the analogy bank should be local too — 便利商店 and 夜市 land where "county fair" does not. A question in English gets English. If the user writes in one language about an audience who speaks another ("help me explain this to my mom" from someone whose mother speaks Taiwanese), write it for the person who will hear it, and say which you picked.
+
+### Tone
+
+| Audience | Register |
+|---|---|
+| Ages 5–10 | Enthusiastic, like a favourite teacher. "Oh, this one is fun." |
+| Teenagers | Casual but never performative. No "fellow kids" energy. |
+| Professionals | Confident, clear, bridging the gap without flagging it. |
+| Family | Patient and warm, the way you would explain over dinner. |
+
+---
+
+## Step 4 — Check it before sending
+
+One pass, three questions:
+
+- **Would this audience actually follow it?** Read it as them, not as you. If any sentence needs a term they do not have, it fails.
+- **Is the analogy carrying real weight, or is it decoration?** If removing it loses nothing, it was decoration.
+- **Did I answer "so what"?** If it ends on mechanism, it is not finished.
+
+If it fails, redraft rather than patching — a too-dense explanation with simpler words is still too dense.
+
+---
+
+## Examples
+
+**"ELI5 what a database index is"** → *(age 5, the default)*
+Imagine a really big book about animals. If I ask you to find the page about dinosaurs, you could turn every single page one at a time… or you could look at the list at the front that says "dinosaurs — page 52". An index is that list. It helps the computer find things without looking at everything.
+
+**"這個 API rate limit 要怎麼跟老闆講"** → *(老闆)*
+我們的系統每分鐘只能對外送 100 次請求，尖峰時段會超過，超過的部分客人會失敗。兩條路：花 1–2 天改寫程式少送幾次，或每月多付 X 元升級方案。我建議先改程式，因為量再長大一倍也還撐得住。
+
+**"Break down this useEffect hook for a college student"** → *(college)*
+`useEffect` is React's escape hatch for side effects — the things that happen outside rendering, like fetching data or setting up a subscription. If you have seen class components, it covers what `componentDidMount`, `componentDidUpdate` and `componentWillUnmount` used to do. The dependency array is the interesting part: it decides when the effect re-runs…
+
+**"幫我解釋給客戶窗口聽，他要轉給他主管"** → *(客戶窗口)*
+Give them the forwardable version — two lines, no internal vocabulary, written so their boss reads it and has no follow-up question. Then offer the longer version underneath for the window person themselves.
+
+---
+
+## Limitations
+
+- **It explains at a level; it does not translate between languages.** For EN ↔ zh-TW rendering, that is `content-translator`.
+- **It does not build course material.** Turning a recording into structured teaching content is `training-lecture-recap`.
+- **Simplifying trades accuracy for reach, deliberately.** For a very non-technical audience, getting the core idea across at 80% precision beats a 100% precise explanation they abandon halfway. When that trade would actually mislead — anything legal, medical, financial, or safety-critical — do not make it. Say the thing is genuinely complicated and explain the part that matters.
+- **Never talk down.** An age-5 explanation should feel delightful, not diminishing; a 老闆 explanation should feel empowering, not dismissive of their intelligence. Getting this wrong is the main failure mode.
+
+---
+
+## Attribution
+
+Derived from **[ELI5 by DreambigOu](https://github.com/DreambigOu/ELI5)** (MIT licence), which contributed the core insight — that "explain simply" is a set of distinct audience calibrations rather than one setting — along with the age / education / job-role / relationship taxonomy and the what → analogy → detail → so-what spine.
+
+Adapted for Zynkr:
+
+- **Localised for a zh-TW audience.** The upstream analogy banks are US-centric (county fairs, phone books, home ownership); these are Taiwanese, and the skill now answers in the language it was asked in.
+- **Added the Zynkr-specific audience rows** — 老闆 · 學員 · 客戶窗口 · 中小企業主 — which are the four this is actually used for and which upstream does not cover.
+- **Added Step 4**, the pre-send check. Upstream drafts and stops.
+- **Added the accuracy carve-out** for legal, medical, financial and safety-critical topics, where the "simplify ruthlessly" instruction should not apply.
+- Scope boundaries against `content-translator` and `training-lecture-recap` added so the three do not collide.
+
+Upstream also ships an eval harness (`eli5-workspace/`) that A/B runs each prompt with and without the skill and auto-grades against per-test assertions. It is not vendored here, but it is worth reading as a model for how to evaluate any skill in this repo.
