@@ -11,6 +11,7 @@ input: "seo-brief-writer's SEO_PACKET ▸ Brief; optional: whether to supplement
 process: "Design the H2/H3 outline per outline-patterns (answer-first opening) → build the FAQ from the Brief's must-answer questions → decide whether to supplement information → human review → output an content-draft-compatible handoff summary"
 output: "Article outline + FAQ + handoff summary of target keywords, handed off to content-draft (1.06) for writing"
 synergy: ["content-draft"]
+handoff: ["content-draft"]
 ---
 
 # SEO Outline Designer

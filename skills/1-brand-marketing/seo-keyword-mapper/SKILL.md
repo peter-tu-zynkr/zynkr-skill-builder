@@ -11,6 +11,7 @@ input: "seo-angle-finder's SEO_PACKET ▸ Angles; a Ubersuggest / AnswerThePubli
 process: "Expand seed terms per keyword-checklist → compile a keyword map with search volume/difficulty (thread head → keyword) → human supplements via tools → hand off"
 output: "A complete keyword map (keywords, thread heads, volume/difficulty), handed to seo-keyword-classifier"
 synergy: ["seo-keyword-classifier"]
+handoff: ["seo-keyword-classifier"]
 ---
 
 # SEO Keyword Mapper

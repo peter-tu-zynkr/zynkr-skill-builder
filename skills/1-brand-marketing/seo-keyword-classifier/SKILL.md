@@ -11,6 +11,7 @@ input: "The SEO_PACKET ▸ KeywordMap from seo-keyword-mapper"
 process: "Group by search intent per intent-taxonomy + apply the keyword-sop screening principles → produce 2–3 grouping versions → human Trigger picks a version → hand off"
 output: "Keywords grouped by intent (pick one of multiple versions), handed off to seo-demand-validator"
 synergy: ["seo-demand-validator"]
+handoff: ["seo-demand-validator"]
 ---
 
 # SEO Keyword Classifier

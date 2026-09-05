@@ -11,6 +11,7 @@ input: "An article proofed by content-editor (including the SEO review rubric) +
 process: "Mark internal/backlink paragraphs → write the meta description + FAQ/Article schema → human confirm → assemble the article + settings into a publish-ready Google Doc (working folder) handed to seo-publish-article"
 output: "A publish-ready Google Doc (article body + 「SEO 交付物」block: slug/seo_title/meta/keywords/category + links/schema) in the SEO working folder, handed to seo-publish-article"
 synergy: ["seo-publish-article"]
+handoff: ["seo-publish-article"]
 ---
 
 # SEO Article Finalizer

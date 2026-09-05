@@ -11,6 +11,7 @@ input: "Brand material (brand culture, website content, industry background, pro
 process: "Read brand material → extract 1–3 prospect personas per the persona-rubric (including pain points, decision-making role, buying journey) → get human review approval → output the handoff packet"
 output: "1–3 consumer personas + handoff packet, passed to seo-question-miner for common-question ideation"
 synergy: ["seo-question-miner"]
+handoff: ["seo-question-miner"]
 ---
 
 # SEO Persona Builder

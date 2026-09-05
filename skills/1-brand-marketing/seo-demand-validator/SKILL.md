@@ -11,6 +11,7 @@ input: "seo-keyword-classifier's SEO_PACKET ▸ Classified; manual Google/SERP o
 process: "Compare SERP common patterns and competitive difficulty per the competitor-review-table → manually validate demand, prune unnecessary terms → converge into a topic list + target keywords → hand off"
 output: "Topic list + target keywords + SERP common patterns, handed off to seo-brief-writer"
 synergy: ["seo-brief-writer"]
+handoff: ["seo-brief-writer"]
 ---
 
 # SEO Demand Validator

@@ -11,6 +11,7 @@ input: "The SEO_PACKET ▸ Persona handoff packet from seo-persona-builder"
 process: "Following question-frames, expand pre-purchase questions from each persona's pain points (problem / comparison / use case) → work backward from the questions to seed keywords → human review → handoff"
 output: "A staged (TOFU/MOFU/BOFU) buyer-question list + seed keywords, handed off to seo-angle-finder"
 synergy: ["seo-angle-finder"]
+handoff: ["seo-angle-finder"]
 ---
 
 # SEO Question Miner

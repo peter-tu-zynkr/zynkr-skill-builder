@@ -11,6 +11,7 @@ input: "The SEO_PACKET ▸ Topics from seo-demand-validator; optional: reference
 process: "Analyze ceiling articles per ceiling-article-features → find the winning angle and value proposition per winning-key-scoring → apply brief-template to produce the Brief → human verification and augmentation → hand off"
 output: "One SEO writing Brief, handed to seo-outline-designer"
 synergy: ["seo-outline-designer"]
+handoff: ["seo-outline-designer"]
 ---
 
 # SEO Brief Writer

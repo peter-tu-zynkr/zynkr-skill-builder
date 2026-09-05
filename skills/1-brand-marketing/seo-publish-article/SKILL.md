@@ -11,6 +11,7 @@ input: "A finished SEO article (Google Doc or markdown) with its 「SEO 交付�
 process: "Read Doc → split body/metadata → build + validate Tiptap JSON + content_html → resolve ids + slug check → preview → confirm → POST to Supabase `articles` (service role, published) → verify /blog/<slug> → archive Doc + update tracker"
 output: "The article live at <site>/blog/<slug> — inserted articles row + verified page; the source Doc archived and the SEO tracker (Topic List + Keyword Pool) updated."
 synergy: ["seo-article-finalizer", "seo-article-pipeline", "content-translator"]
+handoff: []
 ---
 
 # SEO Publish Article

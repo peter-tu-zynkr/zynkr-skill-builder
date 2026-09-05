@@ -11,6 +11,7 @@ input: "The SEO_PACKET ▸ Questions from seo-question-miner; optional: known co
 process: "From the questions and competitor content, surface unmet angles, points to strengthen, and entry points for Zynkr's first-hand evidence → human validation → handoff"
 output: "Differentiated content angle list (including competitor gaps), handed off to seo-keyword-mapper"
 synergy: ["seo-keyword-mapper"]
+handoff: ["seo-keyword-mapper"]
 ---
 
 # SEO Angle Finder

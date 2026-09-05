@@ -886,3 +886,51 @@ build artifacts discarded, not committed (CI owns `content/` + `generated/`).
 Note: invoking `ingest.ts` against the repo ROOT instead of `skills/` walks the
 committed `content/` artifacts and throws a spurious `Duplicate skill name:
 zynkr-gm` — pre-existing, unrelated, and not what CI does.
+
+---
+
+## 2026-09-05 — the SEO family says `handoff:` out loud · `SKB-015`
+
+Ten `seo-*` SKILL.md files gain a `handoff:` line. No prose changed, no skill
+behaviour changed — this is a **declaration** fix, and it exists because
+`synergy:` and `handoff:` mint the identical `handoff` edge in Atlas while
+meaning different things: `handoff:` is ordered and directional, `synergy:` says
+"these go well together" and is written symmetrically, both files naming each
+other.
+
+Atlas reads the symmetric claim as an ordering. In production that put **four
+contradicting arrows** in the graph:
+
+    seo-article-finalizer → seo-publish-article   AND   seo-publish-article → seo-article-finalizer
+    seo-article-pipeline  → seo-publish-article   AND   seo-publish-article → seo-article-pipeline
+
+Both directions of each pair. They cannot both be true — `seo-publish-article`
+is terminal, as its own description says of the finalizer: *"only adds
+meta/links/schema, does NOT publish"*.
+
+`ATL-043` already built the fix — **declaring `handoff:` switches that file's
+`synergy:` off, per file** — and the slide family adopted it. This applies the
+same convention to SEO, following the 14 existing adopters exactly: a step names
+its one next step, a terminal step declares `handoff: []`, and **`synergy:` is
+never touched** so the "related skills" meaning survives.
+
+| sheetId | skill | `handoff:` |
+|---|---|---|
+| 1.15 → 1.22 | persona-builder · question-miner · angle-finder · keyword-mapper · keyword-classifier · demand-validator · brief-writer · outline-designer | the one it already named in `synergy:` — same arrow, now declared honestly |
+| 1.23 | seo-article-finalizer | `["seo-publish-article"]` |
+| 1.30 | seo-publish-article | **`[]`** — terminal; this is what removes both back-arrows |
+
+**Deliberately NOT touched: the two orchestrators.** `seo-article-pipeline`
+(1.14) and `seo-program-planner` (1.31) list *rosters* — 14 and 7 members — not
+handoff chains. Whether an orchestrator's roster should become an ordered
+`handoff:` list (as `zynkr-slide` and `zynkr-skills` did) is a modelling question
+about the process itself, and the owner scoped this pass to removing the
+contradiction only.
+
+**Verification.** `validate-skill.ts` 10/10 pass, 0 errors. One pre-existing
+warning on `seo-outline-designer` (`synergy.slugs_exist` — `content-draft` is a
+bundle member under `zynkr-content-writer/.claude/agents/`, not a top-level
+`skills/**` folder); it predates this change, fires on the `synergy:` line, and
+`content-draft` **does** resolve in Atlas, where `ATL-041` retyped it to `skill`.
+
+Atlas side: `ATL-052` re-parses the changed versions.
