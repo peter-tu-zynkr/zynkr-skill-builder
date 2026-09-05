@@ -942,3 +942,50 @@ bundle member under `zynkr-content-writer/.claude/agents/`, not a top-level
 `content-draft` **does** resolve in Atlas, where `ATL-041` retyped it to `skill`.
 
 Atlas side: `ATL-052` re-parses the changed versions.
+
+## 2026-09-05 — scripts/ typechecks for the first time · `SKB-017`
+
+`scripts/` had never been type-checked. Everything runs through `tsx`, which
+strips types without checking them; there was no `typecheck` script and no
+workflow runs `tsc`, so `qa.yml` and `ingest-skills.yml` only ever validated
+SKILL.md *content*, never the code that publishes it. `npx tsc --noEmit` was
+**red: exit 2, 4 errors** — in the repo that builds the whole marketplace.
+
+Found while chasing the equivalent gap in `zynkr-atlas` (`ATL-053`), where a
+detached JSDoc had turned `frontmatter()`'s return into `{}`. A peer suggested
+the same `.mjs` shape existed here; it does not — `scripts/` is 10 `.ts` files
+and zero `.mjs`. The gap is different and larger.
+
+**Three of the four were config, not defects.** `TS5097` in `build-marketplace.ts`,
+`ingest.ts` and `sync-from-sheet.ts` — import paths ending in `.ts`, which is
+exactly how `tsx` wants them written. Fixed by declaring that intent
+(`allowImportingTsExtensions`, which requires `noEmit`; nothing here ever emits)
+rather than by rewriting the imports to suit a compiler nobody was running.
+
+**The fourth was real, and it is not what the error text suggests.** `TS2345` at
+`marketplace-lib.ts:184`, in `buildSlug` — the function whose output is the
+Supabase upsert key (`onConflict: slug`). First read looks like an unguarded use:
+line 169 guards `sourceStem` before `toSlug`, line 184 appeared not to. It is in
+fact **guarded indirectly** — `genericSourceStem` is true whenever `sourceStem`
+is absent, so the stem branch never ran without one. The invariant simply lives
+inside `normalizedSourceStem`, and tsc cannot follow it across two `const`s.
+
+So the code was correct and the type error was still legitimate: the invariant
+was implicit and unprovable. Made explicit by testing `sourceStem` directly —
+redundant at runtime, load-bearing for the checker — rather than by asserting
+non-null, which would have hidden exactly the correlation worth documenting.
+
+Added `npm run typecheck` (`tsc --noEmit`). **Deliberately NOT wired into CI**:
+Peter ruled the same question for `zynkr-atlas` the same day (`17cba13`,
+「it's fine, no need to change」) — gates stay fast and can never block another
+session's in-flight work, and the price is that tsc zero stays hand-held. Same
+trade taken here, consciously: the script exists so it is one command to run,
+not so a workflow runs it.
+
+**Verification**: `npm run typecheck` → **exit 0, 0 errors** (was exit 2, 4) ·
+behaviour proven unchanged rather than assumed — re-ingested the full tree with
+the patched `marketplace-lib` and diffed every emitted slug against
+`origin/main`'s committed `generated/skills-index.json`: **126 skills, 126 slugs,
+diff empty**, ingest exit 0 · build artifacts discarded, not committed (CI owns
+`content/` + `generated/`) · no SKILL.md touched, so `qa.yml` has nothing to
+validate on this PR.

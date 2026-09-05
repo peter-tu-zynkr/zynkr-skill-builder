@@ -181,7 +181,17 @@ function buildSlug(skill: NormalizedSkillRecord): string {
     return toSlug(skill.name);
   }
 
-  return toSlug(genericSourceStem ? skill.project || skill.name : sourceStem);
+  // `genericSourceStem` is already true whenever `sourceStem` is absent, so the
+  // stem branch below never ran without one. That correlation lives inside
+  // `normalizedSourceStem` and the type checker cannot follow it across the two
+  // consts, so it read the stem branch as `string | undefined`. Testing
+  // `sourceStem` directly is redundant at runtime and load-bearing for tsc
+  // (SKB-017). Behaviour is unchanged on every reachable input.
+  if (!genericSourceStem && sourceStem) {
+    return toSlug(sourceStem);
+  }
+
+  return toSlug(skill.project || skill.name);
 }
 
 function buildGithubUrl(skill: NormalizedSkillRecord, repoUrl: string, sourcePath: string): string {

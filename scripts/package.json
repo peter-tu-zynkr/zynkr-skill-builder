@@ -9,7 +9,8 @@
     "build-tree": "tsx build-taxonomy-tree.ts",
     "check-ipo": "tsx check-ipo-drift.ts",
     "validate": "tsx validate-skill.ts",
-    "qa": "tsx validate-skill.ts --tier=all"
+    "qa": "tsx validate-skill.ts --tier=all",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
