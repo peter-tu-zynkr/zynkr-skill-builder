@@ -889,7 +889,15 @@ zynkr-gm` — pre-existing, unrelated, and not what CI does.
 
 ---
 
-## 2026-09-05 — the SEO family says `handoff:` out loud · `SKB-015`
+## 2026-09-05 — the SEO family says `handoff:` out loud · `SKB-016`
+
+> ⚠️ **Renumbered from `SKB-015`, which a parallel session had already taken.** Its
+> `zynkr-ops-weekly` commit (`5566ee62`) carries `Spec: SKB-015` and landed first, so
+> the id is theirs by the claim-first rule. **This change's own commit trailer
+> (`5fdc8e59`) still says `SKB-015` and is wrong** — `main` is not rewritten to hide
+> it. The seventh id collision in two days, and the first in THIS repo: unlike
+> `zynkr-atlas`, `zynkr-skill-builder` has no 「next free id」 guardrail line to claim
+> against, so there is nothing here to push a claim to. That is the gap.
 
 Ten `seo-*` SKILL.md files gain a `handoff:` line. No prose changed, no skill
 behaviour changed — this is a **declaration** fix, and it exists because
