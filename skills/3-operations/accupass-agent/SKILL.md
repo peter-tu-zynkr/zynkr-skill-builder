@@ -1,5 +1,6 @@
 ---
 name: accupass-agent
+sheetId: "3.16"
 description: "Guides the operator through preparing a complete Accupass event listing — one field at a time — then outputs a single copy-paste-ready template covering event content, ticketing, marketing emails, and a post-event follow-up checklist. Use when the user says '我要上架活動', '上架活動通', '填活動通', '活動上架', 'accupass', '幫我填模板', or '活動資訊填寫'. Does not publish to Accupass directly (the platform has no API) — it produces the filled template for manual entry."
 category: operations
 project: accupass-agent

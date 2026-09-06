@@ -6657,6 +6657,129 @@
     "/skill-author"
    ],
    "confidence": "high"
+  },
+  {
+   "id": "4.12",
+   "slug": "eli5",
+   "one_liner_zh": "依聽眾（老闆·學員·客戶窗口·五歲小孩）換用詞·比喻·深度與切角，把主題·程式碼·概念或錯誤訊息講到對方真的聽得懂；沒指定聽眾就預設五歲",
+   "one_liner_en": "Explains any topic, code, concept or error message at the level the listener can absorb — audience-matched wording, analogy, depth and framing; defaults to age 5.",
+   "knowledge_sources": [
+    {
+     "type": "local-file",
+     "name": "Source material handed in by the caller — code files, error text, a concept, or a document",
+     "id_or_url": "",
+     "runtime_read": true,
+     "purpose": "Step 2 reads it for purpose before mechanism — step \"read | llm | Read the source for purpose first\" (line 22), \"Code — read the relevant files\" (line 116). Both flow branches converge on this step (lines 30-31), so the read is unconditional."
+    },
+    {
+     "type": "github",
+     "name": "ELI5 by DreambigOu — the upstream SKILL.md this one is derived from",
+     "id_or_url": "https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md",
+     "runtime_read": false,
+     "purpose": "Provenance only — contributed the core insight plus the age/education/job-role/relationship taxonomy and the what → analogy → detail → so-what spine (line 196). All of it is resident in this file, adapted (analogy banks localised to zh-TW, four Zynkr audience rows added, Step 4 and the accuracy carve-out added — lines 198-204). Not opened at run time."
+    }
+   ],
+   "connected_solutions": [],
+   "requires_mcp": false,
+   "mcp_servers": [],
+   "mcp_tools": [],
+   "external_services": [],
+   "side_effect_level": "read-only",
+   "artifacts_produced": [
+    "Calibrated prose explanation returned in the conversation, pitched at the identified audience; length scales with the audience — written in the language of the request, or in the listener's language plus a note saying which was picked when requester and listener differ (lines 12, 144)",
+    "For the 客戶窗口 audience, two tiers: a forwardable two-line version with no internal vocabulary, plus a longer version underneath for the window person themselves (lines 107, 181)"
+   ],
+   "setup_required": [],
+   "human_gate": "None. Both gates declared in `steps:` are machine-side, not human: `aud | gate | Is an audience named` (line 19), which branches to the age-5 default rather than to a person (lines 20, 28-29), and `check | gate | Would that audience actually follow it` (line 24), which loops back to redraft on failure (line 35 `check -> draft | too dense or too thin`). Nothing is shown to a human for approval and no clarifying question is asked — line 57: \"Take the nearest row rather than asking — a wrong guess is cheap to correct, a clarifying question stalls the answer.\"",
+   "gotchas": "Pure in-conversation LLM skill: `status: WIP`, `handoff: []`, `executed_by: internal-user`, `execution_mode: llm` (frontmatter lines 8, 14, 15, 16); no `agents/` dir on disk. It calls no tool, MCP server or external API — the only file access it describes is reading whatever source the caller hands it (line 116). The file's own stated primary failure mode is line 190: \"Never talk down. An age-5 explanation should feel delightful, not diminishing; a 老闆 explanation should feel empowering, not dismissive of their intelligence. Getting this wrong is the main failure mode.\" Other traps: (1) with no audience named it silently defaults to age 5 (line 55) and does not ask (line 57); (2) it answers in the language the request was made in, but when the requester's language differs from the listener's it writes for the listener and says which it picked (line 144); (3) verify-or-hedge — \"A confident wrong explanation is worse than a hedged right one, and simplification multiplies any error you start with\" (line 114), and if it cannot verify something it must say so rather than smooth over it (line 121); (4) the accuracy carve-out — the \"simplify ruthlessly\" instruction is suspended for anything legal, medical, financial or safety-critical (line 189); (5) scope boundaries it must not cross: EN ↔ zh-TW rendering belongs to `content-translator`, turning a recording into course material belongs to `training-lecture-recap` (lines 187-188). The four Zynkr audience rows — 老闆 / SME owner · 學員 · 客戶窗口 · 中小企業主 evaluating AI (lines 105-108) — are per line 101 \"the reason this skill exists in `4-training` rather than as a generic explainer\". `synergy` (line 13) names content-translator · training-lecture-recap · zynkr-support · consult-brd-writer — sibling skills, not product surfaces, so connected_solutions stays empty. Upstream is MIT-licensed; its eval harness (`eli5-workspace/`) is explicitly not vendored here (line 206).",
+   "trigger_phrases": [
+    "ELI5",
+    "explain like I am 5",
+    "explain this to my manager",
+    "dumb it down",
+    "解釋給我媽聽",
+    "這個要怎麼跟老闆講"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "2.46",
+   "slug": "sales-manager",
+   "one_liner_zh": "Zynkr 業務技能家族的總指揮：判斷輸入該交給哪個子技能（ROUTE）· 一件事需要多棒時依序接力並帶著 context（SEQUENCE）· 跨 deal 盤點 CRM 說出哪些卡住該追（REVIEW）；REVIEW 的所有 CRM 變更一次批次提出、一次確認才執行",
+   "one_liner_en": "The conductor of the Zynkr sales family: routes one input to the right child skill, chains children in order when a job needs more than one, and sweeps the CRM across deals to name what is stalled — proposing REVIEW's CRM writes as ONE batch applied on a single confirmation",
+   "knowledge_sources": [
+    {
+     "type": "other",
+     "name": "Zynkr platform CRM pipeline (deals · deal stages · tasks · contacts · companies) read through the `zynkr` MCP server",
+     "id_or_url": "",
+     "runtime_read": true,
+     "purpose": "Step 4 REVIEW reads the pipeline across deals (L134 \"Read the pipeline and classify every open deal into exactly one bucket\") to fill the 卡住 / 沒有下一步 / 逾期追蹤 buckets (L138-140); reached only via MCP tools (L80-81), which carry no URL. The report's record links are written out as `https://platform.zynkr.ai/deals/{id}` · `.../contacts/{id}` (L86) — output templates, not this source's read address."
+    },
+    {
+     "type": "gmail",
+     "name": "Peter's Gmail drafts + sent state (peter_tu@zynkr.ai)",
+     "id_or_url": "",
+     "runtime_read": true,
+     "purpose": "The 草稿未寄 bucket test inside step 4: L141 \"A Gmail draft exists for the contact but nothing was ever sent\" — a per-contact check no `zynkr` tool can answer. Account fixed at L87 \"**Google account** for anything Gmail/Calendar: `peter_tu@zynkr.ai`\"."
+    },
+    {
+     "type": "google-sheet",
+     "name": "Event survey / registration Sheet (user-supplied, no fixed id)",
+     "id_or_url": "",
+     "runtime_read": false,
+     "purpose": "SEQUENCE chain 1 input (L99 \"a whole survey sheet\", L113 \"A WHOLE survey sheet of many people\", L121 \"`/sales-client-sourcing` enriches the whole sheet and flags Hot Leads\"). The child opens and enriches it (L115 \"let the child drive\"); the conductor itself only confirms the row count before fanning out (L124)."
+    }
+   ],
+   "connected_solutions": [
+    "Zynkr AI 平台 (platform.zynkr.ai)"
+   ],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "zynkr"
+   ],
+   "mcp_tools": [
+    "mcp__zynkr__list_deals",
+    "mcp__zynkr__list_deal_stages",
+    "mcp__zynkr__list_tasks",
+    "mcp__zynkr__list_contacts",
+    "mcp__zynkr__get_deal",
+    "mcp__zynkr__get_company",
+    "mcp__zynkr__move_deal_stage",
+    "mcp__zynkr__update_deal",
+    "mcp__zynkr__set_task_status",
+    "mcp__zynkr__create_task"
+   ],
+   "external_services": [
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)",
+    "Gmail",
+    "Google Calendar"
+   ],
+   "side_effect_level": "mixed",
+   "artifacts_produced": [
+    "Routing decision + mode statement (ROUTE / SEQUENCE / REVIEW) stated in one sentence before acting",
+    "Whatever the delegated children produced — CRM records · Gmail drafts · enriched survey sheet",
+    "REVIEW: a deal-level attention table (deal · owner · days idle · the one thing to do) across the four live buckets 卡住 / 沒有下一步 / 逾期追蹤 / 草稿未寄, plus a count of 健康 (never listed individually)",
+    "One confirmed batch of CRM writes, drawn from the four write tools: stage moves via move_deal_stage · deal field edits via update_deal · task closes via set_task_status · new follow-up tasks via create_task",
+    "If the batch is declined: nothing changes and the attention list survives as a to-do",
+    "Final report: mode, what each child produced with record URLs, bucket counts, and exactly what the confirmed batch changed (or a plain statement that it was declined)"
+   ],
+   "setup_required": [
+    "`zynkr` MCP server connected (CRM reads and writes)",
+    "Google account peter_tu@zynkr.ai for anything Gmail/Calendar",
+    "The five child skills installed and invocable via the Skill tool: sales-client-sourcing (2.01) · sales-specialist (2.02) · sales-outbound (2.09) · sales-follow-up (2.10) · sales-research (2.11)"
+   ],
+   "human_gate": "Hard gate on the REVIEW batch: sales-manager may write to the CRM but never silently. Every intended change **from step 4** is collected into ONE batch, shown in full, and applied only after a single explicit confirmation (\"要我執行嗎？\") — one confirmation for the whole batch, not one per row. Nothing outside the batch may be applied; work found mid-apply becomes a second proposed batch. Never auto-close a deal as `won` — money is Peter's call, always. On refusal, change nothing and keep the list as a to-do. Scope note: CRM writes a delegated child makes during ROUTE/SEQUENCE are the child's own (sales-outbound creates the lead, sales-research writes the brief back) and do not pass through this batch. Separately, before a SEQUENCE fans out per Hot Lead row, confirm the row count with Peter (ten rows means ten deals and ten Gmail drafts). When the mode is genuinely unclear, ask exactly ONE question, then default to ROUTE. Every `zynkr` write tool is itself a two-call handshake: `confirm:false` previews, `confirm:true` applies. In `guided` mode it also pauses for review between children.",
+   "gotchas": "Delegate, never inline — writing CRM SQL, parsing a card, or drafting an email body inside this skill is the failure mode; its own output is routing, sequencing, the attention list and the batch gate. Stage changes MUST go through `move_deal_stage`, never `update_deal`, so the pipeline side-effects fire. The REVIEW buckets have exact tests, not vibes: 卡住 = no activity for 21+ days AND stage is not `won`/`lost` · 沒有下一步 = open deal with no open task attached · 逾期追蹤 = an open task whose `due_at` is in the past · 草稿未寄 = a Gmail draft exists for the contact but nothing was ever sent · 健康 = none of the above, counted not listed. SEQUENCE chain 2 is order-critical: sales-specialist lands the contact, then sales-research fills the company background, and only then is the follow-up draft written — so it opens with something true about their business. Never run a child twice on the same object in one pass; if a chain fails halfway, report what landed and what didn't and do NOT silently retry a CRM write. Keep REVIEW deal-level: no LOB roll-up, no weekly narrative, no revenue forecasts — duplicating `/zynkr-gm` is the one outcome this skill was explicitly scoped to avoid. It is the sales pipeline only, distinct from consult-status-report / consult-governance (consulting portfolio) and zynkr-skills (routes the whole ecosystem, not within sales). Each of the five children is still a first-class entry point — when Peter names a skill, run that skill rather than insisting on the conductor. Architecturally it copies `/zynkr-slide`'s relationship to the three slide skills, including its express-mode precedent. Timezone trap: Peter's calendar is Europe/Amsterdam while prospects are almost always Asia/Taipei. `express` is the default mode (run through, surfacing only the batch gate and genuine forks).",
+   "trigger_phrases": [
+    "/sales-manager",
+    "什麼 deal 該追",
+    "業務進度盤點",
+    "pipeline review",
+    "幫我看一下 CRM 有什麼卡住",
+    "handle this lead",
+    "what's stalled"
+   ],
+   "confidence": "high"
   }
  ],
  "subagents": [

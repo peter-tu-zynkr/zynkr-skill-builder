@@ -1,5 +1,6 @@
 ---
 name: guest-lecturer-program
+sheetId: "3.15"
 description: "Manages the full external guest-lecturer collaboration lifecycle for Zynkr events — lecturer intake and screening, contract preparation, the per-event D-30→D+3 operations timeline, and monthly fee settlement with statutory tax withholding. Use when the user says '外部講師', '講師合作', '講師結算', '講師合約', 'guest lecturer', or asks to run any stage of the lecturer program (接洽新講師 / 上架講師活動 / 月末結算). Commercial terms (revenue split, thresholds, penalty caps) come from a local program-config.md — they are never hardcoded in this skill."
 category: operations
 project: guest-lecturer-program
