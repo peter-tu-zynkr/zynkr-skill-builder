@@ -15,44 +15,6 @@ type: agent
 skills: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish", "skill-finder"]
 handoff: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish"]
 executed_by: internal-user
-steps:
-  - "start | start | Start"
-  - "input | input | Any input: URL, path, slug, idea, question"
-  - "classify | llm | Classify the input shape"
-  - "route | gate | Which stage does this belong to?"
-  - "source | llm | Source, dedup, propose as issue | ref=skill-sourcer"
-  - "triage | hitl | Review the queue, approve the build | ref=skill-triager"
-  - "dispatch | deterministic | repository_dispatch scaffolds the stub | ref=atlas:github"
-  - "author | llm | Fill the stub into a real SKILL.md | ref=skill-author"
-  - "qa | deterministic | Quality gate | ref=skill-qa"
-  - "qagate | gate | PASS?"
-  - "publish | deterministic | Land in repo + marketplace | ref=skill-publish"
-  - "confirm | deterministic | Confirm ship + close issue (skill-triager)"
-  - "find | llm | Which skill do I use for this? | ref=skill-finder"
-  - "board | store | Pipeline board + issue labels"
-  - "live | artifact | Live on the zynkr.ai marketplace"
-  - "output | output | A shipped skill"
-  - "end | end | End"
-flow:
-  - "start -> input"
-  - "input -> classify"
-  - "classify -> route"
-  - "route -> source | new candidate"
-  - "route -> find | which skill?"
-  - "source -> triage"
-  - "triage -> dispatch | approved"
-  - "dispatch -> author"
-  - "author -> qa"
-  - "qa -> qagate"
-  - "qagate -> author | FAIL"
-  - "qagate -> publish | PASS"
-  - "publish -> confirm"
-  - "confirm -> live"
-  - "live -> output"
-  - "find -> output"
-  - "output -> end"
-  - "triage ~> board"
-  - "confirm ~> board"
 ---
 
 # Zynkr Skills

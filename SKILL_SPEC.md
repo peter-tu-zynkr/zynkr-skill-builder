@@ -124,7 +124,18 @@ flow:
   tell the branches apart.
 
 Everything here is checked at **WARN** tier (`steps.*`) — a malformed step costs a shape on a diagram
-and must never block a skill from shipping. Worked example: `skills/1-brand-marketing/zynkr-slide`.
+and must never block a skill from shipping.
+
+**Where a picture belongs** *(2026-09-06, `SKB-018` · Atlas `ATL-058`)* — `steps` / `flow` describe
+**this skill's own** flow, and they draw on this skill's own canvas. A picture that orchestrates
+*other* skills — a relay, a pipeline, a loop this skill is one actor in — is a **流程圖** in Atlas: a row
+of its own (`type: workflow`), created at Atlas 技能 → 新增, listed on the 流程圖 page and never under
+技能, carrying `skills:` / `connectors:` / `reads:` for the lines and `steps:` / `flow:` for the order.
+Four such pictures moved out of this repo on 2026-09-06 (`zynkr-slide`, `zynkr-skills`, `skill-author`,
+`zynkr-ops-weekly` — the lifted text is in that commit's diff, byte for byte); their `handoff:` lines
+stayed, because a handoff is a claim about *this* file's next step. The Atlas 流程圖 page lists only
+流程圖 rows, so a `steps:` block left in a SKILL.md is visible on that skill's canvas and nowhere else.
+Worked example (the file that used to be one): `skills/1-brand-marketing/zynkr-slide` before `SKB-018`.
 
 ### The package fields — `type` · `skills` *(documented 2026-09-04, `SKB-013`)*
 

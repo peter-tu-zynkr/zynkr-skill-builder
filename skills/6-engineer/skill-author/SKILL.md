@@ -14,40 +14,6 @@ synergy: ["skill-triager", "skill-qa", "skill-publish"]
 handoff: ["skill-qa"]
 executed_by: internal-user
 execution_mode: llm
-steps:
-  - "start | start | Start"
-  - "input | input | Stub branch, folder, or issue ref"
-  - "locate | deterministic | Resolve the stub SKILL.md"
-  - "contract | knowledge | [RAG] Frontmatter contract | ref=atlas:skill-spec"
-  - "taxonomy | knowledge | [RAG] Category taxonomy 0-9 | ref=atlas:skill-sourcer.taxonomy"
-  - "sheetid | deterministic | Claim next FREE sheetId in category"
-  - "front | llm | Write frontmatter"
-  - "body | llm | Replace every TODO marker"
-  - "picture | llm | Optional: handoff / steps / flow"
-  - "validate | deterministic | Run validate-skill.ts --tier=all"
-  - "gate | gate | Errors left?"
-  - "creator | offpage | Optional prose pass (skill-creator plugin)"
-  - "signoff | hitl | Author reviews the filled body"
-  - "qa | artifact | Hand off to /skill-qa | ref=skill-qa"
-  - "output | output | Shippable SKILL.md on the branch"
-  - "end | end | End"
-flow:
-  - "start -> input"
-  - "input -> locate"
-  - "locate -> sheetid"
-  - "sheetid -> front"
-  - "front -> body"
-  - "body -> picture"
-  - "picture -> validate"
-  - "validate -> gate"
-  - "gate -> body | errors remain"
-  - "gate -> signoff | clean"
-  - "signoff -> qa"
-  - "qa -> output"
-  - "output -> end"
-  - "front ~> contract"
-  - "front ~> taxonomy"
-  - "body ~> creator"
 ---
 
 # skill-author

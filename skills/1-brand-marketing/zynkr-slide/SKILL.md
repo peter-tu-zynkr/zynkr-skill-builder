@@ -13,47 +13,6 @@ output: "A finished .pptx (produced via the three-stage relay + pptx-skill rende
 synergy: ["slide-storyline-designer", "slide-page-splitter", "slide-visual-selector", "slide-pptx"]
 handoff: ["slide-storyline-designer", "slide-page-splitter", "slide-visual-selector", "slide-pptx"]
 executed_by: internal-user
-steps:
-  - "start | start | Start"
-  - "input | input | Provide material + intake answers"
-  - "brief | llm | Detect type + build Brief | ref=zynkr-slide"
-  - "gate | gate | Relay or template-fill?"
-  - "storyline | llm | Write storyline | ref=slide-storyline-designer"
-  - "signoff1 | hitl | Sign off storyline"
-  - "pages | llm | Split pages | ref=slide-page-splitter"
-  - "visuals | llm | Pick visuals | ref=slide-visual-selector"
-  - "render | deterministic | Render .pptx + QA | ref=slide-pptx"
-  - "tf | deterministic | Fill fixed template (alt path)"
-  - "db_artifact | artifact | Final .pptx artifact"
-  - "signoff2 | hitl | Approve final deck"
-  - "output | output | Receive final deck"
-  - "end | end | End"
-  - "db_packet | store | SLIDE_PACKET store (Drive) | ref=atlas:google-drive"
-  - "k_playbooks | knowledge | [RAG] Use-case playbooks | ref=atlas:zynkr-slide.use-case-playbooks"
-  - "k_templates | knowledge | [RAG] Template library + index | ref=atlas:slide-template-library"
-  - "k_brand | knowledge | [RAG] Brand guide (voice + colours) | ref=atlas:zynkr-brand-guide"
-  - "k_visual | knowledge | [RAG] Visual-decision framework | ref=atlas:slide-visual-selector.visual-decision-framework"
-flow:
-  - "start -> input"
-  - "input -> brief"
-  - "brief -> gate"
-  - "gate -> storyline | relay"
-  - "gate -> tf | template-fill"
-  - "storyline -> signoff1"
-  - "signoff1 -> pages | approved"
-  - "pages -> visuals"
-  - "visuals -> render"
-  - "render -> db_artifact"
-  - "tf -> db_artifact"
-  - "db_artifact -> signoff2"
-  - "signoff2 -> output | approved"
-  - "output -> end"
-  - "brief ~> k_playbooks"
-  - "tf ~> k_templates"
-  - "storyline ~> db_packet | saves each stage"
-  - "storyline ~> k_brand | voice"
-  - "visuals ~> k_brand | colours"
-  - "visuals ~> k_visual"
 ---
 
 # zynkr-slide
