@@ -15,6 +15,8 @@ synergy:
   - "2.15"
   - "2.16"
   - "operations-flow-optimization"
+type: agent
+skills: ["operations-process-discovery", "operations-automation-validation", "operations-process-redesign"]
 ---
 
 # Operations Transformation

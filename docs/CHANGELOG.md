@@ -4,6 +4,29 @@ Append-only record of shipped work (SDD altitude: Record; newest at the bottom).
 Created 2026-07-02 with SDD adoption — earlier history lives in the git log and
 the ingest-workflow run history.
 
+## 2026-09-07 — the two `3-operations` orchestrators declare their packages · `SKB-021`
+
+Atlas ruling **D3** — 「a department is the shipped package, one installable unit = one 代理 row」 —
+is read from frontmatter and never asserted by the importer (`ATL-046`). A skill that owns
+`agents/*.md` but declares neither `type: agent` nor `skills:` therefore imports as a plain 技能
+with its members orphaned as parentless leaves. Both of category 3's orchestrators were in that
+state, so Atlas wave 4 (`ATL-074`) needs this first, the same way wave 3 needed `SKB-020`:
+
+- **`admin-meeting-prep` (3.03)** → `type: agent`, `skills: ["admin-meeting-note"]`.
+- **`operations-transformation` (3.10)** → `type: agent`, `skills:` naming its three members **in
+  stage order** — `operations-process-discovery` (1) · `operations-automation-validation` (2) ·
+  `operations-process-redesign` (3). The order is load-bearing downstream: Atlas mints the
+  membership edge's `position` from the index in this list, and the SKILL.md already describes the
+  three as Stage 1 → 2 → 3.
+
+Nothing else changes: no body text, no `sheetId`, no member file. The members already carry the
+frontmatter `name:` Atlas keys on, and `extracted.json` already records all four with a `parent`
+and a `stage_order`.
+
+**Verification (D1)** — frontmatter parses as YAML for both files; the four member slugs match
+`agents/*.md` frontmatter `name:` exactly; `extracted.json` `parent` agrees with the declaring file
+in both cases. Consumed by `zynkr-atlas` `ATL-074`.
+
 ## 2026-07-02 — SDD adoption: CLAUDE.md + sheetId documented + jurisdiction rule + SKB-001
 
 Third fleet repo bound to `6.0 tech/SDD.md`:

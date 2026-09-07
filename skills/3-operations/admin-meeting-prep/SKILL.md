@@ -11,6 +11,8 @@ input: "None (scheduled auto-trigger; reads Google Calendar and Gmail)"
 process: "9am cron: scan the 7-day calendar → send action reminders to Google Chat | 3pm cron: scan Gmail for attendee background → send briefing to Google Chat"
 output: "Google Chat self-message: an action checklist in the morning, a structured briefing in the afternoon"
 synergy: []
+type: agent
+skills: ["admin-meeting-note"]
 ---
 
 # Meeting Prep
