@@ -989,3 +989,27 @@ the patched `marketplace-lib` and diffed every emitted slug against
 diff empty**, ingest exit 0 · build artifacts discarded, not committed (CI owns
 `content/` + `generated/`) · no SKILL.md touched, so `qa.yml` has nothing to
 validate on this PR.
+
+## 2026-09-07 — `training-process-video` declares its package · `SKB-019`
+
+`type: agent` + `skills: [...]` on `skills/4-training/training-process-video/SKILL.md` — the
+shape `SKB-013` gave `zynkr-skills` and `skill-sourcer`, documented as the `SKILL_SPEC.md` §1
+package fields. No prose changed and no behaviour changed: the file already dispatches five
+`agents/*.md` members (four in parallel, then `training-doc-admin` after the summary), and until
+now only the body said so.
+
+Why now: Zynkr Atlas imports this folder as wave 3 of its skills migration (`ATL-073`), under a
+ruling (D3, 2026-09-06) that the ten orchestrators land as 代理 rows. Atlas mirrors what upstream
+declares — `type` is read, never asserted (`ATL-041`) — and `skills:` is what mints the
+package → member `depends_on` edges the 代理 page renders as its wiring card. Without this line
+the five members would import as skills with no parent.
+
+`skills:` states membership, not sequence: the four parallel agents in the order the body
+dispatches them, then `training-doc-admin`. No `handoff:` is added — the body is a fan-out and a
+join, not a relay — and `synergy: []` stays.
+
+**Verification (D1)** — `validate-skill.ts --tier=all`: 0 errors, 2 warnings, both pre-existing
+(the `origin/main` copy validates to the same two: H1 wording, no install snippet).
+Frontmatter-only; `generated/` and `content/` are left to CI as always. Committed through the
+GitHub API from the Atlas session that needed it, so no local checkout moved — `git pull` here
+before the next edit.

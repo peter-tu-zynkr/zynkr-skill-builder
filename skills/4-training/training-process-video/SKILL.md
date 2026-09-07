@@ -11,6 +11,8 @@ input: "Raw livestream transcript text and a stream-config.md file identifying t
 process: "4 parallel agents — event recap doc, Q&A knowledge base update, course outline enhancement, and content idea curation"
 output: "Google Doc recap, Q&A diff entries, lecture note proposals, and content idea seeds"
 synergy: []
+type: agent
+skills: ["training-event-recap", "training-qa-knowledge", "training-outline-enhancer", "training-idea-curator", "training-doc-admin"]
 ---
 
 # Process Livestream
