@@ -1,0 +1,83 @@
+subject,description_zh,keywords_zh,keywords_en,subject_id,taxonomy_version
+Apps,應用程式工具的介紹與使用心得,app 推薦 | 軟體 | 工具 | 工具箱 | 應用程式,app review | software tool | tool recommendation,sub_001,1.0
+Code,程式開發、coding 實作、技術細節,寫程式 | 程式碼 | 開發 | 部署 | 程式語言,debug | coding | programming | developer | script | build | deploy,sub_002,1.0
+Technology,科技趨勢與技術概覽（非 AI 專屬）,科技 | 技術 | 數位 | 硬體 | 軟體 | 平台,tech | digital | platform | software | hardware,sub_003,1.0
+Gen AI,生成式 AI 工具與應用（ChatGPT / Claude / Gemini 等）,生成式 AI | 大語言模型 | AI 工具,AI | Claude | ChatGPT | Gemini | LLM | prompt | generative AI | Claude Code | AI tool | AI workflow,sub_004,1.0
+Book,書摘、讀書心得、閱讀推薦,書 | 讀書 | 閱讀 | 書評 | 推薦書單,book | reading | book review | book summary,sub_005,1.0
+Brand,個人品牌、品牌策略與形象經營,品牌 | 個人品牌 | 形象 | 定位 | 品牌策略,personal brand | brand positioning | brand building,sub_006,1.0
+Budgeting,預算規劃與財務控制,預算 | 花費 | 記帳 | 財務規劃,budget | expense tracking | financial planning,sub_007,1.0
+Business,商業模式、創業思維、公司經營,商業 | 商業模式 | 公司 | 經營 | 獲利,business model | company | revenue | operations,sub_008,1.0
+Career,職涯發展、升遷策略、職場心態,升遷 | 職涯 | 職場 | 工作 | 晉升 | 跳槽,career growth | promotion | job | workplace,sub_009,1.0
+Course,線上課程、教學設計、學習產品,課程 | 教學 | 直播課 | 線上學習,Hahow | course | online learning | teaching | curriculum design,sub_010,1.0
+Communication,溝通技巧、表達方式、說服力,溝通 | 表達 | 說話 | 演講 | 說服 | 開口,communication | presentation | persuasion | public speaking,sub_011,1.0
+Customer life,客戶生命週期與客戶旅程,客戶旅程 | 用戶 | 客戶體驗 | 留存,customer journey | user lifecycle | retention,sub_012,1.0
+Customer experience,客戶體驗設計與優化,客戶體驗 | 用戶滿意度,NPS | CX | customer experience | user satisfaction,sub_013,1.0
+Data analysis,資料分析、數據解讀與決策,數據 | 資料分析 | 報表 | 指標,KPI | data analysis | metrics | dashboard,sub_014,1.0
+Decision Making,決策框架與選擇策略,決策 | 選擇 | 取捨 | 判斷,decision making | trade-off | framework | judgment,sub_015,1.0
+English,英語學習、英文寫作或溝通相關,英文 | 英語 | 英文寫作 | 雅思 | 托福,English learning | English writing | IELTS | TOEFL,sub_016,1.0
+Entrepreneur,創業、副業、個人事業經營,創業 | 副業 | 自媒體 | 個人事業,solopreneur | entrepreneur | side project | startup,sub_017,1.0
+Goal setting,目標設定、年度計畫、OKR,目標 | 計畫 | 年度回顧 | 復盤,OKR | goal setting | planning | annual review,sub_018,1.0
+Interview,面試技巧與求職準備,面試 | 求職 | 履歷 | 自我介紹,STAR | interview | job application | resume screening,sub_019,1.0
+Investment,投資理財、資產配置,投資 | 理財 | 股票 | 資產配置,ETF | investment | portfolio | stock | asset allocation,sub_020,1.0
+Knowledge management,知識管理、第二大腦、筆記系統,知識管理 | 第二大腦 | 筆記,Notion | PKM | knowledge management | second brain | note-taking,sub_021,1.0
+Learning,學習方法、技能養成、自我提升,學習 | 技能 | 自學 | 成長 | 學習方法,learning | skill building | self-improvement,sub_022,1.0
+Marketing,行銷策略、內容行銷、增長,行銷 | 內容行銷 | 漏斗 | 轉換,SEO | marketing | content marketing | growth | funnel | conversion,sub_023,1.0
+Organization,整理、系統化、工作流程建立,整理 | 系統 | 流程 | 工作流,SOP | organization | system | workflow,sub_024,1.0
+People management,帶人、管理、領導力實踐,帶人 | 管理 | 一對一,performance review | people management | team management | 1:1,sub_025,1.0
+Politics,政治觀點、社會議題,政治 | 社會 | 時事,politics | social issue | current events,sub_026,1.0
+Problem solving,解決問題的方法與思維,解決問題 | 拆解 | 問題分析 | 根本原因,problem solving | root cause | breakdown | troubleshooting,sub_027,1.0
+Process,流程設計、標準化作業,流程 | 標準化,SOP | pipeline | process design | standardization,sub_028,1.0
+Productivity,生產力工具與方法,生產力 | 效率 | 時間管理 | 番茄鐘,GTD | productivity | efficiency | time management | deep work,sub_029,1.0
+Project Management,專案管理、交付與里程碑,專案 | 里程碑 | 交付,Gantt | project management | milestone | delivery | agile,sub_030,1.0
+Podcast,Podcast 內容、音頻媒體,音頻 | 節目,Podcast | podcast | audio | show | episode,sub_031,1.0
+Psychology,心理學、行為科學、認知偏誤,心理學 | 認知偏誤 | 行為 | 習慣,psychology | cognitive bias | behavioral science,sub_032,1.0
+Resume,履歷撰寫與優化,履歷 | 自我介紹 | 作品集,CV | resume | portfolio | self-introduction,sub_033,1.0
+Stakeholder,利害關係人管理與溝通,利害關係人 | 老闆 | 向上管理 | 匯報,stakeholder | upward management | executive communication,sub_034,1.0
+Storytelling,故事力、敘事結構、內容創作框架,說故事 | 敘事 | 故事結構 | 開場,hook | storytelling | narrative | content structure,sub_035,1.0
+Teamwork,團隊合作、跨部門協作,團隊 | 協作 | 跨部門,teamwork | collaboration | cross-functional,sub_036,1.0
+Video,影片製作、剪輯、短影音,影片 | 剪輯 | 短影音,YouTube | Reels | video production | editing | short video,sub_037,1.0
+WFH,遠端工作、在家辦公相關,遠端 | 在家工作 | 非同步,WFH | remote work | async | home office,sub_038,1.0
+Writing,寫作技巧、文章結構、電子報創作,寫作 | 文章 | 電子報 | 文筆 | 結構,writing | article | newsletter writing | structure,sub_039,1.0
+YouTube,YouTube 頻道經營與影片策略,頻道 | 訂閱 | 影片策略,YouTube | YouTube channel | video strategy | subscribers,sub_040,1.0
+Asking question,提問技巧與好奇心應用,提問 | 問題 | 好奇心,asking questions | inquiry | curiosity,sub_041,1.0
+Finance,個人財務、現金流、財務自由,財務 | 現金流 | 財務自由,money | personal finance | cash flow | financial freedom,sub_042,1.0
+Life,生活感悟、生命設計、人生觀,生活 | 人生 | 感悟 | 生命設計,life design | life lessons | reflection,sub_043,1.0
+Relationships,人際關係、社交圈、連結,人際 | 關係 | 社交 | 朋友,networking | relationships | social capital | connections,sub_044,1.0
+Travel,旅行、異地生活,旅行 | 出差 | 海外,travel | trip | abroad,sub_045,1.0
+Education,教育觀點、學習體系、教育現況,教育 | 學習體系 | 升學,education | learning system | school,sub_046,1.0
+Gratitude,感恩、正向思維,感謝 | 感恩 | 正向,gratitude | thankfulness | positivity,sub_047,1.0
+Habit,習慣養成與行為改變,習慣 | 行為改變,routine | daily habit | habit building | behavior change,sub_048,1.0
+Health,身心健康、運動、飲食,健康 | 運動 | 飲食 | 壓力管理,health | fitness | diet | wellbeing,sub_049,1.0
+Inspiration,啟發性內容、名言、激勵故事,啟發 | 激勵 | 靈感 | 名言,inspiration | motivation | quote | story,sub_050,1.0
+Music,音樂相關,音樂,music,sub_051,1.0
+Photo,攝影、視覺創作,攝影 | 拍照,photography | visual,sub_052,1.0
+Stress,壓力與情緒管理,壓力 | 情緒 | 焦慮,burnout | stress | emotional management | anxiety,sub_053,1.0
+Value,價值觀與原則,價值觀 | 原則 | 信念,values | principles | beliefs,sub_054,1.0
+Vision,願景、長期目標、未來規劃,願景 | 長期 | 未來,vision | long-term | future planning,sub_055,1.0
+Culture,文化觀察、職場文化、社會文化,文化 | 職場文化 | 組織文化,culture | workplace culture | organizational culture,sub_056,1.0
+Motivation,動機、驅動力、內在驅動,動機 | 驅動力 | 內在,motivation | intrinsic motivation | drive,sub_057,1.0
+Newsletter,電子報創作、電子報策略、訂閱者成長,電子報 | 訂閱 | 開信率 | 電子報策略,newsletter | email marketing | subscriber | open rate,sub_058,1.0
+Trend,趨勢觀察、市場動向、新興議題,趨勢 | 市場動向 | 新興 | 未來,trend | market shift | emerging topic,sub_059,1.0
+LinkedIn,LinkedIn 經營與個人品牌,社群 | 職業社群,LinkedIn | LinkedIn strategy | professional network,sub_060,1.0
+Anxiety,焦慮、不確定感、心理壓力,焦慮 | 不安 | 恐懼,anxiety | uncertainty | fear | imposter syndrome,sub_061,1.0
+Innovation,創新思維、突破框架,創新 | 突破 | 創意,innovation | creative thinking | disruption,sub_062,1.0
+Strategy,策略規劃與戰略思考,策略 | 戰略 | 規劃 | 競爭,strategy | strategic planning | competitive advantage,sub_063,1.0
+Event,活動籌備、見面會、直播活動,活動 | 見面會 | 直播 | 工作坊,event | meetup | workshop | livestream,sub_064,1.0
+Wealth,財富積累與財富觀,財富 | 資產,wealth building | assets,sub_065,1.0
+R&R,休息、充電、假期,休息 | 充電 | 假期 | 度假,rest | recharge | vacation,sub_066,1.0
+Happiness,幸福感與快樂來源,快樂 | 幸福 | 幸福感,happiness | joy | wellbeing,sub_067,1.0
+Advertisement,廣告投放與素材,廣告 | 投放 | 素材,ad | advertising | creative | ad spend,sub_068,1.0
+MECE,MECE 思維與麥肯錫框架,麥肯錫 | 結構化思維,MECE | McKinsey | structured thinking | mutually exclusive,sub_069,1.0
+Philosophy,哲學思想與人生哲學,哲學 | 思想 | 存在,philosophy | stoicism | existentialism,sub_070,1.0
+Kids,親子教育、育兒,孩子 | 親子 | 育兒,parenting | kids | children,sub_071,1.0
+Success,成功學、成功案例分析,成功 | 案例 | 標竿,success | case study | benchmark,sub_072,1.0
+Thinking,思考框架、心智模型,思考 | 框架 | 邏輯,mental model | thinking | framework | logic,sub_073,1.0
+Operation,日常營運、執行力,營運 | 執行 | 日常,operations | execution | daily ops,sub_074,1.0
+RPA,機器人流程自動化,自動化 | 流程機器人,RPA | robotic process automation,sub_075,1.0
+Sales,銷售技巧與業務開發,銷售 | 業務 | 轉換,sales | business development | conversion,sub_076,1.0
+Automation,工作流程自動化（非 RPA 專屬）,自動化,workflow | n8n | Make | Zapier | agent | automation | AI agent,sub_077,1.0
+Leadership,領導力、高階思維、影響力,領導力 | 影響力 | 高階,leadership | influence | executive presence,sub_078,1.0
+Prompt Engineering,提示詞工程、AI 指令設計,提示詞 | 指令 | AI 指令,prompt | prompt engineering | system prompt | instruction design,sub_079,1.0
+Product,產品思維、產品設計、產品策略,產品 | 功能 | 用戶故事,PRD | product thinking | product design | user story,sub_080,1.0
+Content Writing,內容創作、文案、寫作技巧,內容 | 文案 | 標題,copywriting | content writing | headline,sub_081,1.0
+Mental model,心智模型與思維工具,心智模型 | 思維工具 | 第一性原理,mental model | first principles | thinking tool,sub_082,1.0
