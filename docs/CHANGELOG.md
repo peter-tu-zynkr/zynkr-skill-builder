@@ -4,6 +4,66 @@ Append-only record of shipped work (SDD altitude: Record; newest at the bottom).
 Created 2026-07-02 with SDD adoption — earlier history lives in the git log and
 the ingest-workflow run history.
 
+## 2026-09-07 — `extracted.json` catches up with the MCP conversion · `SKB-024`
+
+`SKB-022` moved fourteen `consult-*` skills off raw SQL onto the `zynkr` MCP and deleted three
+`references/deal-insert.sql` files. `scripts/skills-index/data/extracted.json` has **no generator** —
+this README says a changed skill must be re-read in full — and it was not refreshed, so for a day
+the extraction described a version of the corpus that no longer existed. This is that pass: all
+fourteen entries re-derived from the current `SKILL.md`, nothing else touched.
+
+**It was not cosmetic.** The extraction is read as ground truth by the Atlas importer, and the stale
+copy broke it. Measured by running Atlas's own `deriveReads` against both versions:
+
+| | stale | now |
+|---|---|---|
+| entries that import without throwing | **12 / 14** | **14 / 14** |
+| `zynkr` connector edges from this family | **0** | **14** |
+
+- **Two hard failures.** `consult-intake` and `consult-project-specialist` still listed
+  `references/deal-insert.sql` by full path. The file is deleted; the importer throws on a repo path
+  inside a skill's own folder that is not in the tree. `consult-brd-writer` listed the same dead file
+  with an empty `id_or_url`, which does not throw — it silently mints a permanently-unresolvable
+  pointer instead, which is worse.
+- **The connector nobody would have got.** Connector edges derive from `external_services`;
+  `mcp_servers` contributes none. All fourteen declared `zynkr` in `mcp_servers` and none named the
+  platform in `external_services`, so the family whose entire purpose is the MCP move would have
+  minted **no `zynkr` edge at all**. `"Zynkr AI 平台 CRM (platform.zynkr.ai)"` — the `sales-manager`
+  spelling, verbatim — is now on all fourteen. All-or-nothing by design, not per-entry taste.
+- **Four addresses that would have resolved and 404'd.** Three entries recorded
+  `https://platform.zynkr.ai/deals/{deal_id}` and one the bare host. Atlas treats anything matching
+  `^https?://` as a real address, so a literal `{deal_id}` becomes a link that is broken by
+  construction — the same defect class this pass exists to remove. All four now carry the tool-name
+  form (`mcp__zynkr__get_deal / …`), which correctly records as 「no usable address」.
+- **Two entries had deleted a live read instead of converting it.** `consult-governance` and
+  `consult-project-specialist` still call `list_deals`/`get_deal` on every run; the CRM source is
+  restored.
+
+**Conventions settled here, because nine spellings had appeared for one fact:** the converted CRM
+source takes `type: "other"` (`mcp` had zero occurrences in 397 corpus sources; `supabase-kb` names
+the knowledge base, not the CRM) and an `id_or_url` of the tool names it actually calls — never a
+URL, never empty. `confirm=true` is a **gotcha**, not a `human_gate`: `SKB-022` put the same sentence
+in all fourteen files and no file says a human reads the preview, so the two entries that had filed
+it as a gate now match their twelve twins.
+
+**Deliberately not done.** `trigger_phrases` is still absent from `consult-bug-ticket`,
+`consult-flow-design` and `consult-session-notes`. It was absent before this commit; sixteen corpus
+entries lack it, and that is one corpus-wide decision rather than three drive-by additions. Commit
+metadata was stripped where it had leaked into the data — an entry records what the file says, not
+which commit changed it.
+
+**Verification.** A mechanical gate (`check-extraction.mjs`) re-run against the live `main` tree:
+92 skills and 33 subagents unchanged in count; **78 untargeted entries and the whole subagents array
+byte-identical**; 114 `repo-file` paths resolved against the tree; every `external_services` string
+on the fourteen resolves. Formatting round-trip proven byte-identical on the original before writing,
+so the diff is the change and not a re-indent.
+
+⚠️ **Two things this pass hands on rather than fixes.** `consult-transcriber` still declares
+`local Whisper (via training-srt-transcriber)` — that names another skill in this corpus, not a
+service, and it does not resolve to a connector; the ruling belongs to the consumer, not here.
+And **the extraction still has no generator**, so all of this goes stale again on the next commit
+that touches these files.
+
 ## 2026-09-07 — the three `7-people-talent` orchestrators declare their packages, and two dead synergy lists are retired · `SKB-023`
 
 Atlas ruling **D3** is read from frontmatter and never asserted by the importer (`ATL-046`), so a

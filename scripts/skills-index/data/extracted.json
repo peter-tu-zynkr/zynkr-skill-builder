@@ -324,11 +324,11 @@
    "one_liner_en": "Turns one meeting transcript into a Weekly Update, a numbered Drive project folder, a kickoff Doc and a CRM deal",
    "knowledge_sources": [
     {
-     "type": "repo-file",
-     "name": "./references/deal-insert.sql",
-     "id_or_url": "skills/2-sales-consultant/consult-project-specialist/references/deal-insert.sql",
+     "type": "other",
+     "name": "Zynkr AI 平台 CRM — deal · company · contact (via the zynkr MCP)",
+     "id_or_url": "mcp__zynkr__list_companies / mcp__zynkr__create_company / mcp__zynkr__list_contacts / mcp__zynkr__create_contact / mcp__zynkr__create_deal / mcp__zynkr__log_meeting / mcp__zynkr__create_note / mcp__zynkr__create_task / mcp__zynkr__get_deal / mcp__zynkr__update_deal",
      "runtime_read": true,
-     "purpose": "One-statement company/contact resolve + deal + activities insert"
+     "purpose": "Live CRM state the skill reads on every run; replaced the raw SQL SELECTs (SKB-022)"
     },
     {
      "type": "repo-file",
@@ -350,26 +350,19 @@
      "id_or_url": "",
      "runtime_read": true,
      "purpose": "Reads BOTH the Notes and Transcript tabs for detail"
-    },
-    {
-     "type": "supabase-table",
-     "name": "crm_users · crm_pipelines (owner + pipeline lookup)",
-     "id_or_url": "project uomieoqlkazknjgmfdda",
-     "runtime_read": true,
-     "purpose": "Resolve owner/pipeline ids live instead of hardcoding"
     }
    ],
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals · crm_companies · crm_contacts · crm_activities (read crm_users/crm_pipelines); links to /deals/{id}",
+     "touchpoint": "zynkr MCP: list/create company + contact, create_deal, then log_meeting · create_note · create_task for the timeline; get_deal + update_deal for the folder backlink; links to /deals/{id}",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "mcp__google-workspace__get_doc_content",
@@ -377,13 +370,23 @@
     "mcp__google-workspace__create_drive_file",
     "mcp__google-workspace__create_doc",
     "mcp__google-workspace__update_drive_file",
-    "mcp__supabase__execute_sql",
+    "mcp__zynkr__list_companies",
+    "mcp__zynkr__create_company",
+    "mcp__zynkr__list_contacts",
+    "mcp__zynkr__create_contact",
+    "mcp__zynkr__create_deal",
+    "mcp__zynkr__log_meeting",
+    "mcp__zynkr__create_note",
+    "mcp__zynkr__create_task",
+    "mcp__zynkr__get_deal",
+    "mcp__zynkr__update_deal",
     "mcp__google-workspace__draft_gmail_message"
    ],
    "external_services": [
     "Google Drive",
     "Google Docs",
-    "Gmail (optional draft)"
+    "Gmail (optional draft)",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -395,10 +398,10 @@
    ],
    "setup_required": [
     "google-workspace MCP as peter_tu@zynkr.ai",
-    "supabase MCP with access to project uomieoqlkazknjgmfdda"
+    "zynkr MCP server (Zynkr AI 平台 CRM) — no Supabase project id or database credentials"
    ],
    "human_gate": "none — runs autonomously (read → summarise → create → report), no mid-run confirmation; a stakeholder email is drafted, never sent, and only on request",
-   "gotchas": "Always-new by design: no dedupe, so two runs on the same meeting = two deals and two folders. Doc must be created via create_doc then moved (create_drive_file with the doc mime-type returns HTTP 400); folder creation needs a single-space content. Escape single quotes by doubling. Never hardcode owner/pipeline ids.",
+   "gotchas": "Always-new by design: no dedupe, so two runs on the same meeting = two deals and two folders. Doc must be created via create_doc then moved (create_drive_file with the doc mime-type returns HTTP 400); folder creation needs a single-space content. Every CRM write previews first — call once without confirm, then again with confirm=true. update_deal REPLACES notes — get_deal and append before writing the folder backlink. log_meeting needs an explicit occurred_at, or a debrief written days later is stamped now and lands on the wrong date. Company → contact → deal → activities are separate MCP writes, no longer one atomic statement, so a mid-run failure can leave a company/contact with no deal. Never hardcode owner/pipeline ids — create_deal assigns the pipeline, 交易 number and owner.",
    "trigger_phrases": [
     "turn this meeting into a project",
     "建立顧問專案",
@@ -1136,25 +1139,11 @@
      "purpose": "Source of the week's leads; dedupe by Thread ID"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals JOIN crm_contacts (dedupe SELECT)",
-     "id_or_url": "project uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr platform CRM deals + contacts via the `zynkr` MCP server (dedup reads)",
+     "id_or_url": "mcp__zynkr__list_deals · mcp__zynkr__list_contacts",
      "runtime_read": true,
      "purpose": "Check which lead emails already have a deal"
-    },
-    {
-     "type": "supabase-table",
-     "name": "crm_users · crm_pipelines (live owner/pipeline lookup inside the SQL)",
-     "id_or_url": "project uomieoqlkazknjgmfdda",
-     "runtime_read": true,
-     "purpose": "Resolve owner_id + default pipeline instead of hardcoding ids"
-    },
-    {
-     "type": "repo-file",
-     "name": "references/deal-insert.sql",
-     "id_or_url": "skills/2-sales-consultant/consult-intake/references/deal-insert.sql",
-     "runtime_read": true,
-     "purpose": "Idempotent one-statement deal creation + defaults"
     },
     {
      "type": "repo-file",
@@ -1181,20 +1170,27 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_companies · crm_contacts · crm_deals · crm_activities; platform.zynkr.ai/deals/{id}",
+     "touchpoint": "`zynkr` MCP server — list/create company · contact · deal, get_deal/update_deal; platform.zynkr.ai/deals/{id}",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "supabase",
+    "zynkr",
     "notion"
    ],
    "mcp_tools": [
     "search_gmail_messages",
     "get_gmail_messages_content_batch",
-    "execute_sql",
+    "list_deals",
+    "list_contacts",
+    "list_companies",
+    "create_company",
+    "create_contact",
+    "create_deal",
+    "get_deal",
+    "update_deal",
     "list_drive_items",
     "create_drive_file",
     "create_doc",
@@ -1202,11 +1198,12 @@
    ],
    "external_services": [
     "Gmail",
-    "Notion"
+    "Notion",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "writes-database",
    "artifacts_produced": [
-    "Supabase CRM deal (+ company/contact/created activity)",
+    "Zynkr platform CRM deal (+ company/contact/created activity)",
     "Numbered Google Drive project folder [N] Company（Name）",
     "Kickoff Google Doc 「專案啟動」 inside the folder",
     "Optional Notion ticket at status Consult intake + re-uploaded attachments",
@@ -1219,14 +1216,14 @@
     "check for new consulting leads",
     "intake the consult requests"
    ],
-   "human_gate": "none — runs fully autonomously (safety = email-level dedupe + in-SQL guard); the optional inbound-sales branch is interactive",
+   "human_gate": "none — runs fully autonomously (safety = the step-3 email dedupe via list_deals + list_contacts before anything is created); the optional inbound-sales branch is interactive",
    "setup_required": [
-    "supabase MCP on project uomieoqlkazknjgmfdda",
+    "zynkr MCP server (Zynkr platform CRM access)",
     "google-workspace MCP authed as peter_tu@zynkr.ai",
     "Write access to Drive folder 1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t",
     "Notion branch: restore inbound-sales-config.md + context-doc-template.md from git history"
    ],
-   "gotchas": "Zero rows back from deal-insert.sql = already de-duped → skip folder/doc too. Escape single quotes by doubling. Creating a Doc directly via create_drive_file with the doc mime-type returns HTTP 400 — create_doc then move with add_parents. Folder creation needs a single-space content. lead_source enum has no 'website' → uses 'content'. Skips @zynkr.ai / test / 測試 / ga4 rows but always reports them. Notion branch config only exists in git history under the deprecated inbound-sales-project-init skill.",
+   "gotchas": "list_deals returns only the newest 100 rows by activity and cannot filter by contact — exactly 100 back means the de-dup is no longer sound, stop rather than double-book a lead. update_deal REPLACES notes wholesale — get_deal first and put the existing text in front, or every earlier backlink is lost. Company → contact → deal are three writes now, so a mid-way failure can leave a company and contact with no deal; report it rather than blind-retry. The contact's lead_status/deal_status cannot be set through the MCP and stay empty — attribution lives on the deal as lead_source. Creating a Doc directly via create_drive_file with the doc mime-type returns HTTP 400 — create_doc then move with add_parents. Folder creation needs a single-space content. lead_source enum has no 'website' → uses 'content'. Skips @zynkr.ai / test / 測試 / ga4 rows but always reports them. Notion branch config only exists in git history under the deprecated inbound-sales-project-init skill.",
    "confidence": "high"
   },
   {
@@ -1813,9 +1810,9 @@
      "purpose": "Five-section client-staff recap skeleton"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals (shared Zynkr project)",
-     "id_or_url": "uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr CRM deal record (via the zynkr MCP server)",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__update_deal",
      "runtime_read": true,
      "purpose": "Resolve deal id/name/stage/notes + the 專案資料夾 backlink"
     },
@@ -1844,15 +1841,14 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals (read stage/notes; append session note) · platform.zynkr.ai/deals/{id}",
+     "touchpoint": "zynkr MCP get_deal / list_deals / update_deal (read stage/notes; append session note) · platform.zynkr.ai/deals/{id}",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "google-workspace",
-    "supabase"
+    "google-workspace"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
@@ -1861,15 +1857,15 @@
     "mcp__google-workspace__draft_gmail_message",
     "mcp__google-workspace__manage_event",
     "mcp__google-workspace__create_doc",
-    "mcp__google-workspace__update_drive_file",
-    "mcp__supabase__execute_sql"
+    "mcp__google-workspace__update_drive_file"
    ],
    "external_services": [
     "Gmail",
     "Google Calendar",
     "Google Meet",
     "Google Docs",
-    "Google Drive"
+    "Google Drive",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -1880,7 +1876,7 @@
     "a rendered checklist state table"
    ],
    "setup_required": [
-    "zynkr MCP connected (Supabase MCP as fallback, project uomieoqlkazknjgmfdda)",
+    "zynkr MCP connected",
     "google-workspace MCP as peter_tu@zynkr.ai",
     "an existing [N] engagement folder",
     "/consult-transcriber installed for the D+1 stage"
@@ -1894,7 +1890,7 @@
     "run the client info session",
     "write the session recap"
    ],
-   "gotchas": "Never creates the [N] folder — no folder ⇒ STOP and route to /consult-intake or /consult-project-specialist. No recording without the 告知錄影 line in the D-1 confirmation. Creating a Doc directly in a folder via create_drive_file returns HTTP 400 — use create_doc then update_drive_file(add_parents). Over Supabase MCP auth.uid() is NULL, so writes must carry explicit ids; double single quotes in SQL. Transcription is delegated wholesale — it stops rather than inline it. One session per run.",
+   "gotchas": "Never creates the [N] folder — no folder ⇒ STOP and route to /consult-intake or /consult-project-specialist. No recording without the 告知錄影 line in the D-1 confirmation. Creating a Doc directly in a folder via create_drive_file returns HTTP 400 — use create_doc then update_drive_file(add_parents). mcp__zynkr__update_deal REPLACES notes wholesale — get_deal first, put the existing notes in front, then write with confirm=true (call once without confirm to preview). Transcription is delegated wholesale — it stops rather than inline it. One session per run.",
    "confidence": "high"
   },
   {
@@ -1903,6 +1899,13 @@
    "one_liner_zh": "顧問案 portfolio 週健檢 · 六項 invariant 只報不改",
    "one_liner_en": "Read-only weekly sweep diffing every [N] engagement folder against every open consult deal on six invariants",
    "knowledge_sources": [
+    {
+     "type": "other",
+     "name": "Zynkr AI 平台 CRM — deal · company · contact (via the zynkr MCP)",
+     "id_or_url": "mcp__zynkr__list_deals / mcp__zynkr__get_deal / mcp__zynkr__list_deal_stages",
+     "runtime_read": true,
+     "purpose": "Live CRM state the skill reads on every run; replaced the raw SQL SELECTs (SKB-022)"
+    },
     {
      "type": "repo-file",
      "name": "references/hygiene-checklist.md",
@@ -1916,44 +1919,36 @@
      "id_or_url": "1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t",
      "runtime_read": true,
      "purpose": "Inventory folder names, doc titles and modifiedTime (never contents)"
-    },
-    {
-     "type": "supabase-table",
-     "name": "crm_deals (+ probed activity table) in the shared Zynkr project",
-     "id_or_url": "uomieoqlkazknjgmfdda",
-     "runtime_read": true,
-     "purpose": "SELECT-only inventory of open deals, notes, stage, updated_at"
     }
    ],
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals · crm activity rows · deal stages (SELECT only); links platform.zynkr.ai/deals/{id}",
+     "touchpoint": "deals · deal stages · last_activity_at, all read through the zynkr MCP (no writes, no SQL); links platform.zynkr.ai/deals/{id}",
      "direction": "read"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "google-workspace",
-    "supabase"
+    "google-workspace"
    ],
    "mcp_tools": [
     "mcp__zynkr__list_deals",
     "mcp__zynkr__get_deal",
     "mcp__zynkr__list_deal_stages",
-    "mcp__google-workspace__list_drive_items",
-    "mcp__supabase__execute_sql"
+    "mcp__google-workspace__list_drive_items"
    ],
    "external_services": [
-    "Google Drive"
+    "Google Drive",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "read-only",
    "artifacts_produced": [
     "A zh-TW 顧問案健檢 report in the chat only (per-engagement findings with owning-skill fix pointers, summary table, 本次未檢查 list)"
    ],
    "setup_required": [
-    "zynkr MCP connected (read-only Supabase SQL as fallback, project uomieoqlkazknjgmfdda)",
+    "zynkr MCP connected — the only CRM path (list_deals · get_deal · list_deal_stages)",
     "google-workspace MCP as peter_tu@zynkr.ai"
    ],
    "human_gate": "none — fully automatic because it is strictly read-only; the fixes it proposes are run by the owning skills",
@@ -1965,7 +1960,7 @@
     "consult drift check",
     "portfolio hygiene sweep"
    ],
-   "gotchas": "Absolutely read-only — no Doc creation, no folder rename, not even a deal-note append. A missing folder is a FINDING, never a task. Audits titles + modifiedTime only, so an empty [BRD] with the right title passes I6 and a renamed kickoff doc reads as missing. Consult-deal classification is heuristic (backlink OR folder-name match) — ambiguous deals land in 本次未檢查. Confirm real stage slugs via list_deal_stages; probe the activities table with LIMIT 1 first and degrade to crm_deals.updated_at (say so). Point-in-time only, no history/trend. Different universe from admin-governance.",
+   "gotchas": "Absolutely read-only — no Doc creation, no folder rename, not even a deal-note append. A missing folder is a FINDING, never a task. Audits titles + modifiedTime only, so an empty [BRD] with the right title passes I6 and a renamed kickoff doc reads as missing. Consult-deal classification is heuristic (backlink OR folder-name match) — ambiguous deals land in 本次未檢查. Confirm real stage slugs via list_deal_stages; list_deals returns only the newest 100 rows scoped to your own workspace, so at exactly 100 declare the inventory partial in the report, and it does not return notes — fetch each deal you actually judge with get_deal. Activity rows are NOT readable over the MCP (there is no list_activities): last_activity_at tells you when, never what, and it only moves for work that went through the platform. Point-in-time only, no history/trend. Different universe from admin-governance.",
    "confidence": "high"
   },
   {
@@ -2297,18 +2292,11 @@
      "purpose": "抽 repro/預期/實際 + 回報人 + thread_id"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals",
-     "id_or_url": "crm_deals（project uomieoqlkazknjgmfdda）",
+     "type": "other",
+     "name": "Zynkr AI 平台 deal（zynkr MCP）",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals",
      "runtime_read": true,
-     "purpose": "用公司名反查 deal（id/name/notes）"
-    },
-    {
-     "type": "supabase-table",
-     "name": "crm_users",
-     "id_or_url": "crm_users",
-     "runtime_read": true,
-     "purpose": "SQL fallback 時查 owner 以顯式填 created_by/assignee_id"
+     "purpose": "用公司名反查 deal（id/name/notes）；append notes 前先 get_deal 讀回現值"
     },
     {
      "type": "github",
@@ -2321,7 +2309,7 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals.notes 追加 · crm_tasks 建追蹤任務 · deals/{id}",
+     "touchpoint": "deal notes 追加（get_deal→update_deal）· create_task 建追蹤任務 · deals/{id}",
      "direction": "read-write"
     },
     {
@@ -2343,8 +2331,7 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "search_gmail_messages",
@@ -2353,27 +2340,28 @@
     "get_deal",
     "list_deals",
     "create_task",
-    "execute_sql"
+    "update_deal"
    ],
    "external_services": [
     "Gmail",
-    "GitHub (gh CLI)"
+    "GitHub (gh CLI)",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
     "GitHub issue（bug label + 視情況 severity label）",
     "CRM 追蹤任務 Bug #<n> 追蹤 — <symptom>",
-    "crm_deals.notes 追加一行 Bug #<n>",
+    "deal notes 追加一行 Bug #<n>",
     "Gmail 回覆草稿（threaded，永不寄出）"
    ],
    "setup_required": [
     "本機 bug-routing-config.md（客戶→repo 對照，商業機密不入庫）",
     "gh CLI 已登入且對目標 repo 有寫權限",
     "google-workspace MCP（peter_tu@zynkr.ai）",
-    "zynkr MCP 或 Supabase MCP 存取 project uomieoqlkazknjgmfdda"
+    "zynkr MCP（Zynkr AI 平台 CRM 存取）"
    ],
    "human_gate": "Step 5 單一硬性關卡 — Peter 核准 target repo · issue 標題 · 完整 body · severity 後才允許 gh issue create / CRM 寫入 / Gmail 草稿",
-   "gotchas": "PII 切分是結構性規則：public issue 只放公司名，聯絡人／Gmail 連結／deal URL 只能在 CRM 任務；客戶只看到 issue 編號 #n，不給 repo 路徑或 URL；Supabase MCP 下 auth.uid() 為 NULL，寫入要顯式帶 id；SQL 單引號要 doubling；推測出的 repro 步驟必須標（未確認）；找不到路由就進 gate 問 Peter，絕不猜 repo；本技能只讀不改 config",
+   "gotchas": "PII 切分是結構性規則：public issue 只放公司名，聯絡人／Gmail 連結／deal URL 只能在 CRM 任務；客戶只看到 issue 編號 #n，不給 repo 路徑或 URL；update_deal 會整段覆蓋 notes，必須先 get_deal 讀回再接上去，且先不帶 confirm 預覽、再帶 confirm=true 才寫入；create_task 以呼叫者身分在自己 workspace 建立，沒有 owner id 要解析或硬編；推測出的 repro 步驟必須標（未確認）；找不到路由就進 gate 問 Peter，絕不猜 repo；本技能只讀不改 config",
    "confidence": "high"
   },
   {
@@ -2390,11 +2378,11 @@
      "purpose": "四段摘要與痛點 ledger 的唯一素材來源"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals",
-     "id_or_url": "crm_deals（project uomieoqlkazknjgmfdda）",
+     "type": "other",
+     "name": "crm_deals（經 zynkr MCP get_deal · list_deals · update_deal，不再走 SQL）",
+     "id_or_url": "mcp__zynkr__get_deal / list_deals / update_deal",
      "runtime_read": true,
-     "purpose": "查 deal 並從 notes 取「專案資料夾：<url>」backlink"
+     "purpose": "查 deal 並從 notes 取「專案資料夾：<url>」backlink；寫 CRM note 前也要先 get_deal 讀回現有 notes（update_deal 整欄覆寫）"
     },
     {
      "type": "drive-folder",
@@ -2414,15 +2402,14 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals 讀 notes/stage · notes 追加會議紀錄連結 · deals/{id}",
+     "touchpoint": "crm_deals 經 zynkr MCP 讀 notes · notes 追加會議紀錄連結 · deals/{id}",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "get_doc_content",
@@ -2432,13 +2419,13 @@
     "draft_gmail_message",
     "get_deal",
     "list_deals",
-    "update_deal",
-    "execute_sql"
+    "update_deal"
    ],
    "external_services": [
     "Google Docs",
     "Google Drive",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -2449,10 +2436,10 @@
    "setup_required": [
     "既有 engagement：CRM deal + 編號 [N] Drive 資料夾必須already存在",
     "google-workspace MCP（peter_tu@zynkr.ai）",
-    "zynkr MCP 或 Supabase MCP（project uomieoqlkazknjgmfdda）"
+    "zynkr MCP（deal 讀寫）"
    ],
    "human_gate": "none（自動歸檔＋寫 CRM note）；唯一硬關卡是客戶外寄信一律只做 Gmail 草稿，且無 [N] 資料夾時直接 STOP",
-   "gotchas": "絕不建立資料夾或 deal（無 [N] 就 STOP，改走 /consult-intake 或 /consult-project-specialist）；痛點只能來自本次實際說出／觀察到的，影響欄只用客戶給的數字；空段落寫「本次無相關內容」不得補水；create_drive_file 直接在資料夾建 Doc 會 HTTP 400，必須 create_doc→update_drive_file 兩步；shadowing 子夾用既有的、絕不新建；Supabase MCP 下 auth.uid() 為 NULL；fork 自 project-note-specialist @ b6bfb04c，需定期 re-sync",
+   "gotchas": "絕不建立資料夾或 deal（無 [N] 就 STOP，改走 /consult-intake 或 /consult-project-specialist）；痛點只能來自本次實際說出／觀察到的，影響欄只用客戶給的數字；空段落寫「本次無相關內容」不得補水；create_drive_file 直接在資料夾建 Doc 會 HTTP 400，必須 create_doc→update_drive_file 兩步；shadowing 子夾用既有的、絕不新建；update_deal 會整欄覆寫 notes——先 get_deal 讀回舊值再串接，且先不帶 confirm 預覽、第二次才 confirm=true；fork 自 project-note-specialist @ b6bfb04c，需定期 re-sync",
    "confidence": "high"
   },
   {
@@ -3156,9 +3143,9 @@
    "one_liner_en": "Draws a paired as-is/to-be Lucid chart set from an engagement's docs and logs both URLs on the CRM deal.",
    "knowledge_sources": [
     {
-     "type": "supabase-table",
-     "name": "crm_deals (id, name, notes, stage)",
-     "id_or_url": "crm_deals",
+     "type": "other",
+     "name": "Zynkr AI 平台 CRM deal via the zynkr MCP (id, name, notes, stage)",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals",
      "runtime_read": true,
      "purpose": "resolve the engagement + read the 專案資料夾 backlink from notes"
     },
@@ -3187,14 +3174,13 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals read + notes append (update_deal / SQL); platform.zynkr.ai/deals/{id}",
+     "touchpoint": "deal read + notes append over the zynkr MCP (get_deal / list_deals / update_deal); platform.zynkr.ai/deals/{id}",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "supabase",
     "google-workspace",
     "lucid"
    ],
@@ -3202,7 +3188,6 @@
     "mcp__zynkr__get_deal",
     "mcp__zynkr__list_deals",
     "mcp__zynkr__update_deal",
-    "mcp__supabase__execute_sql",
     "mcp__google-workspace__list_drive_items",
     "mcp__google-workspace__list_docs_in_folder",
     "mcp__google-workspace__get_doc_content",
@@ -3212,7 +3197,8 @@
     "Lucid",
     "Google Drive",
     "Google Docs",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -3224,12 +3210,12 @@
    "setup_required": [
     "product-flow-design installed (hard-STOP if absent — all Lucid access flows through it)",
     "lucid MCP reachable via that skill",
-    "zynkr and/or supabase MCP for the deal",
+    "zynkr MCP for the deal",
     "google-workspace MCP as peter_tu@zynkr.ai",
     "an existing [N] project folder (else route to /consult-intake or /consult-project-specialist)"
    ],
    "human_gate": "Step 3 — both narratives confirmed in text BEFORE any drawing (re-draws are expensive; Lucid create cannot restructure lanes in place); single-chart only on explicit confirm; client email is always a Gmail draft, never sent; deck/BRD handoffs offered, never auto-run",
-   "gotchas": "Fixed facts: Supabase project uomieoqlkazknjgmfdda, over the Supabase MCP auth.uid() is NULL so every write carries explicit ids; escape quotes by doubling. Never draw a to-be without an as-is; never touch Lucid directly; never create a project folder. Thin [Notes]/[Plan] material ⇒ STOP-and-route, not a speculative chart. Ships NO reference files on purpose (single-sourced in product-flow-design) — breaks only if that skill's invocation contract changes. Two separate Lucid docs (MCP can't add pages). One engagement per run.",
+   "gotchas": "mcp__zynkr__update_deal REPLACES `notes` wholesale — read the current value with get_deal and put it in front, or every earlier backlink is lost; call once without `confirm` to preview, then again with `confirm=true`. Never draw a to-be without an as-is; never touch Lucid directly; never create a project folder. Thin [Notes]/[Plan] material ⇒ STOP-and-route, not a speculative chart. Ships NO reference files on purpose (single-sourced in product-flow-design) — breaks only if that skill's invocation contract changes. Two separate Lucid docs (MCP can't add pages). One engagement per run. Step 6 previews the deal-notes write (`update_deal` with no `confirm`) before re-calling with `confirm=true`; `update_deal` REPLACES `notes` wholesale, so read before write.",
    "confidence": "high"
   },
   {
@@ -3486,9 +3472,9 @@
      "purpose": "locate the client's [N] project folder to file the [Plan] Doc"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals",
-     "id_or_url": "project_id uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "crm_deals via zynkr MCP (get_deal · list_deals · update_deal)",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__update_deal",
      "runtime_read": true,
      "purpose": "resolve the deal + read notes for the 專案資料夾 backlink"
     }
@@ -3503,8 +3489,7 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "mcp__google-workspace__get_doc_content",
@@ -3513,13 +3498,14 @@
     "mcp__google-workspace__list_drive_items",
     "mcp__zynkr__get_deal",
     "mcp__zynkr__list_deals",
-    "mcp__supabase__execute_sql",
+    "mcp__zynkr__update_deal",
     "mcp__google-workspace__draft_gmail_message"
    ],
    "external_services": [
     "Google Docs",
     "Google Drive",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -3528,12 +3514,12 @@
     "BRD Handoff block for /consult-brd-writer"
    ],
    "setup_required": [
-    "zynkr and/or supabase MCP connected (project_id uomieoqlkazknjgmfdda)",
+    "zynkr MCP connected (platform.zynkr.ai)",
     "google-workspace MCP as peter_tu@zynkr.ai",
     "An existing [N] client project folder (created by consult-intake / consult-project-specialist)"
    ],
    "human_gate": "Peter confirms each section in turn (persona · journey · pain ranking · MVP scope+metrics) before the Doc is created; client-facing email is always a Gmail DRAFT, never sent",
-   "gotchas": "Never create a competing [N] folder — no folder ⇒ STOP and route to /consult-intake or /consult-project-specialist. Never one-shot the plan. Score with the rubric only; no ledger pain skipped. Over Supabase MCP auth.uid() is NULL so every write carries explicit ids; double single quotes in SQL. create_doc-into-folder returns 400 — create then update_drive_file to move. Bands: ≥48 MVP 候選 · 20–47 roadmap · <20 觀察; max 3 candidates into scope tests. Missing baseline = 待量測, never invented. Derivative of MrPM-Stanley 產品企劃力; forked from product-planning (5.02) @ b6bfb04c.",
+   "gotchas": "Never create a competing [N] folder — no folder ⇒ STOP and route to /consult-intake or /consult-project-specialist. Never one-shot the plan. Score with the rubric only; no ledger pain skipped. mcp__zynkr__update_deal REPLACES notes wholesale — get_deal first and resend the existing text in front, or every earlier backlink is lost; call once without confirm to preview, then again with confirm=true. create_doc-into-folder returns 400 — create then update_drive_file to move. Bands: ≥48 MVP 候選 · 20–47 roadmap · <20 觀察; max 3 candidates into scope tests. Missing baseline = 待量測, never invented. Derivative of MrPM-Stanley 產品企劃力; forked from product-planning (5.02) @ b6bfb04c.",
    "trigger_phrases": [
     "/consult-solution-planning",
     "幫客戶做需求規劃",
@@ -3550,11 +3536,11 @@
    "one_liner_en": "Drafts the weekly client-facing 專案狀態看板 HTML email for ONE engagement — Gmail draft, never sent.",
    "knowledge_sources": [
     {
-     "type": "supabase-table",
-     "name": "crm_deals · crm_contacts · crm_activities · CRM tasks",
-     "id_or_url": "project_id uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr platform CRM — the deal (stage · notes), its contact, and its tasks, read through the `zynkr` MCP server",
+     "id_or_url": "mcp__zynkr__get_deal · mcp__zynkr__list_deals(search) · mcp__zynkr__get_contact · mcp__zynkr__list_tasks",
      "runtime_read": true,
-     "purpose": "deal/stage/notes, live client contact + email, tasks and activity timeline"
+     "purpose": "deal/stage/notes, live client contact + email, and tasks — the activity timeline is NOT readable (there is no list_activities tool), so the deal's notes field is the only narrative"
     },
     {
      "type": "drive-folder",
@@ -3588,22 +3574,22 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals/crm_contacts/crm_activities+tasks read; deal note 週報已擬稿 write",
+     "touchpoint": "zynkr MCP get_deal/list_deals/get_contact/list_tasks read; update_deal deal-note 週報已擬稿 write",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "supabase",
     "google-workspace"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
+    "mcp__zynkr__list_deals",
     "mcp__zynkr__list_tasks",
     "mcp__zynkr__get_contact",
     "mcp__zynkr__update_deal",
-    "mcp__supabase__execute_sql",
+    "mcp__google-workspace__list_drive_items",
     "mcp__google-workspace__list_docs_in_folder",
     "mcp__google-workspace__search_gmail_messages",
     "mcp__google-workspace__draft_gmail_message"
@@ -3611,23 +3597,24 @@
    "external_services": [
     "Gmail",
     "Google Drive",
-    "Google Docs"
+    "Google Docs",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
     "Gmail DRAFT [週報] {COMPANY} — {PROJECT} {YYYY-Www} (HTML dashboard)",
     "dashboard.json + email.html locally",
-    "crm_deals.notes 週報已擬稿 entry",
+    "Deal notes 週報已擬稿 entry (via zynkr MCP update_deal)",
     "to-Peter review summary"
    ],
    "setup_required": [
-    "zynkr / supabase MCP (project_id uomieoqlkazknjgmfdda)",
+    "zynkr MCP against the Zynkr AI 平台 workspace (no Supabase project id or DB credentials)",
     "google-workspace MCP as peter_tu@zynkr.ai",
     "python3 for the renderer",
     "An existing [N] client folder and a deal contact with an email"
    ],
-   "human_gate": "Everything stops at the Gmail DRAFT — Peter reviews and sends; even 'send it' still only drafts and re-asks",
-   "gotchas": "DRAFT never send (a wrong 🔴 mailed to a client is an incident). Recipient resolved LIVE from CRM every run — never remembered/hardcoded; no contact email ⇒ STOP. No invented progress/blockers — thin evidence ⇒ 資料不足 + flag. Unparseable dates are excluded from overdue math (bad guesses fabricate false 🔴). Never create a folder. Scheduled/cron weeklies belong to project-status-update (3.09) — this skill is Peter-invoked per named engagement; bare 週報 must not trigger it. Renderer + schema are COPIES of the source skill (forked @ e35a1f57) — fix the JSON, not the script. One engagement per run.",
+   "human_gate": "Everything stops at the Gmail DRAFT — Peter reviews and sends; even 'send it' still only drafts and re-asks.",
+   "gotchas": "DRAFT never send (a wrong 🔴 mailed to a client is an incident). Recipient resolved LIVE from CRM every run — never remembered/hardcoded; no contact email ⇒ STOP. No invented progress/blockers — thin evidence ⇒ 資料不足 + flag. Unparseable dates are excluded from overdue math (bad guesses fabricate false 🔴). Never create a folder. Scheduled/cron weeklies belong to project-status-update (3.09) — this skill is Peter-invoked per named engagement; bare 週報 must not trigger it. Renderer + schema are COPIES of the source skill (forked @ e35a1f57) — fix the JSON, not the script. One engagement per run. No list_activities tool on the zynkr MCP — meeting/note rows can be written but never read back, so the report is built from tasks + deal notes only; a session logged as a meeting and never written into notes is invisible, and that must be said aloud rather than reported as silence. list_tasks has no per-deal filter (filter=\"all\", limit=200, then keep the rows whose deal_id matches — the filtering is yours). update_deal REPLACES notes wholesale — get_deal, append, then update_deal(confirm=true); skipping the read loses every earlier backlink. The deal-note write goes through update_deal's preview-then-confirm=true two-call step.",
    "trigger_phrases": [
     "/consult-status-report",
     "客戶週報",
@@ -4190,9 +4177,9 @@
      "purpose": "source material for stakeholders, as-is flow, pains"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals (id, name, notes, stage)",
-     "id_or_url": "Supabase project uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr AI 平台 CRM deal (id, name, notes, stage) via the zynkr MCP — get_deal / list_deals",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__update_deal / mcp__zynkr__move_deal_stage / mcp__zynkr__create_task",
      "runtime_read": true,
      "purpose": "resolve the deal + read the 專案資料夾 backlink"
     },
@@ -4213,37 +4200,29 @@
     {
      "type": "repo-file",
      "name": "./references/brd-template.md",
-     "id_or_url": "",
+     "id_or_url": "skills/2-sales-consultant/consult-brd-writer/references/brd-template.md",
      "runtime_read": true,
      "purpose": "zh-TW client-grade BRD skeleton"
     },
     {
      "type": "repo-file",
      "name": "./references/prd-spec-template.md",
-     "id_or_url": "",
+     "id_or_url": "skills/2-sales-consultant/consult-brd-writer/references/prd-spec-template.md",
      "runtime_read": true,
      "purpose": "SDD PRD template; its top comment = uat-writer parsing contract"
-    },
-    {
-     "type": "repo-file",
-     "name": "./references/deal-insert.sql",
-     "id_or_url": "",
-     "runtime_read": true,
-     "purpose": "owner lookup, quote-escaping, task VALUES row patterns"
     }
    ],
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals (SELECT + notes UPDATE + optional stage), crm_tasks, crm_users; deals/{id} route",
+     "touchpoint": "zynkr MCP — get_deal / list_deals (deal + notes), update_deal (notes backlink), move_deal_stage, create_task; deals/{id} route",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "mcp__google-workspace__get_doc_content",
@@ -4252,12 +4231,15 @@
     "mcp__google-workspace__list_docs_in_folder",
     "mcp__google-workspace__search_drive_files",
     "mcp__zynkr__get_deal",
+    "mcp__zynkr__list_deals",
+    "mcp__zynkr__update_deal",
     "mcp__zynkr__move_deal_stage",
-    "mcp__supabase__execute_sql"
+    "mcp__zynkr__create_task"
    ],
    "external_services": [
     "Google Drive/Docs",
-    "Gmail (draft only)"
+    "Gmail (draft only)",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -4268,7 +4250,7 @@
    ],
    "setup_required": [
     "google-workspace MCP authed as peter_tu@zynkr.ai",
-    "zynkr MCP (or supabase MCP fallback) on Supabase project uomieoqlkazknjgmfdda",
+    "zynkr MCP connected (platform.zynkr.ai CRM)",
     "Client must already have a numbered [N] Drive folder"
    ],
    "human_gate": "Step 4 outline gate — the outline, numbered requirement/AC list and open questions must be approved before any prose is generated; stage nudge and review task are offered, never auto; client email is always a Gmail draft",
@@ -4280,7 +4262,7 @@
     "把 shadowing 筆記變成 spec",
     "make this buildable"
    ],
-   "gotchas": "Never creates a competing [N] folder — no folder means STOP and route to /consult-intake or /consult-project-specialist. Over Supabase MCP auth.uid() is NULL: crm_companies/contacts/deals declare workspace_id NOT NULL DEFAULT auth.uid(), so omitting workspace_id fails outright (fixed 2026-08-16 PLAT-046); every dedupe lookup must be workspace-scoped or a lead binds to another tenant. create_drive_file for a Doc returns HTTP 400 — create then move. Requirement numbers R-n are permanent. PRD H1/Size-DoD/AC+Verify/Out-of-scope shape is a parsing contract for consult-uat-writer. One document per run.",
+   "gotchas": "Never creates a competing [N] folder — no folder means STOP and route to /consult-intake or /consult-project-specialist. mcp__zynkr__update_deal REPLACES notes wholesale — get_deal, append, then update with confirm=true, or every earlier backlink is lost. Only move_deal_stage moves a stage; writing the column directly skips the stage_change timeline entry and the automation event. create_drive_file for a Doc returns HTTP 400 — create then move. Requirement numbers R-n are permanent. PRD H1/Size-DoD/AC+Verify/Out-of-scope shape is a parsing contract for consult-uat-writer. One document per run.",
    "confidence": "high"
   },
   {
@@ -4290,9 +4272,9 @@
    "one_liner_en": "Thin wrapper that delegates Whisper transcription + zh-TW cleanup, then files the transcript in the client's [N] folder and links it on the deal.",
    "knowledge_sources": [
     {
-     "type": "supabase-table",
-     "name": "crm_deals (id, name, stage, notes)",
-     "id_or_url": "Supabase project uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr platform CRM deal record (id, name, stage, notes) — read via the zynkr MCP",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__update_deal",
      "runtime_read": true,
      "purpose": "resolve engagement + read the 專案資料夾 backlink"
     },
@@ -4307,30 +4289,30 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals notes append (read-then-append); deals/{id} route",
+     "touchpoint": "deal notes append via zynkr MCP get_deal → update_deal (read-then-append); deals/{id} route",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
     "mcp__zynkr__list_deals",
     "mcp__zynkr__update_deal",
-    "mcp__supabase__execute_sql",
     "mcp__google-workspace__list_drive_items",
     "mcp__google-workspace__create_drive_file",
     "mcp__google-workspace__create_doc",
-    "mcp__google-workspace__update_drive_file"
+    "mcp__google-workspace__update_drive_file",
+    "mcp__google-workspace__draft_gmail_message"
    ],
    "external_services": [
     "Google Drive",
     "Gmail (draft only)",
-    "local Whisper (via training-srt-transcriber)"
+    "local Whisper (via training-srt-transcriber)",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -4341,7 +4323,7 @@
    "setup_required": [
     "training-srt-transcriber and training-srt-optimizer must both be installed (skill STOPS otherwise)",
     "google-workspace MCP authed as peter_tu@zynkr.ai",
-    "zynkr MCP or supabase MCP on project uomieoqlkazknjgmfdda",
+    "zynkr MCP server connected (platform.zynkr.ai) — no Supabase project id or SQL access needed",
     "Deal whose notes carry the 專案資料夾 backlink"
    ],
    "human_gate": "Step 5 offers (never auto-creates) the Google Doc rendering; client-facing email is Gmail draft only",
@@ -4352,7 +4334,7 @@
     "客戶錄音轉逐字稿",
     "transcribe this client call"
    ],
-   "gotchas": "Delegate, never duplicate — invokes the two base skills by name and must not reach into their files via relative parent paths. Must OVERRIDE training-srt-optimizer's final delivery step (its upload targets the TRAINING Drive folder, where an engagement transcript is effectively lost). Never creates the [N] folder; the only folder it may create is a genuinely-absent Shadowing — YYYY-MM-DD subfolder. Filename date = session date, not run date. Docs created via create_drive_file return HTTP 400 — create then move. One recording per run; it files but never interprets (that's /consult-session-notes).",
+   "gotchas": "Delegate, never duplicate — invokes the two base skills by name and must not reach into their files via relative parent paths. Must OVERRIDE training-srt-optimizer's final delivery step (its upload targets the TRAINING Drive folder, where an engagement transcript is effectively lost). Never creates the [N] folder; the only folder it may create is a genuinely-absent Shadowing — YYYY-MM-DD subfolder. Filename date = session date, not run date. Docs created via create_drive_file return HTTP 400 — create then move. One recording per run; it files but never interprets (that's /consult-session-notes). mcp__zynkr__update_deal REPLACES notes wholesale — get_deal first and put the existing notes in front, or every earlier backlink is lost; call it once without confirm to preview, then again with confirm=true.",
    "confidence": "high"
   },
   {
@@ -4719,9 +4701,9 @@
    "one_liner_en": "Books a consulting shadowing session end-to-end: calendar hold, dated subfolder, client mail draft, CRM task",
    "knowledge_sources": [
     {
-     "type": "supabase-table",
-     "name": "crm_deals · crm_contacts · crm_companies",
-     "id_or_url": "project uomieoqlkazknjgmfdda",
+     "type": "other",
+     "name": "Zynkr AI 平台 CRM — deal · contact · company (via zynkr MCP)",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__get_contact / mcp__zynkr__get_company / mcp__zynkr__list_tasks / mcp__zynkr__create_task / mcp__zynkr__update_deal / mcp__zynkr__move_deal_stage",
      "runtime_read": true,
      "purpose": "Read the deal, contact email, and the 專案資料夾 link in notes"
     },
@@ -4750,30 +4732,36 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals (notes append · stage) · crm_activities task; /deals/{id} backlink",
+     "touchpoint": "deal read + notes replace · stage move · task create/list, all via the zynkr MCP; /deals/{id} backlink",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "supabase",
     "google-workspace"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
+    "mcp__zynkr__list_deals",
+    "mcp__zynkr__get_contact",
+    "mcp__zynkr__get_company",
+    "mcp__zynkr__list_tasks",
     "mcp__zynkr__create_task",
+    "mcp__zynkr__update_deal",
     "mcp__zynkr__move_deal_stage",
-    "mcp__supabase__execute_sql",
     "mcp__google-workspace__query_freebusy",
     "mcp__google-workspace__manage_event",
+    "mcp__google-workspace__get_events",
+    "mcp__google-workspace__list_drive_items",
     "mcp__google-workspace__create_drive_file",
     "mcp__google-workspace__draft_gmail_message"
    ],
    "external_services": [
     "Google Calendar",
     "Google Drive",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -4783,12 +4771,12 @@
     "CRM task 跟拍 shadowing @ date + deal-notes backlink"
    ],
    "setup_required": [
-    "zynkr and/or supabase MCP on project uomieoqlkazknjgmfdda",
+    "zynkr MCP server connected (no Supabase project id or DB credentials)",
     "google-workspace MCP (Calendar+Drive+Gmail) authed as peter_tu@zynkr.ai",
     "Deal must already carry a 專案資料夾 link"
    ],
    "human_gate": "Step 4 slot-confirm gate — nothing is created until Peter picks a slot; the same gate decides whether the client is added as an attendee (default NO); the client mail is draft-only",
-   "gotchas": "No 專案資料夾 line in deal notes → STOP and route to consult-intake / consult-project-specialist (never create folders or deals); adding an external attendee emails the client instantly; re-runs must update not duplicate (list_drive_items check + NOT EXISTS task guard + get_events event lookup); auth.uid() is NULL over MCP so set created_by/assignee_id explicitly",
+   "gotchas": "No 專案資料夾 line in deal notes → STOP and route to consult-intake / consult-project-specialist (never create folders or deals); adding an external attendee emails the client instantly; re-runs must update not duplicate (list_drive_items check + list_tasks subject pre-check + get_events event lookup) — create_task is NOT idempotent where the old SQL was, and list_tasks caps at 200, so an exactly-200 result cannot rule out a duplicate: ask Peter rather than double-book; update_deal REPLACES notes, so get_deal → append → update_deal; move stages ONLY via move_deal_stage — writing the column directly skips the stage_change timeline entry and the automation event",
    "trigger_phrases": [
     "/consult-shadowing-scheduler",
     "排 shadowing 時間",
@@ -5262,25 +5250,24 @@
      "purpose": "zh-TW client guide skeleton; 問題回報方式 shape is a contract"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals (notes carry the 專案資料夾 backlink) · crm_users",
-     "id_or_url": "crm_deals · crm_users (project uomieoqlkazknjgmfdda)",
+     "type": "other",
+     "name": "Zynkr platform CRM deal (notes carry the 專案資料夾 backlink) via the `zynkr` MCP server",
+     "id_or_url": "mcp__zynkr__get_deal · mcp__zynkr__list_deals · mcp__zynkr__update_deal",
      "runtime_read": true,
-     "purpose": "Resolve the deal, its [N] folder URL, and the owner id for writes"
+     "purpose": "Resolve the deal and its [N] folder URL in step 1, and re-read notes in step 6 before appending the backlink"
     }
    ],
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals (read notes, append doc link) · crm_activities task · deals/{id} route",
+     "touchpoint": "deal read + notes read-then-append via zynkr MCP (get_deal / list_deals / update_deal) · create_task 驗收任務 · deals/{id} route",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr",
-    "supabase"
+    "zynkr"
    ],
    "mcp_tools": [
     "get_doc_content",
@@ -5288,14 +5275,16 @@
     "create_doc",
     "update_drive_file",
     "mcp__zynkr__get_deal",
+    "mcp__zynkr__list_deals",
+    "mcp__zynkr__update_deal",
     "mcp__zynkr__create_task",
-    "mcp__supabase__execute_sql",
     "draft_gmail_message"
    ],
    "external_services": [
     "Google Docs",
     "Google Drive",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -5306,10 +5295,10 @@
    ],
    "setup_required": [
     "google-workspace MCP as peter_tu@zynkr.ai",
-    "zynkr MCP (SQL fallback via supabase MCP, project uomieoqlkazknjgmfdda)",
+    "zynkr MCP connected to the Zynkr platform CRM (no Supabase project id or DB credentials needed)",
     "An existing [PRD] Doc from consult-brd-writer + the client's [N] folder"
    ],
-   "gotchas": "Never improvise ACs — any of the four PRD shapes missing ⇒ STOP and fix upstream in consult-brd-writer; builder-only checks (SQL/curl/CLI) must move to the 顧問側驗證 appendix, never into the client checklist; keep 問題回報方式's four items byte-stable because consult-bug-ticket parses them; S-n ↔ AC-n numbers are permanent once gated; create_drive_file for a Doc in a folder returns HTTP 400 — create then update_drive_file(add_parents); auth.uid() is NULL over the Supabase MCP so every write carries explicit ids; one PRD per run",
+   "gotchas": "Never improvise ACs — any of the four PRD shapes missing ⇒ STOP and fix upstream in consult-brd-writer; builder-only checks (SQL/curl/CLI) must move to the 顧問側驗證 appendix, never into the client checklist; keep 問題回報方式's four items byte-stable because consult-bug-ticket parses them; S-n ↔ AC-n numbers are permanent once gated; create_drive_file for a Doc in a folder returns HTTP 400 — create then update_drive_file(add_parents); mcp__zynkr__update_deal REPLACES notes wholesale, so get_deal first and put the existing text in front or every earlier backlink is lost (preview each zynkr write without `confirm`, then repeat with confirm=true); one PRD per run",
    "human_gate": "Step 4 gate — scenario table + coverage line approved before any prose is generated; client-facing mail is always a Gmail draft, never sent",
    "trigger_phrases": [
     "寫 UAT 指南",
@@ -5342,9 +5331,9 @@
      "purpose": "The two zh-TW client-internal skeletons + why-the-sponsor-signs note"
     },
     {
-     "type": "supabase-table",
-     "name": "crm_deals (id, name, notes, stage)",
-     "id_or_url": "crm_deals (project uomieoqlkazknjgmfdda)",
+     "type": "other",
+     "name": "Zynkr platform CRM deal record (name · notes · stage) read through the `zynkr` MCP server",
+     "id_or_url": "mcp__zynkr__get_deal / mcp__zynkr__list_deals / mcp__zynkr__update_deal",
      "runtime_read": true,
      "purpose": "Resolve the deal and extract the 專案資料夾 backlink"
     }
@@ -5352,15 +5341,14 @@
    "connected_solutions": [
     {
      "solution": "Zynkr AI 平台",
-     "touchpoint": "crm_deals read (notes/stage) + notes append of both [Comms] doc URLs",
+     "touchpoint": "deal read (notes/stage) via zynkr MCP + notes append of both [Comms] doc URLs",
      "direction": "read-write"
     }
    ],
    "requires_mcp": true,
    "mcp_servers": [
     "zynkr",
-    "google-workspace",
-    "supabase"
+    "google-workspace"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
@@ -5369,13 +5357,13 @@
     "list_docs_in_folder",
     "get_doc_content",
     "create_doc",
-    "update_drive_file",
-    "mcp__supabase__execute_sql"
+    "update_drive_file"
    ],
    "external_services": [
     "Google Docs",
     "Google Drive",
-    "Gmail"
+    "Gmail",
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -5385,11 +5373,11 @@
     "Optional anonymized Case-Study Handoff packet for /zynkr-content-writer or /social-publish-article"
    ],
    "setup_required": [
-    "zynkr MCP (or supabase MCP fallback, project uomieoqlkazknjgmfdda)",
+    "zynkr MCP server",
     "google-workspace MCP as peter_tu@zynkr.ai",
     "An existing numbered [N] client folder (else route to consult-intake / consult-project-specialist)"
    ],
-   "gotchas": "Never create a competing [N] folder — STOP if none exists; help contact must be a client-internal person, never Peter/Zynkr; 說明會 date unknown ⇒ leave {{TBD}} verbatim for consult-info-session, never invent a date; sponsor name never defaults to Peter; the public case-study leg is ask-only AND anonymized unless Peter confirms written client consent; direct create-in-folder returns HTTP 400 (create then add_parents); double single quotes in SQL notes appends",
+   "gotchas": "Never create a competing [N] folder — STOP if none exists; help contact must be a client-internal person, never Peter/Zynkr; 說明會 date unknown ⇒ leave {{TBD}} verbatim for consult-info-session, never invent a date; sponsor name never defaults to Peter; the public case-study leg is ask-only AND anonymized unless Peter confirms written client consent; direct create-in-folder returns HTTP 400 (create then add_parents); mcp__zynkr__update_deal REPLACES notes wholesale — get_deal first and put the existing text in front, preview without confirm, then re-call with confirm=true, or every earlier backlink is lost",
    "human_gate": "Step 4 gate — both drafts shown in full and approved before anything is filed; step 6 public leg only on an explicit yes; mail is Gmail DRAFT only",
    "trigger_phrases": [
     "寫導入上線公告",
