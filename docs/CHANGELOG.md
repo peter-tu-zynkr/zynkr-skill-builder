@@ -990,7 +990,32 @@ diff empty**, ingest exit 0 · build artifacts discarded, not committed (CI owns
 `content/` + `generated/`) · no SKILL.md touched, so `qa.yml` has nothing to
 validate on this PR.
 
-## 2026-09-07 — `training-process-video` declares its package · `SKB-019`
+## 2026-09-06 — upstream prep for the Atlas migration waves · `SKB-019`
+
+Recorded after the fact: commit `1bd9e535` shipped this with the trailer `Spec: SKB-019` and no
+changelog entry, which is how the id was claimed twice (see the next entry). Five edits the Atlas
+importer needs before any wave can run, since it reads `SKILL.md` from `raw.githubusercontent`:
+
+- `sheetId` written back to the two skills that had none — `accupass-agent` **3.16**,
+  `guest-lecturer-program` **3.15**. Not new ids: `content/skills/3.16.md` and `3.15.md` were
+  already those two skills; only the write-back to frontmatter had never happened, and that omission
+  is what generated the 3.17/3.18 strays.
+- `skill-sourcer` declares itself a package (`type: agent` + `skills:`), per Atlas ruling D3 — one
+  of the ten orchestrators, and its four members are wave 1's own rows.
+- `extracted.json` gains `eli5` (4.12) and `sales-manager` (2.46): 90 skills → 92.
+
+**Verification (D1)** — as recorded in the commit: validator clean on the changed files; ingest
+dry-run without a duplicate-id throw. Consumed by `zynkr-atlas` `ATL-063`/`ATL-064`.
+
+## 2026-09-07 — `training-process-video` declares its package · `SKB-020`
+
+> ⚠️ **Renumbered from `SKB-019`, which `1bd9e535` had already taken** (the entry above, written
+> only now). This change's own commit trailer (`85a3b14c`) still says `SKB-019` and is wrong —
+> `main` is not rewritten to hide it. Same failure as `SKB-016`'s, for the same reason: this repo has
+> no 「next free id」 guardrail line, and a commit trailer with no changelog entry is invisible to a
+> `grep` of the record. **Until a guardrail line exists, derive the next SKB id from `git log
+> --grep=SKB-` as well as from `docs/`.**
+
 
 `type: agent` + `skills: [...]` on `skills/4-training/training-process-video/SKILL.md` — the
 shape `SKB-013` gave `zynkr-skills` and `skill-sourcer`, documented as the `SKILL_SPEC.md` §1
