@@ -4,6 +4,50 @@ Append-only record of shipped work (SDD altitude: Record; newest at the bottom).
 Created 2026-07-02 with SDD adoption — earlier history lives in the git log and
 the ingest-workflow run history.
 
+## 2026-09-07 — three packages declared, three stale refs retired · `SKB-025`
+
+The last of the six Atlas import waves reads `skills/2-sales-consultant`. Ruling D3 says a package
+is declared HERE and only read there: a 代理 row exists because a `SKILL.md` says `type: agent` and
+lists its `skills:`, never because the importer guessed. Three files in this category are packages
+and none of them said so.
+
+- **`sales-manager`** conducts five sibling skills. Its `skills:` is the order of its own child
+  table — `sales-client-sourcing` · `sales-specialist` · `sales-outbound` · `sales-follow-up` ·
+  `sales-research` (2.01 · 2.02 · 2.09 · 2.10 · 2.11) — because the consumer records the array
+  index as the edge position, so alphabetising would silently reorder the family. Its `synergy:`
+  is retired to `[]`: it listed the same five, and a router's children are its members. Claiming
+  both mints two edges per pair, which is what `SKB-023` retired twice already.
+- **`sales-specialist`** has one member. ⚠️ It is declared `sales-follow-up-mail`, not
+  `followup-email-writer`: the file is `agents/followup-email-writer.md` but its frontmatter
+  `name:` is what identifies a member, and the basename resolves to nothing **without erroring**.
+- **`consult-discovery`** has two, declared in **dispatch order** — `consult-as-is` then
+  `consult-to-be`. ⚠️ Their ids are 2.08 and 2.07, so ascending sheetId is inverted here; the body
+  runs as-is as Stage 1 and to-be as Stage 2. Sorting by id would put both positions wrong. Its
+  `synergy:` stays: those two entries are neighbours, not members.
+
+**And one fix that is not about wave 6 at all.** `operations-transformation` declares
+`synergy: ["2.14", "2.15", "2.16", "operations-flow-optimization"]`. The consuming graph records
+the three numeric refs as `not_found` today — harmless. Wave 6 imports `consult-uat-writer` (2.14),
+`consult-adoption-reporter` (2.15) and `consult-bug-ticket` (2.16), and at that moment all three
+stop being unresolved and start being **wrong**: three edges to skills this file has never heard
+of, invisible to every unresolved count precisely because they resolve. That is the same defect
+`SKB-023` fixed for `zynkr-recruiter`, and wave 6 is what would trigger it.
+
+They are stale, not intended, and the history says so plainly: `e8657a2` (2026-05-25) scaffolded
+`operations-transformation` 「from sheet rows … 2.11–2.16」 with **no sheetId of its own** and this
+synergy list already in place, so the ids are May-sheet rows; `b6bfb04` (2026-08-02) **created**
+the three consult skills and assigned those ids to them ten weeks later;
+`generated/id-redirects.json` holds no entry for any of the three, so they were reassigned rather
+than redirected; and the body names exactly one neighbour — `consult-discovery` — and never
+mentions UAT, adoption or bug tickets. What they pointed at in the May sheet is not recoverable
+from this repo, so they are **retired rather than repointed**, and the one slug ref stays.
+
+**Not done here.** No member file changes: all three already carry a legal `name:` and a valid
+`sheetId:` (`consult-as-is` 2.08, `consult-to-be` 2.07, `sales-follow-up-mail` 2.03). And the
+three delegating wrappers — `consult-flow-design`, `consult-info-session`, `consult-transcriber` —
+stay ordinary skills: they call another skill but ship no members, and the import plan's own list
+of orchestrators does not include them.
+
 ## 2026-09-07 — `extracted.json` catches up with the MCP conversion · `SKB-024`
 
 `SKB-022` moved fourteen `consult-*` skills off raw SQL onto the `zynkr` MCP and deleted three

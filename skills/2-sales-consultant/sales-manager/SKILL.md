@@ -28,7 +28,9 @@ author: Peter Tu
 input: "A sales input with no skill named (signal · survey sheet · card · transcript · company), or a pipeline question like 「什麼 deal 該追」. Optional: guided."
 process: "Classify into ROUTE / SEQUENCE / REVIEW → delegate to the child skills, never inline their logic → for REVIEW read the CRM across deals → propose every CRM write as ONE batch → apply on one confirmation → report."
 output: "Whatever the delegated children produced (CRM records · Gmail drafts · enriched sheet), plus for REVIEW a deal-level attention list and one confirmed batch of CRM writes."
-synergy: ["sales-client-sourcing", "sales-specialist", "sales-outbound", "sales-follow-up", "sales-research"]
+synergy: []
+type: agent
+skills: ["sales-client-sourcing", "sales-specialist", "sales-outbound", "sales-follow-up", "sales-research"]
 ---
 
 # Sales Manager

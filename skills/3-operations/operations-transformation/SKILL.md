@@ -11,9 +11,6 @@ input: "A client-described inefficient or unclear business process, ideally with
 process: "Stage 1 SIPOC mapping → Stage 2 automation suitability diagnosis (four-quadrant + ROI) → Stage 3 sub-task / system-layer / MVP-stack redesign"
 output: "SIPOC table, diagnostic table with tech recommendations and ROI, and a builder-ready redesign blueprint with MVP stack"
 synergy:
-  - "2.14"
-  - "2.15"
-  - "2.16"
   - "operations-flow-optimization"
 type: agent
 skills: ["operations-process-discovery", "operations-automation-validation", "operations-process-redesign"]

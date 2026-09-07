@@ -13,6 +13,8 @@ output: "Structured Needs Definition Summary and Strategic Discovery Summary, re
 synergy:
   - "sales-research"
   - "consult-project-specialist"
+type: agent
+skills: ["consult-as-is", "consult-to-be"]
 ---
 
 # Consulting Discovery

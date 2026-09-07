@@ -11,6 +11,8 @@ input: "Business card image(s) — single or batch"
 process: "OCR via Claude Vision → schema normalization → user review → Zynkr platform write (contact + company + 名片 note) → company research → follow-up email draft → Gmail save"
 output: "Contact + company on the Zynkr platform (platform.zynkr.ai/contacts), a 名片 note holding the rest of the card, and a personalized follow-up email saved to Gmail Drafts"
 synergy: []
+type: agent
+skills: ["sales-follow-up-mail"]
 ---
 
 # Sales Specialist
