@@ -67,7 +67,6 @@ personal phrase like "轉職計劃中" or blank — that's fine, carry it throug
 
 ## Fixed facts (don't re-derive these)
 
-- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (where numbered project folders go): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
 - **CRM deal URL** for the report/doc: `https://platform.zynkr.ai/deals/{deal_id}`
@@ -111,27 +110,49 @@ can sanity-check your judgment.
 ### 3 · De-dup against the CRM
 
 Before creating anything, check which of these leads already have a deal — they
-were processed on a previous run and must be left alone. One query covers the batch:
+were processed on a previous run and must be left alone.
 
-```sql
-SELECT lower(c.email) AS email
-FROM crm_deals d JOIN crm_contacts c ON d.contact_id = c.id
-WHERE lower(c.email) IN ( <lowercased emails of this week's real leads> );
-```
+Resolve the batch in two reads. First `mcp__zynkr__list_deals(limit=100)` once,
+and keep the `contact_id` of every row. Then, per lead,
+`mcp__zynkr__list_contacts(search="<email>")` — no match means a genuinely new
+lead; a match whose id appears in that contact_id set is **already handled** →
+skip it entirely (no deal, no folder, no doc). The rest are your work list.
 
-Any email that comes back is **already handled** → skip it entirely (no deal, no
-folder, no doc). The remaining leads are your work list. (The deal-insert SQL in
-step 4 also guards against this internally, but checking up front means you don't
-create an orphan folder for a lead whose deal gets de-duped.)
+Checking up front is the point: it stops you creating an orphan folder for a
+lead that turns out to be a repeat.
+
+⚠️ `list_deals` returns the newest 100 rows by activity and cannot filter by
+contact. If it comes back with exactly 100, the de-dup is no longer sound —
+stop and say so rather than risk double-booking a lead.
 
 ### 4 · For each surviving lead, create the three artifacts
 
 Do these in order so each can reference the one before it.
 
-**a) The CRM deal.** Read `references/deal-insert.sql`, fill in the placeholders,
-and run it via `mcp__supabase__execute_sql` (project_id above). It find-or-creates
-the company and contact, inserts the deal, and logs the `created` activity — all
-in one idempotent statement. Mapping:
+**a) The CRM deal.** Three calls in this order, so each hands its id to the next.
+Every write previews first — call it once without `confirm`, then again with
+`confirm=true` to apply.
+
+1. **Company** — skip when `Company` is blank.
+   `mcp__zynkr__list_companies(search="<Company>")`; on no match,
+   `mcp__zynkr__create_company(name="<Company>", confirm=true)`. Keep the id.
+2. **Contact** — `mcp__zynkr__list_contacts(search="<Email>")`; on no match,
+   `mcp__zynkr__create_contact(first_name="<Name>", email="<Email>",
+   company_id="<company id, if any>", legal_basis="consent",
+   lifecycle_stage="lead", confirm=true)`. Keep the id. `legal_basis` is
+   required by the tool — an inbound form submission is `consent`.
+3. **Deal** — `mcp__zynkr__create_deal(name="<DEAL_NAME>", contact_id=…,
+   company_id=…, stage="new", service_tier="advisory", priority="medium",
+   lead_source="content", close_date="<today + 30 days>", notes="<NOTES>",
+   confirm=true)`. The pipeline, the 交易 number, the owner, the `created`
+   activity and the automation event are all handled for you.
+
+**One field does not survive the move.** The contact's `lead_status` /
+`deal_status` cannot be set through the MCP and stay empty. The attribution
+still lives on the deal as `lead_source="content"` — look there, not on the
+contact.
+
+Values:
 
 | Placeholder    | Value |
 |----------------|-------|
@@ -141,8 +162,7 @@ in one idempotent statement. Mapping:
 | `{{DEAL_NAME}}`  | **`Name（Company）AI 顧問`** — e.g. `Jane（轉職計劃中）AI 顧問`. If `Company` is blank, use just `Name AI 顧問`. |
 | `{{NOTES}}`      | the `Brief context` text, prefixed with a source line (see below) |
 
-Escape single quotes by doubling them (`O'Brien` → `O''Brien`). Suggested
-`{{NOTES}}` value:
+Suggested `{{NOTES}}` value:
 
 ```
 來源：官網 consult 頁面 · Interest: AI 顧問服務
@@ -151,8 +171,9 @@ Escape single quotes by doubling them (`O'Brien` → `O''Brien`). Suggested
 <Brief context>
 ```
 
-The query returns the new `deal_id`. **Zero rows back = the lead was de-duped at
-the DB level** → skip its folder/doc too and note it.
+`create_deal` returns the new `deal_id` — carry it into (b) and (c). If step 3
+already flagged this lead as handled, you never reach here: skip its folder and
+doc too, and say so in the report.
 
 **b) The Drive project folder.** The folder name is **`[N] Company（Name）`** —
 e.g. `[1] 轉職計劃中（Jane）`. If `Company` is blank, use `[N] Name`.
@@ -213,11 +234,15 @@ Capture the doc's link for the report.
 **d) Link the folder back to the deal** so the team can jump from CRM to the
 workspace. Append the folder URL to the deal's notes:
 
-```sql
-UPDATE crm_deals
-SET notes = COALESCE(notes,'') || E'\n\n專案資料夾：<folder url>'
-WHERE id = '<deal_id>';
-```
+`mcp__zynkr__update_deal` REPLACES `notes` wholesale, so append in three steps:
+
+1. `mcp__zynkr__get_deal(id="<deal_id>")` — read the current `notes`
+2. build the new value: the existing notes, then a blank line, then the block below
+3. `mcp__zynkr__update_deal(id="<deal_id>", notes="<combined>", confirm=true)`
+
+Call it once without `confirm` to preview, then again with `confirm=true`. Never
+send `notes` without the existing text in front of it — the field is overwritten,
+not appended, and skipping the read loses every earlier backlink.
 
 ### 5 · Report what happened
 
@@ -242,13 +267,17 @@ skipped 1 test and 1 already-processed").
 ## Why it's built this way
 
 - **Idempotent over confirm-first.** Peter chose autonomous mode, so correctness
-  can't depend on him eyeballing a preview. The dedup-by-email guard (both up
-  front and inside the SQL) is what makes an unattended or scheduled re-run safe.
-- **One SQL statement per deal.** The CRM normally creates a deal through a
-  Next.js server action that also logs a `created` activity and find-or-creates
-  the company/contact. `deal-insert.sql` reproduces that exact behavior in a
-  single atomic query, so a skill run leaves the same database state a manual
-  "Create Deal" click would — no half-built records.
+  can't depend on him eyeballing a preview. The dedup-by-email check in step 3
+  is what makes an unattended or scheduled re-run safe.
+- **The platform creates the deal, not a hand-written statement.**
+  `mcp__zynkr__create_deal` is the same path the CRM's own "Create Deal" uses,
+  so it assigns the pipeline and 交易 number, logs the `created` activity and
+  emits the automation event on its own. A skill run leaves the database in the
+  state a manual click would. The trade against the old single atomic statement
+  is that company → contact → deal are now three writes: if one fails midway you
+  can be left with a company and contact but no deal. That is recoverable and
+  visible; re-running finds them and continues. Report it rather than retrying
+  blindly.
 - **Numbered folders are sequential, not timestamped.** Peter tracks consult
   projects by a simple running count (`[1]`, `[2]`, …). Scanning existing folders
   for the max keeps the sequence continuous even across weeks and reruns.
@@ -260,8 +289,9 @@ skipped 1 test and 1 already-processed").
 
 `stage=new` · `service_tier=advisory (顧問訂閱)` · `priority=medium` ·
 `lead_source=content` (the enum has no "website" value; `content` is the closest)
-· `value=NULL` (unknown at intake) · `close_date=today+30`. These live in the SQL;
-if Peter asks to change a default, edit `references/deal-insert.sql`, not the body.
+· `value=NULL` (unknown at intake) · `close_date=today+30`. They are passed
+explicitly on the `create_deal` call in step 4a — if Peter asks to change one,
+change it there.
 
 ---
 

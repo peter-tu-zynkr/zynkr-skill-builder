@@ -58,13 +58,9 @@ upstream in /consult-brd-writer, not in improvised acceptance criteria here.
 
 ## Fixed facts (don't re-derive these)
 
-- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
 - **CRM deal URL** for the doc/report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
-- Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write carries
-  explicit ids (owner via the `crm_users` lookup); never rely on defaults that
-  read the session user.
 
 ## Hard rules
 
@@ -185,28 +181,24 @@ format consult-bug-ticket parses (the template's contract comment says so).
 
 ### 6 · Log it on the CRM
 
-**Task** — `mcp__zynkr__create_task` (subject `UAT 驗收 — 待客戶完成`, linked to
-the deal, due +7 days) when the zynkr MCP is connected; SQL fallback with
-explicit ids (auth.uid() is NULL over the MCP):
-
-```sql
-INSERT INTO crm_activities
-  (deal_id, kind, subject, body, created_by, task_status, task_due_at, assignee_id)
-SELECT '<deal_id>', 'task', 'UAT 驗收 — 待客戶完成',
-       '驗收文件：<doc url>', u.id, 'open', now() + interval '7 days', u.id
-FROM crm_users u WHERE u.email = 'peter_tu@zynkr.ai';
-```
+**Task** — `mcp__zynkr__create_task(deal_id="<deal_id>",
+subject="UAT 驗收 — 待客戶完成", body="驗收文件：<doc url>",
+due_at="<today + 7 days>", confirm=true)`. It is created as you and assigned to
+you, so there is no owner id to resolve and none to hardcode. Preview first by
+calling without `confirm`.
 
 **Backlink** — append the Doc URL to the deal's notes (the same pattern
-consult-intake / consult-brd-writer use); escape single quotes by doubling them:
+consult-intake / consult-brd-writer use):
 
-```sql
-UPDATE crm_deals
-SET notes = COALESCE(notes,'') || E'\n\n驗收文件：[UAT] {{COMPANY}} — 驗收測試指南\n<doc url>'
-WHERE id = '<deal_id>';
-```
+`mcp__zynkr__update_deal` REPLACES `notes` wholesale, so append in three steps:
 
-via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`.
+1. `mcp__zynkr__get_deal(id="<deal_id>")` — read the current `notes`
+2. build the new value: the existing notes, then a blank line, then the block below
+3. `mcp__zynkr__update_deal(id="<deal_id>", notes="<combined>", confirm=true)`
+
+Call it once without `confirm` to preview, then again with `confirm=true`. Never
+send `notes` without the existing text in front of it — the field is overwritten,
+not appended, and skipping the read loses every earlier backlink.
 
 ### 7 · Optional (ask-only) — UAT-invite draft
 

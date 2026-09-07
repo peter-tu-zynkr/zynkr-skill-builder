@@ -70,13 +70,10 @@ client** is an incident. Peter reviews, edits, and hits send himself.
 
 ## Fixed facts (don't re-derive these)
 
-- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
 - **CRM deal URL** for the report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
 - **Renderer**: `./scripts/render_dashboard_email.py` · **JSON contract**: `./references/dashboard_schema.json`
-- Over the Supabase MCP, `auth.uid()` is **NULL** — the step-9 SQL fallback
-  carries explicit ids and never relies on defaults that read the session user.
 
 ## Hard rules
 
@@ -98,13 +95,10 @@ client** is an incident. Peter reviews, edits, and hits send himself.
 
 ### 1 · Resolve the engagement, the client contact, and the week
 
-- **Deal** — from a `…/deals/{id}` URL or company name. Prefer
-  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`; fallback SQL via
-  `mcp__supabase__execute_sql`:
-  `SELECT id, name, notes, stage, company_id, contact_id FROM crm_deals WHERE name ILIKE '%<company>%' ORDER BY created_at DESC;`
-- **Client contact (live, hard rule 2)** — from the deal's linked contact via
-  `mcp__zynkr__get_contact` / `list_contacts`; fallback
-  `SELECT name, email FROM crm_contacts WHERE id = '<contact_id>';`
+- **Deal** — from a `…/deals/{id}` URL via `mcp__zynkr__get_deal`, or by company
+  name via `mcp__zynkr__list_deals(search="<company>")`
+- **Client contact (live, hard rule 2)** — the deal's `contact_id`, read with
+  `mcp__zynkr__get_contact(id="<contact_id>")`.
   No contact or no email ⇒ STOP and ask Peter — never guess an address.
 - **Folder** — extract the folder id from the `專案資料夾：<url>` backlink in
   the deal's notes; if missing, list the parent
@@ -116,10 +110,19 @@ client** is an incident. Peter reviews, edits, and hits send himself.
 
 ### 2 · Read the deal's activity timeline
 
-- **Tasks** — `mcp__zynkr__list_tasks` for the deal (title, status, due date);
-  fallback `SELECT` on the CRM tasks table via `mcp__supabase__execute_sql`.
-- **Meetings / notes** — recent `crm_activities` rows (newest first) plus
-  `crm_deals.notes`, the running engagement log the whole 2.x suite appends to.
+- **Tasks** — `mcp__zynkr__list_tasks(filter="all", limit=200)`, then keep the
+  rows whose `deal_id` is this deal (title, status, due date). The tool has no
+  per-deal filter, so the filtering is yours to do.
+- **The engagement log** — `mcp__zynkr__get_deal(id=…)` → `notes`. This is the
+  running log the whole 2.x suite appends to, and it carries the narrative:
+  every doc, folder and session backlink each skill has written.
+- ⚠️ **The activity timeline is not readable over the MCP.** There is no
+  `list_activities` tool — `meeting` and `note` rows can be *written*
+  (`log_meeting`, `create_note`) but not read back. So this report is built from
+  tasks plus the deal notes, not from the timeline. If a session was logged as a
+  meeting and never written into `notes`, this report will not see it. Say so
+  when the week looks emptier than expected rather than reporting silence as
+  fact.
 - **Normalize status before reasoning** (source-skill discipline): trim +
   lowercase, map onto FOUR buckets — `Done`（`完成`/`✓`）· `WIP`（`進行中`）·
   `Not started`（blank/`未開始`/`todo`）· `Drop`（`放棄`/`dropped`）. `Drop` is a
@@ -243,14 +246,15 @@ duplicates. Hard rule 1: this step never sends.
 
 Append to the deal's notes — `mcp__zynkr__update_deal` preferred; SQL fallback:
 
-```sql
-UPDATE crm_deals
-SET notes = COALESCE(notes,'') || E'\n\n週報已擬稿：{{YYYY-Www}}（<health>）— Gmail 草稿待寄'
-WHERE id = '<deal_id>';
-```
+`mcp__zynkr__update_deal` REPLACES `notes` wholesale, so append in three steps:
 
-via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)` —
-escape single quotes by doubling them (`O'Brien` → `O''Brien`).
+1. `mcp__zynkr__get_deal(id="<deal_id>")` — read the current `notes`
+2. build the new value: the existing notes, then a blank line, then the block below
+3. `mcp__zynkr__update_deal(id="<deal_id>", notes="<combined>", confirm=true)`
+
+Call it once without `confirm` to preview, then again with `confirm=true`. Never
+send `notes` without the existing text in front of it — the field is overwritten,
+not appended, and skipping the read loses every earlier backlink.
 
 Then report to Peter: the health verdict + one-line reason, what moved vs last
 week, the draft's subject + recipient, which tasks were dropped out of the %

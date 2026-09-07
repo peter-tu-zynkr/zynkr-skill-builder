@@ -64,12 +64,9 @@ documents, the two-chart pairing discipline, the naming, and the CRM record.
 
 ## Fixed facts (don't re-derive these)
 
-- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
 - **CRM deal URL** for the report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
-- Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write carries
-  explicit ids; never rely on defaults that read the session user.
 
 ## Hard rules
 
@@ -94,9 +91,7 @@ documents, the two-chart pairing discipline, the naming, and the CRM record.
 ### 1 · Resolve the engagement and gather its documents
 
 - **Deal** — from a `…/deals/{id}` URL, or by company name. Prefer
-  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`; fallback SQL via
-  `mcp__supabase__execute_sql`:
-  `SELECT id, name, notes, stage FROM crm_deals WHERE name ILIKE '%<company>%' ORDER BY created_at DESC;`
+  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`
 - **Folder** — the deal's `notes` carry a `專案資料夾：<url>` backlink; extract
   the folder id. If missing, list the parent
   (`mcp__google-workspace__list_drive_items`, folder_id
@@ -167,14 +162,15 @@ only relays the base skill's verdict.
 Append both URLs to the deal notes — `mcp__zynkr__update_deal` preferred
 (read current notes first, append, write back); SQL fallback:
 
-```sql
-UPDATE crm_deals
-SET notes = COALESCE(notes,'') || E'\n\n流程圖：\nas-is：<lucid url>\nto-be：<lucid url>'
-WHERE id = '<deal_id>';
-```
+`mcp__zynkr__update_deal` REPLACES `notes` wholesale, so append in three steps:
 
-via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`.
-Escape single quotes by doubling them (`O'Brien` → `O''Brien`).
+1. `mcp__zynkr__get_deal(id="<deal_id>")` — read the current `notes`
+2. build the new value: the existing notes, then a blank line, then the block below
+3. `mcp__zynkr__update_deal(id="<deal_id>", notes="<combined>", confirm=true)`
+
+Call it once without `confirm` to preview, then again with `confirm=true`. Never
+send `notes` without the existing text in front of it — the field is overwritten,
+not appended, and skipping the read loses every earlier backlink.
 
 ### 7 · Report — and offer, don't auto, the next step
 

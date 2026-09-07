@@ -26,9 +26,10 @@ names the owning skill with a leading `/` when one exists.
 contain a `專案資料夾：<url>` line whose folder id resolves to a folder under
 the consult Drive parent; (b) every `[N]` folder maps back to exactly one deal.
 
-**How.** Deal side: `notes` from `mcp__zynkr__list_deals` / `get_deal`
-(read-only SQL fallback: `SELECT id, name, stage, notes FROM crm_deals`), then
-regex for `專案資料夾：https://drive.google.com/drive/folders/<id>`. Folder
+**How.** Deal side: `mcp__zynkr__list_deals` for the roster, then
+`mcp__zynkr__get_deal` for each one you are judging — `notes` comes back only
+from `get_deal`, not from the list. Then regex for
+`專案資料夾：https://drive.google.com/drive/folders/<id>`. Folder
 side: the step-2 parent inventory (`mcp__google-workspace__list_drive_items`
 on `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`). Match by folder id first, company
 name second.
@@ -110,12 +111,17 @@ existing backlink.)
 **What it checks.** Open consult deals with no CRM activity in the window are
 flagged 停滯 — the portfolio-level "is anyone driving this?" signal.
 
-**How.** Last-activity = the newest of the deal's own `updated_at` and any
-linked activity rows. Prefer the zynkr MCP's deal fields; read-only SQL
-fallback via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda")` —
-probe the activities table's real name/columns with a `LIMIT 1` SELECT first.
-If no activities table can be identified, fall back to `crm_deals.updated_at`
-alone and say so in 本次未檢查.
+**How.** Use `last_activity_at`, returned on every `mcp__zynkr__list_deals` row.
+It is stamped by the application each time work is logged through the CRM or
+the MCP — it is not computed from the activity rows, so it reflects activity
+that went through the platform. (Anything written straight to the database
+behind the platform's back does not move it. That is one more reason the 2.x
+suite no longer does that.)
+
+⚠️ The activity rows themselves are **not readable over the MCP** — there is no
+`list_activities` tool, so you cannot show *what* the last activity was, only
+when it happened. Report the date and the silence; do not characterise the
+activity you cannot see.
 
 **Violation.** Open deal whose last activity predates the cutoff.
 

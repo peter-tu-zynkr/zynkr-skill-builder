@@ -60,20 +60,9 @@ first, the prose second.
 
 ## Fixed facts (don't re-derive these)
 
-- **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail/Drive/Docs tools: `peter_tu@zynkr.ai`
 - **Drive parent folder** (`[2.2] 業務與顧問部門：專案`, where numbered project folders live): `1hkXPX7OXPFOU0BcloPbJSFp8O0zArM8t`
 - **CRM deal URL** for the doc/report/backlink: `https://platform.zynkr.ai/deals/{deal_id}`
-- Over the Supabase MCP, `auth.uid()` is **NULL** — every SQL write must carry explicit
-  ids (owner via the `crm_users` lookup, as in consult-project-specialist's
-  `references/deal-insert.sql`); never rely on defaults that read the session user.
-  ⚠️ **`workspace_id` is the one that bites.** `crm_companies` / `crm_contacts` / `crm_deals`
-  all declare it `NOT NULL DEFAULT auth.uid()`, so an INSERT that omits it does not quietly
-  land in the wrong workspace — it **fails outright** with a not-null violation. Setting
-  `owner_id` is not enough and does not cover for it; this file said so for weeks while the
-  cited SQL omitted `workspace_id`, and every write from these skills failed
-  (fixed 2026-08-16, PLAT-046). Every dedupe lookup must be workspace-scoped too, or a
-  lead can bind to **another tenant's** company/contact row.
 
 ## Hard rules
 
@@ -106,9 +95,7 @@ step 3. Extract from the merged segments, not from raw text.
 Then resolve the CRM deal and the Drive folder:
 
 - **Deal** — from a `…/deals/{id}` URL, or by company name. Prefer
-  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals` when the zynkr MCP is
-  connected; fallback SQL via `mcp__supabase__execute_sql`:
-  `SELECT id, name, notes, stage FROM crm_deals WHERE name ILIKE '%<company>%' ORDER BY created_at DESC;`
+  `mcp__zynkr__get_deal` / `mcp__zynkr__list_deals`
 - **Folder** — the deal's `notes` carry a `專案資料夾：<url>` backlink (written by
   consult-intake / consult-project-specialist); extract the folder id from it. If
   missing, list the parent (`mcp__google-workspace__list_drive_items`, folder_id
@@ -201,23 +188,26 @@ shape — consult-uat-writer parses them (the template's top comment is the cont
 
 Append the Doc URL to the deal's notes (the same pattern consult-intake uses):
 
-```sql
-UPDATE crm_deals
-SET notes = COALESCE(notes,'') || E'\n\n需求文件：[BRD] {{COMPANY}} — {{PROJECT}}\n<doc url>'
-WHERE id = '<deal_id>';
-```
+`mcp__zynkr__update_deal` REPLACES `notes` wholesale, so append in three steps:
 
-via `mcp__supabase__execute_sql(project_id="uomieoqlkazknjgmfdda", ...)`. Escape
-single quotes by doubling them (`O'Brien` → `O''Brien`).
+1. `mcp__zynkr__get_deal(id="<deal_id>")` — read the current `notes`
+2. build the new value: the existing notes, then a blank line, then the block below
+3. `mcp__zynkr__update_deal(id="<deal_id>", notes="<combined>", confirm=true)`
+
+Call it once without `confirm` to preview, then again with `confirm=true`. Never
+send `notes` without the existing text in front of it — the field is overwritten,
+not appended, and skipping the read loses every earlier backlink.
 
 Then **ask** two optional follow-ups — never do them unprompted:
 
 - **Stage nudge** — "A requirements doc exists now; move the deal to `proposal`?"
-  On yes: `mcp__zynkr__move_deal_stage` when connected, else
-  `UPDATE crm_deals SET stage = 'proposal' WHERE id = '<deal_id>';`
+  On yes: `mcp__zynkr__move_deal_stage(id="<deal_id>", stage="proposal", confirm=true)`.
+  **Only this tool moves a stage.** Writing the column directly changes the stage
+  but skips the `stage_change` timeline entry and the automation event, so the
+  move stops being visible to anyone reading the deal afterwards.
 - **Review task** — "Log a 客戶審閱 follow-up task?" On yes:
-  `mcp__zynkr__create_task` when connected, else the `('task', …)` VALUES row from
-  `./references/deal-insert.sql` (explicit `created_by`/`assignee_id` — auth.uid() is NULL).
+  `mcp__zynkr__create_task(deal_id="<deal_id>", …, confirm=true)`. It is created
+  as you, on your workspace — no owner id to look up and none to hardcode.
 
 ### 8 · Report
 
@@ -273,9 +263,6 @@ ready for consult-uat-writer.
   delete its placeholder-guide comment).
 - `./references/prd-spec-template.md` — the SDD-conformant PRD template; its top
   comment is the consult-uat-writer parsing contract.
-- `./references/deal-insert.sql` — the SQL patterns (live owner lookup,
-  quote-escaping, task VALUES row) the step-7 fallbacks reuse; copied from
-  consult-project-specialist so this skill installs self-contained.
 
 ## Limitations
 
