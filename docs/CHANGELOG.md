@@ -4,6 +4,54 @@ Append-only record of shipped work (SDD altitude: Record; newest at the bottom).
 Created 2026-07-02 with SDD adoption — earlier history lives in the git log and
 the ingest-workflow run history.
 
+## 2026-09-07 — the three `7-people-talent` orchestrators declare their packages, and two dead synergy lists are retired · `SKB-023`
+
+Atlas ruling **D3** is read from frontmatter and never asserted by the importer (`ATL-046`), so a
+skill that owns `agents/*.md` but declares neither `type: agent` nor `skills:` imports as a plain
+技能 with its members orphaned. All three of category 7's orchestrators were in that state, so Atlas
+wave 5 (`ATL-075`) needs this first — the same prerequisite `SKB-020` and `SKB-021` paid for waves 3
+and 4.
+
+- **`cv-customizer` (7.01)** → `skills:` naming its five members in **pipeline order**:
+  `cv-job-decoder` · `cv-story-extractor` · `cv-fit-scorer` · `cv-progression` · `cv-rewrite`.
+- **`zynkr-recruiter` (7.07)** → its four stages in order: `recruiter-jd-architect` ·
+  `recruiter-resume-screener` · `recruiter-interview-question` · `recruiter-calibrator`.
+- **`recruiter-interview-question-customize` (7.11)** → `recruiter-mock-interview`.
+
+⚠️ **The order is load-bearing and is NOT alphabetical.** Atlas mints each membership edge's
+`position` from the index in this list, so the arrays are written in the order the SKILL.md body
+dispatches the stages. Three independent signals agree on every one: the body's own stage prose, the
+`stage_order` field in `scripts/skills-index/data/extracted.json`, and the ascending `sheetId`
+sequence. A filename sort disagrees with all three — under one, **all five** of `cv-customizer`'s
+positions would be wrong.
+
+## Two `synergy:` lists pointed at ids that had been reassigned underneath them
+
+Both are retired to `synergy: []` rather than repaired, because **the thing they were expressing is
+now expressed properly by `skills:`** — they named their own stages, back when those stages held
+those ids. Nothing is lost; it moved to the right field.
+
+- **`zynkr-recruiter`** declared `synergy: ["7.01", "7.02", "7.03", "7.04"]`. Those were its own four
+  stages when it was written. `generated/id-redirects.json` records the CV family moving into
+  category 7 and taking exactly those ids (`"2.21":"7.01"` … `"2.26":"7.06"`), while the recruiter
+  stages were renumbered in frontmatter to 7.08/7.09/7.10/7.13 with **no redirect entry**. So the
+  line had come to say 「hand off to `cv-customizer` and three of its internals」, which nobody ever
+  meant. Left alone it would have minted **four wrong edges that resolve** — and a reference that
+  resolves never appears in an importer's unresolved list, so nothing downstream would have reported
+  it.
+- **`recruiter-interview-question-customize`** declared `synergy: ["2.06", "2.07"]` — under the old
+  numbering, itself (面試猜題) and its own member (模擬面試); `id-redirects.json` carries
+  `"2.28":"7.11"` and `"2.32":"7.12"` for the pair. Today 2.06 and 2.07 belong to two
+  `consult-*` skills. It resolves to nothing now, so it costs only two unresolved refs — but the
+  corpus-wide re-parse that runs after the last migration wave would have minted two wrong edges
+  into a sales-consulting package.
+
+**Verification (D1)** — `validate-skill.ts --tier=all` clean on all three, before and after; the
+delta is provably zero because the validator reads neither `type:` nor `skills:` and its schema is
+non-strict. Every member slug matches an `agents/*.md` frontmatter `name:` exactly, and
+`extracted.json`'s `parent` agrees with the declaring file in all ten cases. Consumed by
+`zynkr-atlas` `ATL-075`.
+
 ## 2026-09-07 — the two `3-operations` orchestrators declare their packages · `SKB-021`
 
 Atlas ruling **D3** — 「a department is the shipped package, one installable unit = one 代理 row」 —

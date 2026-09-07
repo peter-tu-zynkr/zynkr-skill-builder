@@ -11,6 +11,8 @@ input: "Job description (text, URL, or file) and candidate CV/resume"
 process: "5-phase pipeline — job decoding, SCQA story extraction, fit scoring, career progression analysis, and section-by-section CV rewrite"
 output: "Optimized CV as a Google Doc, with fit scores and progression report"
 synergy: []
+type: agent
+skills: ["cv-job-decoder", "cv-story-extractor", "cv-fit-scorer", "cv-progression", "cv-rewrite"]
 ---
 
 # CV Customizer

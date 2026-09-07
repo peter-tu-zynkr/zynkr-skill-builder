@@ -10,11 +10,9 @@ author: Jane Liao
 input: "A hiring need from a hiring manager — anywhere from rough notes to a full JD + resume stack"
 process: "Stage 1 JD architecture → Stage 2 resume screening with hybrid weighted scoring → Stage 3 competency-based interview design + scorecard → Stage 4 calibration & final decision recording"
 output: "JD draft (YAML), candidate fit scores with HR Decision Summary, bilingual interview kit + scorecard, and a final decision sheet with bilingual candidate communication templates"
-synergy:
-  - "7.01"
-  - "7.02"
-  - "7.03"
-  - "7.04"
+synergy: []
+type: agent
+skills: ["recruiter-jd-architect", "recruiter-resume-screener", "recruiter-interview-question", "recruiter-calibrator"]
 ---
 
 # Recruiting Pipeline

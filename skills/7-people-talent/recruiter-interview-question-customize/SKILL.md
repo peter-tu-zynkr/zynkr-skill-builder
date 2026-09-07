@@ -11,9 +11,9 @@ originalName: "面試猜題"
 input: "Resume or key experiences, job description, interview stage, and company context (inferred if missing)."
 process: "Analyze the interview context from an interviewer's perspective and identify likely questions and evaluation signals."
 output: "A concise interview question map with rationale, priority, and suggested questions for the recap Q&A."
-synergy:
-  - "2.06"
-  - "2.07"
+synergy: []
+type: agent
+skills: ["recruiter-mock-interview"]
 ---
 # Interview Question Predictor — Source Prompt
 
