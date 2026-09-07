@@ -21,11 +21,13 @@ Class: **AUTO** = the skill can compute it from a system of record · **SEMI** =
 | 4.07 | Vibe Coding | Peggy | SEMI → HUMAN | course tracker 專案管理總表 | same as 4.05 | yes (sheet readable) |
 | 5.02 | 內部導入 Zynkr adoption | All | AUTO | Zynkr Supabase `crm_*` activity + AI usage metering | `execute_sql`: distinct active internal users / AI calls last 7d & 28d from the platform's usage tables | no → unfilled · ask owner |
 | 5.03 | 分潤系統 build | Peter | SEMI | platform repo CHANGELOG / GitHub | `gh` on the platform repo: commits / spec IDs touching 分潤 | no (no gh) → unfilled · ask owner |
-| 6.01 | 公司 KPI 制度 | Peter + Jane | HUMAN | — | none (this KPI *is* the KPI system; open P0) | unfilled · ask owner |
+| 7.01 | 公司 KPI 制度 | Peter + Jane | HUMAN | the metric-set design itself — the `Ops Metrics v0` tab | `read_sheet_values` on that tab; Q3「designed」closed 2026-09-07 (tracker 7.01 → 完成) | Q3 filled; Q4「operating」(≥90% of weeks the review actually ran) unfilled · ask owner |
 | — | Net monthly burn (NT$/mo) | Peter (Finance) | SEMI | zynkr-accounting Supabase | `execute_sql` on the accounting project: last closed month expenses − revenue; also `max(entry date)` = books-as-of | no → unfilled · RED if unknown |
 | — | Runway (months) | Peter (Finance) | SEMI | zynkr-accounting Supabase | cash balance ÷ trailing-3-month net burn; books-as-of as above | no → unfilled · RED if unknown |
 
-Permanently HUMAN (no MCP exists): 1.08 · 1.09 · 3.01 · 3.02 · 6.01. Say so in the brief instead of re-asking weekly; batch HUMAN asks monthly.
+Permanently HUMAN (no MCP exists): 1.08 · 1.09 · 3.01 · 3.02 · 7.01. Say so in the brief instead of re-asking weekly; batch HUMAN asks monthly.
+
+⚠ The Tracker # for 公司 KPI 制度 is **7.01** (7.0 People & Talent / 7.1 目標與績效), never 6.01 — 6.01 is 課程平台 (暫停, 繼續和 Hahow 配合). The `KPI Dashboard` tab has always carried 7.01; this file and the `Ops Metrics v0` header row said 6.01 until 2026-09-07. `kpi_locate.py` matches rows by normalised Tracker #, so a wrong id misses silently rather than erroring.
 
 ## Runway rule (C1 · O5)
 

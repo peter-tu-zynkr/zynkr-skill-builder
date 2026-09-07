@@ -101,10 +101,10 @@ def selftest():
         _row("1.03", "SEO 文章", "P1", "Peter", "2026-07-01", "YYYY-MM-DD", "未開始"),      # unchanged
         _row("1.08", "電子報", "P0", "Mark", "2026-08-01", "2026-09-30", "進行中"),          # 3 fields changed
         _row("4.01", "企業 AI 診斷", "P0", "Peter", "2026-08-03", "2026-08-28", "進行中"),  # unchanged
-        _row("6.01", "公司 KPI 制度", "P0", "Peter+Jane", "", "", "未開始"),               # added
+        _row("7.01", "公司 KPI 制度", "P0", "Peter+Jane", "", "", "未開始"),               # added
     ]
     d = diff_rows(before, after)
-    assert d["added"] == ["6.01"] and d["removed"] == ["2.05"], d
+    assert d["added"] == ["7.01"] and d["removed"] == ["2.05"], d
     assert d["unchanged"] == 2, d
     assert len(d["changed"]) == 1 and d["changed"][0]["id"] == "1.08", d
     ch = d["changed"][0]["changes"]

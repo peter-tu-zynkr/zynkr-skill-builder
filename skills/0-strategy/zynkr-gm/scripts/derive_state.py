@@ -270,7 +270,7 @@ SAMPLE_ROWS = [
     _row("3.05", "3.0", "Metrics 儀表", "P2", "Jane", "", "", "放棄"),                                # dropped
     _row("4.01", "4.0", "企業 AI 診斷", "P0", "Peter", "2026-08-03", "2026-08-28", "進行中"),           # ENDS_SOON (11d)
     _row("4.05", "4.0", "陪跑課", "P0", "Peter+Peggy", "2026-07-15", "2026-08-10", "進行中"),          # OVERDUE (end<today)
-    _row("6.01", "6.0", "公司 KPI 制度", "P0", "Peter/Jane", "2026-08-31", "2026-08-31", "未開始"),      # ENDS_SOON (14d), two owners
+    _row("7.01", "7.0", "公司 KPI 制度", "P0", "Peter/Jane", "2026-08-31", "2026-08-31", "未開始"),      # ENDS_SOON (14d), two owners
     # --- vocab added 2026-08-24: 完成 / 暫停, plus a P0 放棄 (the P2 放棄 above never caught the leak) ---
     _row("4.02", "4.0", "企業 AI 導入", "P0", "Peter", "2026-08-03", "2026-08-28", "完成"),              # DONE: no ENDS_SOON, no load
     _row("4.07", "4.0", "Vibe Coding", "P0", "Peggy", "YYYY-MM-DD", "YYYY-MM-DD", "暫停"),             # PAUSED: no UNDATED ask
@@ -280,7 +280,7 @@ SAMPLE_ROWS = [
 SAMPLE_PREV = [dict(r) for r in SAMPLE_ROWS]
 SAMPLE_PREV[2]["狀態"] = "未開始"          # 1.08 status changed
 SAMPLE_PREV[7]["負責人"] = "Peter"          # 4.05 owner changed
-SAMPLE_PREV = [r for r in SAMPLE_PREV if r["#"] != "6.01"]  # 6.01 is new
+SAMPLE_PREV = [r for r in SAMPLE_PREV if r["#"] != "7.01"]  # 7.01 is new
 
 
 def selftest():
@@ -294,12 +294,12 @@ def selftest():
     assert by_id["3.05"]["states"] == [], by_id["3.05"]
     assert by_id["4.01"]["states"] == ["ENDS_SOON"] and "in 11d" in by_id["4.01"]["evidence"][0], by_id["4.01"]
     assert set(by_id["4.05"]["states"]) == {"OVERDUE", "CHANGED"}, by_id["4.05"]
-    assert set(by_id["6.01"]["states"]) == {"ENDS_SOON", "CHANGED"}, by_id["6.01"]
+    assert set(by_id["7.01"]["states"]) == {"ENDS_SOON", "CHANGED"}, by_id["7.01"]
     s = res["summary"]
     assert s["p0_undated"] == ["2.03"] and s["p1_undated"] == ["1.03"], s
     assert s["overdue"] == ["1.03", "4.05"] and s["p0_overdue"] == ["4.05"], s
-    assert s["ends_soon"] == ["4.01", "6.01"] and s["propose_done"] == ["1.08"], s
-    assert s["changed"] == ["1.08", "4.05", "6.01"] and s["dropped"] == ["3.05", "3.02"], s
+    assert s["ends_soon"] == ["4.01", "7.01"] and s["propose_done"] == ["1.08"], s
+    assert s["changed"] == ["1.08", "4.05", "7.01"] and s["dropped"] == ["3.05", "3.02"], s
     assert s["counts_by_priority_status"]["P0"] == {"進行中": 3, "未開始": 3, "完成": 1, "暫停": 1, "放棄": 1}, \
         s["counts_by_priority_status"]
     # --- vocab 2026-08-24: 完成 is terminal, 暫停 has no schedule, 放棄 leaks nothing ---
@@ -310,11 +310,11 @@ def selftest():
     assert s["done"] == ["4.02"] and s["paused"] == ["4.07"] and s["unknown_status"] == ["9.99"], s
     assert "4.02" not in s["ends_soon"] and "3.02" not in s["p0_undated"], s
     bo = res["by_owner"]
-    assert "Jane" in bo and bo["Jane"]["p0"] == ["6.01"], bo   # split on '/', 放棄 row excluded
+    assert "Jane" in bo and bo["Jane"]["p0"] == ["7.01"], bo   # split on '/', 放棄 row excluded
     assert bo["Peggy"]["overdue"] == ["4.05"], bo
     assert bo["Peggy"]["p0"] == ["4.05", "4.07"], bo["Peggy"]   # 暫停 still owned; 放棄 3.02 excluded
     assert "4.02" not in bo["Peter"]["p0"], bo["Peter"]          # 完成 drops out of GM load
-    assert bo["Peter"]["p0"] == ["2.01", "4.01", "4.05", "6.01"], bo["Peter"]
+    assert bo["Peter"]["p0"] == ["2.01", "4.01", "4.05", "7.01"], bo["Peter"]
     assert bo["Mark"]["undated"] == ["2.03"], bo["Mark"]
     # without prev → no CHANGED anywhere
     res2 = run(SAMPLE_ROWS, SAMPLE_TODAY)
