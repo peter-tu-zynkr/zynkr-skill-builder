@@ -95,6 +95,12 @@ before sending) and the CRM write is one atomic statement.
 
 - **Supabase project_id**: `uomieoqlkazknjgmfdda` (the shared Zynkr project; CRM tables are `crm_*`)
 - **Google account** for all Gmail tools: `peter_tu@zynkr.ai`
+- **Writing style is NOT owned by this file.** The house voice lives in two Google Docs
+  under `[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime with
+  `get_doc_as_markdown` (no tab parameter — use only `# 最終產出`, ignore `# 指令工程`):
+  《[2.2] 內文風格指南》 `1ect0fDoHZQ7srFEQvLNCSLsQk-UTawvbxpt3SteYP1M` **Part 3 §八 業務信件**
+  (positive rules) and 《[3.2] 禁用詞清單》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+  **category X** (sales-email forbidden patterns). The Doc wins over the rules restated below.
 - **CRM record URLs** for the report: `https://platform.zynkr.ai/deals/{id}` · `.../contacts/{id}` · `.../companies/{id}` — `{id}` is the uuid the SQL returns.
 - Owner (`Peter Tu`), the caller's `workspace_id`, and the default pipeline (`銷售流程`) are resolved **live inside the SQL** — never hardcode their ids.
 - **Do NOT log the drafted email as a CRM activity.** Peter's Gmail is already synced into the CRM (`app/lib/integrations/sync.ts`, 15-min cron): the moment he sends the draft, it auto-appears on the contact's 電子郵件 timeline as an outbound email. Logging it here would duplicate that row.
@@ -234,10 +240,19 @@ Rules for the draft:
 - **Move the next step forward** — if a meeting is the ask, offer the three slots from
   step 5; if "send info", point to it.
 - **Concrete subject line**, naming their problem in their words.
-- zh-TW house style: headings/taglines take **no 句號 (。)**; `·` for series separators;
-  numbered lists use plain **`1. 2. 3.`** — NOT 1️⃣2️⃣3️⃣, never circled ①②③.
-  (Emoji numerals are a *UI* convention — see the numbering-format rule — and are wrong
-  in email; Peter's actual sent mail uses plain digits.)
+- **House style is owned by 《[2.2] 內文風格指南》 Part 3 §八 and 《[3.2] 禁用詞清單》 category X**
+  (see *Fixed facts*) — read them; the Doc wins over this summary. The load-bearing few:
+  - Greeting `Hi <名>，` / `哈囉 <名>，` / `<名> 你好，` / `<名> 您好，` (cold, HR, senior), full-width
+    comma. 你／您 follows the counterpart and only ever steps **down**, never back up.
+  - 我們 for company commitments, 我 for what Peter does himself — mixing is deliberate.
+  - A standard outbound mail runs **280–400 字**, blank-line paragraphs of 1–3 sentences.
+  - Numbered lists are plain **`1. 2. 3.`** — NOT 1️⃣2️⃣3️⃣, never circled ①②③. Emoji numerals are
+    a *UI* convention and are banned in email by 禁用詞清單 S and X.
+  - At most **two lists in the whole mail**: the three things to discuss, and the slot block.
+    Everything else is prose — a bullet wall is the 項目符號牆 category X forbids.
+  - The dash is the **half-width ` — ` with one space each side**. Never the full-width ——.
+  - Headings/taglines take **no 句號 (。)**; `·` for series separators; no Markdown in the body.
+  - Sign off `Best regards,` + `Peter`. No signature block.
 - **The slot block is fixed house wording.** Three slots, a fourth escape line, then
   the invite promise — copied from Peter's own sent mail:
 
