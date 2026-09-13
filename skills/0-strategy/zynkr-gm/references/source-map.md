@@ -11,6 +11,7 @@ Every source is addressed by its **role key** in the private config (`config.exa
 | `sources.okr_kpi_tracker` | H2 2026 — OKR & KPI Tracker (Sheet) | tabs `OKRs` (O1–O5, Q3/Q4 targets, Status) + `KPI Dashboard` (19 metric rows; `Actual` column). Tab `Initiatives Q3-Q4` is a **stale mirror** of the tracker — never read for status. May also host the skill's state tabs (see SKILL.md). | 4 | KPI Dashboard every run; OKRs at month / quarter | read | read + cell write (`modify_sheet_values`, P1 only) |
 | `sources.ops_heal_tracker` | Ops H2 gap-audit 行動追蹤表 (Sheet) | tabs `修復清單` (heal list, progress SOT for 3.x) + `待決事項` (open decisions → brief ④). | 5 | every run | read | read |
 | `sources.course_tracker` | Course project tracker (Sheet) | tab `專案管理總表` — task status/dates for 4.05 / 4.07 (Claude Code course line). project-status-update owns the email; zynkr-gm reads status only. | 5 | every run | read | read |
+| `sources.finance_ledger` | **Zynkr Finance Ledger (Sheet) — THE books** | tab `Monthly Summary` for runway/burn (cash = cumulative `total` at the last closed month; burn = mean `net` over `constraints.burn_window`); tab `Income` for cash-basis revenue (2.06); tab `Transactions` for `max(date)` = books-as-of. Bank-reconciled to the 富邦 statement monthly. **`never_write: true`** — appends belong to `/zynkr-accounting`, and the `Financial Model` tab's month columns are spilled arrays that break on write. | 5 | every run | read | read |
 | `sources.knowledge_directory` | GM Knowledge Directory (Doc) | SOR precedence table + `核心文件` entries + `Maintenance` rules. Governance input for `learn`. | gov | monthly (`learn`) + on `modifiedTime` change | read | read; append-only write via `learn --apply` |
 | `sources.org_taxonomy` | Org Taxonomy (Doc) | live tab "Org Taxonomy v2" — LOB 0–9 + DRIs. Owner resolution. | gov | monthly | read | read |
 | `sources.plan_docs.<lob>` | 7 function plans: `1.0` `2.0` `3.0` `4.0` `6.0` `7.0` `8.0` (Docs, single tab) | TOP "2026-08-06 Refresh — aligned to the H2 Planning Main Tracker" block only (P0/P1 tracker IDs + owner + optional date range; retired KPIs; 已定案/還在摸索 labels). Where a later "2026-08-10 Addendum" exists it wins over both. **No status lives here.** Body §1–§9 = May cut, superseded. Note: tracker `#` renumbered 2026-08-21 to match Org Taxonomy v2 — Tech = `6.x`, People = `7.x` (no translation needed; OKR-tracker `Tracker #` refs updated same day). 8.0 has no tracker rows; EAE (LOB 5) is tracked under 4.01. | 6 | on `modifiedTime` change only (key doc-watch on target IDs, not H2-folder shortcuts) | read | read |
@@ -21,13 +22,15 @@ Every source is addressed by its **role key** in the private config (`config.exa
 | `sources.core_folder` / `sources.h2_planning_folder` | Drive folders holding the 0-level originals / the H2 suite | folder listings for `learn` drift (name · type · modifiedTime · shortcut target). | gov | monthly | list | list |
 | `sources.onboarding_master` | Onboarding 母本 (shared facts) | read for ⛔ deprecated paths only. `never_write: true` — shared-fact changes are proposed, never applied. | gov | monthly | read | read |
 
-Non-Drive reads (tools, not `sources.*` keys): CRM via `mcp__zynkr` (`list_deals`, `list_tasks`) for 2.x / 4.01; CMS Supabase `articles` for 1.03; accounting Supabase for runway / burn; Calendar for the calendar clock (cloud connector only — the workspace-mcp Calendar API is disabled locally). See `kpi-map.md`.
+Non-Drive reads (tools, not `sources.*` keys): CRM via `mcp__zynkr` (`list_deals`, `list_tasks`) for 2.x / 4.01; CMS Supabase `articles` for 1.03; Calendar for the calendar clock (cloud connector only — the workspace-mcp Calendar API is disabled locally). See `kpi-map.md`.
+
+⚠ Runway / burn used to be listed here as "accounting Supabase". **That was never true** — the `zynkr-accounting` app is stalled and holds no books. Since 2026-09-13 the source is `sources.finance_ledger`, a Drive Sheet, which is why runway is now computable on a scheduled cloud run as well as locally.
 
 ## Precedence
 
 - Strategy: `vms_v2` "H2 2026 alignment" > VMS body. `integrated_refresh` addendum > its §1–§13. When the two alignments differ, the newer dated block wins and the brief cites both dates.
 - Plans: Refresh block (and any later dated addendum) > plan body.
-- Status / scope / owner: **Main Tracker** > OKR & KPI Tracker (OKRs; Initiatives tab is stale) > plan docs > narrative docs. Function SOTs (`ops_heal_tracker`, `course_tracker`, CRM, accounting) are evidence for progress, never for scope.
+- Status / scope / owner: **Main Tracker** > OKR & KPI Tracker (OKRs; Initiatives tab is stale) > plan docs > narrative docs. Function SOTs (`ops_heal_tracker`, `course_tracker`, `finance_ledger`, CRM) are evidence for progress, never for scope.
 - Never restate a number from a narrative doc; every number cites SOR + as-of date.
 
 ## ⛔ Deprecated paths (from the 母本; respect, never resurrect)

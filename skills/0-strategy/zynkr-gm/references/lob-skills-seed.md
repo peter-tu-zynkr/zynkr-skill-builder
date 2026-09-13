@@ -35,7 +35,7 @@ as the registry.
 | 5.0 Product (taxonomy only) | — | product-planning · product-flow-design · product-optimize-prompt · skill-finder | — |
 | 6.0 Tech & Platform (tracker 6.x) | P0 6.02 使用 Zynkr 並擴展功能 · 6.03 業務團隊分潤系統; P1 6.01 課程平台 | meta / skill-pipeline tooling only: zynkr-skills · skill-sourcer · skill-triager · skill-qa · skill-publish · eng-find-skills · agent-browser (Vercel / Supabase plugin skills exist runtime-only) | platform build / ops (deploy, incident, 分潤 billing) — no builder skill |
 | 7.0 People & Talent (tracker 7.x) | P0 7.01 KPI 制度; P2 7.03 Training | zynkr-recruiter + recruiter-* (hiring); cv-customizer · career-consult (candidate side); training-* for 7.03 | 7.01 KPI / performance (zynkr-gm partly fills the metering) · org design · onboarding |
-| 8.0 Finance / 9.0 Legal | not in tracker | **zero skills**; runway meter = zynkr-gm `kpi` step reading the accounting app | everything (accounting lives in the app, not a skill) |
+| 8.0 Finance / 9.0 Legal | not in tracker | **zero skills**; runway meter = zynkr-gm reading `sources.finance_ledger` (the Sheet, not the stalled accounting app); monthly close = `/zynkr-accounting` | everything (accounting lives in the app, not a skill) |
 
 Refresh cadence: the *existence* half needs no refresh — it is read from the KB every run. `learn`
 re-derives the curated half (chain order · item→instrument mapping · gaps) from the KB + the tracker

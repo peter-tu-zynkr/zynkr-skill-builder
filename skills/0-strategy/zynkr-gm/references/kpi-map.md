@@ -12,7 +12,7 @@ Class: **AUTO** = the skill can compute it from a system of record · **SEMI** =
 | 1.01/1.02/1.10/1.11 | About / 敘事線 / 見證 / 合作廠商 shipped (n of 4) | Mark | SEMI | live site + tracker 狀態 | `WebFetch` the public pages + `read_sheet_values` on 「H2 專案項目」 rows 1.01/1.02/1.10/1.11 → count 進行中/PROPOSE_DONE | yes (tracker readable) — value is a proposal until owner confirms |
 | 2.01 · 2.02 · 2.03 | Sales-ops P0 builds live (業務流程結構化 · On-board · 分潤系統) | Peter · Peter · Mark | SEMI | tracker 狀態 (human-set) | `read_sheet_values` on the three rows | yes (mirror tracker status; no invention) |
 | 2.04 | 企業戶陌生開發 qualified accounts | Ernie | AUTO (if logged in CRM) | Zynkr CRM `crm_deals` | `mcp__zynkr__list_deals` (filter stage ≥ qualified, created ≥ H2 start; owner = 2.04 owner) or `execute_sql` on `crm_deals` | no (CRM not reachable) → unfilled · ask owner |
-| 2.06 | 高 LTV 課程 revenue attributed | Jane | SEMI (revenue) / HUMAN (attribution) | accounting Supabase / Portaly / Accupass | `execute_sql` on the accounting project's revenue lines for the course SKUs; attribution tag does not exist → ask | unfilled · ask owner |
+| 2.06 | 高 LTV 課程 revenue attributed | Jane | SEMI (revenue) / HUMAN (attribution) | `sources.finance_ledger` tab `Income` (cash-basis, bank-reconciled) | `read_sheet_values` on `Income!A1:N200`; filter `category = income` and `subcategory = course-revenue`. Attribution to 主動販賣 does not exist as a field → ask | **yes** (revenue readable; attribution still HUMAN) |
 | 3.04 | 線下場次 + funnel | Jane | SEMI | [3.1] `#Operation` event list (Accupass link + 報名人數) + Calendar | parse newest [3.1] block Operation section (`extract_newest_block.py`); count events + 報名人數; Calendar via cloud connector only | yes (weekly log readable) — funnel conversion stays HUMAN |
 | 3.01 | LINE 群 rhythm + conversion | Jane | HUMAN | LINE OA (connector beta only) | none | unfilled · ask owner |
 | 3.02 | 內部講師 developed | Peggy | HUMAN | — | none | unfilled · ask owner |
@@ -22,8 +22,8 @@ Class: **AUTO** = the skill can compute it from a system of record · **SEMI** =
 | 5.02 | 內部導入 Zynkr adoption | All | AUTO | Zynkr Supabase `crm_*` activity + AI usage metering | `execute_sql`: distinct active internal users / AI calls last 7d & 28d from the platform's usage tables | no → unfilled · ask owner |
 | 5.03 | 分潤系統 build | Peter | SEMI | platform repo CHANGELOG / GitHub | `gh` on the platform repo: commits / spec IDs touching 分潤 | no (no gh) → unfilled · ask owner |
 | 7.01 | 公司 KPI 制度 | Peter + Jane | HUMAN | the metric-set design itself — the `Ops Metrics v0` tab | `read_sheet_values` on that tab; Q3「designed」closed 2026-09-07 (tracker 7.01 → 完成) | Q3 filled; Q4「operating」(≥90% of weeks the review actually ran) unfilled · ask owner |
-| — | Net monthly burn (NT$/mo) | Peter (Finance) | SEMI | zynkr-accounting Supabase | `execute_sql` on the accounting project: last closed month expenses − revenue; also `max(entry date)` = books-as-of | no → unfilled · RED if unknown |
-| — | Runway (months) | Peter (Finance) | SEMI | zynkr-accounting Supabase | cash balance ÷ trailing-3-month net burn; books-as-of as above | no → unfilled · RED if unknown |
+| — | Net monthly burn (NT$/mo) | Peter (Finance) | **AUTO** | `sources.finance_ledger` (Zynkr Finance Ledger) tab `Monthly Summary` | `read_sheet_values` on `Monthly Summary!A1:H30`; the `net` column (G) per month, averaged over `constraints.burn_window`; books-as-of = the last non-zero month row, cross-checked against `max(Transactions!B)` | **yes** — the Drive connector reads this Sheet |
+| — | Runway (months) | Peter (Finance) | **AUTO** | same ledger, tab `Monthly Summary` | cash ÷ the burn above, where cash = the cumulative `total` column (H) at the last closed month. ⚠ **Cash is that cumulative figure, never the 富邦 bank balance** — the gap between them is the personal-card float the company owes Peter (NT$232,879 at 2026-08-31), which is a payable, not spendable cash | **yes** |
 
 Permanently HUMAN (no MCP exists): 1.08 · 1.09 · 3.01 · 3.02 · 7.01. Say so in the brief instead of re-asking weekly; batch HUMAN asks monthly.
 
@@ -34,6 +34,39 @@ Permanently HUMAN (no MCP exists): 1.08 · 1.09 · 3.01 · 3.02 · 7.01. Say so 
 - The **first line of every brief** is the runway line: `Runway ≈ N.N mo · burn NT$X/mo (cap NT$120k) · books as of YYYY-MM-DD (source)`.
 - **RED** when runway < 4 months (guardrail: no spend that pushes runway below 4 months) **or** books-as-of is > 30 days old **or** the value cannot be fetched (unattended cloud runs: print `RED · unfilled — books not readable in this environment`). RED is never silent.
 - Two clocks under the runway line: cash clock (months) and calendar clock (days to Q3 close 09-30 / H2 close 12-31).
+
+### How to compute it (wired 2026-09-13)
+
+Runway is no longer un-metered. `sources.finance_ledger` is the books — bank-reconciled to the
+富邦 statement every month — and the Drive connector can read it, so the **cloud routine computes
+this too**. Three reads, in order:
+
+1. `Monthly Summary!A1:H30` — one row per month: `month · income · operating-cost · payroll · misc · total_expenses · net · total`.
+2. **Cash** = column `total` (H) at the last closed month. That column is the running cumulative,
+   and per the ledger's validating identity `cumulative + outstanding personal-card float = 富邦 balance`.
+   Use the cumulative. The float is money owed to Peter.
+3. **Burn** = the mean of column `net` (G) over the window in `constraints.burn_window`.
+
+⚠ **`constraints.burn_window` is the whole ballgame, and as of 2026-09-13 it is unruled.** Zynkr's
+revenue is lumpy enough that the window choice moves runway across the 4-month floor:
+
+| Window | Burn / mo | Runway on NT$302,304 | Verdict |
+|---|---|---|---|
+| `trailing_3` (Jun–Aug) | **+NT$8,027** (net positive) | no finite answer | July's windfall dominates — meaningless |
+| `trailing_6` as booked | −NT$30,504 | **9.9 months** | GREEN |
+| `trailing_6_ex_oneoff` | −NT$99,135 | **3.0 months** | **RED — below the floor** |
+
+The one-off is the 2026-07 `好學校 6月結算` of **NT$411,783** — 81% of that month's income, and the
+ledger's own note on the row says 分潤條件與期間待確認. Until Peter rules the window, the brief prints
+**both** numbers and names the dependency; it does **not** pick one and it does **not** report GREEN.
+
+**One-off / non-operating filter.** Never treat these as operating revenue when reasoning about
+run-rate: `income/transfer` (e.g. the 2025-09 思坊引擎 NT$1,000,609 capital injection),
+`income/interest`, `misc/refund`, and any row whose note carries 待確認.
+
+**Read-only.** zynkr-gm never writes to this ledger. Appends to `Transactions` belong to
+`/zynkr-accounting`. Never write into the `Financial Model` tab's month columns (E:AP) — they are
+spilled array results and a write turns the row into `#REF!`.
 
 ## Write rule (P1 — local runs only)
 

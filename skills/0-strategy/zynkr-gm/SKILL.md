@@ -71,11 +71,12 @@ it — do not guess IDs and do not proceed with placeholders.
 | `sources.okr_kpi_tracker` | OKR & KPI tracker (tabs `okrs`, `kpi_dashboard`) — the metrics SOR |
 | `sources.ops_heal_tracker` | ops gap-heal action sheet (tabs `fixes`, `decisions`) |
 | `sources.course_tracker` | flagship course project tracker (milestone dates only) |
+| `sources.finance_ledger` | **the books** — runway · burn · cash-basis revenue. Read-only |
 | `sources.vms_v2` · `sources.integrated_refresh` | strategy docs — read the authoritative TOP section only |
 | `sources.plan_docs.<lob>` · `sources.eae_readme` | per-function H2 plan docs — Refresh block only, on change |
 | `sources.knowledge_directory` · `sources.org_taxonomy` | governance docs (SOR precedence table, DRIs) |
 | `sources.livestream_notes_folder` | health-check only: date of the newest weekly note |
-| `constraints.*` | runway floor (months), books-stale days, burn cap, Q3/H2 end dates |
+| `constraints.*` | runway floor (months), books-stale days, burn cap, **burn window**, Q3/H2 end dates |
 | `routine.*` | trigger id, cron, connectors, model, subject prefix — for `render_routine_prompt.py` |
 
 ---
@@ -185,12 +186,20 @@ header text (`Tracker #`, `Q3 target`, `Q4 target`, `Actual`, and — if present
 - `sources.course_tracker`: tab per config; take stage/milestone rows with End dates and
   Status only (this skill does **not** produce that project's status email —
   /project-status-update does).
+- `sources.finance_ledger` (Zynkr Finance Ledger): tab `Monthly Summary` — the books, and the
+  runway/burn source since 2026-09-13. Readable in **both** environments, so the runway line is no
+  longer environment-dependent. **Read-only**; never append, and never write into the
+  `Financial Model` tab's month columns (spilled arrays → `#REF!`).
 - Local runs may add CRM (`mcp__zynkr__list_deals`, `list_tasks`) for sales/consulting
-  evidence and the accounting database for runway/burn per `references/kpi-map.md`.
-  In the cloud routine these are unavailable — the brief marks those lines
+  evidence. In the cloud routine the CRM is unavailable — the brief marks those lines
   `（排程執行無法讀取 · 待本地補）` rather than guessing.
-- Runway: from the KPI dashboard's runway/burn rows (`Actual` + `As of`) or the accounting
-  read. If neither exists → the runway line reads **RED · 未計量** and says so.
+- Runway: computed from the ledger per `references/kpi-map.md` § *How to compute it* — cash =
+  cumulative `total` at the last closed month (**not** the 富邦 bank balance), burn = mean `net`
+  over `constraints.burn_window`. The KPI Dashboard's runway/burn `Actual` cells are a **mirror**,
+  not the source: if they disagree with the ledger, the ledger wins and block 05 asks Peter to
+  refresh them. ⚠ While `constraints.burn_window` is null the brief prints **both** candidate
+  numbers and says which ruling would settle it — it never picks one silently. If the ledger
+  itself cannot be read → **RED · 未計量**.
 
 ### 3.5 Strategy + plan docs (only on change)
 
@@ -299,8 +308,8 @@ connectors, model). Differences from a local run, by design:
 
 - Reads go through the **Google-Drive connector** (`read_file_content` returns Sheets as
   markdown tables and Docs as text; large docs may be truncated — the ops weekly log's newest
-  week is at the top, so that is safe). No CRM, no accounting, no calendar → those lines are
-  marked unavailable, never guessed.
+  week is at the top, so that is safe). The finance ledger IS readable here, so runway is computed
+  on scheduled runs too. No CRM, no calendar → those lines are marked unavailable, never guessed.
 - Delivery is **send** via the Gmail connector (`send_message`); if refused → `create_draft`
   and the run report says so. Idempotent per ISO week via the sent-mail check.
 - Ask nothing; fail loud (a missing-data brief is worse than a visible failure); one message
@@ -346,7 +355,8 @@ connectors, model). Differences from a local run, by design:
   adds `learn` (knowledge-directory curation, propose → `--apply` interactive only).
 - The tracker's status vocabulary has no 延遲; overdue and undated are inferred from
   dates that are often placeholders — the brief makes that visible rather than hiding it.
-- Cloud runs cannot see CRM/accounting/calendar; those lines say so.
+- Cloud runs cannot see CRM/calendar; those lines say so. (Runway is no longer in that set — the
+  finance ledger is a Drive Sheet the connector can read.)
 - The brief is company-level. One project's status email is `/project-status-update`.
 
 ## Self-checks
