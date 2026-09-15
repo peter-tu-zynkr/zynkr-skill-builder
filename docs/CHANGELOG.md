@@ -1213,3 +1213,48 @@ join, not a relay — and `synergy: []` stays.
 Frontmatter-only; `generated/` and `content/` are left to CI as always. Committed through the
 GitHub API from the Atlas session that needed it, so no local checkout moved — `git pull` here
 before the next edit.
+
+## 2026-09-15 — Fireflies becomes a first-class transcript source for seven skills · `SKB-028`
+
+`docs/specs/SKB-028-fireflies-transcript-source.md` — **spec backfilled 2026-09-15**, after the code
+landed in `9dbdaae9`. ⚠️ This file has no entries between `SKB-020` and here; `SKB-021`–`SKB-027`
+shipped unrecorded. The gap is left as it is (append-only, never re-sorted) rather than reconstructed
+from memory.
+
+Peter's Fireflies account reached Claude Code over MCP, and the question that produced the work was
+his: 「I don't have to copy & paste transcript anymore, right?」 The answer was **no** — an MCP server
+gives the *model* a capability, not a *skill*. Every transcript skill here was hardwired to Drive /
+Doc / `.srt` / Gemini / paste, so an interactive session could improvise and a scheduled run could
+not. ⚠️ The `planning-*` family looked like a counter-example and is not: it has named Fireflies since
+`SKB-007` but reads the **recap email through Gmail**, never the API — so a grep for "fireflies"
+returned hits before this change and told you nothing.
+
+Seven SKILL.md now name it in `input:` **and** carry resolution steps in the body: `consult-transcriber`
+(a new §1.5 SOURCE_MODE gate whose `fireflies` mode **skips §2–§4** — no ASR, no cleanup delegation),
+`consult-session-notes`, `consult-project-specialist`, `sales-follow-up` (reads summary **and**
+transcript — the prospect's pain must be in their own words, which live only in the verbatim
+sentences), `training-lecture-recap`, `curate-livestream-transcripts` (new Step 1b sweep) and
+`admin-video-document` (new Step 1b reconcile, where a Fireflies-only row is index-only and must never
+fabricate a file). Every block carries the free-plan budget in the skill itself — **50 requests/day,
+one per tool call** — because a budget that lives only in a person's head does not constrain an
+autonomous run.
+
+Measured against the live account, against the third-party claim that the API is Business-only —
+**it is not**: reads work on free, transcripts come back speaker-labelled and timestamped, and
+`audio_url`/`video_url` are the actual paid gate (they return empty).
+
+⚠️ **Two traps, both hit.** `input:` is capped at **180 chars and ingest silently truncates** — the
+first draft ran to 291 and would have had the Fireflies mention cut off, which was the entire point;
+all seven now fit and lead with it. And `extracted.json` must be written `indent=1` with **no trailing
+newline**, its exact on-disk form, or all 92 entries reformat and bury the nine real lines.
+
+**Verification (D2)** — `validate-skill` 7/7, 0 errors (residual warnings pre-existing); `ingest-skills.yml`
+and `qa.yml` both green; artifacts committed back as `28b6f9d4`; all seven fetched live from
+`zynkr.ai/s/<id>.md` with `input:` un-truncated. `/api/skills` shows Fireflies on one of seven, which is
+**correct** — that endpoint serves `summary`, not the body.
+
+⚠️ **This sized S and was L.** A new `external_services` string is a cross-repo change: it armed
+`ATL-063` item 3's fail-loud in Atlas, where `deriveConnectors` **throws** on a string it cannot
+resolve. Between this commit and Atlas `ATL-101`, any re-parse touching any of the seven would have
+stopped — including one aimed at something else. Nothing in this repo could have caught it.
+`ATL-101` disarmed it and minted the connector; **its production apply is still owed.**
