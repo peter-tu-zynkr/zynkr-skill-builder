@@ -142,7 +142,6 @@ function scaffoldNextWeek() {
 
   Logger.log('Duplicating "' + marks[0].text + '" (elements ' + from + '..' + (to - 1) +
              ', ' + (to - from) + ' elements) as "' + label + '"');
-  if (DRY_RUN) { Logger.log('DRY_RUN — no changes written.'); return label; }
 
   // 5. SNAPSHOT the source elements BEFORE writing anything.
   //     Every insert shifts the index of everything after it. Reading and writing in
@@ -171,6 +170,13 @@ function scaffoldNextWeek() {
   }
   Logger.log('Dropped ' + dropped + ' line(s) of previous 〔自動彙整〕 blocks from the copy; ' +
              'carrying ' + copies.length + ' element(s) forward.');
+
+  // The DRY_RUN gate sits HERE, after the snapshot, not before it. Snapshotting only calls
+  // copy(), which builds detached elements and touches nothing in the document -- so running
+  // it during a dry run is free, and it is the only way the rehearsal can report how many
+  // 〔自動彙整〕 lines would actually be dropped. Gating earlier made the dry run silent on
+  // the one number worth checking before a real run.
+  if (DRY_RUN) { Logger.log('DRY_RUN — no changes written.'); return label; }
 
   // 6. Insert the snapshot above the newest section, preserving order.
   let cursor = from;
@@ -249,10 +255,16 @@ function archiveOldWeeks() {
   const moving  = liveBefore - KEEP_SECTIONS;
   const oldest  = marks[marks.length - 1].text;
 
-  Logger.log('Archive: ' + liveBefore + ' dated sections, keeping ' + KEEP_SECTIONS +
+  // The counts below are of HEADING2 dated sections, because that is what this script can
+  // identify. The MOVE is by element range and runs to the END of the tab, so anything below
+  // the oldest HEADING2 section travels with it -- on the real Doc that is 11 older sections
+  // whose headings are not styled HEADING2 and so are never counted here. That is correct
+  // (they are older than everything being retired) but the element count is the honest number.
+  Logger.log('Archive: ' + liveBefore + ' dated HEADING2 sections, keeping ' + KEEP_SECTIONS +
              ' (' + marks.slice(0, KEEP_SECTIONS).map(function (m) { return m.text; }).join(', ') +
              '), moving ' + moving + ' (' + marks[KEEP_SECTIONS].text + ' .. ' + oldest +
-             ') = elements ' + cut + '..' + last + ' -> "' + ARCHIVE_TAB_TITLE + '"');
+             ') AND everything below them to the end of the tab = elements ' + cut + '..' + last +
+             ' (' + (last - cut + 1) + ' elements) -> "' + ARCHIVE_TAB_TITLE + '"');
   if (DRY_RUN) { Logger.log('DRY_RUN — no changes written.'); return 0; }
 
   // 1. SNAPSHOT before writing anything — same index-shift trap as the scaffold.

@@ -114,10 +114,25 @@ title, not id, because the id is not knowable until the tab exists.
 
 ## The first run is the big one
 
-On the real Doc the first `archiveOldWeeks()` moves **32 sections** in a single pass: 34 dated
-sections live today, the scaffold adds next Thursday first (35), and 3 stay. That is by far the
-largest edit this script will ever make, and it is the run most worth rehearsing on a duplicate.
-Every later run moves exactly one.
+On the real Doc the first `archiveOldWeeks()` moves **32 sections' worth of content** in a single
+pass. That is by far the largest edit this script will ever make, and the run most worth
+rehearsing on a duplicate. Every later run moves exactly one.
+
+**The log will say a smaller number, and that is correct.** Two different counts are in play:
+
+| | |
+|---|---|
+| The script counts | **HEADING2** dated headings — 23 today, 24 after the scaffold adds next Thursday, so it reports `moving 21` |
+| The move actually covers | the element range from the cut down to the **end of the tab** — which also carries the **11 older sections (Apr 9 back to Jan 8) whose headings are not styled HEADING2** and so are invisible to `dateMarks_()` |
+
+21 + 11 = 32. The behaviour is right — those 11 are older than everything being retired, so they
+belong in the archive either way — but it is worth knowing before you read the log and think the
+script has missed a third of the Doc. The log prints the element range and element count for
+exactly this reason, and the post-conditions are all expressed in HEADING2 counts on both sides,
+so they stay consistent.
+
+This also means **`countDateHeadings_()` is not a content census.** Do not use it to prove nothing
+was lost; use the element range, or read the archive tab.
 
 The first run does **not** retro-clean the blocks already stacked inside the three surviving
 sections — the scaffold only drops blocks from what it copies *forward*. Those clear naturally:
@@ -165,3 +180,4 @@ is idempotent. **If you ever move the scaffold earlier than `decisions`, move th
 | Archive in a separate document | `↻N週` streaks silently reset to ≤3 and Wednesday's agenda loses its only signal | Sibling **tab**, same Doc, directly after the live tab — `carryover.py` reads all tabs as one stream |
 | Human text starting with `·` | Swept up as part of an auto block | The skip state only continues through blank or `·` **paragraphs**; a list item, table or any other paragraph ends it. The team's bullets are real Docs list items |
 | Standing notes at the bottom of the tab | Archived along with the oldest section | The cut is "everything from the fourth dated heading down". Keep standing notes **above** the newest dated heading |
+| Not every dated heading is a HEADING2 | The log reports fewer sections than the Doc appears to have (23, not 34) and it looks like the script missed some | It did not — the move is by element range to the end of the tab, so the uncounted ones travel too. See "The first run is the big one" |
