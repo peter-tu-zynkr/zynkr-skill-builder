@@ -53,7 +53,7 @@ own** — it reads the chips at run time. Change the Doc, and routing *and* the 
 recipient list both follow.
 
 **It writes narrowly.** Auto-content only ever lands inside a block stamped
-`〔自動彙整 W35 · 08-24 12:00〕`. It never edits a line a human wrote. A bot that silently
+`〔自動彙整 WB 9/14 · 09-15 12:00〕`. It never edits a line a human wrote. A bot that silently
 rewrites prose in a doc people are actively editing is a bot nobody trusts by week two.
 
 ---
@@ -69,16 +69,32 @@ rewrites prose in a doc people are actively editing is a bot nobody trusts by we
 | Wed 17:00 | `agenda` | skill | Re-sweep for late arrivals, then carry-over · overdue · KPI · ≤3 decisions |
 | **Thu 21:00** | — | team | The weekly meeting. Discuss exceptions and decisions only; edit the Doc live |
 | **Thu 22:00** | `decisions` | skill | Resolutions → space (3 lines) + recap mail + decisions register + **assert the send** |
-| Thu 23:00 | `scaffoldNextWeek` | **Apps Script** | Duplicate the newest week section, re-stamp next Thursday. Runs **after** `decisions` — see Step 4.1 |
+| Thu 23:00 | `weeklyMaintenance` | **Apps Script** | Duplicate the newest week section and re-stamp next Thursday, **then archive every section past the newest three**. Runs **after** `decisions` — see Step 4.1 |
 
 `chase` must run **after** `rollup` — it cannot know who is missing until the roll-up has
 resolved who posted. Both beats sit on Tuesday morning so that the Doc's Thursday section is
 already full two days before anyone opens it.
 
-**Why the scaffold is not this skill's job.** The split is by *whether judgement is needed*, not
-by preference. Duplicating a section is purely mechanical and must never fail, so it belongs to
-Apps Script, whose authorisation does not expire. In the week this skill breaks entirely, the
-skeleton still opens and Thursday still has a page. See `references/scaffold.md`.
+**Why the scaffold and the archive are not this skill's job.** The split is by *whether
+judgement is needed*, not by preference. Duplicating a section and retiring an old one are
+purely mechanical and must never fail, so both belong to Apps Script, whose authorisation does
+not expire. In the week this skill breaks entirely, the skeleton still opens, Thursday still has
+a page, and the Doc still stops growing. See `references/scaffold.md`.
+
+**Why the Doc stops growing — it takes both halves of the fix.** Every writer here is
+insert-only, and the scaffold used to copy the newest section *verbatim*. Audited 2026-09-15:
+the newest section held 22 auto-blocks of which only 4 were that week's, one week's four blocks
+existed 16 times over, and sections had grown 130 → 292 lines in four weeks with no ceiling.
+
+Two distinct leaks, and capping one without the other fixes nothing:
+
+| Leak | Symptom | Fix |
+|---|---|---|
+| Sections are never retired | The tab grows by a whole section every week | `archiveOldWeeks()` — keep the newest 3, move the rest |
+| Each section is a copy of a copy | The newest section inherits **every** auto-block ever written, so it keeps growing even at a fixed section count | `scaffoldNextWeek()` drops `〔自動彙整〕` blocks when snapshotting |
+
+A week's summary belongs to the week it summarised. The scaffold carries the human skeleton and
+the owner chips forward; Tuesday's `rollup` writes that week's blocks from scratch.
 
 ---
 
@@ -94,6 +110,7 @@ This repository is public. The method is here; the **identifiers are not**. At r
 | `space.id` | the Chat space, in `spaces/<id>` form — **the `spaces/` prefix is required** |
 | `space.name` | human label, for report lines only |
 | `doc.id` · `doc.tab_id` · `doc.tab_name` | the weekly operations Doc and the tab that holds the week sections |
+| `doc.archive_tab_name` · `doc.keep_sections` | where Apps Script retires old sections to, and how many stay live (3). **Read-only here** — the skill asserts against them, never acts on them |
 | `chat_ids` | **the only hardcoded map** — 6 rows of Chat `users/<id>` → email. See below |
 | `reporters` | the emails expected to post each week (6 people; excludes non-reporting members) |
 | `sources.main_tracker` · `sources.okr_kpi_tracker` | sheets read to backfill metrics and overdue items |
@@ -134,7 +151,11 @@ stop resolving.
 
 Resolve today in `Asia/Taipei`. Compute:
 
-- **ISO week key** — e.g. `2026-W35`. Every mode is idempotent on this key.
+- **Week label** — `WB 9/14`, the **Monday that opens the week**. This is what goes in every
+  stamp, every Chat footer and the recap subject: it is the day the team posts, and it is a date
+  a reader can place without counting. It replaced the ISO ordinal (`W38`) on 2026-09-15.
+- **ISO week key** — `2026-W38`. Machine-only: the launchd state files and the receipt line's
+  `week=` field. Never shown to the team. `references/wording.md` explains why both exist.
 - **The window** — Monday 00:00 of the current ISO week → now.
 - **The target Thursday** — the Doc names its sections by **Thursday** date (`Aug 27`,
   `Aug 20`, …), but the team reports on **Monday**.
@@ -152,9 +173,15 @@ for this ISO week:
 
 - Chat-delivering modes (`nudge`, `chase`, `agenda`, `decisions`) — list the space's messages
   for today and look for this skill's own marker line (each template ends with a
-  `— zynkr-ops-weekly · W<week>` footer). Found → stop and report "already ran".
-- `rollup` — look for a `〔自動彙整 W<week>` stamp inside the target Thursday section. Found →
+  `— zynkr-ops-weekly · <week>` footer). Found → stop and report "already ran".
+- `rollup` — look for a `〔自動彙整 <week>` stamp inside the target Thursday section. Found →
   do not write a second block; re-run in *append-new-only* mode (Step 4.4).
+
+> **Until 2026-10-06, match the old week shape too.** The label changed from `W38` to
+> `WB 9/14` on 2026-09-15, so a section written before then is stamped `〔自動彙整 2026-W38`
+> and a footer posted before then reads `· W38`. Search for **either**. Matching only the new
+> shape makes `rollup` write a duplicate block and makes `decisions` conclude the loop never
+> ran and refuse to send the recap. `references/wording.md` → "The changeover".
 
 ## Step 2 — Read routing from the Doc (every run)
 
@@ -201,12 +228,22 @@ Post the template from `references/message-templates.md` with those decisions qu
 and the Tue 09:00 cut-off stated. Reference last week's decisions so people report *against*
 something.
 
-**Then assert the scaffold fired.** Confirm a section for the *upcoming* Thursday exists. This
-is the "prove it fired" check for the Apps Script half. It lives here rather than in `decisions`
-because the scaffold trigger runs later on Thursday evening than `decisions` does — checking at
-that moment would fail every week for the wrong reason, and a notice that cries wolf weekly is
-worse than no notice. Missing → post a failure notice and stop; do **not** create the section
-here, because rebuilding it loses the owner person chips, which no API can recreate.
+**Then assert Thursday's maintenance fired — both halves of it.** This is the "prove it fired"
+check for the Apps Script side. It lives here rather than in `decisions` because the trigger runs
+later on Thursday evening than `decisions` does — checking at that moment would fail every week
+for the wrong reason, and a notice that cries wolf weekly is worse than no notice.
+
+1. **The scaffold.** Confirm a section for the *upcoming* Thursday exists. Missing → post a
+   failure notice and stop; do **not** create the section here, because rebuilding it loses the
+   owner person chips, which no API can recreate.
+2. **The archive.** Count the dated sections in the live tab. It should be exactly **3**. More
+   means `archiveOldWeeks()` did not run or threw — report it, and say how many. Do **not**
+   archive from here; that is Apps Script's job (Guardrails). Fewer than 3 is the louder
+   problem: it means something removed a section the scaffold needs, so say so explicitly.
+3. **The copy is clean.** The upcoming Thursday's section should contain **no** `〔自動彙整〕`
+   block at all — Tuesday's `rollup` writes the first one. If it arrived carrying last week's
+   blocks, the scaffold is running an old copy of `scaffold.gs` that still copies verbatim.
+   That one is easy to miss because everything still *works*; it just silently regrows the Doc.
 
 ### 4.2 `rollup` (Tue 09:00)
 
@@ -316,6 +353,10 @@ assertion result. If a step was skipped, say which and why.
 ZYNKR-OPS-WEEKLY-RESULT: mode=<mode> week=<ISO week> status=ok|partial|failed delivered=<short>
 ```
 
+`week=` here stays the **ISO key** (`2026-W38`), not the `WB 9/14` label the team reads. This
+line is machine-facing, it needs to be year-qualified and sortable, and it sits next to the
+`<week>.<mode>.done` state files that use the same key. See `references/wording.md`.
+
 `status=ok` means **every** side effect this mode owes actually landed and you verified it —
 the message is in the space, the block is in the Doc, the mail is in `in:sent`. Anything
 short of that is `partial` (some landed) or `failed` (none did), with the reason in
@@ -343,6 +384,10 @@ silent Monday and a half-failed Wednesday in W36 before this line existed.
 - **Never rebuild the Doc's skeleton.** Person chips cannot be created by Apps Script or the
   Docs REST API — only copied. Rebuilding loses the routing table. Copy, or do nothing.
 - **Never write to a past section.** If the target Thursday is behind today, stop and report.
+- **Never archive, and never write to the archive tab.** Retiring a section is Apps Script's
+  job, for the same reason scaffolding is: mechanical, must not fail, authorisation that does
+  not expire. The skill half reads `每週事項 封存` and nothing more. If the live tab is holding
+  more than three weeks, that is a finding to report, not a thing to fix in-run.
 - **Never invent a metric.** Cite the cell, or leave the slot empty.
 - **Never treat mail as an input.** Every mode reads state from the Doc and the tracker.
 - **Fail loud on config.** Placeholder id → stop; a wrong id writes into someone else's file.
@@ -360,6 +405,14 @@ silent Monday and a half-failed Wednesday in W36 before this line existed.
   outside them stays a human line.
 - The Apps Script half must be installed once by hand, and `installTriggers()` must actually be
   *run* — pasting the file does not schedule anything. See `references/scaffold.md`.
+- **The archive tab must be created by hand, once.** No API can create a Docs tab from Apps
+  Script, so `archiveOldWeeks()` fails loud when `每週事項 封存` is missing rather than inventing
+  somewhere to put a year of work. It must sit **directly after** the live tab, in the **same
+  document** — `references/doc-write-rules.md` explains why both constraints are load-bearing.
+- Archiving keeps three *sections*, not three *weeks of edits*. A human who pastes a long note
+  into the live tab below the oldest dated heading will see it archived with that section; the
+  cut is "everything from the fourth heading down". Standing notes belong above the newest
+  dated heading.
 - The skill half runs on **launchd**, not a claude.ai cloud routine: there is no Google Chat
   connector, the cloud sandbox cannot read the private config, and the Drive connector cannot do
   the chip-preserving Doc writes. See `references/scheduling.md`.

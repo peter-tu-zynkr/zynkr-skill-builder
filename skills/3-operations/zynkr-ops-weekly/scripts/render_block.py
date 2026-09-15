@@ -2,13 +2,13 @@
 """Render the marked 〔自動彙整〕 block for each department heading.
 
     render_block.py --reports reports.json --routing routing.json \
-                    [--carryover carryover.json] --week 2026-W35 --stamp "08-24 12:00"
+                    [--carryover carryover.json] --week "WB 9/14" --stamp "09-15 12:00"
 
 Emits one block per routed heading, plus the diagnostics the run report must surface:
 reporters whose owner email matches no heading, and headings with no report this week.
 
 The block is the ONLY place auto-content is allowed to live, and its stamp doubles as the
-idempotency key -- before writing, the caller searches the section for `〔自動彙整 W<week>`.
+idempotency key -- before writing, the caller searches the section for `〔自動彙整 <week>`.
 Nothing here ever rewrites a human's line.
 """
 import argparse
@@ -16,8 +16,13 @@ import json
 import re
 import sys
 
-# The stamp is the idempotency key -- `rollup` searches the section for `〔自動彙整 W<week>`
+# The stamp is the idempotency key -- `rollup` searches the section for `〔自動彙整 <week>`
 # before writing. Do not reword it, ever.
+#
+# <week> is the WEEK-BEGINNING label, `WB 9/14` (the Monday that opens the week), NOT an ISO
+# week ordinal. Changed 2026-09-15. Sections written before then carry `2026-W38`-style keys,
+# so the idempotency search must accept BOTH shapes until every live section predates the
+# change -- see references/wording.md, "The changeover".
 STAMP = "〔自動彙整 {week} · {stamp}〕"
 
 # zh-TW throughout: the team writes Chinese, and a block that reads "事項 Not started" makes
@@ -77,7 +82,7 @@ def main():
     ap.add_argument("--reports", required=True)
     ap.add_argument("--routing", required=True)
     ap.add_argument("--carryover")
-    ap.add_argument("--week", required=True, help="ISO week key, e.g. 2026-W35")
+    ap.add_argument("--week", required=True, help='week-beginning label, e.g. "WB 9/14"')
     ap.add_argument("--stamp", required=True, help='timestamp shown in the block, e.g. "08-24 12:00"')
     args = ap.parse_args()
 

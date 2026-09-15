@@ -91,8 +91,36 @@ cannot be checked — not that it is on target.
 Two strings are machine-readable idempotency keys, not prose. Changing either one makes the
 loop write duplicates:
 
-- `〔自動彙整 <week> · <stamp>〕` — `rollup` searches the section for `〔自動彙整 W<week>`
-- `— zynkr-ops-weekly · W<week>` — the Chat footer every delivering beat looks for
+- `〔自動彙整 <week> · <stamp>〕` — `rollup` searches the section for `〔自動彙整 <week>`
+- `— zynkr-ops-weekly · <week>` — the Chat footer every delivering beat looks for
 
 `↻N週` is also fixed: `norm_key()` in `render_block.py` strips it with the regex
 `↻\s*\d+\s*週`, so appending words to it silently breaks carry-over matching.
+
+## Two week vocabularies, on purpose
+
+`<week>` above is the **week-beginning label**, `WB 9/14` — the Monday that opens the week.
+That is what the team reads, in the Doc and in the space.
+
+The **ISO key**, `2026-W38`, stays in two machine-only places: the launchd state files
+(`<week>.<mode>.done`, which is how `run_ops_weekly.sh` knows a beat is settled) and the
+`week=` field of the receipt line. Neither is ever read by a person, both need to be
+year-qualified and sortable, and the scheduler derives its own key independently — it greps
+the receipt for `status=ok` and nothing else. `parse_reports.py` emits both, as `week` and
+`week_iso`.
+
+This is a deliberate split, not drift. Do not "fix" it by unifying them: a label without a
+year is wrong for a state file, and an ordinal nobody can place is wrong for a chat message.
+
+## The changeover
+
+The label changed from `W38` to `WB 9/14` on **2026-09-15**. Sections written before that
+carry the old shape. Until no live section predates the change — three weeks, given the
+archive — every idempotency search must accept **both**:
+
+- `〔自動彙整 WB 9/14` **or** `〔自動彙整 2026-W38`
+- `— zynkr-ops-weekly · WB 9/14` **or** `— zynkr-ops-weekly · W38`
+
+Matching only the new shape makes `rollup` write a second block into a section that already
+has one, and makes `decisions` conclude the loop never ran and refuse to send the recap. Drop
+the legacy arm once three weeks have passed, the same way `--accept-untagged` gets dropped.

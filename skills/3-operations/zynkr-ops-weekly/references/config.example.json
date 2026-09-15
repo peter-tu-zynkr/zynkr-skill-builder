@@ -16,7 +16,10 @@
     "tab_name": "<tab name holding the week sections>",
     "section_heading_level": "HEADING_2",
     "section_date_format": "%b %d, %Y",
-    "$note": "Sections are named by MEETING day (Thursday), not by report day (Monday)."
+    "archive_tab_name": "<tab name holding retired week sections>",
+    "keep_sections": 3,
+    "$note": "Sections are named by MEETING day (Thursday), not by report day (Monday).",
+    "$note_archive": "READ-ONLY to this skill. Apps Script (scaffold.gs) moves sections past the newest keep_sections into archive_tab_name every Thursday; these two keys exist so Monday's nudge can ASSERT it fired. Keep them in step with ARCHIVE_TAB_TITLE / KEEP_SECTIONS in scaffold.gs -- nothing enforces that automatically. The archive tab MUST be a sibling tab in the SAME doc, directly after tab_id: carryover.py walks back across all tabs as one stream, so a separate file resets every streak."
   },
 
   "chat_ids": {

@@ -16,7 +16,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 TAG = "#週報"
 LABELS = [
@@ -151,8 +151,26 @@ def parse_numbers(lines):
 
 
 def iso_week(dt):
+    """Machine key: `2026-W38`. Year-qualified and sortable.
+
+    Kept for the launchd state files (`<week>.<mode>.done`) and the receipt line, which are
+    never read by the team. Everything a human sees uses week_beginning() instead.
+    """
     y, w, _ = dt.isocalendar()
     return f"{y}-W{w:02d}"
+
+
+def week_beginning(dt):
+    """Human label: `WB 9/14` — the MONDAY that opens the ISO week.
+
+    A week ordinal is a number nobody can place: told "W38", the reader has to go and count.
+    The Monday date is the same information as a day they can find on a calendar, and it is
+    also the day the team actually posts, so the label names the thing it labels.
+    No leading zeros and no year — the block always sits inside a section already headed by a
+    full date, so the year is never in question there.
+    """
+    monday = dt - timedelta(days=dt.weekday())
+    return f"WB {monday.month}/{monday.day}"
 
 
 def to_dt(value):
@@ -179,7 +197,8 @@ def main():
     ap.add_argument("--config", default=os.environ.get("ZYNKR_OPS_WEEKLY_CONFIG",
                                                        os.path.expanduser("~/.config/zynkr/ops-weekly.json")))
     ap.add_argument("--input", help="messages JSON file (default: stdin)")
-    ap.add_argument("--week", help="ISO week key to stamp; default derived from newest message")
+    ap.add_argument("--week", help='week label to stamp, e.g. "WB 9/14"; '
+                                   "default derived from the newest message's Monday")
     ap.add_argument("--accept-untagged", action="store_true",
                     help="also parse pre-tag shapes (上禮拜進度 / 本週待辦 / 這個禮拜我的 focus). "
                          "Transitional: use until the tagged format is pinned and adopted.")
@@ -248,11 +267,15 @@ def main():
 
     newest = max((to_dt(r["create_time"]) for r in by_email.values() if to_dt(r["create_time"])),
                  default=None)
-    week = args.week or (iso_week(newest) if newest else None)
+    week = args.week or (week_beginning(newest) if newest else None)
 
     posters = sorted(by_email)
     out = {
         "week": week,
+        # The ISO key travels alongside for the receipt line and the launchd state files.
+        # Two vocabularies on purpose: `WB 9/14` is what the team reads, `2026-W38` is what
+        # the scheduler keys on. See references/wording.md.
+        "week_iso": iso_week(newest) if newest else None,
         "records": [by_email[e] for e in posters],
         "posters": posters,
         "missing": sorted(set(reporters) - set(posters)),

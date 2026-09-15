@@ -26,7 +26,7 @@ carryover.py --input doc.md --threshold 3                            > carry.jso
 
 # 4. the blocks to write
 render_block.py --reports reports.json --routing routing.json \
-                --carryover carry.json --week 2026-W35 --stamp "08-24 12:00" > blocks.json
+                --carryover carry.json --week "WB 8/24" --stamp "08-24 12:00" > blocks.json
 ```
 
 Then write `blocks.json` into the Doc with `batch_update_doc`, `tab_id` set on **every**

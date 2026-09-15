@@ -8,7 +8,7 @@ Every Chat post ends with the footer line — it is the idempotency marker the n
 for, so it is not decoration and its exact shape is frozen:
 
 ```
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 Keep posts short. Chat scrolls; anything past a screen is not read. The Doc is where length is
@@ -38,7 +38,7 @@ Quote last week's decisions **read from the Doc**, so people report against some
 數字: 報名 72 / 訂閱 +18        （沒有就寫 —）
 卡關: 需要誰決定什麼            （沒有就寫 無）
 
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 Re-post the format **verbatim** every week. The ask has already drifted once; repetition of the
@@ -62,7 +62,7 @@ Only when someone is actually missing. Naming nobody teaches people to skip the 
 
 議程週三下午就會整理好，沒補到的就不會出現在上面
 
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 Plain text names, not live @-mentions: `send_message` posts text, and reliable programmatic
@@ -85,7 +85,7 @@ The agenda itself lives in the Doc. This post is a pointer.
 另外：逾期 <n> 件 · 連續三週以上沒動 <m> 件 · KPI 沒達標 <k> 項
 會議只談這些，進度不再一個部門一個部門唸
 
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 If there are no decisions to make, say so plainly and say why — an agenda that pretends to have
@@ -109,14 +109,14 @@ Short by design — next Monday's `nudge` quotes it.
 
 完整版已經寄到大家信箱，下週的區塊也開好了
 
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 ---
 
 ## `decisions` — Thu 22:00 (recap mail)
 
-Subject: `【營運週報】2026-08-27（W35）— 決議 3 件 · 逾期 2 件`
+Subject: `【營運週報】2026-08-27（WB 8/24）— 決議 3 件 · 逾期 2 件`
 
 Recipients: **the owner-chip emails read from the Doc this run** — never a list kept in config.
 Someone joins or leaves, the Doc changes, and routing and this list move together.
@@ -155,7 +155,7 @@ the people reading:
 
 <需要誰做什麼>
 
-— zynkr-ops-weekly · W35
+— zynkr-ops-weekly · WB 8/24
 ```
 
 Concrete cases that must produce one:
