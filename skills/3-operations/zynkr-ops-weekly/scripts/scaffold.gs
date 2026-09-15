@@ -72,6 +72,14 @@ const DRY_RUN = true;               // flip to false once verified
 const ARCHIVE_TAB_TITLE = '每週事項 封存';   // resolved by TITLE, not id — see getTabBodyByTitle_()
 const KEEP_SECTIONS     = 3;
 
+/* How many sections one run may archive. Steady state is ONE a week, so this only bites when
+ * working off a backlog — which is exactly when it matters. Apps Script kills a run at 6
+ * minutes and DocumentApp moves elements one at a time: the 2026-09-15 attempt spent 4m08s
+ * copying 4,465 elements and had not begun removing them. A cap turns "one enormous run that
+ * may die halfway" into "a bounded unit of work you can repeat until the log says the backlog
+ * is clear". Raise it only if you have measured the runtime on a duplicate. */
+const MAX_SECTIONS_PER_RUN = 4;
+
 /* WHEN IT RUNS — the trigger fires in TZ, regardless of the script project's own
  * timezone. Note the Apps Script Triggers panel DISPLAYS times in the PROJECT's
  * timezone (File > Project Settings), so if that is not TZ the row shows a
@@ -249,10 +257,18 @@ function archiveOldWeeks() {
   const archBefore = countDateHeadings_(arch);
   const liveBefore = marks.length;
 
-  // Everything from the first section we are NOT keeping, down to the end of the tab.
-  const cut     = marks[KEEP_SECTIONS].index;
+  // Take the OLDEST `batch` sections — the tail of the tab — not the whole backlog at once.
+  //
+  // Steady state is one section a week, so the cap only ever bites on a backlog. It exists
+  // because Apps Script kills a run at 6 minutes and the move is element-by-element: the live
+  // 2026-09-15 attempt spent 4m08s copying 4,465 elements and had not started removing them.
+  // Capping makes every run a bounded, repeatable unit of work — run it again for the next
+  // batch. Working from the BOTTOM upward is what keeps the archive newest-first: each batch
+  // is older than the last, and each is prepended above the previous one.
+  const backlog = liveBefore - KEEP_SECTIONS;
+  const moving  = Math.min(backlog, MAX_SECTIONS_PER_RUN);
+  const cut     = marks[liveBefore - moving].index;
   const last    = live.getNumChildren() - 1;
-  const moving  = liveBefore - KEEP_SECTIONS;
   const oldest  = marks[marks.length - 1].text;
 
   // The counts below are of HEADING2 dated sections, because that is what this script can
@@ -262,9 +278,12 @@ function archiveOldWeeks() {
   // (they are older than everything being retired) but the element count is the honest number.
   Logger.log('Archive: ' + liveBefore + ' dated HEADING2 sections, keeping ' + KEEP_SECTIONS +
              ' (' + marks.slice(0, KEEP_SECTIONS).map(function (m) { return m.text; }).join(', ') +
-             '), moving ' + moving + ' (' + marks[KEEP_SECTIONS].text + ' .. ' + oldest +
+             '), backlog ' + backlog + ', moving the oldest ' + moving + ' (' +
+             marks[liveBefore - moving].text + ' .. ' + oldest +
              ') AND everything below them to the end of the tab = elements ' + cut + '..' + last +
-             ' (' + (last - cut + 1) + ' elements) -> "' + ARCHIVE_TAB_TITLE + '"');
+             ' (' + (last - cut + 1) + ' elements) -> "' + ARCHIVE_TAB_TITLE + '"' +
+             (backlog > moving ? '   [' + (backlog - moving) + ' section(s) left after this run — ' +
+                                 'run weeklyMaintenance again to continue]' : ''));
   if (DRY_RUN) { Logger.log('DRY_RUN — no changes written.'); return 0; }
 
   // 1. SNAPSHOT before writing anything — same index-shift trap as the scaffold.
@@ -297,22 +316,35 @@ function archiveOldWeeks() {
   }
 
   // 4. Only now remove the originals — BACKWARDS, so each removal only shifts what is done.
+  //
+  //     ⚠️ A Body must always END with a paragraph. `last` IS the body's final element, so
+  //     removing it first throws "Can't remove the last paragraph in a document section" and
+  //     the prune dies before it starts. Observed live 2026-09-15, after the copy had already
+  //     landed — which left the rehearsal doc holding both halves.
+  //     So append a throwaway paragraph first: it becomes the body's final element, every
+  //     removal below is then legal, and the tab is left ending in one empty paragraph,
+  //     exactly as a tab whose last section was cut by hand would be.
+  live.appendParagraph('');
   for (let i = last; i >= cut; i--) live.removeChild(live.getChild(i));
 
   // 5. Post-conditions on both tabs. A partial prune is worse than a failed one.
+  //     Note the expected count is liveBefore - moving, NOT KEEP_SECTIONS: while a backlog is
+  //     being worked off a run legitimately ends above the target and the next run continues.
   const liveAfter = countDateHeadings_(live);
-  if (liveAfter !== KEEP_SECTIONS) {
-    throw new Error('Live tab should hold ' + KEEP_SECTIONS + ' dated sections after archiving, ' +
-                    'found ' + liveAfter + '. The document was modified — restore via ' +
-                    'File > Version history before re-running.');
+  if (liveAfter !== liveBefore - moving) {
+    throw new Error('Live tab should hold ' + (liveBefore - moving) + ' dated sections after ' +
+                    'archiving ' + moving + ', found ' + liveAfter + '. The document was ' +
+                    'modified — restore via File > Version history before re-running.');
   }
   if (liveAfter + archAfter !== liveBefore + archBefore) {
     throw new Error('Section count changed across the move: ' + (liveBefore + archBefore) +
                     ' -> ' + (liveAfter + archAfter) + '. Restore via File > Version history.');
   }
 
+  const left = liveAfter - KEEP_SECTIONS;
   Logger.log('Archived ' + moving + ' section(s). Live: ' + liveBefore + ' -> ' + liveAfter +
-             '. Archive: ' + archBefore + ' -> ' + archAfter + '.');
+             '. Archive: ' + archBefore + ' -> ' + archAfter + '.' +
+             (left > 0 ? '  ' + left + ' still to go — run weeklyMaintenance again.' : '  Backlog clear.'));
   return moving;
 }
 

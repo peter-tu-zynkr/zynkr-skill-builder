@@ -5,8 +5,8 @@ Its entry point is `weeklyMaintenance()`, which does two things in this order:
 
 1. **`scaffoldNextWeek()`** — duplicates the newest week section and re-stamps it with the next
    Thursday, **dropping the previous weeks' `〔自動彙整〕` blocks as it copies**.
-2. **`archiveOldWeeks()`** — moves every dated section past the newest `KEEP_SECTIONS` (3) out
-   of the live tab and into `每週事項 封存`.
+2. **`archiveOldWeeks()`** — moves the oldest sections past the newest `KEEP_SECTIONS` (3) out of
+   the live tab and into `每週事項 封存`, at most `MAX_SECTIONS_PER_RUN` (4) per run.
 
 ## One trigger, two steps — why they are chained and not scheduled apart
 
@@ -97,8 +97,9 @@ title, not id, because the id is not knowable until the tab exists.
    - the person chips survived — if they came through as plain text, use the `mailto` fallback
      documented at the bottom of the script (visually plainer, still machine-readable);
    - the new section carries the headings and human lines but **no** `〔自動彙整〕` block;
-   - the live tab holds exactly 3 dated sections, and the archived ones arrived **newest-first**
-     at the top of the archive tab, intact.
+   - the archived sections arrived **newest-first** at the top of the archive tab, intact;
+   - the live tab shrank by `MAX_SECTIONS_PER_RUN`. On a backlog it will **not** reach 3 in one
+     run — the log ends `N still to go`. Re-run `weeklyMaintenance` until it says `Backlog clear.`
 5. Only then change `DOC_ID` to the real Doc.
 6. **Run `installTriggers()` by hand, once.**
 
@@ -114,9 +115,15 @@ title, not id, because the id is not knowable until the tab exists.
 
 ## The first run is the big one
 
-On the real Doc the first `archiveOldWeeks()` moves **32 sections' worth of content** in a single
-pass. That is by far the largest edit this script will ever make, and the run most worth
-rehearsing on a duplicate. Every later run moves exactly one.
+On the real Doc there is a backlog of **32 sections' worth of content** to retire. It does **not**
+go in one pass, and it must not: `MAX_SECTIONS_PER_RUN` caps each run at 4, so the backlog drains
+over ~8 runs. Run `weeklyMaintenance` repeatedly until the log says `Backlog clear.` — each run
+prints how many are left. After that, steady state is one section a week and the cap never bites.
+
+**Why the cap exists.** Apps Script kills a run at **6 minutes**, and DocumentApp moves elements
+one at a time. Measured on the 2026-09-15 rehearsal: copying 4,465 elements took **4m08s** and the
+removal pass had not started. An uncapped first run would have died mid-prune. The cap turns one
+enormous run that may fail halfway into a bounded unit of work you can repeat.
 
 **The log will say a smaller number, and that is correct.** Two different counts are in play:
 
@@ -181,3 +188,6 @@ is idempotent. **If you ever move the scaffold earlier than `decisions`, move th
 | Human text starting with `·` | Swept up as part of an auto block | The skip state only continues through blank or `·` **paragraphs**; a list item, table or any other paragraph ends it. The team's bullets are real Docs list items |
 | Standing notes at the bottom of the tab | Archived along with the oldest section | The cut is "everything from the fourth dated heading down". Keep standing notes **above** the newest dated heading |
 | Not every dated heading is a HEADING2 | The log reports fewer sections than the Doc appears to have (23, not 34) and it looks like the script missed some | It did not — the move is by element range to the end of the tab, so the uncounted ones travel too. See "The first run is the big one" |
+| **Removing the body's final element** | `Exception: Can't remove the last paragraph in a document section.` — thrown on the FIRST removal, *after* the copy has already landed, leaving the doc holding both halves | A Body must end with a paragraph, and the final element carries the section break. `archiveOldWeeks()` appends a throwaway empty paragraph before the removal loop so the old last element is no longer last. **Hit live on 2026-09-15** |
+| 6-minute execution limit | A big move dies part-way | `MAX_SECTIONS_PER_RUN` caps each run at 4 sections. Measured: 4,465 elements took 4m08s just to copy |
+| A run dies *after* the copy | The archive holds a copy AND the live tab still has the originals — content duplicated | Safe by construction, and recoverable: delete the copied sections out of the archive tab, then re-run. Never the reverse order, which would lose them |
