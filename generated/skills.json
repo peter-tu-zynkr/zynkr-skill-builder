@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 176455,
-    "githubForks": 20886
+    "githubStars": 176478,
+    "githubForks": 20889
   },
   {
     "id": "1.29",
@@ -2850,7 +2850,7 @@
     "upstreamRepo": "https://github.com/DreambigOu/ELI5",
     "originalSourceUrl": "https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md",
     "originalAuthor": "DreambigOu",
-    "githubStars": 1249,
+    "githubStars": 1259,
     "githubForks": 58
   },
   {
@@ -3005,7 +3005,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 31694,
+    "githubStars": 31704,
     "githubForks": 2702
   },
   {
@@ -3315,8 +3315,8 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 42609,
-    "githubForks": 2854
+    "githubStars": 42616,
+    "githubForks": 2855
   },
   {
     "id": "6.12",
