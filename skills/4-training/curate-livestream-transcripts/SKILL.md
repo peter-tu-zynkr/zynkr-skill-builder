@@ -7,7 +7,7 @@ project: curate-livestream-transcripts
 platform: claude
 status: Done
 author: Peter Tu
-input: "None — all source/destination folder IDs are constants below. Reads 直播筆記 Docs from the upstream folders."
+input: "None — folder IDs are constants below. Reads 直播筆記 Docs from the upstream folders AND sweeps Fireflies for livestreams in the same window."
 process: "list → filter → dedup-against-destination → read 逐字稿 tab → summarize → create Doc in SOT folder"
 output: "One 逐字稿_{Series}_{YYYY-MM-DD}_{topic} Google Doc per new source, in the destination folder, plus a run report."
 synergy: []
@@ -55,6 +55,31 @@ All Drive operations run as `peter_tu@zynkr.ai`.
 ## Step 1 — List every upstream Doc
 
 For each upstream folder, list its Docs (`list_docs_in_folder` locally, or `search_files` with `parentId = '<folder>'` in cloud). Record `{ title, fileId, series }` for each, tagging `series` from the folder it came from.
+
+### Step 1b — Sweep Fireflies for the same window
+
+A livestream Fred sat in on is transcribed in Fireflies whether or not anyone
+filed a 直播筆記 Doc for it. Sweep it so those sessions are not silently missed:
+
+```
+mcp__fireflies__fireflies_search(query="keyword:\"講座\" from:<window-start> to:<window-end> limit:50")
+```
+
+Record `{ title, transcriptId, date, source: "fireflies" }` for each hit whose
+title reads as a livestream/講座/webinar. These join the Step 2 candidate pool and
+run through the same title + date filters; a Fireflies row has no `fileId`, so
+Step 6 reads it with `mcp__fireflies__fireflies_get_transcript(transcriptId=…)`
+instead of reading a 逐字稿 tab.
+
+⚠️ **Request budget.** The free plan allows **50 API requests per day** and every
+call spends one. That is *one* `fireflies_search` for the whole sweep (never one
+per folder), then at most one `fireflies_get_transcript` per create candidate. If
+the candidate list is long, report the count and ask Peter before fetching them
+all — a 30-session sweep would exhaust the day's budget.
+
+⚠️ A Fireflies row and a 直播筆記 Doc can describe the **same** session. Step 7's
+cross-source duplication check must treat them as one: match on normalized date +
+lecture name, and prefer the existing Doc as the SOT.
 
 ## Step 2 — Filter to livestream-note Docs
 

@@ -22,7 +22,7 @@ platform: claude
 status: Done
 author: Peter Tu
 sheetId: "2.05"
-input: "A meeting transcript / notes (pasted text, a Google Doc, or a Gemini Notes link), optionally a CRM company/contact reference (a zynkr-crm URL or names/emails)."
+input: "A meeting transcript / notes — a Fireflies meeting (id/URL/name; preferred), pasted text, a Google Doc, or a Gemini Notes link — plus any CRM company/contact/deal ref."
 process: "Read input → write a Weekly Project Update → create a numbered Drive project folder + kickoff doc → create a NEW Supabase CRM deal with meeting/note/task activities → backlink + report."
 output: "A Weekly Project Update, a numbered Drive project folder, a kickoff/context Doc, and a CRM deal with its activity timeline."
 synergy: []
@@ -73,13 +73,28 @@ is how you redo a botched capture). Override any inferred field by just telling 
 
 ### 1 · Acquire the input
 
-The meeting can arrive three ways:
+The meeting can arrive four ways. **Prefer Fireflies** — it needs no paste and no
+upload, so reach for it before asking Peter for anything.
+- **A Fireflies meeting** — Peter names it ("把元大那場會議建成專案"), gives a
+  meeting id, or an `app.fireflies.ai/view/<id>` URL. Resolve with
+  `mcp__fireflies__fireflies_search(query="keyword:\"元大\" from:2026-09-01")`,
+  confirm the row by title + date + attendees, then
+  `mcp__fireflies__fireflies_get_transcript(transcriptId="<id>")` for the
+  verbatim, speaker-labelled sentences. `mcp__fireflies__fireflies_get_summary`
+  additionally returns an overview, keywords and **action items with timestamps**
+  — useful for the Weekly Project Update, but the transcript carries the real
+  detail, so read it too. The attendee emails on the row are the fastest route to
+  the CRM company/contact below.
 - **Pasted text** — use it directly.
 - **A Google Doc / Gemini Notes link** — read it with
   `mcp__google-workspace__get_doc_content(user_google_email="peter_tu@zynkr.ai", document_id="<id>")`.
   Gemini Notes docs have a `Notes` tab (summary + action items) and a
   `Transcript` tab (verbatim) — read both; the transcript carries the real detail.
 - **A Gmail thread** — read it with the Gmail tools if that's what Peter points at.
+
+⚠️ **Fireflies request budget.** The free plan allows **50 API requests per day**
+and every tool call spends one. Resolve in a single `fireflies_search`, fetch
+once, and never loop over meetings.
 
 Also capture any **CRM context** Peter gives:
 - A `…/companies/{id}` or `…/contacts/{id}` or `…/deals/{id}` URL → pull the `{id}`

@@ -22,7 +22,7 @@ project: consult-session-notes
 platform: claude
 status: Done
 author: Peter Tu
-input: "A consulting-session transcript or messy notes (pasted text, a Google Doc link, or the transcript consult-transcriber just filed) + the engagement (deal URL / company name)"
+input: "A Fireflies meeting (id/URL/name — preferred, no paste), pasted text, a Google Doc link, or consult-transcriber's filed transcript, + the engagement (deal URL / company)."
 process: "Collect input + resolve the engagement → structure the four-section session summary → extract the 痛點 ledger → create the [Notes] Doc in the [N] folder → CRM note on the deal → hand the ledger to consult-brd-writer"
 output: "A filed [Notes] session-summary Doc (four sections + 痛點 ledger) in the engagement folder, linked on the CRM deal"
 synergy:
@@ -87,11 +87,27 @@ its source — who said it, or which transcript section.
 
 ### 1 · Collect the input and resolve the engagement
 
-The session material arrives three ways: **pasted text** (use directly); **a
-Google Doc link** — read with
-`mcp__google-workspace__get_doc_content(user_google_email="peter_tu@zynkr.ai", document_id="<id>")`;
-or **a handoff from consult-transcriber** — the transcript Doc it just filed
-(already in context); read it the same way.
+The session material arrives four ways. **Prefer Fireflies** — it needs no paste
+and no upload, so reach for it before asking Peter for anything.
+
+- **A Fireflies meeting** — Peter names it ("整理夾子園那場的筆記"), gives a
+  meeting id, or an `app.fireflies.ai/view/<id>` URL. Resolve with
+  `mcp__fireflies__fireflies_search(query="keyword:\"夾子園\" from:2026-09-01")`,
+  confirm the row by title + date + attendees, then
+  `mcp__fireflies__fireflies_get_transcript(transcriptId="<id>")` — it returns
+  speaker-labelled, timestamped sentences (`[12:43 - 14:00] 高May: …`), which is
+  exactly the shape §2 and the 痛點 ledger want. Cite a moment with
+  `https://app.fireflies.ai/view/<id>?t=<seconds>`.
+- **Pasted text** — use directly.
+- **A Google Doc link** — read with
+  `mcp__google-workspace__get_doc_content(user_google_email="peter_tu@zynkr.ai", document_id="<id>")`.
+- **A handoff from consult-transcriber** — the transcript Doc it just filed
+  (already in context); read it the same way.
+
+⚠️ **Fireflies request budget.** The free plan allows **50 API requests per day**
+and every tool call spends one. Resolve in a single `fireflies_search`, fetch the
+transcript once, and never loop over meetings. If a search returns nothing, ask
+Peter rather than paging through history.
 
 Then resolve the engagement (the standard 2.x pattern):
 

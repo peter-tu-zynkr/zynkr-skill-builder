@@ -8,7 +8,7 @@ status: Done
 author: Peter Tu
 sheetId: "4.08"
 originalName: "處理影片回顧"
-input: "A user-provided video file, a video URL, or the verbatim transcript of a recorded lecture/livestream"
+input: "A Fireflies meeting (id/URL/title — preferred, already transcribed), a video file, a video URL, or the verbatim transcript of a recorded lecture/livestream."
 process: "Transcribe the video (if not already a transcript), remove filler words, map the cleaned content to the reference outline structure, then render the recap"
 output: "A reader-friendly recap document with five sections: Summary, Theme, Q&A, Tools, Call to Action"
 synergy: []
@@ -31,6 +31,12 @@ Turn a recorded lecture, livestream, or workshop into a publishable five-section
 
 Ask the user for:
 1. **Source** — one of:
+   - **A Fireflies meeting (prefer this)** — a meeting id, an
+     `app.fireflies.ai/view/<id>` URL, or just the title and roughly when it ran
+     ("上週那場 Claude Code 講座"). Anything Fred sat in on is already transcribed,
+     so this skips the whole transcription step below. Resolve with
+     `mcp__fireflies__fireflies_search(query="keyword:\"Claude Code\" from:2026-09-01")`
+     and confirm the row by title + date before fetching.
    - Video file (`.mp4`, `.mov`, `.m4a`, `.wav`)
    - Video URL (YouTube, Vimeo, etc.)
    - Transcript text (paste or file path)
@@ -45,6 +51,13 @@ Store as `SOURCE`, `CONTEXT`, `OUTLINE_REF` (may be empty).
 
 Branch by input type:
 
+- **Fireflies meeting** → `mcp__fireflies__fireflies_get_transcript(transcriptId="<id>")`.
+  Returns speaker-labelled, timestamped sentences already — no ASR pass needed, so
+  go straight to the cleanup below. `mcp__fireflies__fireflies_get_summary` also
+  gives keywords and action items, handy for the Q&A and Call-to-Action sections.
+  ⚠️ Free plan = **50 API requests per day**, one per call — search once, fetch once.
+  ⚠️ `audio_url` / `video_url` come back empty on the free plan; text only. If the
+  recap genuinely needs the media, fall back to the Video file branch.
 - **Already a transcript** → proceed to Step 3
 - **Video file** → transcribe locally or via the user's preferred ASR tool (suggest `whisper` or `training-lecture-transcript` skill for the cleanup pass)
 - **Video URL** → ask the user to download or provide the transcript; this skill does not fetch external media

@@ -3,7 +3,8 @@ name: sales-follow-up
 description: >-
   Turn a finished sales DEMO / discovery call into a converting follow-up — the
   post-meeting counterpart to sales-outbound. Give it the demo transcript (a
-  Google Doc URL or pasted notes) and it does two things in one pass: (1) drafts
+  Fireflies meeting, a Google Doc URL, or pasted notes) and it does two things in
+  one pass: (1) drafts
   a pre-sales follow-up reply as a threaded Gmail DRAFT in Peter's inbox (never
   sends), in the prospect's language and Peter's voice — opening by mirroring the
   exact pain points they raised, mapping each to the matching Zynkr AI 平台
@@ -27,7 +28,7 @@ platform: claude
 status: Done
 author: Peter Tu
 sheetId: "2.10"
-input: "A completed sales demo / discovery-call transcript (Google Doc URL or pasted) for a prospect who already has a CRM deal + email thread. Optionally the deal URL and thread subject."
+input: "A demo transcript — a Fireflies meeting (id/URL/name; preferred), a Google Doc URL, or pasted — for a prospect with an existing CRM deal + email thread."
 process: "Parse the transcript (pains / what was shown / feedback / next steps) → map pains to solution-page capabilities → draft a threaded Gmail follow-up (never send) → sync the existing deal (demo note, refreshed summary, stage nudge, follow-up task) → report."
 output: "A threaded Gmail follow-up draft in Peter's inbox + an updated CRM deal (demo note, refreshed summary, follow-up task). Doesn't log the email — Gmail sync captures it on send."
 synergy: ["sales-outbound", "consult-project-specialist", "sales-specialist"]
@@ -96,9 +97,25 @@ sending) and the deal writes go through the Zynkr MCP's own preview/confirm.
 
 ### 1 · Acquire the inputs
 
-The trigger is a **demo transcript**. Read it:
+The trigger is a **demo transcript**. Read it — **prefer Fireflies**, which needs
+no paste and no upload:
+- **A Fireflies meeting** → Peter names it ("跟進元大那場 demo"), gives a meeting
+  id, or an `app.fireflies.ai/view/<id>` URL. Resolve with
+  `mcp__fireflies__fireflies_search(query="keyword:\"元大\" from:2026-09-01")`,
+  confirm by title + date + attendees, then read **both**:
+  `mcp__fireflies__fireflies_get_summary(transcriptId="<id>")` for the overview,
+  keywords and **action items with timestamps** — these map almost directly onto
+  the follow-up task and the agreed next step in §5 — and
+  `mcp__fireflies__fireflies_get_transcript(transcriptId="<id>")` for the verbatim
+  sentences, which is where the prospect's pain points appear **in their own
+  words**. §2 needs their wording, so never build the email off the summary alone.
+  The attendee emails on the row are the fastest route to the deal and the thread.
 - **Google Doc URL** → `mcp__google-workspace__get_doc_content(document_id=<url>)`.
 - **Pasted text** → read directly.
+
+⚠️ **Fireflies request budget.** The free plan allows **50 API requests per day**
+and every tool call spends one — a search + summary + transcript is three. Resolve
+in one search and never loop over meetings.
 
 Also capture anything Peter hands alongside it (don't block if absent — you can find them):
 - The **prospect's name / company** (to find the deal and the thread).

@@ -362,7 +362,8 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr"
+    "zynkr",
+    "fireflies"
    ],
    "mcp_tools": [
     "mcp__google-workspace__get_doc_content",
@@ -380,13 +381,18 @@
     "mcp__zynkr__create_task",
     "mcp__zynkr__get_deal",
     "mcp__zynkr__update_deal",
-    "mcp__google-workspace__draft_gmail_message"
+    "mcp__google-workspace__draft_gmail_message",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Google Drive",
     "Google Docs",
     "Gmail (optional draft)",
-    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -519,7 +525,8 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr"
+    "zynkr",
+    "fireflies"
    ],
    "mcp_tools": [
     "draft_gmail_message",
@@ -529,11 +536,16 @@
     "create_note",
     "update_deal",
     "move_deal_stage",
-    "create_task"
+    "create_task",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Gmail",
-    "Google Docs"
+    "Google Docs",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -753,7 +765,8 @@
    "connected_solutions": [],
    "requires_mcp": true,
    "mcp_servers": [
-    "google-workspace"
+    "google-workspace",
+    "fireflies"
    ],
    "mcp_tools": [
     "list_drive_items",
@@ -761,12 +774,17 @@
     "update_drive_file",
     "create_drive_file",
     "read_sheet_values",
-    "modify_sheet_values"
+    "modify_sheet_values",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Google Drive",
     "Google Docs",
-    "Google Sheets"
+    "Google Sheets",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -2409,7 +2427,8 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr"
+    "zynkr",
+    "fireflies"
    ],
    "mcp_tools": [
     "get_doc_content",
@@ -2419,13 +2438,18 @@
     "draft_gmail_message",
     "get_deal",
     "list_deals",
-    "update_deal"
+    "update_deal",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Google Docs",
     "Google Drive",
     "Gmail",
-    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -2555,10 +2579,19 @@
    "one_liner_en": "Turns a lecture video or transcript into a five-section reader-friendly recap doc.",
    "knowledge_sources": [],
    "connected_solutions": [],
-   "requires_mcp": false,
-   "mcp_servers": [],
-   "mcp_tools": [],
-   "external_services": [],
+   "requires_mcp": true,
+   "mcp_servers": [
+    "fireflies"
+   ],
+   "mcp_tools": [
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
+   ],
+   "external_services": [
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
+   ],
    "side_effect_level": "read-only",
    "artifacts_produced": [],
    "setup_required": [
@@ -2606,18 +2639,24 @@
    "connected_solutions": [],
    "requires_mcp": true,
    "mcp_servers": [
-    "google-workspace"
+    "google-workspace",
+    "fireflies"
    ],
    "mcp_tools": [
     "list_docs_in_folder",
     "get_drive_file_content",
     "create_doc",
-    "update_drive_file"
+    "update_drive_file",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Google Drive",
     "Google Docs",
-    "claude.ai scheduled trigger (RemoteTrigger)"
+    "claude.ai scheduled trigger (RemoteTrigger)",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
@@ -4296,7 +4335,8 @@
    "requires_mcp": true,
    "mcp_servers": [
     "google-workspace",
-    "zynkr"
+    "zynkr",
+    "fireflies"
    ],
    "mcp_tools": [
     "mcp__zynkr__get_deal",
@@ -4306,13 +4346,18 @@
     "mcp__google-workspace__create_drive_file",
     "mcp__google-workspace__create_doc",
     "mcp__google-workspace__update_drive_file",
-    "mcp__google-workspace__draft_gmail_message"
+    "mcp__google-workspace__draft_gmail_message",
+    "fireflies_search",
+    "fireflies_get_transcripts",
+    "fireflies_get_transcript",
+    "fireflies_get_summary"
    ],
    "external_services": [
     "Google Drive",
     "Gmail (draft only)",
     "local Whisper (via training-srt-transcriber)",
-    "Zynkr AI 平台 CRM (platform.zynkr.ai)"
+    "Zynkr AI 平台 CRM (platform.zynkr.ai)",
+    "Fireflies (api.fireflies.ai MCP — meeting transcripts)"
    ],
    "side_effect_level": "mixed",
    "artifacts_produced": [
