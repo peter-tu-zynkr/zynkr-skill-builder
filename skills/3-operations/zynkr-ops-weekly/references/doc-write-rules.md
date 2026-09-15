@@ -68,6 +68,27 @@ with `end_of_segment: true` (no index arithmetic at all), then do a second pass 
 indices for formatting. That is the documented two-phase workflow, and it is the safer path
 whenever the target is the end of the tab.
 
+## Removing a block — the Friday `tidy` (SKB-030)
+
+`tidy` is the only mode that deletes, and it deletes **only** whole stamped blocks that
+`tidy_blocks.py` marked for archiving. It never removes part of a block, never a human line,
+and never the block it decided to keep.
+
+- **Copy to the 封存 tab first, verify, then delete.** The order is the whole safety design. A
+  crash between the two leaves the content duplicated, which is visible and repairable; the
+  reverse order loses it. SKB-029 threw exactly here and survived only because the copy went
+  first.
+- **Delete by descending index**, for the same reason insertions go bottom-up: each deletion
+  shifts everything after it. Collect every range from one `inspect_doc_structure(tab_id,
+  detailed=true)` call, sort descending, then issue them in that order.
+- **Never delete the last paragraph of the tab.** A Docs segment must end with one. In practice
+  every block group is followed by a heading or a human line, so this cannot arise — but assert
+  it rather than assume it. This is the Docs-API face of the Apps Script error that killed
+  SKB-029: `Can't remove the last paragraph in a document section.`
+- **Re-read and confirm one stamp per group** before reporting `status=ok`. A partial delete
+  that leaves half a block is worse than no delete, because the next run sees a single block
+  and treats the group as already tidy.
+
 ## Verify the write
 
 Re-read the section after writing and confirm the stamp is present exactly once. Docs writes

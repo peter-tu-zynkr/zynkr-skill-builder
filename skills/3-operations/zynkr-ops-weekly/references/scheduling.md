@@ -1,4 +1,4 @@
-# Scheduling the five beats
+# Scheduling the six beats
 
 The skill half runs on **launchd**, on Peter's Mac. The Apps Script `scaffold` half is separate
 and documented in `scaffold.md`.
@@ -9,8 +9,9 @@ The obvious home for a weekly job is a cloud routine (`/schedule`), the way `zyn
 does not work here, for three independent reasons — any one of them is fatal:
 
 1. **There is no Google Chat connector.** The available connectors are Lucid, Google Drive,
-   Canva, Gmail and Google Calendar. Four of the five beats *post to the space* and `rollup`
-   *reads* it. Chat exists only in the local `google-workspace` MCP server.
+   Canva, Gmail and Google Calendar. Four of the six beats *post to the space* and `rollup`
+   *reads* it. Chat exists only in the local `google-workspace` MCP server. (`tidy` is the one
+   beat that touches neither Chat nor mail — it only writes the Doc.)
 2. **The cloud sandbox cannot read the private config.** Every identifier lives in
    `~/.config/zynkr/ops-weekly.json` on disk, precisely because this repo is public. A cloud
    agent has no local filesystem, and the skill fails loud on a missing config rather than guess.
@@ -21,9 +22,9 @@ does not work here, for three independent reasons — any one of them is fatal:
 `zynkr-gm` is not a counter-example: it only ever *reads* Drive and *sends* Gmail, both of which
 have connectors.
 
-## Why a heartbeat instead of five timed jobs
+## Why a heartbeat instead of six timed jobs
 
-The five beats are anchored to **Asia/Taipei** — the company's clock. The Mac is not: it is
+The six beats are anchored to **Asia/Taipei** — the company's clock. The Mac is not: it is
 currently Europe/Amsterdam, six hours behind. `StartCalendarInterval` has **no timezone field**;
 it always fires in machine-local time. A plist that said `Hour 22` for `decisions` would fire at
 **04:00 Friday Taipei** — after the 23:00 scaffold, against the wrong week, and `decisions`

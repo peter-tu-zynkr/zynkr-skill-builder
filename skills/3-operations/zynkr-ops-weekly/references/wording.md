@@ -97,6 +97,19 @@ loop write duplicates:
 `↻N週` is also fixed: `norm_key()` in `render_block.py` strips it with the regex
 `↻\s*\d+\s*週`, so appending words to it silently breaks carry-over matching.
 
+`tidy` adds one line of its own, inside the kept block, above the items it carried forward:
+
+```
+· 還沒收掉的 —
+  · 陌開三名客戶〔WB 9/7 起〕
+  · 建立 Zynkr 知識庫〔WB 9/7 起〕
+```
+
+Plain, and deliberately not a status report: **不要解釋自己的機制**. It does not say how many
+blocks were archived, which weeks they came from, or that a tidy ran at all — the reader wants
+the list, not the bookkeeping. `〔WB 9/7 起〕` is the one piece of provenance kept, because
+"how long has this been sitting there" is the question the Thursday meeting actually asks.
+
 ## Two week vocabularies, on purpose
 
 `<week>` above is the **week-beginning label**, `WB 9/14` — the Monday that opens the week.

@@ -24,7 +24,7 @@
 #   stamped done. Both were recorded as successes. The beat therefore has to say, in a line this
 #   script can parse, what it actually delivered; see SKILL.md Step 5.
 #
-# Usage: run_ops_weekly.sh [--dry-run] [--mode=nudge|rollup|chase|agenda|decisions|status]
+# Usage: run_ops_weekly.sh [--dry-run] [--mode=nudge|rollup|chase|agenda|decisions|tidy|status]
 set -uo pipefail
 export PATH="/Users/petertu/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export HOME="/Users/petertu"
@@ -70,7 +70,13 @@ BEATS = [("nudge",     1, "09:00", "20:00", None),
          ("rollup",    2, "09:00", "20:00", None),
          ("chase",     2, "09:30", "20:00", "rollup"),
          ("agenda",    3, "17:00", "23:00", None),
-         ("decisions", 4, "22:00", "23:59", None)]
+         ("decisions", 4, "22:00", "23:59", None),
+         # `tidy` is Friday because that is the first morning AFTER the Thursday 23:00 scaffold.
+         # The scaffold copies the week section forward verbatim, stacked auto blocks and all,
+         # so Friday is the moment the duplicates exist and nobody has read them yet. Trimming
+         # on Tuesday instead would leave the section fat across the whole weekend and the
+         # Monday nudge. It needs no prerequisite: it reads the Doc, not the space.
+         ("tidy",      5, "09:00", "20:00", None)]
 for mode, d, s, e, req in BEATS:
     if dow != d or not (s <= hm <= e) or settled(mode):
         continue
@@ -98,6 +104,7 @@ case "$MODE" in
   rollup)      TOOLS="$READ_CORE,$DOC_WRITE" ;;
   agenda)      TOOLS="$READ_CORE,$CHAT_WRITE,$DOC_WRITE" ;;
   decisions)   TOOLS="$READ_CORE,$CHAT_WRITE,$DOC_WRITE,$MAIL" ;;   # the only beat that may mail
+  tidy)        TOOLS="$READ_CORE,$DOC_WRITE" ;;   # Doc only: it never posts and never mails
   status)      TOOLS="$READ_CORE" ;;
   *) log "FATAL unknown mode: $MODE"; exit 2 ;;
 esac

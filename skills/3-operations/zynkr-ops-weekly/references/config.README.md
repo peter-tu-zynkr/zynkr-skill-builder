@@ -10,6 +10,11 @@
   else's file, and a wrong space id posts a nudge to the wrong room.
 - `space.id` **must** carry the `spaces/` prefix. A bare id is rejected by `get_messages` with a
   pattern error — this is the first thing to check when a sweep returns nothing.
+- `doc.archive_tab_id` must be a **tab in the same Doc**, not another file. `carryover.py` reads
+  every tab as one stream to compute `↻N週`; moving history to a separate document resets every
+  streak to zero and silently blinds the Wednesday agenda. Verified 2026-09-15 by simulating
+  3 live + 31 archived sections: 46 sections compared, **0 streaks changed**. Unset → `tidy`
+  fails loud rather than deleting blocks it cannot archive.
 - `chat_ids` is the only hardcoded map, by necessity: Chat exposes **no email field at all**, the
   Doc exposes email with no user id, and the People API resolves the id but returns no name or
   email for domain profiles. Everything else — which department belongs to whom, who receives the

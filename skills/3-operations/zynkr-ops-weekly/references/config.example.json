@@ -14,9 +14,11 @@
     "id": "<doc-id>",
     "tab_id": "t.0",
     "tab_name": "<tab name holding the week sections>",
+    "archive_tab_id": "<tab id of the archive tab, e.g. t.abc123>",
+    "archive_tab_name": "<archive tab name>",
     "section_heading_level": "HEADING_2",
     "section_date_format": "%b %d, %Y",
-    "$note": "Sections are named by MEETING day (Thursday), not by report day (Monday)."
+    "$note": "Sections are named by MEETING day (Thursday), not by report day (Monday). The archive tab MUST be a sibling tab in THIS Doc: carryover.py reads all tabs as one stream, so a separate file resets every ↻N週 streak."
   },
 
   "chat_ids": {
@@ -56,7 +58,8 @@
       "rollup":    { "id": "<trigger-id>", "cron": "0 9 * * 2" },
       "chase":     { "id": "<trigger-id>", "cron": "30 9 * * 2" },
       "agenda":    { "id": "<trigger-id>", "cron": "0 17 * * 3" },
-      "decisions": { "id": "<trigger-id>", "cron": "0 22 * * 4" }
+      "decisions": { "id": "<trigger-id>", "cron": "0 22 * * 4" },
+      "tidy": { "id": "<trigger-id>", "cron": "0 9 * * 5" }
     },
     "connectors": { "drive_uuid": "<connector-uuid>", "gmail_uuid": "<connector-uuid>", "chat_uuid": "<connector-uuid>" },
     "model": "<model-id>"
