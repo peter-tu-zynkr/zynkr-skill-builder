@@ -1,8 +1,11 @@
 # SKB-029 — the ops-weekly Doc stops growing: archive to three weeks, and label weeks by their Monday
 
-- **Status:** Code shipped 2026-09-15, **install owed** — the Apps Script half must be re-pasted and
-  `installTriggers()` re-run by hand, and the `每週事項 封存` tab created. Nothing changes in the Doc
-  until then
+- **Status:** **REVERTED 2026-09-15, same day.** The archive half was rolled back at the owner's
+  call after it failed its rehearsal twice. `scaffold.gs` and `scaffold.md` are restored byte-exact
+  to `c525dd06`. **The `WB 9/14` week label (§4) was kept** — it is in the skill half, was a
+  separate request, and was not implicated in the failure. The Doc grows without bound again, which
+  is now recorded as known-and-accepted in `SKILL.md`. **Never reached production:** the real Doc
+  was never scaffolded or archived. Read "Why it was reverted" before proposing this again
 - **Size / DoD:** M / D2 *(no schema, no secret, no auth, no money, single repo; but it is the first
   code in this system that REMOVES content from a live shared Doc, so it carries a mock-harness proof
   and a three-part "prove it fired" assertion)*
@@ -147,6 +150,34 @@ Monday's `nudge` gains a three-part assertion, replacing the single scaffold che
 | A section for the upcoming Thursday exists | the scaffold did not run | `rollup` has nowhere to write |
 | The live tab holds exactly 3 dated sections | the archive did not run, or threw | >3 means the Doc is growing again; **<3** is louder — the scaffold needs two sections to infer a section's range, so it breaks next week |
 | That section holds **no** `〔自動彙整〕` block | the trigger is running an old `scaffold.gs` | The quiet killer: everything still works, the Doc just silently regrows. Nothing else catches it |
+
+## Why it was reverted
+
+Two live rehearsals on a duplicate, both failed, and the owner called it: *"let's roll back, this
+isn't what I want."* That is the finding — not the two bugs, which were both fixable and were in
+fact fixed. The bugs are worth recording because they say what any future attempt is really up
+against.
+
+**1. `Exception: Can't remove the last paragraph in a document section.`** A Docs `Body` must end
+with a paragraph; the final element carries the section break and cannot be removed. The removal
+loop walked backwards from the body's last element, so it threw on iteration one — *after* the
+copy had landed, leaving the rehearsal doc holding both halves. Fixed by appending a throwaway
+paragraph first. **The 28-assertion harness did not catch it, because the mock `Body` let
+`removeChild` take any element.** The mock modelled the happy path instead of the constraint. That
+is the lesson worth keeping: a mock that cannot fail proves nothing.
+
+**2. It does not fit in an Apps Script execution.** DocumentApp moves elements one at a time and a
+run is killed at 6 minutes. Copying 4,465 elements took **4m08s** and had not begun removing them.
+A per-run cap (`MAX_SECTIONS_PER_RUN`) fixed the timeout but turned the one-off catch-up into ~8
+manual runs — which is where the cost stopped being worth it.
+
+**What a future attempt should weigh.** The real Doc's backlog is ~4,500 elements. Any
+element-by-element approach in Apps Script has to be batched and babysat. A bulk cut-and-paste in
+the Docs UI does the same job in one gesture, preserves chips, and needs no code — that is the
+honest alternative, and it is what the trimming guidance in `SKILL.md` now points at. The
+design constraint that *is* worth carrying forward: the archive must be a **sibling tab in the
+same Doc**, because `carryover.py` reads all tabs as one stream to compute `↻N週`, and this was
+verified empirically (3 live + 31 archived → identical 46 sections compared, 0 streaks changed).
 
 ## Deliberately not done
 

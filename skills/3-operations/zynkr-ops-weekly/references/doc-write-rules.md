@@ -74,31 +74,9 @@ Re-read the section after writing and confirm the stamp is present exactly once.
 can partially apply when an index is stale; a silent partial write is worse than a failure,
 because the next run's idempotency check sees the stamp and skips the repair.
 
-## The live tab holds three weeks
-
-Since 2026-09-15 the Apps Script half archives as well as scaffolds: after it opens next
-Thursday it **moves** every dated section past the newest three into the `每週事項 封存` tab.
-So the live tab is always next Thursday + the week that just closed + the one before.
-
-Two consequences for anything that writes or reads here:
-
-- **The archive is a sibling tab in the same Doc, never a separate file.** `carryover.py`
-  computes `↻N週` by walking back through every dated section in document order, and it reads
-  the Doc through `get_doc_as_markdown`, which returns all tabs concatenated. A sibling tab
-  leaves that walk-back exactly as it was — it already spans the 2026 and 2025 tabs today. Move
-  the sections to another document and every streak silently resets to ≤3, which destroys the
-  one signal Wednesday's agenda is built on. If you ever change where the archive lives, check
-  `sections_compared` in `carryover.py`'s output first and after.
-- **Tab order is load-bearing.** The walk-back assumes newest-first, so the archive tab sits
-  directly after the live tab and its sections stay newest-first. `archiveOldWeeks()` prepends
-  as one contiguous block to preserve that.
-
 ## What never gets written here
 
 - The H2 tracker's status column — that belongs to `planning-tracker-sync`.
 - A fresh week skeleton — that belongs to Apps Script, and rebuilding it would destroy the owner
   person chips that make routing work. Chips can be **copied** but not **created**, by any API.
 - Anything into a section whose Thursday is already in the past.
-- **Anything into the archive tab, ever.** Archiving is Apps Script's job for the same reason
-  scaffolding is: it is mechanical, it must not fail, and its authorisation does not expire.
-  The skill half only reads from there.

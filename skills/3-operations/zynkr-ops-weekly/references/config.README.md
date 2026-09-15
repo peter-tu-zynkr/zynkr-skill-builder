@@ -25,14 +25,5 @@
   first is a code change; the second is what actually routes them.
 - Removing a person: drop them from `reporters` so `chase` stops naming them. Old Doc sections
   keep their chips — that is history, leave it.
-- `doc.archive_tab_name` and `doc.keep_sections` describe what **Apps Script** does, so that
-  Monday's `nudge` can assert it happened. The skill never archives. These two must be kept in
-  step by hand with `ARCHIVE_TAB_TITLE` and `KEEP_SECTIONS` in `scripts/scaffold.gs` — the
-  script reads its own constants and cannot see this file. If the assertion starts failing every
-  week, check that they still agree before suspecting the trigger.
-- The archive tab must be a **sibling tab in the same Doc, directly after `doc.tab_id`**. This
-  is not cosmetic: `carryover.py` reads every tab as one stream of sections to compute `↻N週`,
-  so putting the archive in a separate file resets every streak to ≤3 and the Wednesday agenda
-  loses its only signal.
 - Rotate: when the Doc is renamed or moved, or a trigger is recreated, edit only this file. No
   skill file changes.
