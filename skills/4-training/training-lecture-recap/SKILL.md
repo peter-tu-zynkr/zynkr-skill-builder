@@ -12,6 +12,8 @@ input: "A Fireflies meeting (id/URL/title — preferred, already transcribed), a
 process: "Transcribe the video (if not already a transcript), remove filler words, map the cleaned content to the reference outline structure, then render the recap"
 output: "A reader-friendly recap document with five sections: Summary, Theme, Q&A, Tools, Call to Action"
 synergy: []
+house-style: bound
+
 ---
 
 # Lecture Recap Writer
@@ -143,3 +145,16 @@ Before handing the recap to the user, verify:
 - Always preserve the speaker's voice — if they're casual, the recap is casual; if formal, formal
 - Filler-word removal is editorial — do not change meaning
 - When uncertain about a fact mentioned in the lecture, mark with `[unclear in source]` rather than guessing
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

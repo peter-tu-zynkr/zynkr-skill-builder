@@ -11,6 +11,8 @@ input: "One audio or video file (e.g. .m4a). Optional: an existing reference .sr
 process: "Bootstrap a local Whisper venv (stable-ts + torch) -> transcribe the audio OR force-align a supplied transcript -> emit a segment-level .srt -> validate timing"
 output: "A timestamped .srt with audio-accurate cue timing, ready to hand to training-srt-optimizer for zh-TW cleanup"
 synergy: ["training-srt-optimizer", "training-lecture-recap"]
+house-style: exempt — verbatim capture — fidelity to the source outranks house voice
+
 ---
 
 # Training SRT Transcriber

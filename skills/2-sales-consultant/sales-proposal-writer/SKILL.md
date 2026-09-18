@@ -1,0 +1,204 @@
+---
+name: sales-proposal-writer
+description: >-
+  Turn a qualified CRM deal plus whatever the client actually sent — a requirement
+  sheet, discovery notes, a meeting transcript, a prior proposal — into a priced
+  client proposal published as a 交付文件 at platform.zynkr.ai/d/<token>, and keep
+  it alive through the revision rounds. It does four things in one pass: ranks the
+  client's asks by an openly-stated criterion and presents them as 第一順位／額外項目
+  (never colour codes, never our internal IDs); splits them into a recurring lane
+  and a one-off build lane; prices every line from the B2B pricing sheet anchored at
+  NT$10,000/hr with the hours shown; and writes an honest-boundaries section saying
+  what we will not do and why. On later rounds it reads the review comments on the
+  document, applies them, resolves them, verifies the published body by checksum,
+  and syncs the CRM note, the Gmail draft and the kickoff doc in the same pass.
+  Trigger on /sales-proposal-writer or when Peter says "寫提案", "幫我做提案",
+  "報價給這個客戶", "把需求整理成提案", "提案 v2", "draft the proposal", "quote this
+  client", "update the proposal", or hands over a client's requirement list and wants
+  a priced document out of it. Distinct from sales-follow-up (writes the post-demo
+  EMAIL on an existing deal — this writes the PROPOSAL and hands the email to it),
+  consult-solution-planning (an INTERNAL solution plan, unpriced) and
+  consult-brd-writer (a requirements document, unpriced).
+category: sales-consultant
+project: sales-proposal-writer
+platform: claude
+status: Done
+author: Peter Tu
+sheetId: "2.47"
+input: "A CRM deal id or name, plus the client's own material — a requirement sheet, discovery/meeting notes, a transcript, or a prior proposal version to revise."
+process: "Deal timeline first → normalise asks → rank into 第一順位／額外項目 by a stated criterion → split into a recurring lane and a build lane → price each line at the NT$10,000/hr anchor → publish as 交付文件 → CRM note. Revisions: comment → apply → resolve → checksum → sync."
+output: "A published 交付文件 at platform.zynkr.ai/d/<token>, a CRM note carrying the pricing rationale and the internal→external module mapping, and a handoff to sales-follow-up."
+synergy: ["sales-follow-up", "sales-manager", "consult-solution-planning", "consult-project-specialist"]
+house-style: bound
+type: agent
+---
+
+# sales-proposal-writer
+
+Writes the priced proposal a client actually reads, and survives the revision rounds without
+the numbers drifting apart across the document, the email and the CRM.
+
+```bash
+npx skills add https://github.com/peter-tu-zynkr/zynkr-skill-builder --skill sales-proposal-writer
+```
+
+## When this fires, and when it does not
+
+| Situation | Skill |
+|---|---|
+| Client sent their asks; we need a priced document | **this one** |
+| A demo just happened; we need the follow-up email | `sales-follow-up` |
+| We need an internal solution plan before pricing anything | `consult-solution-planning` |
+| We need a requirements doc / buildable spec | `consult-brd-writer` |
+| "Which deals need attention" | `sales-manager` |
+
+A proposal revision — "make it v2", "they came back with comments" — is still this skill, not a
+new one. The revision loop below is the half that earns its keep.
+
+## Fixed facts
+
+- **Pricing source of truth** — 《[2.1] Zynkr B2B Pricing Sheet (企業報價準則)》. Every number
+  traces to the **NT$10,000/hr** anchor. Never invent a tier; if the shape does not fit, quote
+  hours × anchor and say so.
+- **Delivery surface** — the 交付文件 module on the Zynkr platform. Published with
+  `visibility: link` unless the content warrants a password. The renderer is a **sandboxed
+  iframe: scripts do not run**, so inline all CSS and never rely on JS for content to appear.
+- **Brand** — tokens and fonts come from the website `styles.css` `:root` block via each app's
+  `BRAND.md`. **Orange decides — at most one element per page.** Paper 70–80%.
+- **House voice** — see the House style section at the end. Read it before writing a word.
+
+## Workflow
+
+### 1 · Read the deal before reading anything else
+
+Open the CRM deal and read its **timeline first** — notes, prior proposals, stage history. The
+context that decides the proposal's shape is usually already logged there, and starting from the
+client's latest message alone reproduces work and contradicts what we already told them.
+
+Record: who the contact is, what was already promised, which proposal versions exist and
+**whether the client already holds a link to one**.
+
+### 2 · Gather the asks, from the client's own artifact
+
+Take the asks from what the client actually sent. If it is a spreadsheet, read the values — and
+if the client colour-coded it, remember that **cell fills are invisible to the values API**:
+export the sheet and read the fills, do not guess. Never ask the client to re-explain something
+they already sent.
+
+Normalise each ask to one line: what they want, and what it would take.
+
+### 3 · Rank, and own the ranking
+
+Sort every ask by **one stated criterion**. The default, and the one to beat: *what creates
+value fastest* — the raw material is already in their hands, no external permission or review
+is pending, and someone uses it the day it ships.
+
+Present the result as:
+
+- **第一順位** — meets the criterion
+- **額外項目** — needs scope confirmed first, or has an external precondition
+- **本次未納入** — everything else, listed so nothing looks forgotten
+
+**Say the criterion out loud in the document.** And say the ranking is ours:
+
+> 這是我們的判斷，不用照單全收
+
+Never write 「你們標出來的」 for something we ranked. Laundering our judgement as the client's
+request throws away the only thing they are paying for. See House style §5 — this is the rule
+that gets violated most often.
+
+### 4 · Split into two lanes
+
+Most ask-lists mix two things that cannot be priced the same way:
+
+- **Recurring lane** — what makes them *able* to do it themselves (method, coaching, extraction,
+  handover). Delivered monthly; a one-off delivery is meaningless because it has to happen while
+  they have a live problem in front of them.
+- **Build lane** — what makes them *have* the thing. Delivered as modules, each independently
+  quotable and independently accepted.
+
+The judgement, in one line the client can check: **買了之後你會的，走陪跑；買了之後你有的，走客製化**.
+
+### 5 · Price it
+
+- Every line shows **hours and amount**, both derived from the anchor. The client should always
+  be able to see which hours they are paying for.
+- **Do not quote what is not scoped.** An unpriced line with a stated reason
+  (「範圍要先確認」) beats a number that will move. Say where the answer will come from.
+- Offer a paid scoping step when the sequence genuinely depends on seeing their current process.
+  If it credits against later fees, say so plainly — and record in the CRM that a
+  below-anchor entry price is a deliberate credited door-opener, not a discount.
+- **Never state our discount discipline to the client.** How we handle price pressure is
+  internal policy; narrating it reads as pre-emptive defensiveness and invites the haggling it
+  tries to forbid.
+
+### 6 · Write the boundaries
+
+Every proposal carries a section naming **what we will not do and why**. Platform terms,
+review queues we do not control, data we would have to buy. This section closes more than it
+costs: it is the part that makes the rest credible.
+
+### 7 · Publish and log
+
+Publish as a 交付文件, then write **one CRM note** carrying the pricing rationale, the ranking
+criterion, any internal→external mapping, and the share URL. Hand the covering email to
+`sales-follow-up`.
+
+If the client **already holds a link** to an earlier version, do not overwrite it — publish the
+new version separately and say which is current. Otherwise update in place so the URL they were
+given keeps working.
+
+## Client-facing language
+
+Beyond House style, three rules this surface gets wrong most:
+
+1. **No internal notation.** Colour codes, spec IDs, internal module numbers, sheet ids. Renumber
+   modules to a clean sequence for the client (M1 · M2 · M3, no gaps) and **record the mapping in
+   the CRM note** so the two do not drift.
+2. **No account of what we removed.** "We took out the training, we took out plan A" tells the
+   client about our internal churn. Say what the proposal *is*.
+3. **One orange element per page.** Use it on the recommended option. Everything else is paper,
+   ink and sage.
+
+## The revision loop
+
+Proposals are not written once. When comments come back:
+
+1. **Read every comment** on the document, including ones anchored to text that has since moved.
+2. **Apply them against the local source file**, not by retyping the document — with one
+   assertion per edit that the target string was found exactly as expected. A silent miss in a
+   30-edit pass is invisible otherwise.
+3. **Apply a word-level change everywhere it occurs**, not only at the anchor. Fixing one of two
+   identical phrases reads as a typo.
+4. **Delete means delete.** A comment saying `remove` removes the passage; it is not an
+   invitation to rewrite it.
+5. **Re-check the residue** — assert none of the replaced phrasings survive anywhere.
+6. **Publish, then verify the published body by checksum against the local file.** Same length is
+   not the same content.
+7. **Resolve each comment** once its change is live.
+8. **Sync every downstream copy in the same pass** — the Gmail draft, the CRM note, the kickoff
+   doc. A stale total in an unsent draft is the failure mode this step exists to stop.
+
+Report the comment→change mapping back to Peter, and flag any judgement call — a wording change
+that shifts meaning, or a consistency edit applied beyond the anchored spot.
+
+## Output contract
+
+- A published 交付文件 with a share URL
+- A CRM note: ranking criterion · lane split · per-line pricing with hours · internal→external
+  module mapping · anything deliberately unquoted and why
+- A handoff line for `sales-follow-up`
+- On revisions: the comment→change table, the checksum verification, and what was synced
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus §2.4 提案／交付文件 for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

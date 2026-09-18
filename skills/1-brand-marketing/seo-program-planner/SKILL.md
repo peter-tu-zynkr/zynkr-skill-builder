@@ -11,6 +11,8 @@ input: "A product/website intake (what it is, what's shipped, the live URL + mon
 process: "Detect entry → run the strategy seo-* skills at program scale (persona→questions→angles→keywords→classify→validate) → synthesis stages (pillars, IA, backlog, AEO, money/CTA/KPIs, governance), HITL each → assemble + file the 14-section Doc + 9-tab Sheet"
 output: "A 14-section plan Doc (→ 00 SEO Strategy & Plans) + a 9-tab keyword/topic Sheet (→ 01 Keyword Maps) + a win-first backlog handed to seo-article-pipeline — zh-TW, house-style"
 synergy: ["seo-persona-builder","seo-question-miner","seo-angle-finder","seo-keyword-mapper","seo-keyword-classifier","seo-demand-validator","seo-article-pipeline"]
+house-style: bound
+
 ---
 
 # SEO Program Planner (Stage-0 Orchestrator)
@@ -176,7 +178,7 @@ Bake these into every plan, backlog, and deliverable:
 - **Only market what's shipped.** Promote shipped features/capabilities only; never market a roadmap item as live.
 - **Demand is signal + basis, never fabricated.** Don't invent search volumes; mark every unverified figure (待驗證).
 - **House style.** zh-TW headings/taglines carry no 句號 (。); use · for series separators, never 。; lists use 1️⃣2️⃣3️⃣, never ①②③.
-- **Voice — no hype.** Banned words: 賦能, 生產力工具, AI-powered, 無縫, supercharge, cutting-edge, game-changing. For the AI claim use the generic **powered by Claude**.
+- **Voice — no hype.** Banned words are owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`) — read it, do not restate it. For the AI claim use the generic **powered by Claude**.
 - **IA default follows the real stack.** Educational content goes through CMS `articles` + the existing `/free-resource` + a new category → `/blog/<slug>` SSR — no microsite. Before any tech-SEO call, **check whether each money page is actually indexable** (noindex / SSR vs client-only / meta / canonical / schema / sitemap).
 
 ---
@@ -189,3 +191,16 @@ Bake these into every plan, backlog, and deliverable:
 - If a stage is missing input (no live URL, no money-page list, no category POV, no first-hand proof), stop and ask — don't fabricate.
 - Keep messages concise; the depth lives in the Doc + Sheet, not the chat.
 - This planner ends at the backlog handoff; the moment a single topic is chosen, control belongs to `seo-article-pipeline`, not here.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

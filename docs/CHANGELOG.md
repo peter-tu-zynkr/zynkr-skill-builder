@@ -1258,3 +1258,55 @@ and `qa.yml` both green; artifacts committed back as `28b6f9d4`; all seven fetch
 resolve. Between this commit and Atlas `ATL-101`, any re-parse touching any of the seven would have
 stopped — including one aimed at something else. Nothing in this repo could have caught it.
 `ATL-101` disarmed it and minted the connector; **its production apply is still owed.**
+
+## 2026-09-18 — one house style, bound and gated · a proposal skill · `SKB-031`
+
+**Before this change, 3 of 93 skills bound to the house voice Docs.** All six slide skills
+referenced voice rules zero times. And the forbidden-word list had been forked into **10 files**
+across the `seo-*` family — only one of which was visible by eye; the gate found the other nine.
+The guide was never the problem. Nothing required anyone to read it.
+
+**The words stay in Drive, the repo owns the binding.** New Doc 《[2.0] Zynkr 通用風格指南 House
+Voice》 (`10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE`, in `[@] 寫作指南`) carries the
+surface-agnostic core — 聲音 · 標點 · 數字 · 誠實邊界 · 內部語言不外流 — plus one addendum per
+surface. 《[2.2] 內文風格指南》 keeps its ID and becomes the 文章 addendum; 《[3.2] 禁用詞清單》 stays
+the sole owner of the word list. Visual rules stay out: §2.5 governs slide *wording* and defers to
+`BRAND.md` / `conventions.md`.
+
+**Declare-or-fail, not a scope list.** Every `skills/*/*/SKILL.md` now carries
+`house-style: bound` or `house-style: exempt — <reason>`. No default, no third state — a new skill
+cannot opt out by staying silent (SDD §0.3). That is why this is a rule rather than a one-off
+sweep: it keeps working after today. **81 bound · 13 exempt**, the exemptions limited to verbatim
+capture, machine artifacts and pure routers. `sales-manager` binds despite routing, because it also
+writes a review someone reads.
+
+`bound` also requires both Doc IDs **in the body** — the copy installed under
+`<home>/.claude/skills/` has no access to `docs/`, so a pointer to a repo path would be useless at
+runtime. `scripts/check-house-style.ts` enforces all of it, uses **node stdlib only** (so it runs
+in a fresh worktree before `npm ci`), and is wired tree-wide into `qa.yml` — diff-scoped would let
+a skill drop its declaration in a commit that touches nothing else.
+
+**New: `sales-proposal-writer` (2.47).** The sales category had 22 skills and none wrote a priced
+proposal — `sales-follow-up` writes the email, `consult-solution-planning` an internal plan,
+`consult-brd-writer` a requirements doc. It encodes the 步步升 engagement: deal timeline first ·
+rank the asks by a criterion stated out loud into 第一順位／額外項目 · split recurring vs build ·
+price every line at the NT$10,000/hr anchor with hours shown · quote only confirmed scope · say
+what we will not do. Its revision loop — comment → apply with a per-edit assertion → resolve →
+**verify the published body by checksum** → sync the draft, CRM note and kickoff doc together — is
+the half that earns its keep; the failure it prevents is a stale total sitting in an unsent draft.
+
+⚠️ **The rule that keeps getting broken, now written down.** Internal notation must never reach a
+client: colour codes, spec IDs, internal module numbers — and our own pricing policy. Nor may our
+triage be handed back as the client's own request. 《[2.0]》 §5 owns this.
+
+**Verification (D2)** — `check-house-style.ts`: `94 skills declared (81 bound · 13 exempt), no
+inline forbidden-word lists`. Four negative probes, each breaking one rule on purpose, **all
+failed as designed** (missing key · missing Doc ID · reasonless exempt · forked word list), with a
+baseline-pass and restore-pass either side: **6 passed, 0 failed**. Tree QA **94 skills, 0
+failing**; `sales-proposal-writer` 0 errors 0 warnings; `check-planning-refs.sh`,
+`check-pm-refs.sh` and `pm-schema.py --self-test` all green.
+
+⚠️ **Pre-existing, not fixed here:** `check-ipo-drift.ts` flags `7.03 cv-story-extractor`.
+`assistant-index.csv` and `generated/` are byte-identical to `origin/main` and no such folder
+exists under `skills/7-people-talent/`, so it predates this work — and that check is not wired into
+`qa.yml`, so it currently gates nothing.

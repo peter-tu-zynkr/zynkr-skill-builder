@@ -27,6 +27,8 @@ output: "A GitHub issue (URL), a CRM tracking task linked on the deal, and an ac
 synergy:
   - "zynkr-support"
   - "consult-uat-writer"
+house-style: exempt — machine artifact — structured ticket fields, no prose output
+
 ---
 
 # Consult Bug Ticket

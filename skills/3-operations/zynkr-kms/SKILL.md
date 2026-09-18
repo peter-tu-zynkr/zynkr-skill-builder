@@ -31,6 +31,8 @@ input: "Resolved Support／Inbound-Sales Gmail threads (or one Peter specifies);
 process: "Pull resolved, not-yet-ingested threads → extract Peter's answer (PII-stripped) → classify intent / target section / fact-vs-qa → propose for approval → write facts before citing qa cards → mirror touched sections + snapshot to Drive → mark KMS-ingested"
 output: "Approved cards land in the matching platform 知識庫 section (SOT); touched sections + _KB-SNAPSHOT.json are re-mirrored to the Google Drive backup; source thread marked KMS-ingested"
 synergy: ["zynkr-support"]
+house-style: bound
+
 ---
 
 # Zynkr KMS — Support Knowledge Curator (platform KB + Drive mirror)
@@ -395,3 +397,16 @@ If a new section was created, confirm it's added to `references/intent-taxonomy.
 - **zh-TW default**, bilingual keywords — match how Peter and his inquirers actually search.
 - **Preview is not approval.** The MCP write tools dry-run without `confirm: true`; that's a safety
   net, not the gate. The gate is Peter's explicit approval in Step 4.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

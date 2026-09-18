@@ -43,7 +43,7 @@ The conversion message is the load-bearing output of this rubric — it is reuse
 - zh-TW · no 句號 — headlines, taglines and conversion lines do **not** end with a full stop (。). End clean, no terminal punctuation.
 - Series / parallel items inside a line are separated with **·**, never 。 and never a comma-as-separator where · reads cleaner.
 - Lists of messages use 1️⃣ 2️⃣ 3️⃣, never ①②③.
-- No hype · no banned words. Forbidden: 賦能 · 生產力工具 · AI-powered · 無縫 · supercharge · cutting-edge · game-changing. For the AI angle say **powered by Claude** as the generic, nothing grander.
+- No hype · no banned words — the list is owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`). For the AI angle say **powered by Claude** as the generic, nothing grander.
 - One promise per message, and that promise must be a **shipped** capability. Aspirational promises are cut, not softened.
 - Lead with the buyer's JTBD in their words · resolve to what the product does · then the action. Not "我們很強"; rather "你卡在 X · 這裡可以 Y".
 

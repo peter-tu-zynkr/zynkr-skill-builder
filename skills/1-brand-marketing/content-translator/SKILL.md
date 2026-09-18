@@ -12,6 +12,8 @@ input: "Text in English or another language (plain text, paragraph, document, or
 process: "Translate into natural conversational Traditional Chinese using Taiwanese expressions and tone; localize idioms, units, and references; preserve any code fences untouched"
 output: "Fluent, localized Traditional Chinese (Taiwan) text that sounds like everyday spoken or written language, not machine-translated"
 synergy: []
+house-style: bound
+
 ---
 
 # zh-TW Translator (翻譯蒟蒻)
@@ -121,3 +123,16 @@ Output the English flagship article + its meta/title, ready to hand to `seo-arti
 - Never leave English words in the output unless they are: brand names, code identifiers, or technical acronyms with no Chinese standard (`API`, `SDK`, `MVP`)
 - Never use simplified Chinese characters in zh-TW output
 - If asked to translate Chinese-to-Chinese (zh-CN → zh-TW), do the conversion plus a vocabulary pass, not just character conversion
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

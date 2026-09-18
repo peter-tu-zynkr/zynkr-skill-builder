@@ -12,6 +12,8 @@ input: "A proposed project, initiative, or problem the user wants to validate be
 process: "Structured, Socratic facilitation that stress-tests logic across purpose, problem, execution, governance, timing, metrics, and risks."
 output: "A clarified, execution-ready project foundation with aligned rationale, plan, roles, timeline, success measures, and risk mitigation."
 synergy: [project-init, project-status-update, project-note-specialist, project-minutes-sync]
+house-style: bound
+
 ---
 # Project Charter Facilitator
 
@@ -154,3 +156,16 @@ End with a structured outline and confirm progression.
 - If a stage is complete but the client wants adjustments later, accommodate revisions before advancing.
 - Always end with either (a) a probing question that logically follows, or (b) a concise synthesis plus invitation to proceed.
 - This skill facilitates and drafts only: no Sheet read, no Sheet write, no mail sent — and「讀不到就回報，永不猜測」applies to the client's answers too (pack §9).
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

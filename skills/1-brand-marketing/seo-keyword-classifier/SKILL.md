@@ -12,6 +12,8 @@ process: "Group by search intent per intent-taxonomy + apply the keyword-sop scr
 output: "Keywords grouped by intent (pick one of multiple versions), handed off to seo-demand-validator"
 synergy: ["seo-demand-validator"]
 handoff: ["seo-demand-validator"]
+house-style: bound
+
 ---
 
 # SEO Keyword Classifier
@@ -66,3 +68,16 @@ Keywords grouped by intent (`SEO_PACKET ▸ Classified`).
 ## Limitations
 
 Does not validate search demand / difficulty (the next leg), and does not write articles. **Does not force a product-category split.**
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

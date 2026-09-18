@@ -119,7 +119,7 @@ Two real program plans this team produced; use as shape references for the Doc +
 
 - **Honesty:** market only **shipped** features/capabilities; every demand claim carries signal + 依據; never invent search volumes; mark unverified figures `(待驗證)`.
 - **House style:** zh-TW 標題/標語 do not end with 句號 (。); series separator is ·; lists use 1️⃣2️⃣3️⃣ (never ①②③).
-- **Voice (no hype):** banned words — 賦能 · 生產力工具 · AI-powered · 無縫/seamless · supercharge · cutting-edge · game-changing. External AI attribution uses the generic **powered by Claude**.
+- **Voice (no hype):** banned words are owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`). External AI attribution uses the generic **powered by Claude**.
 - **IA default (real stack):** educational content runs through CMS `articles` + the existing `/free-resource` + a new category → `/blog/<slug>` SSR; **do not** spin up a sub-site. Tech-SEO step first checks whether each money page is indexable (noindex / SSR / meta / canonical / schema / sitemap).
 
 ---

@@ -12,6 +12,8 @@ process: "Read brand material → extract 1–3 prospect personas per the person
 output: "1–3 consumer personas + handoff packet, passed to seo-question-miner for common-question ideation"
 synergy: ["seo-question-miner"]
 handoff: ["seo-question-miner"]
+house-style: bound
+
 ---
 
 # SEO Persona Builder
@@ -74,3 +76,16 @@ SEO_PACKET ▸ Persona
 ## Limitations
 
 Does not do keyword research and does not write articles. When brand material is insufficient, ask only the single most critical follow-up question, and never fabricate brand facts.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

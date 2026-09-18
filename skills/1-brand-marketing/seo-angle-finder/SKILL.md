@@ -12,6 +12,8 @@ process: "From the questions and competitor content, surface unmet angles, point
 output: "Differentiated content angle list (including competitor gaps), handed off to seo-keyword-mapper"
 synergy: ["seo-keyword-mapper"]
 handoff: ["seo-keyword-mapper"]
+house-style: bound
+
 ---
 
 # SEO Angle Finder
@@ -64,3 +66,16 @@ Differentiated angle list (`SEO_PACKET ▸ Angles`), including competitor gaps a
 ## Limitations
 
 Does not produce the keyword map, does not classify, does not write the article. Competitor analysis is limited to public pages.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

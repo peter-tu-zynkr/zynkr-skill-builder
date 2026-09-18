@@ -24,7 +24,7 @@ Bake these into every artifact the program produces — they are not optional po
 - **Market only shipped capabilities.** Only position around features/abilities the product has actually shipped. Never imply roadmap as reality. Frame any forward statement as a capability that exists today.
 - **Demand is signal + basis, never invention.** Do not fabricate search volumes. Every demand claim cites its signal source (forum threads, autocomplete, SERP, support tickets). Anything unverified is tagged `(待驗證)`.
 - **House style (zh-TW).** Headings/taglines take **no 句號 (。)**; series separator is **·** not 。. Lists use **1️⃣2️⃣3️⃣**, never ①②③.
-- **Voice = no hype.** Banned words: 賦能 · 生產力工具 · AI-powered · 無縫 · supercharge · cutting-edge · game-changing. Refer to the AI generically as **powered by Claude** in any outward copy.
+- **Voice = no hype.** Banned words are owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`). Refer to the AI generically as **powered by Claude** in any outward copy.
 - **IA defaults to the real stack.** Educational content goes through **CMS articles + the existing `/free-resource` + a new content category → `/blog/<slug>` SSR pages**. Do **not** spin up a sub-site or a `/learn` mini-app. Technical SEO starts by checking whether each money page can even be indexed (noindex / SSR vs. client-only / meta / canonical / schema / sitemap).
 
 ---

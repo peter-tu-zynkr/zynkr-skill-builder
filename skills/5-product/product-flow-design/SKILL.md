@@ -11,6 +11,8 @@ input: "A Lucid document URL/id, OR a natural-language process description, OR a
 process: "Decide intent (read/draft/edit/validate). Apply FE/BE/DB three-layer model, swimlane scaffold, and Shape × Color encoding. Use Lucid MCP tools to fetch, create, or modify charts."
 output: "Either a structured semantic narrative of an existing chart, OR a new/edited Lucid diagram (returns the edit URL), OR a lint report against the convention."
 synergy: []
+house-style: bound
+
 ---
 
 # Lucid Specialist
@@ -248,3 +250,16 @@ All flow charts live in the Lucid process-flows folder (folder id `422779259`). 
 - **One process = one file.** Registers (audit-detail vs presentation-clean) and lane-by-lane build stages are pages inside the same document, not sibling files. (MCP caveat: the create tool can't add pages or restructure lanes in an existing doc — when building stage-by-stage per §3.5, ship each stage as a `vK` bump of the same `[N.M]` title and offer to trash the intermediates once the final lands.)
 
 After `lucid_create_diagram_from_specification`, always set the final title and move the doc into the folder via `lucid_update_document` — create-time non-ASCII titles can garble (render as `?`), while the update call handles UTF-8 correctly. Note the folder may 403 on `lucid_list_folder_contents`; use `search` (results carry `parent` folder ids) to see what numbers are taken.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

@@ -19,7 +19,7 @@
 
 - 只行銷**已出貨**的功能/能力;需求一律以**信號 + 依據**支撐,不杜撰搜尋量,未證實的標記**(待驗證)**。
 - house style:zh-TW 標題/標語**不收句號(。)**,系列分隔用 **·**;清單用 **1️⃣2️⃣3️⃣**,不用 ①②③。
-- 語氣 no hype。禁用詞:賦能 / 生產力工具 / AI-powered / 無縫 / supercharge / cutting-edge / game-changing。對外能力一律以 **powered by Claude** 泛稱。
+- 語氣 no hype。禁用詞以 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`) 為準，本檔不另存一份。對外能力一律以 **powered by Claude** 泛稱。
 - IA 預設沿用真實 stack:教育內容走 CMS articles + 既有 `/free-resource` + 一個新 category → `/blog/<slug>` SSR,**不蓋子站**;技術 SEO 先查 money page 是否可被收錄(noindex/SSR/meta/canonical/schema/sitemap)。
 
 ---

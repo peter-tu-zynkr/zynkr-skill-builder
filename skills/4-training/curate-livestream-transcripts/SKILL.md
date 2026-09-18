@@ -11,6 +11,8 @@ input: "None — folder IDs are constants below. Reads 直播筆記 Docs from th
 process: "list → filter → dedup-against-destination → read 逐字稿 tab → summarize → create Doc in SOT folder"
 output: "One 逐字稿_{Series}_{YYYY-MM-DD}_{topic} Google Doc per new source, in the destination folder, plus a run report."
 synergy: []
+house-style: bound
+
 ---
 
 # Curate Livestream Transcripts
@@ -178,3 +180,16 @@ Output (zh-TW):
 - Adding a new series = one row in the Constants table (and the same row in the cloud routine prompt). The filter and dedup logic are series-agnostic.
 - Keep this skill and the cloud routine prompt in sync when editing logic. The cloud routine is the claude.ai remote trigger **`Weekly livestream transcript curation`** (id `trig_01HD3SAYjYyfQCNedEsZTaTW`), cron `19 2 * * 1` (Mon 02:19 UTC), bound to the claude.ai **Google-Drive** connector. Edit it via the `RemoteTrigger` tool (`action: update`, that `trigger_id`) or `/schedule`.
 - The cloud run depends on the claude.ai Google-Drive connector being authorized for `peter_tu@zynkr.ai`'s Drive (same propagation gotcha as the project-status routine). If a Monday run reports 0 sources / permission errors, re-auth the connector on claude.ai.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

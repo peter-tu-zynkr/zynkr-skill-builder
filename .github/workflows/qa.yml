@@ -7,7 +7,11 @@ name: QA skills
 # protection so it cannot be merged around.
 #
 # Two jobs, in parallel:
-#   qa           — validate-skill.ts over every SKILL.md changed in the PR / push range.
+#   qa           — validate-skill.ts over every SKILL.md changed in the PR / push range,
+#                  then check-house-style.ts over the WHOLE tree (SKB-031): every skill must
+#                  declare `house-style: bound` or `exempt — <reason>`, and nobody may
+#                  re-implement the forbidden-word list locally. Tree-wide on purpose — a
+#                  skill that drops its declaration must fail even when it is not in the diff.
 #   shared-refs  — the shared-seed guards: planning-* copies match docs/planning-shared
 #                  (SKB-007 AC-4), PM-family copies and their declared sha match
 #                  docs/pm-shared (SKB-011), and pm-schema.py --self-test proves the
@@ -90,6 +94,12 @@ jobs:
           done <<< "$FILES"
           if [ "$fail" -ne 0 ]; then echo "::error::QA failed — fix the ERROR-tier findings above."; exit 1; fi
           echo "All changed skills passed QA."
+
+      # Tree-wide, not diff-scoped: the binding is only worth anything if a skill cannot
+      # quietly drop it. Node + deps are already installed above (SKB-031).
+      - name: Every skill declares house-style, and nobody forks the forbidden-word list
+        working-directory: scripts
+        run: npx tsx check-house-style.ts
 
   shared-refs:
     # Independent of `qa` (no `needs:`) so a broken seed and a broken SKILL.md surface in the

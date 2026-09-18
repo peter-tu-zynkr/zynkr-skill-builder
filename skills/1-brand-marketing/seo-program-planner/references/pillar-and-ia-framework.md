@@ -8,7 +8,7 @@ Program-scale rubric for **seo-program-planner** Stage: turn a product's *shippe
 - Market only **shipped** capabilities. Never plan a pillar around a roadmap feature. If demand exists for something unshipped, log it as a signal — don't write it into the IA.
 - Demand is always **signal + basis** — never a fabricated search volume. Unverified counts carry the 待驗證 tag.
 - zh-TW titles/labels take no 句號 (。); series separators use ·, not 。. Lists use 1️⃣2️⃣3️⃣, never ①②③.
-- No-hype voice. Banned: 賦能 · 生產力工具 · AI-powered · 無縫 · supercharge · cutting-edge · game-changing. External attribution is the generic **powered by Claude**.
+- No-hype voice. Banned words are owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`). External attribution is the generic **powered by Claude**.
 
 ---
 

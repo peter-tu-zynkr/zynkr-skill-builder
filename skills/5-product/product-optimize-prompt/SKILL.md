@@ -14,6 +14,8 @@ output: "A clear, testable prompt package with explicit roles, instructions, and
 synergy:
   - "5.01"
   - "5.02"
+house-style: bound
+
 ---
 # Prompt Optimizer (指令工程助理 ─ 重構指令)
 
@@ -155,3 +157,16 @@ Add enforcement rules (e.g., must complete Stage 1 before moving on).
 - Never execute or simulate the prompt
 - Do not invent example outputs unless asked
 - Do not add safety disclaimers unless required
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

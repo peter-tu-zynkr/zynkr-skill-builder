@@ -12,6 +12,8 @@ process: "Design the H2/H3 outline per outline-patterns (answer-first opening) �
 output: "Article outline + FAQ + handoff summary of target keywords, handed off to content-draft (1.06) for writing"
 synergy: ["content-draft"]
 handoff: ["content-draft"]
+house-style: bound
+
 ---
 
 # SEO Outline Designer
@@ -83,3 +85,16 @@ Article outline + FAQ + handoff summary (compatible with `content-draft`).
 ## Limitations
 
 Does not write paragraphs, set titles, or proofread — those go to the existing 1.06 / 1.09 / 1.07.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

@@ -11,6 +11,8 @@ input: "Raw 30-90 minute lecture transcript text with filler words and STT artif
 process: "Sequential batch processing (~700 Chinese chars per batch) with strict order gating, filler removal, and sentence restructuring"
 output: "Lecturer-friendly readout script in Traditional Chinese with terminology consistency notes"
 synergy: []
+house-style: exempt — verbatim capture — fidelity to the source outranks house voice
+
 ---
 
 # Polish Lecture Transcript

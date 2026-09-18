@@ -13,6 +13,8 @@ process: "Clarify goal and audience → fix the core claim → lay out the narra
 output: "SLIDE_PACKET ▸ Storyline narrative skeleton, handed to slide-page-splitter (1.26) for paging"
 synergy: ["slide-page-splitter"]
 handoff: ["slide-page-splitter"]
+house-style: bound
+
 ---
 
 # slide-storyline-designer
@@ -208,3 +210,16 @@ A user-reviewed, finalized `SLIDE_PACKET ▸ Storyline` narrative skeleton — c
 - **Doesn't pick layouts, doesn't place visuals**. Layout archetypes, visual elements (addText / addTable / addChart…), layout arrangement, and design notes are the job of leg 3 **slide-visual-selector (1.27)** (producing SLIDE_PACKET ▸ Visuals).
 - **Doesn't render the .pptx**. Actual file production is handled by the installed **slide-pptx skill** (`~/.claude/skills/slide-pptx`, Create from scratch / pptxgenjs path) after 1.27 is done.
 - **Doesn't fabricate material**. Missing data or missing cases are all marked "to be filled" and handed back to the user; it doesn't invent evidence on its own.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

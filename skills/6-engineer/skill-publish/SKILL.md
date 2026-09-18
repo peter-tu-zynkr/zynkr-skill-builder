@@ -16,6 +16,8 @@ security_audits:
   gen_agent_trust_hub: pending
   socket: pending
   snyk: pending
+house-style: exempt — machine artifact — git and publish plumbing, no prose output
+
 ---
 
 # Skill Publish

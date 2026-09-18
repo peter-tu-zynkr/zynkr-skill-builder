@@ -21,4 +21,4 @@ Corresponds to the green node "Winning-Key Review Sheet, Scoring Sheet" in the f
 
 - A one-line "value proposition": what decision can the reader make more clearly after reading (not "learned how to use a tool").
 - 2–3 winning keys: what this piece wins on.
-- Make good use of Words to own (決策／取捨／判斷／方向／脈絡 — decision / trade-off / judgment / direction / context); avoid Words to reduce (賦能／生產力工具／無縫… — empower / productivity tool / seamless…).
+- Make good use of Words to own (決策／取捨／判斷／方向／脈絡 — decision / trade-off / judgment / direction / context); avoid the Words to reduce owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`).

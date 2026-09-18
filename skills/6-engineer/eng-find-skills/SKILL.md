@@ -14,6 +14,8 @@ synergy: []
 upstream_repo: https://github.com/vercel-labs/skills
 original_source_url: https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md
 original_author: vercel-labs
+house-style: exempt — pure router — selects a child skill, drafts nothing itself
+
 ---
 
 # Find Skills

@@ -12,6 +12,8 @@ output: "Issue labels swapped (triage-ready → building/parked/rejected/shipped
 synergy: ["skill-sourcer"]
 handoff: ["skill-author"]
 disable-model-invocation: true
+house-style: exempt — machine artifact — issue labels, no prose output
+
 ---
 
 # Skill Triager

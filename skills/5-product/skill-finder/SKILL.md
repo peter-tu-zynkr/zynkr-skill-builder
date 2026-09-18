@@ -13,6 +13,8 @@ process: "Interpret intent, match against the structured assistant index using f
 output: "A concise recommendation of the most relevant assistant(s), or a clear single-question clarification request, or an honest 'no match' response"
 synergy: []
 handoff: []
+house-style: exempt — pure router — selects a child skill, drafts nothing itself
+
 ---
 
 # Skill Finder

@@ -11,6 +11,8 @@ input: "Event seed material (existing event description, outline, or a past even
 process: "Two interview phases — event content fields confirmed one at a time, then ticketing & schedule fields — followed by one consolidated template output"
 output: "A fully filled Accupass listing template: pre-launch goals, platform settings, event copy, marketing emails, reminder email, and post-event follow-up checklist"
 synergy: ["training-process-video"]
+house-style: bound
+
 ---
 
 # Accupass Agent
@@ -207,3 +209,16 @@ Fixed defaults — adopt directly or let the user override per event:
 - Field drafts must be grounded in the user's seed material — never fabricate content
 - Unconfirmed fields keep their field codes verbatim in the output — never infer
 - This skill prepares the listing; actual publication on Accupass is manual (no API). The post-event checklist hands off to the livestream post-processing pipeline (`training-process-video`).
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

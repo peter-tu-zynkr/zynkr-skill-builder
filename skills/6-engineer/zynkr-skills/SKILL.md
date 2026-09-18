@@ -15,6 +15,8 @@ type: agent
 skills: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish", "skill-finder"]
 handoff: ["skill-sourcer", "skill-triager", "skill-author", "skill-qa", "skill-publish"]
 executed_by: internal-user
+house-style: exempt — pure router — selects a child skill, drafts nothing itself
+
 ---
 
 # Zynkr Skills

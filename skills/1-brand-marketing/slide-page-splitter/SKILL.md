@@ -13,6 +13,8 @@ process: "Expand each beat into one or more pages per paging principles → for 
 output: "An ordered page list SLIDE_PACKET ▸ Pages, handed to slide-visual-selector to choose layout and visuals"
 synergy: ["slide-storyline-designer", "slide-visual-selector"]
 handoff: ["slide-visual-selector"]
+house-style: bound
+
 ---
 
 # Slide Page Splitter
@@ -141,3 +143,16 @@ An ordered page list `SLIDE_PACKET ▸ Pages` with a clear responsibility per pa
 - **Does not choose the layout archetype, specify visual elements or page layout, or apply brand colors/fonts**: that's slide-visual-selector (1.27)'s job; I only tag the page type (`title / section / content / data / quote / closing`), I don't touch the layout enum (`title / big-statement / bulleted-list / …`).
 - **Does not render .pptx**: rendering is done by feeding 1.27's ▸ Visuals into the installed slide-pptx skill.
 - **Does not go back and rewrite the storyline**: beats, through-line, and narrative arc belong to slide-storyline-designer (1.25); if I find a gap in the story while paging, I only report it and suggest a fix, asking the user to go back to the previous leg — I don't alter the narrative on my own.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

@@ -13,6 +13,8 @@ process: "For each page, pick the layout using the 'content characteristics → 
 output: "A render-ready per-page visual spec SLIDE_PACKET ▸ Visuals, handed to the installed slide-pptx skill (Create from scratch / pptxgenjs.md) to render into a .pptx"
 synergy: ["slide-page-splitter", "slide-pptx"]
 handoff: ["slide-pptx"]
+house-style: bound
+
 ---
 
 # Slide Visual Selector
@@ -200,3 +202,16 @@ It only does the visual selection and layout of "content → layout archetype �
 - **Rewrite the storyline**: the presentation goal / core claim / narrative arc belong to the first leg `slide-storyline-designer` (1.25) (▸ Storyline).
 - **Re-paginate or change what each page says**: that is the second leg `slide-page-splitter` (1.26) (▸ Pages); when a single page's information overflows, it only flags it for return, it does not force a cram.
 - **Actually generate the `.pptx` file, write pptxgenjs code, or do the final rendering QA**: that is the downstream installed **slide-pptx skill** (`~/.claude/skills/slide-pptx`, Create from scratch / pptxgenjs.md); this leg only hands ▸ Visuals to it.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

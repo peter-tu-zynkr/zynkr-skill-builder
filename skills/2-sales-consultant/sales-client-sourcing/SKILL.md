@@ -11,6 +11,8 @@ input: "Google Sheet of survey participants — each row has company name, AI ch
 process: "Header auto-detection → generic-name filter → output column provisioning → formula writes (Hot Lead / 平均分數) → parallel WebSearch enrichment → strategy synthesis weaving challenges + interests → sort-safe write-back → Well-Known judgment → run summary"
 output: "Same sheet + 5–7 new columns: 官網, 公司背景, 陌生開發策略, Hot Lead?, 知名企業? (and optionally 有普通?, 平均分數); plus a 'needs follow-up' list for unknowns"
 synergy: []
+house-style: bound
+
 ---
 
 # Sales Client Sourcing
@@ -320,3 +322,16 @@ Use `▶` for current phase, `✓` for completed, `○` for upcoming.
 - **Sheet sorted during run** → write-back step's re-read (Step 7 + Step 8) handles this transparently; no user action needed.
 - **Re-run on already-enriched sheet** → detect existing headers (官網/公司背景/陌生開發策略) and ask user whether to skip, refresh-all, or refresh-only-blanks.
 - Never silently skip a step — always surface errors clearly.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

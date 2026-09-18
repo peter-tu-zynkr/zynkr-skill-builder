@@ -33,6 +33,8 @@ input: "Optional sub-command (week | progress [LOB] | send) and an optional 'as 
 process: "Anchor on today → load private config → idempotency check → read the SOR chain in precedence order (script-first) → derive per-item state + per-owner rollup → compose the fixed-shape brief, every number cited → draft or send → report."
 output: "Weekly GM brief in English as an HTML email: runway · ≤3 decision cards, each with options and a link to the closing cell · two clocks · P0/P1 by LOB · owners · KPI · decisions"
 synergy: [admin-governance, project-status-update, consult-governance, skill-finder, curate-livestream-transcripts, admin-meeting-prep, planning-tracker-sync, planning-evidence-pack]
+house-style: bound
+
 ---
 
 # zynkr-gm
@@ -378,3 +380,16 @@ rewrite, not a note):
 - Is any reference **dead**, and reported in 08 as a finding rather than passed through?
 - Is the brief in English, with source strings left verbatim and glossed once?
 - Read block 01 aloud: does it sound like a person telling you what they need?
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

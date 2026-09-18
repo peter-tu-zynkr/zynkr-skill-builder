@@ -12,6 +12,8 @@ process: "Expand seed terms per keyword-checklist → compile a keyword map with
 output: "A complete keyword map (keywords, thread heads, volume/difficulty), handed to seo-keyword-classifier"
 synergy: ["seo-keyword-classifier"]
 handoff: ["seo-keyword-classifier"]
+house-style: bound
+
 ---
 
 # SEO Keyword Mapper
@@ -64,3 +66,16 @@ A complete keyword map (`SEO_PACKET ▸ KeywordMap` + Drive working file).
 ## Limitations
 
 Does not classify by intent (the next leg), does not validate demand / rank by difficulty (seo-demand-validator), and does not write articles. Does not fabricate search volume.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

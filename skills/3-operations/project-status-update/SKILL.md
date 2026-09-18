@@ -11,6 +11,8 @@ input: "A project slug resolved through ~/.config/zynkr/pm.json (tracker Sheet I
 process: "Verify pack + config → detect the 管控表 version → read the tracker by header name → bucket Status into Done/WIP/Not started/Drop (illegal literals stay counted and named) → score the configured spine → derive health → draft a Gmail HTML email, never send."
 output: "A Gmail DRAFT (never auto-sent): the 專案狀態看板 weekly dashboard as styled HTML, including the dropped-task list and any Status data errors, to a configurable recipient list."
 synergy: [project-planning, project-note-specialist, project-init, project-minutes-sync]
+house-style: bound
+
 ---
 
 # Weekly Project Status Update
@@ -360,3 +362,16 @@ The scheduler only fixes *when* this runs; it does not change *what* it does. Ev
 - **Don't invent status.** If a field is genuinely unknown (e.g. a decision's reason), write `（待補充）` rather than guessing — that mirrors how the dashboard already flags gaps. A `Status` literal outside the four legal values is reported as a data error naming the row, never bucketed by resemblance — **and never removed from the denominator** (pack §2.2 裁決二).
 - **Health never goes back into the sheet.** It is derived output; `Status` is the fact (pack §2.2 裁決三).
 - **Source-faithful, not flattering.** A stage is `done` only when every remaining task is `Done`; trailing open tasks keep it `now (收尾中)`. Dropped work leaves the denominator but stays in the report; an illegal `Status` literal **stays in** the denominator and is named. Overstating progress to stakeholders is the worst failure mode here; under-claiming is recoverable.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

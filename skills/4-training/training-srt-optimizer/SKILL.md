@@ -11,6 +11,8 @@ input: "One .srt subtitle file containing raw speech-to-text output"
 process: "Inspect -> export rewrite worksheet -> rewrite cue text batch by batch -> rebuild -> validate -> upload final .srt to Google Drive"
 output: "A minimally edited .srt with preserved cue timing, wording fidelity, subtitle-friendly Traditional Chinese, and a copy saved to the designated Google Drive folder"
 synergy: []
+house-style: exempt — verbatim capture — subtitles must track the speaker, not the house voice
+
 ---
 
 # SRT Optimizer

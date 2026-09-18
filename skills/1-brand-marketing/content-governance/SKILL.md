@@ -11,6 +11,8 @@ input: "A Google Doc URL and/or a Notion Content-DB page (idea/stub) for a newsl
 process: "Detect entry point (Doc-first / Notion-first / both), create whichever anchor is missing, file the Doc into the newsletter Drive folder, assign the issue number, classify Subject tags, and sync full metadata + body into a single deduped Notion Content-DB page — cross-linked"
 output: "A filed Google Doc (newsletter folder, (N) Title) + a deduped Notion Content-DB page with full metadata, cross-linked"
 synergy: []
+house-style: bound
+
 ---
 
 # Content Governance — Doc ⇄ Notion reconciler
@@ -164,3 +166,16 @@ Report both anchors so Peter can see the content landed in its proper place:
 - **Notion page URL** (in the Content DB)
 - **Filed Google Doc URL** (in the newsletter folder)
 - The **issue number** and **Status** you set.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

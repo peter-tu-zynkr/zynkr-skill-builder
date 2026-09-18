@@ -11,6 +11,8 @@ input: "A brand material packet (first time) or an article material packet (per 
 process: "Detect the entry point → call the corresponding SEO skill / existing sub-agent stage by stage → a manual gate at every stage → save the working files into this article's Drive subfolder"
 output: "A published article live at zynkr.ai/blog/<slug> (Doc archived + SEO tracker updated), having passed SEO/AEO proofreading, with meta/schema/links — zh-TW, plus optional EN flagship"
 synergy: ["seo-persona-builder","seo-question-miner","seo-angle-finder","seo-keyword-mapper","seo-keyword-classifier","seo-demand-validator","seo-brief-writer","seo-outline-designer","seo-article-finalizer","seo-publish-article","content-draft","content-title","content-editor","content-translator"]
+house-style: bound
+
 ---
 
 # SEO Article Pipeline Orchestrator
@@ -118,3 +120,16 @@ Legend: ✅完成 · ▶️進行中 · ⬜待辦 · ⏭️跳過
 - If the user wants to skip / rerun a stage, allow it.
 - If any stage is missing input (e.g. missing first-hand material, missing competitor URLs), stop and ask the user — this corresponds to the red FE input nodes in the flowchart.
 - Keep messages concise; leave the details to each stage's output.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

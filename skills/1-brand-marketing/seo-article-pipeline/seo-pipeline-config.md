@@ -110,7 +110,7 @@ The CMS write path (Supabase `articles` table, Tiptap content rules, the no-tabl
 
 Zynkr is a **decision-first AI consulting counterpart**, not "AI enablement / productivity." Every article must: lead with a decision, name the real trade-off, commit to a direction; make at least one Zynkr Method move visible (Frame · Clarify · Constrain · Compare · Commit). First-hand experience is evidence for judgment, not the selling point.
 - **Words to own:** 決策 · 取捨/trade-off · 判斷 · 方向 · 脈絡 · 顧問夥伴 · 框架 · 清晰.
-- **Words to reduce (never in copy):** 賦能/empower · unleash · 生產力工具/productivity tool · AI-powered · seamless/無縫 · 智慧助理 · 顛覆/redefine · supercharge · cutting-edge · game-changing.
+- **Words to reduce (never in copy):** owned by 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`) — read it at runtime, never restate it here.
 - Governance: every article answers YES to all 4 (decision not feature · only-Zynkr-could-say-this · asking/framing/committing not selling · Method shows through).
 
 ## Content pillars (decision-first; B2B-priority)

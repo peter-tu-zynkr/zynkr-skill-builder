@@ -12,6 +12,8 @@ process: "Read Doc → split body/metadata → build + validate Tiptap JSON + co
 output: "The article live at <site>/blog/<slug> — inserted articles row + verified page; the source Doc archived and the SEO tracker (Topic List + Keyword Pool) updated."
 synergy: ["seo-article-finalizer", "seo-article-pipeline", "content-translator"]
 handoff: []
+house-style: bound
+
 ---
 
 # SEO Publish Article
@@ -131,3 +133,16 @@ The published row (id / slug / status / published_at), the verified live URL, th
 - `scripts/build_payload.mjs` — markdown → Tiptap JSON + content_html (house style; table→list).
 - `scripts/validate_payload.mjs` — schema-validate `content` against the editor's real Tiptap schema.
 - `references/cms-publishing.md` — `articles` schema, category map, field mapping, public URL pattern, full gotcha list.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

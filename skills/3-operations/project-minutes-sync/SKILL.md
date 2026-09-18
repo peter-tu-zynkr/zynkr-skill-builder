@@ -20,6 +20,8 @@ input: "A [會議記錄] Doc (URL or id) or a project slug that resolves via pm.
 process: "知識來源 + pm.json check → parse the Doc's four tables per-table → detect the 管控表 version with pm-schema.py → Action Items append-or-patch tab 1 → 決議 → Change & Decision Log → 阻礙 → Risk Register → VALUES-ONLY write-back → diff report."
 output: "Three 管控表 tabs updated by value only, the Doc's 已同步 checkboxes ticked on explicit go-ahead, and a chat diff report — appended · patched · skipped · unparsed · needs a human."
 synergy: [project-status-update, project-note-specialist, project-init, admin-meeting-prep]
+house-style: bound
+
 ---
 
 # project-minutes-sync
@@ -217,3 +219,16 @@ Doc 打勾  <已打勾 n 列｜未打勾（未取得確認）>
 6. **不代人做判斷**。不判定影響範疇、不代簽核准人、不猜機率與衝擊、不替人決定該不該 Drop。
 7. **ID 只從 `pm.json`**。本檔不含任何專案 ID，執行時也不從 Drive 標題猜。
 8. **一次一場會議、一個專案**。
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

@@ -60,7 +60,7 @@
 
 **原則**：語氣務實、可驗證、具體；不誇飾。寫「它做什麼、對誰有用、依據是什麼」，不寫形容詞堆疊。
 
-- **禁用詞（中英皆禁，含明顯變體）**：賦能 · 生產力工具 · AI-powered · 無縫 · seamless · supercharge · cutting-edge · game-changing · revolutionary · 顛覆 · 一鍵搞定（當成空話用時）· 效率神器。
+- **禁用詞（中英皆禁，含明顯變體）**：以 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`) 為準，本檔不另存一份。
 - **改寫方向**：把禁用詞換成具體動作或結果。例：「AI-powered 無縫整合」→「用 Claude 讀會議記錄、自動建一筆 CRM deal」。
 - **適用範圍**：對外文案、money page 草稿、CTA、meta description、pillar/spoke 標題,以及計畫 Doc 裡所有會被直接搬去發佈的文字。對內戰略分析段落（如 §2 Positioning 的類別 POV）可以用分析性語言,但仍不得用上列空話詞。
 - **檢核**：產出後對禁用詞清單做一次掃描；命中即逐一改寫,不得保留。

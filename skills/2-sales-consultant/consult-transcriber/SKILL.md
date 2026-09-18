@@ -33,6 +33,8 @@ synergy:
   - "training-srt-optimizer"
   - "consult-session-notes"
   - "consult-shadowing-scheduler"
+house-style: exempt — verbatim capture — fidelity to the source outranks house voice
+
 ---
 
 # Consult Transcriber

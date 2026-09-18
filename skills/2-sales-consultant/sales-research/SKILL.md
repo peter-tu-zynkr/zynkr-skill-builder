@@ -31,6 +31,8 @@ input: "A company name/domain (and optionally a contact name), or an existing Zy
 process: "Resolve the CRM company record → web research (what they do, size/HQ, facts, sales-fit angle) → dated zh-TW brief flagged unverified → append into description (read-merge-write) → optional task note for a named contact → report."
 output: "The company's 備註/description field updated with a dated AI-research brief, plus an optional note-style task on a named contact — never overwriting prior content."
 synergy: []
+house-style: bound
+
 ---
 
 # Sales Research
@@ -214,3 +216,16 @@ resolve a company_id), say that plainly instead of reporting success.
 - **Scope stays research + write-back.** If the findings suggest a real sales
   or consulting opportunity, flag it in the report — don't spin up a deal or
   hand off to another skill unprompted.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

@@ -11,6 +11,8 @@ input: "專案名稱 · 專案類型 (客戶案／課程案／內部案) · Spon
 process: "Verify the pack sha → collect six inputs → resolve filing_home from the adapter → pre-flight for duplicates → copy 5 templates + 4 sub-folders → change 核心目標 and CLEAR example rows → seed five X.0 stage rows → backlink → print the pm.json snippet"
 output: "A project folder holding [Business Case] · [Charter] · [Kickoff] · [專案管控表] · [復盤] plus sub-folders [1]–[4], tab 1 seeded with five stage rows and no tasks, and a pm.json snippet"
 synergy: [project-status-update, project-planning, project-minutes-sync, consult-project-specialist]
+house-style: exempt — machine artifact — writes config, no prose output
+
 ---
 
 # project-init

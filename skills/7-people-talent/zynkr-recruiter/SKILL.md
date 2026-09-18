@@ -13,6 +13,8 @@ output: "JD draft (YAML), candidate fit scores with HR Decision Summary, bilingu
 synergy: []
 type: agent
 skills: ["recruiter-jd-architect", "recruiter-resume-screener", "recruiter-interview-question", "recruiter-calibrator"]
+house-style: bound
+
 ---
 
 # Recruiting Pipeline
@@ -161,3 +163,16 @@ Next steps:
 - Never modify the original scorecard during calibration
 - Stage 3 designs questions only; Stage 4 evaluates — keep them separate
 - Threshold for shortlist is 60; below threshold, suggest contract or alternative roles instead of forcing hire
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

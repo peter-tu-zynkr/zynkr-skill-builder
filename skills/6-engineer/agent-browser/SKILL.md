@@ -17,6 +17,8 @@ security_audits:
   gen_agent_trust_hub: pending
   socket: pending
   snyk: pending
+house-style: exempt — machine artifact — browser automation, no prose output
+
 ---
 
 # Agent Browser

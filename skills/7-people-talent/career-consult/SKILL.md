@@ -30,6 +30,8 @@ input: "A career-consult booking — a Gmail thread / appointment email ('職涯
 process: "Read the booking + client's pre-consult reply + CV → prefill the GROW template from their materials (mark inferences) → add opener checklist + regrouped questions + CV health-check + agenda → number the case → create the Doc in the 職涯諮詢 folder."
 output: "A prefilled prep Doc named '[N] {Client} 職涯諮詢' in Peter's 職涯諮詢 working folder, ready to drive a 60-minute paid session."
 synergy: ["cv-customizer"]
+house-style: bound
+
 ---
 
 # Career Consult Prep
@@ -220,3 +222,16 @@ The prep Doc contains the real client's name, email and CV — that's correct;
 it's Peter's private working doc in his own Drive, the same data he'd read off
 the email. No anonymization happens at runtime. (Only this skill's own
 documentation uses a fictional client.)
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

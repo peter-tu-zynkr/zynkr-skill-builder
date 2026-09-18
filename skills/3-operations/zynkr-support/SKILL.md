@@ -11,6 +11,8 @@ input: "Unreplied Support / Inbound-Sales / website-form threads in Gmail; the K
 process: "Pull the unreplied queue → read the full thread + detect unreplied + determine language → identify intent → search_kb + get_kb_article (qa cards resolve their cited facts inline) + the tone-style cards to find the answer → if an answer exists draft a proper reply / if none, write a holding reply + [[NEEDS PETER]] and notify Peter → after Peter supplies the answer, hand the thread off to /zynkr-kms to write it back into the KB"
 output: "One Gmail draft per thread; a summary (drafted / needs Peter / skipped); for threads Peter has since answered, trigger the /zynkr-kms hand-off"
 synergy: ["zynkr-kms"]
+house-style: bound
+
 ---
 
 # Zynkr Support — Support Reply Drafter (READ side, platform-KB backed)
@@ -370,3 +372,16 @@ curating the KB is /zynkr-kms's job.
 If retrieval comes up empty for every thread, draft holding replies for everything with
 `[[NEEDS PETER]]` blocks (this is still useful triage) and tell Peter in the summary — that's a
 signal the KB has a coverage gap that /zynkr-kms should fill once he answers.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

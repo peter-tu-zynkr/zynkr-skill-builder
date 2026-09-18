@@ -37,7 +37,7 @@ Corresponds to the green "Brief format" node in the flow diagram. One per articl
 ## Voice check
 - At least one Zynkr Method move surfaces: Frame / Clarify / Constrain / Compare / Commit
 - Preferred words: 決策 · 取捨 · 判斷 · 方向 · 脈絡 · 顧問夥伴
-- Banned words (must not appear): 賦能 / empower · 生產力工具 / productivity tool · AI-powered · 無縫 / seamless · 智慧助理 · 顛覆 · supercharge
+- Banned words (must not appear): per 《[3.2] 禁用詞清單 Forbidden Words》 (`1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`)
 
 ## AEO requirements
 - Answer-first opening sentence (answer up front):

@@ -11,6 +11,8 @@ input: "Optional: number of days to look back (default 7). Optional: LOB scope a
 process: "List cloud folder contents with modifiedTime via Google Workspace MCP → filter to the time window → read each affected local `_INDEX.md` → diff cloud entries against indexed URLs → emit a per-LOB report: new Docs to add, broken entries to fix, summary count. Do NOT edit `_INDEX.md` files automatically — surface a ready-to-apply changelist for the user to approve."
 output: "Per-LOB report (one section per LOB touched in the window): NEW (cloud Docs not in index) · CHANGED (Docs whose modifiedTime moved within the window) · BROKEN (index entries whose URLs no longer resolve). Each line includes the cloud URL and the proposed `_INDEX.md` edit. End with a single-line summary count."
 synergy: []
+house-style: bound
+
 ---
 
 # Drift Check
@@ -132,3 +134,16 @@ Drift check — 2026-05-27 (window: 7 days, scope: all): all clean ✓
 - Be terse. The user is scanning for action items, not reading prose.
 - Use the exact format in §3 — downstream tools (or a future auto-apply step) parse it.
 - "Clean ✓" is a complete answer. Don't pad.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

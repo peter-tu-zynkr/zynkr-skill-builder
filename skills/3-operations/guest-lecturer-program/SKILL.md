@@ -11,6 +11,8 @@ input: "The lifecycle stage to run (intake / contract / event ops / settlement) 
 process: "Stage-based playbook: screen and onboard lecturers via form + tracker, generate contracts from templates, drive the D-30→D+3 per-event SOP checklist, then compute monthly settlement (fees → net revenue → split → withholding) and issue the statement"
 output: "Stage artifacts: lecturer tracker updates, contract drafts, per-event checklist status, and a monthly settlement statement ready for lecturer sign-off and finance payout"
 synergy: ["accupass-agent", "training-process-video"]
+house-style: bound
+
 ---
 
 # Guest Lecturer Program
@@ -130,3 +132,16 @@ If a payment could plausibly exceed the withholding thresholds, flag it in the s
 - Commercial terms come exclusively from the local `program-config.md`; this skill contains no negotiable numbers
 - Statutory rates reflect Taiwan regulations as of 2026 — confirm with the accountant before each filing season
 - Contract templates require lawyer review before first use; this skill does not provide legal advice
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

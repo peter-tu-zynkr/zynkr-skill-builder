@@ -30,7 +30,9 @@ process: "Classify into ROUTE / SEQUENCE / REVIEW → delegate to the child skil
 output: "Whatever the delegated children produced (CRM records · Gmail drafts · enriched sheet), plus for REVIEW a deal-level attention list and one confirmed batch of CRM writes."
 synergy: []
 type: agent
-skills: ["sales-client-sourcing", "sales-specialist", "sales-outbound", "sales-follow-up", "sales-research"]
+skills: ["sales-client-sourcing", "sales-specialist", "sales-outbound", "sales-follow-up", "sales-research", "sales-proposal-writer"]
+house-style: bound
+
 ---
 
 # Sales Manager
@@ -60,6 +62,7 @@ It does three things, and **delegates everything else**:
 | `sales-outbound` | 2.09 | ONE lead signal → CRM lead + Gmail draft (+ three 台北時間 slots) | batches |
 | `sales-follow-up` | 2.10 | A completed demo transcript → threaded follow-up + deal sync | new leads |
 | `sales-research` | 2.11 | A company → background brief written back to the CRM | contacts |
+| `sales-proposal-writer` | 2.47 | A deal + the client's asks → a priced 交付文件 proposal, and its revision rounds | the covering email (→ `sales-follow-up`) |
 
 **Delegate, never inline.** If you find yourself writing CRM SQL, parsing a card, or
 drafting an email body in this skill, stop — that belongs to a child. This skill's own
@@ -113,6 +116,7 @@ Say which mode you picked in one sentence before acting.
 | A completed demo / discovery-call transcript on an existing deal | `/sales-follow-up` |
 | A company name, or a deal lacking background | `/sales-research` |
 | A WHOLE survey sheet of many people | `/sales-client-sourcing` |
+| A client's requirement list / ask sheet, or "write the proposal", or comments on an existing proposal | `/sales-proposal-writer` |
 
 Invoke via the **Skill** tool and let the child drive. Report what it produced.
 
@@ -204,3 +208,16 @@ say so plainly and leave the list.
   separate skill (a second skill would likely never get built, and "I forgot to chase that
   deal" is the pain that motivated this one) — but it is fenced to deal-level facts so it
   cannot grow into a rival `/zynkr-gm`.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.

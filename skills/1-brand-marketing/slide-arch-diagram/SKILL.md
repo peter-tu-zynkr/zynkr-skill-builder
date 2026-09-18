@@ -12,6 +12,8 @@ process: "Decompose into IPO elements → place each in FE/BE/DB via the canonic
 output: "A slide-ready .arch diagram block (plus per-deck CSS) with a conclusion-bearing title and one orange law-line verdict, dropped into the target artifact deck page"
 synergy: ["slide-visual-selector", "zynkr-slide", "product-flow-design"]
 handoff: []
+house-style: bound
+
 ---
 
 # Slide Arch Diagram
@@ -109,3 +111,16 @@ One `.arch` diagram block per workflow, dropped into the target artifact deck pa
 - **Not the Lucid skill.** The same FE/BE/DB convention drawn into Lucid charts is `product-flow-design`; this skill renders slide pages.
 - **Not a storyline or pagination skill.** It draws one workflow it is given; which workflows deserve pages is the slide relay's call (`slide-storyline-designer` → `slide-page-splitter` → `slide-visual-selector`).
 - **Placement canon is loaded, not invented.** When the canonical-model reference and a user instruction conflict, surface the conflict — don't silently deviate from the canon.
+
+## House style
+
+Writing style is **not owned by this file**. The house voice lives in two Google Docs under
+`[@] 寫作指南` (`12DBdFz3SK22ie9im_ThFMI7IBRXsTZsV`), read at runtime:
+
+- 《[2.0] Zynkr 通用風格指南 House Voice》 `10bOIQwRm9Pxwgct4hlwCwK_B4Pipai1HqBPZKzyRHSE` —
+  the universal core, plus the addendum for this surface
+- 《[3.2] 禁用詞清單 Forbidden Words》 `1N5sHLP4qzmmhpCGsi6KElxi1z0MFe4QZ0Q_35T10Uyg`
+
+Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
+before handing it over. If Drive is unreachable, say so in the output rather than proceeding
+unchecked. Never re-implement either list inside this file.
