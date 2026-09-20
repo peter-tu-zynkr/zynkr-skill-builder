@@ -1310,3 +1310,49 @@ failing**; `sales-proposal-writer` 0 errors 0 warnings; `check-planning-refs.sh`
 `assistant-index.csv` and `generated/` are byte-identical to `origin/main` and no such folder
 exists under `skills/7-people-talent/`, so it predates this work — and that check is not wired into
 `qa.yml`, so it currently gates nothing.
+
+## 2026-09-20 — sales-outbound grows a cold-open mode · `SKB-033`
+
+`sales-outbound` only ever handled someone who had already replied. The cold-open case — a name
+off the 陌開名單 roster who has never said a word — had no home in it. **Mode B** is that home: a
+five-touch sequence that claims the lead in the roster, reads the calendar for real slots, picks a
+role angle, writes all five emails as Gmail drafts, and logs the touch.
+
+The work is Ding Huan Wu's, running since 2026-09-05 in a private copy. That copy was a
+copy-paste install taken at `6bb0a21` (file content `9ec192a3`, 2026-06-27) — **not a git fork**,
+zero shared history, so GitHub could not open a PR from it. This is the same change re-applied
+onto today's `main`.
+
+The base was pinned exactly: the fork's own `SKILL.md.bak.20260905195206` is byte-identical to
+`9ec192a3`. A 3-way merge from it produced two conflicts, both tail-of-section collisions resolved
+as keep-both — the description paragraph against the rewritten description (`3e11401b`), and the
+Mode B section against the new House style section (`2429d962`). The SKILL.md diff is **39
+insertions, 0 deletions**: nothing upstream is touched, `sheetId` stays `2.09`.
+
+**The method is desensitised, because this repo is public.** `references/sequence-5touch.md` lost
+510 bytes of 16 KB — the roster's Apps Script URL, the touches spreadsheet id, the maintainer's
+private Gmail, a work address and an operator handle, roster volumes by tier, four real student
+names, the inventory counts and workflow numbering, and the enumerated internals of the subsidy
+document. All nine 步驟 sections, the 去 AI 感六條, the Gmail selectors, the Sheets formula-bar
+workaround and the 倒著建 ordering trick survive 1:1. The new placeholders follow the existing
+`<your-…>` convention; the substitution table lives outside this repo.
+
+⚠️ **One claim was rewritten rather than carried over.** The fork said Mode B avoids supabase and
+google-workspace because 這個資料夾兩者都不可用 — true of Ding's laptop, false here, and a reader
+would have followed it into Playwright-Gmail for no reason. Split into its two halves: the
+sheets-not-CRM part is **design** (these people are not in the CRM yet, and putting them there
+pollutes the pipeline numbers) and stays a flat statement; the Gmail surface is **environment**
+and is now conditional.
+
+**Verification (D2)** — `validate-skill.ts --tier=all` on the merged SKILL.md: **1/1 pass, 0
+errors, 0 warnings**. PR #37 `qa` and `shared-refs` both green. Scrub proved by grep over the
+result: **zero** email addresses, **zero** URLs, **zero** hits across fifteen identifier and
+volume patterns; section retention checked 1:1 against the source. The gitleaks pre-commit hook
+scanned both commits clean. ⚠️ A real install-and-trigger of Mode B is **still owed** — it needs
+the live roster, calendar and Gmail surface, so it cannot be run from CI.
+
+⚠️ **Found while doing this, fixed separately in `lead-insert.sql`:** that file's placeholder table
+was filled in with one real contact record — company, domain, personal Gmail, given name, deal
+name and Threads handle — public since 2026-06-27. Contained to that one file and never reached
+`content/` or `generated/`, so it did not ship to the marketplace. Fixed forward, not rewritten
+out of history.
