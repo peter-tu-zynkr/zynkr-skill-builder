@@ -84,16 +84,18 @@ before sending) and the CRM write is one atomic statement.
 
 | | 前提 | 輸入 | 產出 |
 |---|---|---|---|
-| **Mode A**（上游原始行為） | 對方**已經回過話**，談到 demo／通話 | 一段貼上的 DM／對話 | 1 個 lead ＋ 1 封回覆草稿 |
-| **Mode B**（Zynkr 本地增補） | 對方**完全沒講過話** | 陌開名單裡的一個人 | 認領 ＋ 5 封序列草稿 ＋ 接觸紀錄 |
+| **Mode A** | 對方**已經回過話**，談到 demo／通話 | 一段貼上的 DM／對話 | 1 個 lead ＋ 1 封回覆草稿 |
+| **Mode B** | 對方**完全沒講過話** | 陌開名單裡的一個人 | 認領 ＋ 5 封序列草稿 ＋ 接觸紀錄 |
 
 **Mode B 的完整做法在 `references/sequence-5touch.md`**，走它之前先讀那份。
 不要把 Mode A 的推論預設（`stage=qualified`、`lifecycle=sql`）套到 Mode B——
 那些是給「已經有回應」的人用的；Mode B 的人一律 `還沒接觸過 → 已聯絡，待回覆`。
 
-Mode B 也**不走 supabase 與 google-workspace**：這個資料夾兩者都不可用
-（supabase 未配置且被 `disabledMcpjsonServers` 停用；google-workspace 只配在上層 `~/Desktop/ZYNKR`）。
-Gmail 走 Playwright 網頁版，CRM 端改寫陌開名單與 Outbound touches 試算表。細節見 reference。
+Mode B 的寫入端**不是平台 CRM**：認領走陌開名單，接觸紀錄寫 `Outbound touches` 試算表。
+這是設計，不是權宜——這批人還沒進 CRM，進了反而汙染 pipeline 數字。
+
+Gmail 草稿則**看環境**：有可用的 Gmail MCP 就用，沒有就走 Playwright 網頁版
+（reference 裡的選擇器與地雷是後者實測出來的）。走之前先確認這台機器有哪些工具。
 
 ## How this differs from its neighbours
 
