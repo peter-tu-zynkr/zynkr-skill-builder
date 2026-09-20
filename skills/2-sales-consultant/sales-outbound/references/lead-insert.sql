@@ -7,14 +7,14 @@
 --
 -- PLACEHOLDERS — replace each {{...}} with a SQL LITERAL (quote text, double any
 -- single quote, or write NULL). For "no company", set {{COMPANY_NAME}} to ''.
---   {{COMPANY_NAME}}     e.g. '行銷超哥 Chao.Marketing'   ('' = no company)
---   {{COMPANY_DOMAIN}}   e.g. 'ubmg.xyz'                 (or NULL)
+--   {{COMPANY_NAME}}     e.g. '範例顧問 Example.Marketing'   ('' = no company)
+--   {{COMPANY_DOMAIN}}   e.g. 'example.com'                 (or NULL)
 --   {{COMPANY_INDUSTRY}} e.g. '品牌策略 / 行銷顧問'        (or NULL)
 --   {{COMPANY_COUNTRY}}  e.g. '台灣'                      (or NULL)
 --   {{COMPANY_DESC}}     e.g. '個人品牌與行銷策略顧問…'     (or NULL)
---   {{FIRST_NAME}}       e.g. '超哥'                      (or NULL)
+--   {{FIRST_NAME}}       e.g. '小明'                      (or NULL)
 --   {{LAST_NAME}}        e.g. NULL
---   {{EMAIL}}            e.g. 'albert321528@gmail.com'    (find-or-create key; keep real)
+--   {{EMAIL}}            e.g. 'prospect@example.com'    (find-or-create key; keep real)
 --   {{TITLE}}            e.g. '品牌策略行銷顧問'           (or NULL)
 --   {{CONTACT_LIFECYCLE}} e.g. 'sql'                      (lifecycle_stage enum)
 --
@@ -30,7 +30,7 @@
 --   somebody handed you, and wrong for a cold outbound DM, where nobody consented.
 --   Only NEW contacts get this — the existing_contact branch returns matched rows
 --   untouched, so the 231 pre-existing NULLs need a separate backfill decision.
---   {{DEAL_NAME}}        e.g. '超哥 — Zynkr CRM Beta'
+--   {{DEAL_NAME}}        e.g. '小明 — Zynkr CRM Beta'
 --   {{STAGE}}            e.g. 'qualified'                 (deal_stage enum)
 --   {{LEAD_SOURCE}}      e.g. 'outbound'                  (lead_source enum)
 --   {{PRIORITY}}         e.g. 'medium'                    (deal_priority enum)
@@ -40,7 +40,7 @@
 --   {{TASK_SUBJECT}}     e.g. '安排 30 分鐘 Demo + 開通 Beta'
 --   {{TASK_BODY}}        e.g. '已擬好邀約草稿，待回覆時段後寄出'  (or NULL)
 --   {{TASK_DUE_DAYS}}    e.g. 3
---   {{SOURCE_META}}      e.g. '{"source":"threads","handle":"@chao.marketing"}'  (jsonb literal, or '{}')
+--   {{SOURCE_META}}      e.g. '{"source":"threads","handle":"@example.marketing"}'  (jsonb literal, or '{}')
 
 WITH peter AS (
   SELECT u.id AS uid,
