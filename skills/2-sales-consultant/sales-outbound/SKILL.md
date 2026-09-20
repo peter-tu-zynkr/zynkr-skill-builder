@@ -25,6 +25,12 @@ description: >-
   sales/consulting MEETING transcript into a project + Drive folder + deal): this
   one takes ONE person's signal and produces a lead record + a drafted reply, no
   Drive folder, no meeting parsing.
+  Mode B — a five-touch outbound SEQUENCE for someone who has NEVER replied:
+  trigger on "一週五封", "連續開發信", "跑一整套序列", "同一個人五次", "五封序列",
+  or when Peter points at the 陌開名單 roster and wants a batch worked end to end.
+  Mode B claims the lead in the roster, reads Peter's calendar for real slots, picks a
+  role angle, writes all five emails, saves them as Gmail drafts, and logs the touch.
+  See references/sequence-5touch.md.
 category: sales-consultant
 project: sales-outbound
 platform: claude
@@ -73,6 +79,21 @@ transcript (that is `sales-follow-up` or `consult-project-specialist`).
 It runs **autonomously**: parse → enrich → write CRM → check calendar → draft email
 → report. No mid-run confirmation — the email lands as a *draft* (safe, Peter reviews
 before sending) and the CRM write is one atomic statement.
+
+## Two modes
+
+| | 前提 | 輸入 | 產出 |
+|---|---|---|---|
+| **Mode A**（上游原始行為） | 對方**已經回過話**，談到 demo／通話 | 一段貼上的 DM／對話 | 1 個 lead ＋ 1 封回覆草稿 |
+| **Mode B**（Zynkr 本地增補） | 對方**完全沒講過話** | 陌開名單裡的一個人 | 認領 ＋ 5 封序列草稿 ＋ 接觸紀錄 |
+
+**Mode B 的完整做法在 `references/sequence-5touch.md`**，走它之前先讀那份。
+不要把 Mode A 的推論預設（`stage=qualified`、`lifecycle=sql`）套到 Mode B——
+那些是給「已經有回應」的人用的；Mode B 的人一律 `還沒接觸過 → 已聯絡，待回覆`。
+
+Mode B 也**不走 supabase 與 google-workspace**：這個資料夾兩者都不可用
+（supabase 未配置且被 `disabledMcpjsonServers` 停用；google-workspace 只配在上層 `~/Desktop/ZYNKR`）。
+Gmail 走 Playwright 網頁版，CRM 端改寫陌開名單與 Outbound touches 試算表。細節見 reference。
 
 ## How this differs from its neighbours
 
@@ -356,3 +377,21 @@ Writing style is **not owned by this file**. The house voice lives in two Google
 Read both before producing client- or reader-facing text, and scan the draft against 《[3.2]》
 before handing it over. If Drive is unreachable, say so in the output rather than proceeding
 unchecked. Never re-implement either list inside this file.
+
+---
+
+## Mode B · 五封序列
+
+完整步驟、職位切角表、外洩防線、實測地雷全在 **`references/sequence-5touch.md`**。
+這裡只放不能忘的五條：
+
+1. **時段一律取自 Peter 日曆名為 `Available` 的事件**，並扣掉壓在上面的既有會議。沒標就問人，不要編。
+2. **階梯是 ask → ask → 長相 → 純給 → 放手。** 第 4 封必須零 ask，否則第 5 封還沒寄就被封鎖。
+3. **`[2.7] 政府補助 knowledge` 絕對不可外發**（它自己第 5 節標了「內部資訊，勿外流」）。
+   顧問姓名、拆帳、加價機制、盤點數字、難度分級一律不得進信裡。
+4. **草稿建好 ≠ 已寄出。** 接觸紀錄的 Remark 要註明「尚未寄出」，寄出後才拿掉。
+   （2026-08-31 有三封被記成「已聯絡」卻躺在草稿匣，別再犯。）
+5. **五封就停。** 沒回的改 `暫時沒需求`。一天一批、一批不超過 5 人。
+
+> 這批人是付過錢、上過 9–17 場的學員，`zynkr.ai` 網域信譽與《彼得的外商隨筆》電子報共用。
+> 被檢舉成垃圾郵件是整個網域一起遭殃，不是這一封的事。
