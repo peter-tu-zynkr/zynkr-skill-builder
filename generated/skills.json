@@ -1100,8 +1100,8 @@
     "upstreamRepo": "https://github.com/anthropics/skills",
     "originalSourceUrl": "https://github.com/anthropics/skills/blob/HEAD/skills/slide-pptx/SKILL.md",
     "originalAuthor": "Anthropic, PBC",
-    "githubStars": 177286,
-    "githubForks": 21004
+    "githubStars": 177309,
+    "githubForks": 21005
   },
   {
     "id": "1.29",
@@ -1464,7 +1464,7 @@
     "platform": "claude",
     "status": "Done",
     "author": "Peter Tu",
-    "description": "Turn ONE person's interest signal into a tracked CRM lead AND a ready-to-send reply. The signal can be a copied DM / chat thread (Threads, IG, LINE, FB Messenger, WhatsApp, email), a single row from an event feedback or registration form, a website enquiry, or the text off a business card — anything where one named person showed interest and left an email address. Optionally hand it their profile link too. It does two things in one pass: (1) collects who they are — parsing the signal and enriching from any social/profile URL — and writes the client context into the Zynkr platform CRM (find-or-create company + contact, a new deal, a verbatim source note, and a follow-up task for the next step); (2) drafts the outbound reply as a Gmail DRAFT in Peter's inbox (never sends), in the signal's language and Peter's voice, and — whenever the ask is a meeting — reads Peter's calendar FIRST and offers three real slots in 台北時間. Trigger on /sales-outbound or when Peter pastes a DM, a feedback-form row, or an enquiry and says \"draft a reply\", \"draft an outbound mail\", \"回這個\", \"幫我擬回覆\", \"把這個 lead 建進 CRM 並擬信\", \"log this lead and draft the email\", \"turn this DM into a draft\", \"這個回饋幫我 建客戶並擬信\", or otherwise hands over one person's interest signal and wants both the CRM record and the reply prepared. Distinct from sales-client-sourcing (BATCH-enriches a WHOLE survey Sheet into new columns — no CRM records, no email), consult-intake (a weekly BATCH sweep of inbound website consult EMAILS) and consult-project-specialist (documents ONE sales/consulting MEETING transcript into a project + Drive folder + deal): this one takes ONE person's signal and produces a lead record + a drafted reply, no Drive folder, no meeting parsing.",
+    "description": "Turn ONE person's interest signal into a tracked CRM lead AND a ready-to-send reply. The signal can be a copied DM / chat thread (Threads, IG, LINE, FB Messenger, WhatsApp, email), a single row from an event feedback or registration form, a website enquiry, or the text off a business card — anything where one named person showed interest and left an email address. Optionally hand it their profile link too. It does two things in one pass: (1) collects who they are — parsing the signal and enriching from any social/profile URL — and writes the client context into the Zynkr platform CRM (find-or-create company + contact, a new deal, a verbatim source note, and a follow-up task for the next step); (2) drafts the outbound reply as a Gmail DRAFT in Peter's inbox (never sends), in the signal's language and Peter's voice, and — whenever the ask is a meeting — reads Peter's calendar FIRST and offers three real slots in 台北時間. Trigger on /sales-outbound or when Peter pastes a DM, a feedback-form row, or an enquiry and says \"draft a reply\", \"draft an outbound mail\", \"回這個\", \"幫我擬回覆\", \"把這個 lead 建進 CRM 並擬信\", \"log this lead and draft the email\", \"turn this DM into a draft\", \"這個回饋幫我 建客戶並擬信\", or otherwise hands over one person's interest signal and wants both the CRM record and the reply prepared. Distinct from sales-client-sourcing (BATCH-enriches a WHOLE survey Sheet into new columns — no CRM records, no email), consult-intake (a weekly BATCH sweep of inbound website consult EMAILS) and consult-project-specialist (documents ONE sales/consulting MEETING transcript into a project + Drive folder + deal): this one takes ONE person's signal and produces a lead record + a drafted reply, no Drive folder, no meeting parsing. Mode B — a five-touch outbound SEQUENCE for someone who has NEVER replied: trigger on \"一週五封\", \"連續開發信\", \"跑一整套序列\", \"同一個人五次\", \"五封序列\", or when Peter points at the 陌開名單 roster and wants a batch worked end to end. Mode B claims the lead in the roster, reads Peter's calendar for real slots, picks a role angle, writes all five emails, saves them as Gmail drafts, and logs the touch. See references/sequence-5touch.md.",
     "input": "ONE person's interest signal carrying an email — a pasted DM/chat thread, an event feedback or form row, a website enquiry, or business-card text; optionally their profile URL.",
     "process": "Parse the signal → enrich from any profile link → write the CRM lead (find-or-create company + contact, new deal, source note, follow-up task) → if a meeting is the ask, read the calendar for three 台北時間 slots → draft the Gmail reply → report.",
     "output": "A CRM lead (company + contact + deal + note + task) on the Zynkr platform, plus a Gmail draft in Peter's inbox — with three calendar-checked 台北時間 slots when a meeting is the ask.",
@@ -2879,7 +2879,7 @@
     "upstreamRepo": "https://github.com/DreambigOu/ELI5",
     "originalSourceUrl": "https://github.com/DreambigOu/ELI5/blob/main/skills/eli5/SKILL.md",
     "originalAuthor": "DreambigOu",
-    "githubStars": 1419,
+    "githubStars": 1420,
     "githubForks": 73
   },
   {
@@ -3034,7 +3034,7 @@
     "upstreamRepo": "https://github.com/vercel-labs/skills",
     "originalSourceUrl": "https://github.com/vercel-labs/skills/blob/main/skills/eng-find-skills/SKILL.md",
     "originalAuthor": "vercel-labs",
-    "githubStars": 32081,
+    "githubStars": 32091,
     "githubForks": 2737
   },
   {
@@ -3344,7 +3344,7 @@
       "socket": "pending",
       "snyk": "pending"
     },
-    "githubStars": 42925,
+    "githubStars": 42928,
     "githubForks": 2880
   },
   {
