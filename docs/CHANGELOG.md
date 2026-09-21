@@ -1356,3 +1356,30 @@ was filled in with one real contact record — company, domain, personal Gmail, 
 name and Threads handle — public since 2026-06-27. Contained to that one file and never reached
 `content/` or `generated/`, so it did not ship to the marketplace. Fixed forward, not rewritten
 out of history.
+
+## 2026-09-21 — zynkr-gm: the burn window is ruled, and the routine can finally see it · `SKB-006`
+
+The GM answered the W39 brief: the July income windfall is one-off, and so is a one-time cost in
+the same month. `constraints.burn_window` is now `trailing_6_ex_oneoff`, and the two rows it backs
+out are listed by `Transactions` id in a new private key, `sources.finance_ledger.runway_read.one_off_ids`.
+
+⚠️ **Setting the config alone would have changed nothing on Monday.** `routine-prompt.tmpl` named
+`constraints.burn_window` in prose but never substituted it, so the cloud run always took the
+"unruled" branch. That branch found the windfall by the text 待確認 in its note, and the ruling
+removes that text. Left alone, the next brief would have silently reported the as-booked runway,
+the most optimistic reading, as GREEN. The template now renders the window and the id list, and
+tells the run to back each row out of its own month's `net` (subtract income, add cost back).
+
+- `references/routine-prompt.tmpl` — BURN step rewritten: one ruled figure, rows keyed by id, a
+  missing id is reported in block 08 rather than guessed. Ledger links point at `Transactions`.
+- `references/kpi-map.md` — the "unruled" section becomes the ruling. The one-off filter keys on
+  `one_off_ids`, never on note text. New warning: `Income` and `Costs` are `QUERY` views of
+  `Transactions`, so notes are edited and linked there. The W39 brief linked a decision's
+  "close it" action to `Income`, and a note typed there would have broken the view.
+- `SKILL.md` Step 3.4 and `references/config.example.json` document the new key (`[]` in the example).
+
+**Verification (D1)** — `render_routine_prompt.py --selftest` OK; rendering the private config
+resolves every placeholder (0 left) and the BURN step carries the window and both ids;
+`validate-skill.ts` on SKILL.md: 1/1 pass, 0 errors, 0 warnings; example JSON parses. The routine
+was re-rendered and updated the same day. ⚠️ The proof that it fired is the 2026-09-28 brief: its
+runway line must show one figure matching the private config's note.

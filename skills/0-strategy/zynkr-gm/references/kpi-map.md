@@ -45,24 +45,29 @@ this too**. Three reads, in order:
 2. **Cash** = column `total` (H) at the last closed month. That column is the running cumulative,
    and per the ledger's validating identity `cumulative + outstanding personal-card float = 富邦 balance`.
    Use the cumulative. The float is money owed to Peter.
-3. **Burn** = the mean of column `net` (G) over the window in `constraints.burn_window`.
+3. **Burn** = the mean of column `net` (G) over the window in `constraints.burn_window`, after
+   backing out every row listed in `sources.finance_ledger.runway_read.one_off_ids` (subtract an
+   income row from its month's `net`, add a cost row back).
 
-⚠ **`constraints.burn_window` is the whole ballgame, and as of 2026-09-13 it is unruled.** Zynkr's
-revenue is lumpy enough that the window choice moves runway across the 4-month floor:
+**Ruled 2026-09-21: `trailing_6_ex_oneoff`, with two one-offs.** Answering the W39 brief, the GM
+ruled that the July income windfall does not recur, and that a one-time cost in the same month is
+backed out too, so both sides of July are normalised rather than only the income side. Both rows
+sit in `one_off_ids` in the private config, and the resulting figures live there, not here.
 
-| Window | Burn / mo | Runway on NT$302,304 | Verdict |
-|---|---|---|---|
-| `trailing_3` (Jun–Aug) | **+NT$8,027** (net positive) | no finite answer | July's windfall dominates — meaningless |
-| `trailing_6` as booked | −NT$30,504 | **9.9 months** | GREEN |
-| `trailing_6_ex_oneoff` | −NT$99,135 | **3.0 months** | **RED — below the floor** |
+Rejected along the way: `trailing_3` (July alone swings it net-positive, so there is no finite
+runway) and `trailing_6` as booked (it counts the windfall as run-rate). Stripping only the income
+one-off was the interim reading from 09-13 to 09-21. It was superseded because it left the matching
+one-time cost in, which made July the worst month on the books.
 
-The one-off is the 2026-07 `好學校 6月結算` of **NT$411,783** — 81% of that month's income, and the
-ledger's own note on the row says 分潤條件與期間待確認. Until Peter rules the window, the brief prints
-**both** numbers and names the dependency; it does **not** pick one and it does **not** report GREEN.
+From 09-13 to 09-21 the brief printed both candidates and took the worse state. Keep that behaviour
+for any future unruled window: print every candidate, never pick one silently.
 
 **One-off / non-operating filter.** Never treat these as operating revenue when reasoning about
 run-rate: `income/transfer` (e.g. the 2025-09 思坊引擎 NT$1,000,609 capital injection),
-`income/interest`, `misc/refund`, and any row whose note carries 待確認.
+`income/interest`, `misc/refund`, and every id in `one_off_ids`. Key the exclusion by **id**, not
+by note text: the two ruled rows no longer carry 待確認. Row notes live on `Transactions` (column
+K); `Income` and `Costs` are `QUERY` views of it, so link and edit the `Transactions` row — typing
+into `Income` or `Costs` breaks the whole view.
 
 **Read-only.** zynkr-gm never writes to this ledger. Appends to `Transactions` belong to
 `/zynkr-accounting`. Never write into the `Financial Model` tab's month columns (E:AP) — they are

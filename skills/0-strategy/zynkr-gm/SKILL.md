@@ -199,7 +199,9 @@ header text (`Tracker #`, `Q3 target`, `Q4 target`, `Actual`, and — if present
   cumulative `total` at the last closed month (**not** the 富邦 bank balance), burn = mean `net`
   over `constraints.burn_window`. The KPI Dashboard's runway/burn `Actual` cells are a **mirror**,
   not the source: if they disagree with the ledger, the ledger wins and block 05 asks Peter to
-  refresh them. ⚠ While `constraints.burn_window` is null the brief prints **both** candidate
+  refresh them. The one-off rows the GM has ruled are listed by `Transactions` id in
+  `sources.finance_ledger.runway_read.one_off_ids` and backed out of their months' `net` — never
+  found by note text. ⚠ While `constraints.burn_window` is null the brief prints **both** candidate
   numbers and says which ruling would settle it — it never picks one silently. If the ledger
   itself cannot be read → **RED · 未計量**.
 
