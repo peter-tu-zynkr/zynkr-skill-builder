@@ -61,7 +61,7 @@ token, which would hit 「Delivery」 / 「Deliverables」); CJK patterns match 
 
 | KPI row | Title contains any of | Notes |
 |---|---|---|
-| Demo 場次 | `demo` · `示範` · `產品展示` | sales demos incl. AI 平台 demos; a 1:1 titled 「demo review」 is a false positive → check the description before counting, note the exclusion |
+| Demo 場次 | `demo` · `示範` · `產品展示` | sales demos incl. Zynkr CRM demos; a 1:1 titled 「demo review」 is a false positive → check the description before counting, note the exclusion |
 | 線下講座 | `講座` · `線下` · `workshop` · `工作坊` · `企業內訓` | physical or client-site sessions |
 | 直播 | `直播` · `livestream` · `live stream` · `webinar` | exclude 「直播筆記」 working blocks (title has 筆記) |
 | Team Weekly | `team weekly` | Thu evening rhythm (sources §B) |

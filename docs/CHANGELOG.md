@@ -1383,3 +1383,34 @@ resolves every placeholder (0 left) and the BURN step carries the window and bot
 `validate-skill.ts` on SKILL.md: 1/1 pass, 0 errors, 0 warnings; example JSON parses. The routine
 was re-rendered and updated the same day. ⚠️ The proof that it fired is the 2026-09-28 brief: its
 runway line must show one figure matching the private config's note.
+
+## 2026-09-26 — the sales skills name the product 「Zynkr CRM」 again · `PLAT-067`
+
+Platform spec `PLAT-067` (owner ruling 2026-09-26, Level 1 — rename only): the product formerly
+「Zynkr AI 平台」 is 「Zynkr CRM」 in zh and en. The app stays on `platform.zynkr.ai`, so every
+`platform.zynkr.ai/...` URL in the tree is unchanged; the website product page moves back to
+`zynkr.ai/crm` (today `/crm` 308s to `/ai-platform`, so the new link works before and after the
+website ships).
+
+- **`sales-follow-up`** — description and body map pains to a 「Zynkr CRM」 capability; the
+  solution page it WebFetches and the Convert line it puts in the prospect's mail are
+  `https://zynkr.ai/crm`. 簡報 is dropped from the capability list (removed from the product
+  2026-09-16, `PLAT-063`) with a line saying never to pitch it; 知識庫 stays (live until `PLAT-066`).
+- **`sales-research`** — 「Zynkr platform CRM」 → 「Zynkr CRM」 in the description; the
+  sales-fit line says what Zynkr sells as Zynkr CRM (the automation feature it listed was removed
+  2026-09-16).
+- **`sales-outbound`** — description and `output:` say Zynkr CRM.
+- **`planning-evidence-pack`** `references/kpi-source-map.md` — 「AI 平台 demos」 → 「Zynkr CRM demos」.
+
+Already correct, not touched: `zynkr-gm` `references/kpi-map.md` and `sales-outbound`
+`references/lead-insert.sql` say Zynkr CRM. **Left on purpose:** the generic 「the Zynkr platform」
+descriptor in `sales-specialist`, `sales-proposal-writer`, `zynkr-kms` and `zynkr-support` (internal
+instructions; the KB ones move with `PLAT-066`), and the repo name `zynkr-ai-platform` in
+`consult-bug-ticket` (Level 3, skipped by ruling). `generated/`, `content/` and
+`scripts/skills-index/data/` regenerate — ⚠️ `extracted.json` still records the external service
+`Zynkr AI 平台 CRM (platform.zynkr.ai)` until it is re-extracted; Atlas's importer resolves both
+spellings to the `zynkr` connector (prefix match, proven in `zynkr-atlas` `importer.test.ts`).
+
+**Verification (D1)** — `validate-skill.ts --tier=all` on the three SKILL.md: 3/3 pass, 0 errors;
+`check-house-style.ts` OK (94 declared · 81 bound · 13 exempt); `check-planning-refs.sh` OK;
+`check-pm-refs.sh` OK. `git grep -nE 'Zynkr AI 平台|zynkr.ai/ai-platform|AI 平台|AI platform' -- skills` → 0.

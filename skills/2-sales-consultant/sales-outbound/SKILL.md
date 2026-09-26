@@ -8,7 +8,7 @@ description: >-
   anything where one named person showed interest and left an email address.
   Optionally hand it their profile link too. It does two things in one pass:
   (1) collects who they are — parsing the signal and enriching from any
-  social/profile URL — and writes the client context into the Zynkr platform CRM
+  social/profile URL — and writes the client context into Zynkr CRM
   (find-or-create company + contact, a new deal, a verbatim source note, and a
   follow-up task for the next step); (2) drafts the outbound reply as a Gmail
   DRAFT in Peter's inbox (never sends), in the signal's language and Peter's
@@ -39,7 +39,7 @@ author: Peter Tu
 sheetId: "2.09"
 input: "ONE person's interest signal carrying an email — a pasted DM/chat thread, an event feedback or form row, a website enquiry, or business-card text; optionally their profile URL."
 process: "Parse the signal → enrich from any profile link → write the CRM lead (find-or-create company + contact, new deal, source note, follow-up task) → if a meeting is the ask, read the calendar for three 台北時間 slots → draft the Gmail reply → report."
-output: "A CRM lead (company + contact + deal + note + task) on the Zynkr platform, plus a Gmail draft in Peter's inbox — with three calendar-checked 台北時間 slots when a meeting is the ask."
+output: "A CRM lead (company + contact + deal + note + task) in Zynkr CRM, plus a Gmail draft in Peter's inbox — with three calendar-checked 台北時間 slots when a meeting is the ask."
 synergy: []
 house-style: bound
 

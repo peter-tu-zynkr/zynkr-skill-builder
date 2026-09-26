@@ -2,7 +2,7 @@
 name: sales-research
 description: >-
   Runs AI background research on a company (and optionally a contact) in the
-  Zynkr platform CRM and writes a concise, sales-context zh-TW brief back onto
+  Zynkr CRM and writes a concise, sales-context zh-TW brief back onto
   that record as a CRM note (備註) via `mcp__zynkr__create_note`. The research
   runs on the Claude Code side — WebSearch/WebFetch plus the Taiwan government
   registry APIs keyed off the 統一編號 — and only the write-back touches the
@@ -48,7 +48,7 @@ company or contact tied to the CRM.
 
 ## Why this exists
 
-Zynkr's own AI platform (`platform.zynkr.ai`) has an "AI 背景研究" button on the
+Zynkr CRM itself (`platform.zynkr.ai`) has an "AI 背景研究" button on the
 company/contact/deal detail page that runs a Claude tool-use loop
 (`app/lib/ai/research.ts`, `generateBrief`: up to 8 web searches, `RESEARCH_MODEL`)
 and saves a zh-TW markdown brief as a CRM note. Since then it has an MCP twin,
@@ -163,8 +163,8 @@ A handful of targeted searches, not an open-ended crawl:
    state *why* it failed.
 3. If a contact was named, one more search on their name + company for
    role/background — skip if nothing surfaces, don't guess.
-4. Think about the **sales-fit angle**: given what Zynkr sells (an AI platform
-   with CRM/knowledge-base/automation features, plus AI-adoption consulting
+4. Think about the **sales-fit angle**: given what Zynkr sells (Zynkr CRM, the
+   AI CRM for solo founders and small teams, plus AI-adoption consulting
    and training), why might *this* company plausibly be interested? Ground it in
    what the research actually surfaced. The registry is especially good for this:
    a tiny headcount next to a self-built software product is a structural
